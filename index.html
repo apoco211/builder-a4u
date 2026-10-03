@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Builder - Drive Quick</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Pretendard',-apple-system,sans-serif;background:#0a0a0a;color:#fff;min-height:100vh;padding:16px}
+    .wrap{max-width:900px;margin:0 auto}
+    header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #222;padding-bottom:14px;margin-bottom:18px}
+    h1{font-size:22px} h1 span{color:#666;font-size:13px;font-weight:400;margin-left:8px}
+    .card{background:#111;border:1px solid #222;border-radius:14px;padding:18px;margin-bottom:14px}
+    .card h2{font-size:13px;color:#888;margin-bottom:10px;letter-spacing:0.5px}
+    .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+    input{flex:1;min-width:200px;background:#000;border:1px solid #333;color:#fff;padding:12px;border-radius:10px;font-size:14px}
+    button{background:#fff;color:#000;border:0;padding:12px 16px;border-radius:10px;font-weight:700;cursor:pointer;font-size:14px}
+    button.secondary{background:#222;color:#fff;border:1px solid #333}
+    button.big{font-size:20px;padding:18px;width:100%}
+    .badge{display:inline-block;background:#1a2f1a;color:#4ade80;padding:3px 10px;border-radius:99px;font-size:12px}
+    .badge.red{background:#2f1a1a;color:#f87171}
+    .log{background:#000;border:1px solid #222;border-radius:10px;padding:12px;font-family:monospace;font-size:11px;white-space:pre-wrap;max-height:320px;overflow:auto;color:#8f8;line-height:1.5}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:700px){.grid{grid-template-columns:1fr}}
+    /* 운전모드 */
+    .drive-mode .card{border-color:#facc15}
+    .drive-mode button.big{background:#facc15}
+  </style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header>
+    <h1>🛠️ Builder <span id="sub">builder-a4u · Drive Quick</span></h1>
+    <div id="auth-status"><span class="badge red">로그아웃</span></div>
+  </header>
+
+  <div class="card">
+    <h2>1. GOOGLE 로그인 (Docs + Drive)</h2>
+    <div class="row">
+      <button id="btn-login">🔑 Google 로그인</button>
+      <button id="btn-logout" class="secondary">로그아웃</button>
+      <button id="btn-drive" class="secondary">🚗 운전모드 ON</button>
+    </div>
+    <div style="font-size:11px;color:#555">OAuth: builder-a4u 전용 · 테스트 사용자만 로그인 가능</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>2. 문서 테스트 - 각 앱마다 다른 문서 ✅</h2>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px">네 테스트 문서 ID 고정됨</div>
+      <input id="doc-id" value="1NehvidiZLsScXGHpTxukB4cceLobpA1C8Ld9eNm40A8" />
+      <div class="row" style="margin-top:10px">
+        <button id="btn-read">📄 읽기</button>
+        <button id="btn-append">✏️ 테스트 쓰기</button>
+        <button id="btn-newdoc" class="secondary">+ 새 앱 문서 만들기</button>
+      </div>
+      <div id="drive-panel" style="display:none;margin-top:12px;border-top:1px dashed #333;padding-top:12px">
+        <button class="big" id="btn-start">▶️ 운행 시작 기록</button>
+        <button class="big" id="btn-memo" style="margin-top:8px">🎤 음성 메모 저장</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>3. 다음 할 일</h2>
+      <div style="font-size:12px;line-height:1.7;color:#ccc">
+        1) 이 파일 GitHub에 Push → 아이폰 PWA 됨<br>
+        2) Supabase dev_projects 테이블에 doc_id 자동 저장<br>
+        3) 각 앱 문서 자동 생성 (Drive API)<br>
+        <br>
+        현재: <b>1개 문서 = 1개 앱</b> 구조 검증 완료!
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>로그</h2>
+    <div id="log" class="log">대기중...</div>
+  </div>
+</div>
+
+<script type="module">
+const CLIENT_ID = "888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com";
+const SCOPES = "https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly";
+const DEFAULT_DOC_ID = "1NehvidiZLsScXGHpTxukB4cceLobpA1C8Ld9eNm40A8";
+
+let tokenClient = null;
+let accessToken = localStorage.getItem('g_token');
+
+function log(msg){
+  const el = document.getElementById('log');
+  const time = new Date().toLocaleTimeString();
+  el.textContent = `[${time}] ${msg}\n` + el.textContent;
+}
+function updateAuthUI(){
+  document.getElementById('auth-status').innerHTML = accessToken ? '<span class="badge">로그인됨 ✅</span>' : '<span class="badge red">로그아웃</span>';
+}
+
+window.onload = () => {
+  const check = setInterval(()=>{
+    if(window.google && google.accounts){
+      clearInterval(check);
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: CLIENT_ID,
+        scope: SCOPES,
+        callback: (resp)=>{
+          accessToken = resp.access_token;
+          localStorage.setItem('g_token', accessToken);
+          log("✅ 로그인 성공! 토큰 저장됨");
+          updateAuthUI();
+        }
+      });
+      log("GIS 초기화 완료. 로그인 버튼 눌러봐.");
+      updateAuthUI();
+      if(accessToken) log("저장된 토큰 있음 - 바로 쓰기 가능");
+    }
+  },300);
+};
+
+document.getElementById('btn-login').onclick = ()=> tokenClient.requestAccessToken();
+document.getElementById('btn-logout').onclick = ()=>{
+  accessToken=null; localStorage.removeItem('g_token'); updateAuthUI(); log("로그아웃됨");
+};
+document.getElementById('btn-drive').onclick = ()=>{
+  document.getElementById('app').classList.toggle('drive-mode');
+  const panel = document.getElementById('drive-panel');
+  panel.style.display = panel.style.display==='none' ? 'block' : 'none';
+  const isDrive = panel.style.display==='block';
+  document.getElementById('btn-drive').textContent = isDrive ? '🚗 운전모드 OFF' : '🚗 운전모드 ON';
+  log(isDrive ? '🚗 운전모드 ON - 버튼 크게 변경' : '운전모드 OFF');
+};
+
+async function appendToDoc(docId, text){
+  if(!accessToken){ log("먼저 로그인!"); return; }
+  const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`,{
+    method:'POST',
+    headers:{'Authorization':`Bearer ${accessToken}`,'Content-Type':'application/json'},
+    body: JSON.stringify({requests:[{insertText:{location:{index:1},text:`\n[${new Date().toLocaleString()}] ${text}\n`}}]})
+  });
+  const data = await res.json();
+  if(!res.ok) throw new Error(JSON.stringify(data));
+  return data;
+}
+
+document.getElementById('btn-append').onclick = async ()=>{
+  const docId = document.getElementById('doc-id').value.trim();
+  try{
+    await appendToDoc(docId, "Builder PWA 테스트 - 성공! 각 앱마다 다른 문서 사용 ✅");
+    log(`✅ 쓰기 성공! 문서 열어봐: https://docs.google.com/document/d/${docId}/edit`);
+  }catch(e){ log("❌ 실패: "+e.message); }
+};
+
+document.getElementById('btn-read').onclick = async ()=>{
+  const docId = document.getElementById('doc-id').value.trim();
+  const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`,{headers:{'Authorization':`Bearer ${accessToken}`}});
+  const data = await res.json();
+  if(!res.ok) log("❌ 읽기 실패: "+JSON.stringify(data));
+  else log(`📄 읽기 성공: 제목=${data.title}`);
+};
+
+document.getElementById('btn-newdoc').onclick = async ()=>{
+  const title = prompt("새 앱 문서 제목? 예: Taxi-App-2026");
+  if(!title) return;
+  try{
+    const res = await fetch('https://www.googleapis.com/drive/v3/files',{
+      method:'POST',
+      headers:{'Authorization':`Bearer ${accessToken}`,'Content-Type':'application/json'},
+      body: JSON.stringify({name:title,mimeType:'application/vnd.google-apps.document'})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(JSON.stringify(data));
+    document.getElementById('doc-id').value = data.id;
+    log(`✅ 새 문서 생성됨! ID=${data.id} - 이제 이게 ${title} 전용 문서`);
+    log(`링크: https://docs.google.com/document/d/${data.id}/edit`);
+  }catch(e){ log("❌ 문서 생성 실패: "+e.message); }
+};
+
+document.getElementById('btn-start').onclick = async ()=>{
+  const docId = document.getElementById('doc-id').value.trim();
+  await appendToDoc(docId, "🚕 운행 시작");
+  log("🚕 운행 시작 기록됨");
+};
+document.getElementById('btn-memo').onclick = async ()=>{
+  const text = prompt("음성 메모 내용 (운전 중엔 말로 입력)");
+  if(!text) return;
+  const docId = document.getElementById('doc-id').value.trim();
+  await appendToDoc(docId, `🎤 메모: ${text}`);
+  log("🎤 메모 저장됨: "+text);
+};
+</script>
+</body>
+</html>
