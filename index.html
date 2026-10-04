@@ -24,164 +24,128 @@
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
-<title>Builder-a4u v5.2 - PWA 내부 3탭 채팅 B안</title>
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>Builder-a4u v5.2.2 - 코드숨김 + N개 문서 불러오기</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.2">
+<link rel="manifest" href="./manifest.json?v=5.2.2">
 <style>
-:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--ok:#16a34a;--err:#dc2626;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
+:root{--bg:#f8fafc;--card:#fff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 [data-theme="dark"]{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:760px;margin:0 auto;padding:16px 16px 120px 16px;transition:background .2s,color .2s}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
-.btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt)}
+body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;max-width:760px;margin:0 auto;padding:14px 14px 110px 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px dashed var(--line);border-radius:12px;padding:10px;margin-bottom:8px;background:var(--bg);cursor:pointer}
+.btn{border-radius:12px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt)}
 .btn-primary{background:#111;color:#fff;border-color:#111}
 .btn-yellow{background:var(--accent);color:#111;border-color:var(--accent);font-weight:900}
 .btn-meta{background:var(--meta);color:#fff;border-color:var(--meta)}
 .btn-gemini{background:var(--gemini);color:#fff;border-color:var(--gemini)}
 .btn-gpt{background:var(--gpt);color:#fff;border-color:var(--gpt)}
-.btn:active{transform:scale(.98);opacity:.9}
-.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--card);color:var(--txt);font-size:13px;outline:none}
-.textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--txt);font-size:12px;line-height:1.6;outline:none;resize:vertical}
+.btn:active{transform:scale(.97)}
+.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:var(--card);color:var(--txt);font-size:12px;outline:none}
+.textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:var(--card);color:var(--txt);font-size:11px;line-height:1.6;outline:none;resize:vertical}
 .badge{display:inline-flex;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:800;border:1px solid var(--line)}
-.log{font-family:monospace;font-size:11px;line-height:1.5;max-height:260px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px}
-.chat-box{border:1px solid var(--line);border-radius:14px;background:var(--bg);height:380px;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.log{font-family:monospace;font-size:11px;line-height:1.5;max-height:220px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px}
+.chat-box{border:1px solid var(--line);border-radius:14px;background:var(--bg);height:400px;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
 .msg{max-width:85%;padding:10px 12px;border-radius:14px;font-size:12px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
 .msg-user{align-self:flex-end;background:#111;color:#fff;border-bottom-right-radius:4px}
 .msg-ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
-.msg-system{align-self:center;background:#fffbeb;border:1px dashed #f59e0b;font-size:10px;color:#92400e;max-width:95%}
+.msg-system{align-self:center;background:#fffbeb;border:1px dashed #f59e0b;font-size:10px;max-width:95%}
 .tab-active{border:2px solid #111 !important;box-shadow:0 0 0 2px var(--accent)}
+.link-item{display:flex;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
 </style>
 </head>
 <body data-theme="light">
-<div class="flex items-center justify-between mb-4">
-<div><h1 class="text-[20px] font-black">Builder-a4u v5.2</h1><p class="text-[11px] text-[var(--muted)]">PWA 내부 3탭 채팅 · B안 draft 공유 · 메타→제미나이→GPT · 공용 빌드</p></div>
-<div class="flex gap-2 items-center"><span class="badge" style="background:#111;color:#fff">v5.2 B안 파이프라인</span><button id="themeToggle" class="btn text-[12px]">🌙</button></div>
-</div>
-
-<div class="card" style="border-color:var(--accent);box-shadow:0 0 0 2px #FFC80020">
-<h2 class="font-bold text-[14px] mb-2">1. GOOGLE 로그인 OAuth</h2>
-<button id="googleLoginBtn" class="btn btn-primary w-full">🔐 Google 로그인 (GIS)</button>
-<div id="googleStatus" class="text-[11px] mt-2 text-[var(--muted)]">GIS 로딩중...</div>
-<div id="tokenInfo" class="text-[10px] mt-1 break-all text-[var(--muted)]"></div>
-</div>
-
-<div class="card">
-<h2 class="font-bold text-[14px] mb-2">2. 프로젝트 선택 GitHub API · B안 draft 공유</h2>
-<div class="text-[11px] text-[var(--muted)] mb-2">선택하면 기억10줄+링크N개+draft가 3탭에 자동 주입 · Daily-Todo→src/App.jsx 자동</div>
-<select id="repoSelect" class="input mb-2"><option>레포 목록 로딩중... apoco211/repos</option></select>
-<div class="flex gap-2 mb-2">
-<input id="mainFileInput" class="input" placeholder="mainFile - index.html or src/App.jsx">
-<button id="copyBtn" class="btn btn-yellow whitespace-nowrap">📋 복사</button>
-</div>
-<div class="flex gap-2 mb-2">
-<button id="openRepoBtn" class="btn text-[11px]">GitHub 레포 열기</button>
-<button id="openPagesBtn" class="btn text-[11px]">Pages 열기</button>
-<button id="fetchCodeBtn" class="btn text-[11px]">코드 불러오기 → draft</button>
-</div>
-<textarea id="codeEditor" class="textarea h-[140px]" placeholder="공용 draft 코드 - 3탭이 같은 코드 봄 (B안) - 메타/제미나이에서 생성되면 여기에 자동 저장, GitHub Push 전까지는 PWA 메모리에만"></textarea>
-<div class="flex justify-between mt-2"><span id="draftStatus" class="text-[10px] text-[var(--muted)]">draft: 0자 · GitHub 미배포 상태</span><span id="draftBadge" class="badge">draft</span></div>
-</div>
-
-<div class="card">
-<h2 class="font-bold text-[14px] mb-2">3. 기존 문서 제목 기반 연결</h2>
-<div class="flex gap-2 mb-2">
-<input id="docSearchInput" class="input" placeholder="문서 제목 - 예: Daily-Todo 기억팩">
-<button id="searchExactBtn" class="btn text-[11px]">🔍 정확</button>
-<button id="searchAllBtn" class="btn text-[11px]">📋 30개</button>
-</div>
-<div id="driveResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto hidden" style="border-color:var(--line)">
-<div class="flex justify-between mb-2"><span id="driveResultsTitle" class="text-[11px] font-bold">검색 결과</span><button id="collapseBtn" class="btn text-[10px] py-1 px-2">▲ 접기</button></div>
-<div id="driveResults" class="space-y-1"></div>
-</div>
-<div id="driveCollapsedInfo" class="hidden text-[11px] p-2 rounded-[10px] bg-[var(--bg)] border mt-2" style="border-color:var(--line)"><span id="collapsedText"></span> <button id="expandBtn" class="btn text-[10px] py-1 px-2 ml-2">▼ 펼치기</button></div>
-</div>
-
-<div class="card">
-<div class="flex items-center justify-between mb-2"><h2 class="font-bold text-[14px]">4. 현재 연결된 문서 <span id="docCountBadge" class="badge ml-2">0개</span></h2><button id="newDocBtn" class="btn text-[10px]">➕ 새 문서</button></div>
-<div id="connectedDocs"></div>
-<div id="docPreview" class="hidden mt-3 p-3 rounded-[12px] bg-[var(--bg)] border text-[11px] whitespace-pre-wrap max-h-[300px] overflow-auto" style="border-color:var(--line)"></div>
-</div>
-
-<div class="card">
-<h2 class="font-bold text-[14px] mb-2">🔗 추가 링크 N개 <span id="linkCount" class="badge ml-2">0개</span></h2>
-<div class="flex gap-2 mb-2"><input id="linkTitleInput" class="input" placeholder="제목"><input id="linkUrlInput" class="input" placeholder="https://..."></div>
-<button id="addLinkBtn" class="btn w-full text-[12px]">➕ 링크 추가</button>
-<div id="customLinksList" class="mt-3"></div>
-</div>
-
-<div class="card">
-<h2 class="font-bold text-[14px] mb-2">5. Supabase + 기억 10줄</h2>
-<div class="grid grid-cols-2 gap-2 mb-2">
-<input id="supabaseKeyInput" class="input text-[11px] font-mono" placeholder="Supabase anon key">
-<input id="githubPatInput" class="input text-[11px] font-mono" type="password" placeholder="GitHub PAT ghp_...">
-</div>
-<textarea id="memory10" class="textarea h-[200px]"></textarea>
-<div class="flex justify-between items-center mt-2"><span id="memoryCount" class="text-[10px] text-[var(--muted)]"></span><button id="templateBtn" class="btn text-[11px]">📝 템플릿</button></div>
-<div class="grid grid-cols-2 gap-2 mt-3">
-<button id="saveBtn" class="btn btn-primary">💾 저장 (local+Supabase)</button>
-<button id="listSupabaseBtn" class="btn">📚 목록</button>
-</div>
-<div class="text-[10px] mt-2 text-[var(--muted)]">Project: <span id="currentRepoName">-</span> · draft는 Supabase draft 컬럼에도 백업됨</div>
-</div>
-
-<div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
-<div class="flex justify-between items-center mb-3"><h2 class="font-black text-[15px]">6. PWA 내부 3탭 채팅 - 메타→제미나이→GPT 파이프라인 (B안)</h2><span class="badge" style="background:#111;color:#fff">B안 전체 주입</span></div>
-<div class="text-[11px] text-[var(--muted)] mb-3 leading-[1.5]">
-• draft는 1개 공용, 3탭이 같은 코드 봄 (0초 공유) • 메타 생성 → 제미나이 검증 → GPT 효율성/유용성 최종 검수 • 빌드는 어디서 요청해도 GitHub 자동 (공용 빌드 버튼) • 전체 코드 GPT-4o-mini 4000토큰 직접 리뷰 (월 400원)
-</div>
-
-<div class="grid grid-cols-3 gap-2 mb-3">
-<button id="tabMeta" class="btn btn-meta tab-active">🟣 메타<br><span class="text-[9px]">프로토타입 생성</span></button>
-<button id="tabGemini" class="btn btn-gemini">🔵 제미나이<br><span class="text-[9px]">코드 검증/정교화</span></button>
-<button id="tabGpt" class="btn btn-gpt">🟢 GPT<br><span class="text-[9px]">효율성+유용성 검수</span></button>
-</div>
-
-<div id="contextBox" class="p-3 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[10px] leading-[1.6] mb-3 max-h-[120px] overflow-auto">
-<div class="font-bold mb-1">자동 주입 컨텍스트 (프로젝트 선택 시 3탭 공용)</div>
-<div id="contextText" class="whitespace-pre-wrap">레포 선택 대기중...</div>
-</div>
-
-<div class="flex gap-2 mb-2">
-<span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타 탭</span>
-<span id="chatCountBadge" class="badge">0개 메시지</span>
-<span id="autoPromptBadge" class="badge hidden" style="background:#fef3c7;color:#92400e">GPT 자동 프롬프트 주입됨</span>
-</div>
-
-<div id="chatBox" class="chat-box mb-3"></div>
-
-<div class="flex gap-2">
-<input id="chatInput" class="input flex-1" placeholder="메타 탭: 다크모드 고쳐줘... (Enter)">
-<button id="chatSendBtn" class="btn btn-primary">전송</button>
-</div>
-<div class="flex gap-2 mt-2">
-<button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[14px]">🚀 공용 빌드 - GitHub Push (main+gh-pages) + Supabase + Docs</button>
-<button id="clearChatBtn" class="btn text-[11px]">대화 초기화</button>
-</div>
-<div class="text-[10px] mt-2 text-[var(--muted)]">키워드 트리거: "빌드해줘" / "확정" 입력 시 자동 빌드 · 코드 블록 ``` 감지 시 draft 자동 업데이트</div>
-
-<div class="grid grid-cols-3 gap-2 mt-3">
-<input id="geminiKeyInput" class="input text-[11px] font-mono" type="password" placeholder="Gemini Key">
-<input id="groqKeyInput" class="input text-[11px] font-mono" type="password" placeholder="Groq Key (Meta 분신)">
-<input id="openaiKeyInput" class="input text-[11px] font-mono" type="password" placeholder="OpenAI Key (GPT-4o-mini)">
-</div>
-<div class="text-[10px] mt-2 text-[var(--muted)]">Gemini 무료, Groq 무료 (llama-3.3-70b), OpenAI 4000토큰 4원</div>
+<div class="flex justify-between items-center mb-3">
+<div><h1 class="text-[19px] font-black">Builder-a4u v5.2.2</h1><p class="text-[10px] text-[var(--muted)]">코드 숨김 + N개 문서 불러오기 + API보관소 자동주입</p></div>
+<div class="flex gap-2"><span class="badge" style="background:#111;color:#fff">v5.2.2</span><button id="themeToggle" class="btn text-[10px]">🌙</button></div>
 </div>
 
 <div class="card" style="border-color:var(--accent)">
-<h2 class="font-bold text-[14px] mb-2">7. 🤖 원버튼 로봇 (기존 유지)</h2>
-<textarea id="chatDump" class="textarea h-[80px]" placeholder="외부 대화 100개 붙여넣기 (선택)"></textarea>
-<button id="robotBtn" class="btn btn-yellow w-full py-3 mt-2">🤖 요약해서 저장&배포 - 원버튼 (Gemini→Supabase→Docs→GitHub)</button>
-<div id="robotLog" class="log mt-3 hidden"></div>
+<h2 class="font-bold text-[12px] mb-2">1. GOOGLE 로그인</h2>
+<button id="googleLoginBtn" class="btn btn-primary w-full text-[12px]">🔐 Google 로그인</button>
+<div id="googleStatus" class="text-[10px] mt-2 text-[var(--muted)]">GIS 로딩중...</div>
 </div>
 
 <div class="card">
-<div class="flex justify-between items-center mb-2"><h2 class="font-bold text-[14px]">📟 로그</h2><button id="clearLogBtn" class="btn text-[10px]">clear</button></div>
+<h2 class="font-bold text-[12px] mb-2">2. 프로젝트 선택 (코드 자동 로드, 화면엔 안 보임)</h2>
+<select id="repoSelect" class="input mb-2"><option>레포 로딩중...</option></select>
+<input id="mainFileInput" class="input text-[10px]" placeholder="mainFile 자동">
+<div class="flex justify-between items-center mt-2">
+<span id="draftStatus" class="text-[10px] text-[var(--muted)]">draft 대기중 - 선택하면 3탭에 자동 주입</span>
+<button id="toggleDraftBtn" class="btn text-[9px]">draft 보기 ▼</button>
+</div>
+<textarea id="codeEditor" class="textarea h-[100px] mt-2 hidden" placeholder="공용 draft (숨김, B안)"></textarea>
+<div class="text-[10px] mt-1 text-[var(--muted)]">복사 버튼 없음, 코드 화면에 안 보임, draft는 내부 메모리에서 3탭이 0초 공유</div>
+</div>
+
+<div class="card">
+<h2 class="font-bold text-[12px] mb-2">3. 메인 문서 (계속 업데이트 1개)</h2>
+<div class="flex gap-2 mb-2">
+<input id="docSearchInput" class="input" placeholder="제목 검색">
+<button id="searchExactBtn" class="btn text-[10px]">🔍 검색</button>
+<button id="searchAllBtn" class="btn text-[10px]">📋 30개</button>
+</div>
+<div id="driveResultsBox" class="border rounded-[12px] p-2 max-h-[200px] overflow-auto hidden" style="border-color:var(--line)">
+<div class="flex justify-between mb-2"><span id="driveResultsTitle" class="text-[10px] font-bold">결과</span><button id="collapseBtn" class="btn text-[9px]">▲ 접기</button></div>
+<div id="driveResults"></div>
+</div>
+<div id="driveCollapsedInfo" class="hidden text-[10px] p-2 rounded-[10px] bg-[var(--bg)] border mt-2" style="border-color:var(--line)"><span id="collapsedText"></span> <button id="expandBtn" class="btn text-[9px] ml-2">▼ 펼치기</button></div>
+<div id="connectedDocs" class="mt-2"></div>
+<div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[200px] overflow-auto" style="border-color:var(--line)"></div>
+</div>
+
+<div class="card" style="border-color:var(--gemini)">
+<h2 class="font-bold text-[12px] mb-2">🔗 추가 링크 N개 - 구글문서 제목 검색으로 추가 <span id="linkCount" class="badge ml-2">0개</span></h2>
+<div class="flex gap-2 mb-2">
+<input id="linkSearchInput" class="input" placeholder="추가할 문서 제목 - 예: Daily-Todo 기획">
+<button id="linkSearchBtn" class="btn text-[10px]">🔍 문서 검색</button>
+</div>
+<div id="linkSearchResults" class="border rounded-[12px] p-2 max-h-[160px] overflow-auto hidden" style="border-color:var(--line)"></div>
+<div id="customLinksList" class="mt-2"></div>
+<div class="flex gap-2 mt-2">
+<input id="linkTitleInput" class="input text-[10px]" placeholder="직접 제목 (선택)"><input id="linkUrlInput" class="input text-[10px]" placeholder="https://... (선택)"><button id="addLinkBtn" class="btn text-[10px]">➕</button>
+</div>
+<div class="text-[10px] mt-1 text-[var(--muted)]">검색해서 추가하면 Docs 링크로 등록 + 미리보기로 내용 불러오기 가능</div>
+</div>
+
+<div class="card" style="border-color:#111;box-shadow:0 0 0 2px #11120">
+<h2 class="font-bold text-[12px] mb-2">4. API 보관소 + 기억 10줄 (자동 저장/자동 주입) <span id="memoryCount" class="badge ml-2">0줄</span></h2>
+<div class="grid grid-cols-2 gap-2 mb-2">
+<input id="supabaseKeyInput" class="input text-[9px] font-mono" placeholder="Supabase anon key">
+<input id="githubPatInput" class="input text-[9px] font-mono" type="password" placeholder="GitHub PAT">
+<input id="geminiKeyInput" class="input text-[9px] font-mono" type="password" placeholder="Gemini Key">
+<input id="groqKeyInput" class="input text-[9px] font-mono" type="password" placeholder="Groq Key">
+<input id="openaiKeyInput" class="input text-[9px] font-mono" type="password" placeholder="OpenAI Key">
+<input id="openaiModelInput" class="input text-[9px]" value="gpt-4o-mini">
+</div>
+<textarea id="memory10" class="textarea h-[170px]"></textarea>
+<div class="flex justify-between mt-2"><span class="text-[9px] text-[var(--muted)]">입력 즉시 자동 저장 + 3탭 자동 주입</span><button id="templateBtn" class="btn text-[9px]">📝 템플릿</button></div>
+</div>
+
+<div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[13px]">5. PWA 내부 3탭 채팅 (B안)</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
+<div class="grid grid-cols-3 gap-2 mb-2">
+<button id="tabMeta" class="btn btn-meta tab-active text-[11px]">🟣 메타<br><span class="text-[8px]">생성</span></button>
+<button id="tabGemini" class="btn btn-gemini text-[11px]">🔵 제미나이<br><span class="text-[8px]">검증</span></button>
+<button id="tabGpt" class="btn btn-gpt text-[11px]">🟢 GPT<br><span class="text-[8px]">검수</span></button>
+</div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[9px] leading-[1.5] mb-2 max-h-[90px] overflow-auto">
+<div class="font-bold mb-1">자동 주입 컨텍스트</div>
+<div id="contextText" class="whitespace-pre-wrap">레포 선택 대기...</div>
+</div>
+<div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span><span id="autoPromptBadge" class="badge hidden" style="background:#fef3c7">GPT 자동 프롬프트</span></div>
+<div id="chatBox" class="chat-box mb-2"></div>
+<div class="flex gap-2"><input id="chatInput" class="input flex-1" placeholder="메타: 기능 요청..."><button id="chatSendBtn" class="btn btn-primary">전송</button></div>
+<div class="flex gap-2 mt-2"><button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px]">🚀 공용 빌드 - main+gh-pages + Supabase + Docs</button><button id="clearChatBtn" class="btn text-[9px]">초기화</button></div>
+</div>
+
+<div class="card">
+<div class="flex justify-between mb-1"><h2 class="font-bold text-[11px]">📟 로그</h2><button id="clearLogBtn" class="btn text-[9px]">clear</button></div>
 <div id="logArea" class="log"></div>
-<div class="text-[10px] mt-2 text-center text-[var(--muted)]">v5.2 B안 · apoco211.github.io/builder-a4u/ · ?v=5.2 · draft 공용 · 전체 주입 · 공용 빌드</div>
+<div id="robotLog" class="log mt-2 hidden"></div>
+<div class="text-[9px] mt-2 text-center text-[var(--muted)]">v5.2.2 · 코드숨김 · N개 문서 불러오기 · ?v=5.2.2</div>
 </div>
 
 <script>
@@ -195,379 +159,217 @@ let mainFile=localStorage.getItem('main_file_'+currentRepo)||'index.html';
 let connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');
 let customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');
 let draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';
-let currentTab='meta';
-let chats=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');
-if(!chats.meta) chats={meta:[],gemini:[],gpt:[]};
+let currentTab=localStorage.getItem('current_tab_'+currentRepo)||'meta';
+let chats=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}'); if(!chats.meta) chats={meta:[],gemini:[],gpt:[]};
 
 const $=id=>document.getElementById(id);
-function log(msg,type='info'){const area=$('logArea'); const t=new Date().toLocaleTimeString(); const div=document.createElement('div'); div.innerHTML=`<span style="color:var(--muted)">${t}</span> ${type==='ok'?'✅':type==='err'?'❌':'ℹ️'} ${msg}`; area.appendChild(div); area.scrollTop=area.scrollHeight;}
-function robotLog(msg,type='info'){const box=$('robotLog'); box.classList.remove('hidden'); const t=new Date().toLocaleTimeString(); const div=document.createElement('div'); div.innerHTML=`<span style="color:var(--muted)">${t}</span> ${type==='ok'?'✅':type==='err'?'❌':'ℹ️'} ${msg}`; box.appendChild(div); box.scrollTop=box.scrollHeight; log(msg,type);}
+function log(m,t='info'){const a=$('logArea'); const time=new Date().toLocaleTimeString(); const d=document.createElement('div'); d.innerHTML=`<span style="color:var(--muted)">${time}</span> ${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`; a.appendChild(d); a.scrollTop=a.scrollHeight;}
+function robotLog(m,t='info'){const b=$('robotLog'); b.classList.remove('hidden'); const d=document.createElement('div'); d.innerHTML=`${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`; b.appendChild(d); b.scrollTop=b.scrollHeight; log(m,t);}
 function setTheme(th){document.body.setAttribute('data-theme',th);localStorage.setItem('theme',th);$('themeToggle').textContent=th==='dark'?'☀️':'🌙'}
 function initTheme(){const s=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');setTheme(s)}
-$('themeToggle').onclick=()=>{const cur=document.body.getAttribute('data-theme');setTheme(cur==='dark'?'light':'dark')};
-
-function inferMainFile(repo){const r=repo.toLowerCase(); if(r.includes('daily-todo')||r.includes('todo')||r.includes('pipeline')) return 'src/App.jsx'; if(r.includes('builder-a4u')) return 'index.html'; if(r.includes('sudataxi')||r.includes('taxi')) return 'index.html'; if(r.includes('greenlight')) return 'lib/main.dart'; return 'index.html';}
-function getTemplate(repo){
-  const d=new Date().toLocaleDateString();
-  if(repo.toLowerCase().includes('daily-todo')) return `1.프로젝트: Daily-Todo v2.1
-2.목적: 오늘 할 일 무한리필 3개 실행 + 커스텀 + 기록
-3.현재: 전체 로드 37개, Active 3 드래그 완료
-4.다음: Supabase logs 연동 + 캘린더 뷰
-5.결정: 배포=Vercel, 무제한 로드, dnd-kit, PWA
-6.제외: 15개 제한, 카테고리 구분
-7.저장: Supabase logs + Todoist API + localStorage
-8.버그: 드래그 겹침
+$('themeToggle').onclick=()=>{const c=document.body.getAttribute('data-theme');setTheme(c==='dark'?'light':'dark')};
+function inferMainFile(r){const s=r.toLowerCase(); if(s.includes('daily-todo')||s.includes('todo')) return 'src/App.jsx'; return 'index.html';}
+function getTemplate(){const d=new Date().toLocaleDateString(); return `1.프로젝트: builder-a4u v5.2.2
+2.목적: 코드 숨김 + N개 문서 불러오기 + API보관소 자동주입 + B안
+3.현재: v5.2.2 빌드 - 코드 에디터 숨김, 추가링크 구글문서 검색, 드래그 5중 차단, 재연결 자동복구
+4.다음: ?v=5.2.2 배포
+5.결정: B안 draft 공용 숨김, 전체 코드 GPT 4000토큰, 추가링크 N개 제목검색
+6.제외: 코드 화면 표시, 복사버튼, 3버튼, 수동 저장
+7.저장: Supabase+Docs+N개+GitHub+local draft
+8.버그: 드래그, 재연결 해결
 9.모드: 빌드모드
-10.상태: 진행중 - ${d}`;
-  return `1.프로젝트: builder-a4u v5.2
-2.목적: 단일 공방 N개 앱 맥락 유지, PWA 내부 3탭 채팅, B안 draft 공유, 메타→제미나이→GPT 파이프라인
-3.현재: v5.2 빌드 - 3탭 채팅 + draft 공용 레이어 + 공용 빌드 + B안 전체 주입 완성
-4.다음: GitHub Pages ?v=5.2 테스트 + 메타→제미나이→GPT 루프 도그푸딩
-5.결정: B안 draft 공유, 전체 코드 GPT-4o-mini 직접 리뷰 4000토큰 4원, 공용 draft 1개, 공용 빌드
-6.제외: Cloudflare, diff만 주기, A안 바로 빌드, 토큰 비용 걱정 (월 400원)
-7.저장: Supabase 1줄+Docs 1장+GitHub 코드+localStorage draft
-8.버그: 없음
-9.모드: 빌드모드
-10.상태: v5.2 빌드 완료 ${d}`;
-}
-
-function updateDraftStatus(){const len=draftCode.length; $('draftStatus').textContent=`draft: ${len}자 · ${len>0?'B안 공용 draft 있음 - GitHub 미배포':'draft 없음'} · 3탭 공유`; $('draftBadge').textContent=len>0?`${len}자`:'draft'; $('codeEditor').value=draftCode; localStorage.setItem('draft_code_'+currentRepo, draftCode);}
-
-function buildLinksText(){let t=`[기억 10줄]\n${$('memory10').value}\n\n[링크 N개 - 코드/문서 내용은 링크로 읽음]\n`; t+=`1. 깃허브 코드 (raw): https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`; connectedDocs.forEach((d,i)=>{t+=`${i+2}. 구글문서 (메인): https://docs.google.com/document/d/${d.id}/edit · 제목: ${d.title}\n`;}); t+=`${connectedDocs.length+2}. 깃허브 레포: https://github.com/${GITHUB_USER}/${currentRepo}\n`; customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;}); return t;}
-
+10.상태: v5.2.2 빌드 ${d}`;}
+function updateDraftStatus(){const l=draftCode.length; $('draftStatus').textContent=`draft: ${l}자 · ${l>0?'3탭 공용 있음':'없음'} · 화면엔 숨김`; $('codeEditor').value=draftCode; localStorage.setItem('draft_code_'+currentRepo, draftCode);}
+function buildLinksText(){let t=`[기억 10줄]\n${$('memory10').value}\n\n[링크 N개]\n`; t+=`1. 코드 raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile} (PWA 내부 draft로 공유됨, 화면엔 숨김)\n`; connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인 문서: https://docs.google.com/document/d/${d.id}/edit · ${d.title}\n`;}); t+=`${connectedDocs.length+2}. 레포: https://github.com/${GITHUB_USER}/${currentRepo}\n`; customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;}); return t;}
 function buildSystemPrompt(tab){
   const links=buildLinksText();
-  const draftInfo=draftCode?`\n\n[현재 공용 draft 코드 - B안, GitHub 미배포, ${draftCode.length}자]\n${draftCode.slice(0,15000)}\n${draftCode.length>15000?'\n... (15000자 이후 생략, 전체는 PWA codeEditor에 있음)':''}`:'\n\n[현재 draft 없음 - 새로 생성 필요]';
-  const base=`너는 Builder-a4u 공방의 ${tab} AI야. 아래 기억과 링크를 기반으로 작업해.
-
-${links}${draftInfo}
-
-[작업 원칙]
-- 기본은 기획모드, 사용자가 "코드 짜줘/빌드해줘/이제 가자" 전까지 질문 3개만
-- 코드는 항상 전체 파일 기준으로 효율적으로 짜고, 사용자 유용성 고려
-- 코드 생성 시 반드시 \`\`\` 코드 블록으로 감싸서 줘 (PWA가 자동 감지해서 draft에 저장함)
-`;
-
-  if(tab==='meta'){
-    return base+`\n[메타 역할 - 프로토타입 생성]
-- 아이디어 확장, 0→1 빠른 빌드, 말귀 좋음
-- 요청받은 기능의 전체 코드를 \`\`\`html 또는 \`\`\`jsx 블록으로 생성
-- 생성 후 draft에 자동 저장됨, 그 다음 제미나이 탭에서 검증 예정
-`;
-  }
-  if(tab==='gemini'){
-    return base+`\n[제미나이 역할 - 코드 검증/정교화]
-- 위 draft 코드를 전체 읽고 버그, 문법, 로직 검증해서 정교화된 전체 코드를 다시 생성
-- 더 효율적인 구현 있으면 반영 (Promise.all, 중복 제거 등)
-- 출력은 반드시 정교화된 전체 코드를 \`\`\` 블록으로
-`;
-  }
-  if(tab==='gpt'){
-    return base+`\n[GPT 역할 - 효율성+유용성 최종 검수 - 코드 절대 안 짜고 리뷰만]
-
-위 draft 코드를 보고 아래 2가지로 리뷰해줘, 코드는 짜지 말고 리뷰만:
-
-1. 효율성: 목적 구현에 더 효과적인 방식 없냐?
-   - 중복 fetch, 불필요한 localStorage, 순차 처리 등 더 효과적 구현
-   - 예: Promise.all, 캐시 무력화, 듀얼 Push 등
-
-2. 유용성: 사용자가 쓸 때 더 편한 방식 없냐?
-   - 드래그 버그, 프로젝트 분리, 버튼 위치, 다크모드 등 UX 관점
-   - 예: [선택] 버튼, 분리모드, 단일 복사 등
-
-출력 형식 (3줄):
-- 더 효과적인 방식 1개:
-- 더 편한 방식 1개:
-- 제외할 것 1개:
-
-이 리뷰는 10줄 기억팩 5.결정/6.제외/10.상태에 바로 넣을 수 있게 요약해줘.
-B안 전체 주입 (4000토큰) 사용 중, 전체 코드 기반 리뷰.
-`;
-  }
+  const draftInfo=draftCode?`\n\n[공용 draft ${draftCode.length}자 - B안 내부 공유, 화면엔 숨김]\n${draftCode.slice(0,15000)}`:'\n\n[draft 없음]';
+  let base=`너는 Builder-a4u ${tab} AI야.\n\n${links}${draftInfo}\n\n[원칙] 코드 생성 시 \`\`\` 블록으로`;
+  if(tab==='meta') return base+`\n\n[메타 생성] 전체 코드 \`\`\` 블록으로`;
+  if(tab==='gemini') return base+`\n\n[제미나이 검증] draft 읽고 정교화 코드 \`\`\` 블록으로`;
+  if(tab==='gpt') return base+`\n\n[GPT 검수, 코드 안 짬] 효율성(더 효과적인 구현) + 유용성(사용자 편한가) 3줄 리뷰: 효과적인 1개, 편한 1개, 제외 1개`;
   return base;
 }
-
-function renderContext(){const txt=buildSystemPrompt(currentTab); $('contextText').textContent=txt.slice(0,1200)+(txt.length>1200?'\n... (미리보기 1200자, 전체는 API 호출 시 전송)':'');}
-
-function renderChats(){const box=$('chatBox'); box.innerHTML=''; const list=chats[currentTab]||[]; list.forEach(m=>{const div=document.createElement('div'); div.className='msg '+(m.role==='user'?'msg-user':'msg-ai'); div.textContent=m.content; box.appendChild(div);}); if(currentTab==='gpt' && draftCode){const sys=document.createElement('div'); sys.className='msg msg-system'; sys.textContent=`[GPT 자동 프롬프트 주입됨 - 효율성/유용성 검증]\nB안 전체 코드 ${draftCode.length}자 기반, 4000토큰\n메타→제미나이→GPT 파이프라인: 제미나이 검증된 draft v2를 GPT가 최종 검수`; box.appendChild(sys); $('autoPromptBadge').classList.remove('hidden');} else {$('autoPromptBadge').classList.add('hidden');} box.scrollTop=box.scrollHeight; $('chatCountBadge').textContent=`${list.length}개 메시지`; $('currentTabLabel').textContent={meta:'메타 탭',gemini:'제미나이 탭',gpt:'GPT 탭'}[currentTab]; $('currentTabLabel').style.background={meta:'var(--meta)',gemini:'var(--gemini)',gpt:'var(--gpt)'}[currentTab]; renderContext();}
-
-function switchTab(tab){currentTab=tab; document.querySelectorAll('[id^=tab]').forEach(b=>b.classList.remove('tab-active')); $(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`).classList.add('tab-active'); renderChats(); localStorage.setItem('current_tab_'+currentRepo, tab);}
-
-$('tabMeta').onclick=()=>switchTab('meta');
-$('tabGemini').onclick=()=>switchTab('gemini');
-$('tabGpt').onclick=()=>switchTab('gpt');
-
+function renderContext(){const txt=buildSystemPrompt(currentTab); $('contextText').textContent=txt.slice(0,900)+(txt.length>900?'\n...':'');}
+function renderChats(){const box=$('chatBox'); box.innerHTML=''; (chats[currentTab]||[]).forEach(m=>{const d=document.createElement('div'); d.className='msg '+(m.role==='user'?'msg-user':'msg-ai'); d.textContent=m.content; box.appendChild(d);}); if(currentTab==='gpt'&&draftCode){const s=document.createElement('div'); s.className='msg msg-system'; s.textContent=`[GPT 자동 프롬프트] 전체 ${draftCode.length}자 기반`; box.appendChild(s); $('autoPromptBadge').classList.remove('hidden');} else {$('autoPromptBadge').classList.add('hidden');} box.scrollTop=box.scrollHeight; $('chatCountBadge').textContent=`${(chats[currentTab]||[]).length}개`; $('currentTabLabel').textContent={meta:'메타',gemini:'제미나이',gpt:'GPT'}[currentTab]; $('currentTabLabel').style.background={meta:'var(--meta)',gemini:'var(--gemini)',gpt:'var(--gpt)'}[currentTab]; renderContext();}
+function switchTab(tab){currentTab=tab; document.querySelectorAll('[id^=tab]').forEach(b=>b.classList.remove('tab-active')); $(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`).classList.add('tab-active'); localStorage.setItem('current_tab_'+currentRepo, tab); renderChats();}
+$('tabMeta').onclick=()=>switchTab('meta'); $('tabGemini').onclick=()=>switchTab('gemini'); $('tabGpt').onclick=()=>switchTab('gpt');
 function saveChats(){localStorage.setItem('chats_'+currentRepo, JSON.stringify(chats));}
-
-function extractCode(text){const m=text.match(/```(?:html|jsx|tsx|js|javascript|dart)?\n?([\s\S]*?)```/i); if(m) return m[1].trim(); return null;}
-
-async function callGemini(prompt){
-  const key=localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim();
-  if(!key) throw new Error('Gemini Key 없음');
-  const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
-  if(!res.ok) throw new Error('Gemini '+res.status+' '+(await res.text()).slice(0,300));
-  const data=await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-}
-async function callGroq(prompt){
-  const key=localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();
-  if(!key) throw new Error('Groq Key 없음 (Meta 분신)');
-  const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:prompt}],temperature:0.7,max_tokens:8000})});
-  if(!res.ok) throw new Error('Groq '+res.status+' '+(await res.text()).slice(0,400));
-  const data=await res.json();
-  return data.choices?.[0]?.message?.content||'';
-}
-async function callOpenAI(prompt){
-  const key=localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim();
-  if(!key) throw new Error('OpenAI Key 없음');
-  const res=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({model:'gpt-4o-mini',messages:[{role:'user',content:prompt}],temperature:0.5,max_tokens:2000})});
-  if(!res.ok) throw new Error('OpenAI '+res.status+' '+(await res.text()).slice(0,400));
-  const data=await res.json();
-  return data.choices?.[0]?.message?.content||'';
-}
-
+function extractCode(t){const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i); return m?m[1].trim():null;}
+async function callGemini(p){const k=localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim(); if(!k) throw new Error('Gemini Key 없음'); const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:p}]}]})}); if(!r.ok) throw new Error('Gemini '+r.status); const d=await r.json(); return d.candidates?.[0]?.content?.parts?.[0]?.text||'';}
+async function callGroq(p){const k=localStorage.getItem('groq_key')||$('groqKeyInput').value.trim(); if(!k) throw new Error('Groq Key 없음'); const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model:'llama-3.3-70b-versatile',messages:[{role:'user',content:p}],temperature:0.7,max_tokens:8000})}); if(!r.ok) throw new Error('Groq '+r.status); const d=await r.json(); return d.choices?.[0]?.message?.content||'';}
+async function callOpenAI(p){const k=localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim(); if(!k) throw new Error('OpenAI Key 없음'); const model=$('openaiModelInput').value.trim()||'gpt-4o-mini'; const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages:[{role:'user',content:p}],temperature:0.5,max_tokens:2000})}); if(!r.ok) throw new Error('OpenAI '+r.status); const d=await r.json(); return d.choices?.[0]?.message?.content||'';}
 async function sendChat(){
   const input=$('chatInput'); const text=input.value.trim(); if(!text) return;
-  // build full prompt
   const system=buildSystemPrompt(currentTab);
-  const fullPrompt=`${system}\n\n[사용자 요청]\n${text}\n\n[현재 탭: ${currentTab}]`;
-  // push user
+  const full=`${system}\n\n[사용자]\n${text}`;
   chats[currentTab].push({role:'user',content:text}); renderChats(); input.value='';
-  // keyword trigger build
-  if(text.includes('빌드해줘')||text.includes('확정')||text.toLowerCase().includes('build')){
-    log(`키워드 트리거 감지: ${text} → 공용 빌드 실행`, 'info');
-    setTimeout(()=>pushDual(),500);
-  }
+  if(text.includes('빌드해줘')||text.includes('확정')){log('키워드 트리거 → 빌드','info'); setTimeout(()=>pushDual(),600);}
   try{
-    let reply='';
-    log(`${currentTab} API 호출중...`, 'info');
-    if(currentTab==='meta'){reply=await callGroq(fullPrompt);}
-    else if(currentTab==='gemini'){reply=await callGemini(fullPrompt);}
-    else if(currentTab==='gpt'){reply=await callOpenAI(fullPrompt);}
+    log(`${currentTab} 호출중...`,'info');
+    let reply=''; if(currentTab==='meta') reply=await callGroq(full); else if(currentTab==='gemini') reply=await callGemini(full); else reply=await callOpenAI(full);
     chats[currentTab].push({role:'ai',content:reply}); saveChats(); renderChats();
-    const code=extractCode(reply);
-    if(code){draftCode=code; updateDraftStatus(); log(`코드 블록 감지 → draft 업데이트 ${code.length}자 (B안 공용)`, 'ok');}
-    log(`${currentTab} 응답 완료 ${reply.length}자`, 'ok');
-  }catch(e){
-    const err=`${currentTab} 호출 실패: ${e.message}`;
-    chats[currentTab].push({role:'ai',content:`❌ ${err}\n\n키 확인: ${currentTab==='meta'?'Groq':currentTab==='gemini'?'Gemini':'OpenAI'} API Key가 입력됐는지 확인하세요.`});
-    saveChats(); renderChats(); log(err,'err');
-  }
+    const code=extractCode(reply); if(code){draftCode=code; updateDraftStatus(); log(`코드 감지 → draft ${code.length}자 (숨김 상태로 3탭 공유)`,'ok');}
+    log(`${currentTab} 완료`,'ok');
+  }catch(e){const err=`${currentTab} 실패 ${e.message}`; chats[currentTab].push({role:'ai',content:`❌ ${err}`}); saveChats(); renderChats(); log(err,'err');}
 }
 $('chatSendBtn').onclick=sendChat;
 $('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter') sendChat();});
-$('clearChatBtn').onclick=()=>{if(confirm(`${currentTab} 대화 초기화?`)){chats[currentTab]=[]; saveChats(); renderChats(); log(`${currentTab} 대화 초기화`, 'info');}};
-
+$('clearChatBtn').onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[]; saveChats(); renderChats();}};
+$('toggleDraftBtn').onclick=()=>{const ed=$('codeEditor'); ed.classList.toggle('hidden'); $('toggleDraftBtn').textContent=ed.classList.contains('hidden')?'draft 보기 ▼':'draft 숨기기 ▲';};
 $('codeEditor').addEventListener('input',e=>{draftCode=e.target.value; localStorage.setItem('draft_code_'+currentRepo, draftCode); $('draftStatus').textContent=`draft: ${draftCode.length}자 (수동 편집)`;});
 
-// GitHub dual push
-async function pushToBranch(branch, code, sha){
-  const pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();
-  if(!pat) throw new Error('PAT 없음');
+async function pushToBranch(branch, code){
+  const pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim(); if(!pat) throw new Error('PAT 없음');
   const url=`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${mainFile}`;
-  const body={message:`v5.2 B안 ${branch} ${new Date().toISOString()}`,content:btoa(unescape(encodeURIComponent(code))),branch};
-  if(sha) body.sha=sha;
-  // for gh-pages, need get sha separately? GitHub API requires branch param in get too
-  let getSha=null;
-  try{
-    const getRes=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`,Accept:'application/vnd.github.v3+json'}});
-    if(getRes.ok){const j=await getRes.json(); getSha=j.sha;}
-  }catch{}
-  if(getSha) body.sha=getSha;
-  const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!res.ok){const t=await res.text(); throw new Error(`${branch} PUT ${res.status} ${t.slice(0,400)}`);}
-  return (await res.json()).commit.sha;
+  let sha=null; try{const gr=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`}}); if(gr.ok){const j=await gr.json(); sha=j.sha;}}catch{}
+  const body={message:`v5.2.2 ${branch} ${new Date().toISOString()}`,content:btoa(unescape(encodeURIComponent(code))),branch}; if(sha) body.sha=sha;
+  const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify(body)}); if(!res.ok) throw new Error(await res.text()); return (await res.json()).commit.sha;
 }
 async function pushDual(){
-  const pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();
-  if(!pat){log('GitHub PAT 없음 - 빌드 불가','err'); robotLog('PAT 없음','err'); return false;}
-  if(!draftCode){log('draft 없음 - 코드 불러오기 또는 채팅으로 생성','err'); return false;}
-  const btn=$('buildBtn'); btn.disabled=true; btn.textContent='⏳ 빌드중... main+gh-pages';
+  const pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim(); if(!pat){log('PAT 없음','err'); return;}
+  if(!draftCode){log('draft 없음','err'); return;}
+  const btn=$('buildBtn'); btn.disabled=true; btn.textContent='⏳ 빌드중...';
   try{
-    robotLog('1단계 Supabase upsert (draft 백업 포함)','info');
-    await saveToSupabase(true);
-    robotLog('2단계 Docs Append','info');
-    for(const doc of connectedDocs){await appendDoc(doc.id, `\n\n[업데이트 ${new Date().toLocaleString()} v5.2 B안]\n${$('memory10').value.split('\n').slice(0,3).join(' ')}\n`);}
-    robotLog('3단계 GitHub Push main','info');
-    const shaMain=await pushToBranch('main', draftCode);
-    robotLog(`main Push 성공 ${shaMain.slice(0,7)}`,'ok');
-    robotLog('4단계 GitHub Push gh-pages (Pages 배포 보장)','info');
-    try{const shaPages=await pushToBranch('gh-pages', draftCode); robotLog(`gh-pages Push 성공 ${shaPages.slice(0,7)} - Pages 1분 후 배포`,'ok');}catch(e){robotLog(`gh-pages Push 실패(무시 가능) ${e.message}`,'err');}
-    log(`🚀 빌드 완료 main ${shaMain.slice(0,7)} - https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.2`,'ok');
-    robotLog('🤖 빌드 완료','ok');
-    return true;
-  }catch(e){log(`빌드 실패 ${e.message}`,'err'); robotLog(`빌드 실패 ${e.message}`,'err'); return false;}
-  finally{btn.disabled=false; btn.textContent='🚀 공용 빌드 - GitHub Push (main+gh-pages) + Supabase + Docs';}
+    await saveToSupabase(true); robotLog('Supabase 저장','ok');
+    for(const doc of connectedDocs){await appendDoc(doc.id, `\n\n[v5.2.2 ${new Date().toLocaleString()}]\n${$('memory10').value.slice(0,200)}\n`);}
+    const s1=await pushToBranch('main', draftCode); robotLog(`main ${s1.slice(0,7)}`,'ok');
+    try{const s2=await pushToBranch('gh-pages', draftCode); robotLog(`gh-pages ${s2.slice(0,7)}`,'ok');}catch(e){robotLog(`gh-pages 실패 ${e.message}`,'err');}
+    log(`🚀 빌드 완료 ?v=5.2.2`,'ok');
+  }catch(e){log(`빌드 실패 ${e.message}`,'err');} finally{btn.disabled=false; btn.textContent='🚀 공용 빌드 - main+gh-pages + Supabase + Docs';}
 }
 $('buildBtn').onclick=pushDual;
 
-// Existing functions from v5.1 (repo list, doc search, etc.) - simplified copy
-function updateMemoryCount(){const v=$('memory10').value; const lines=v.split('\n').filter(l=>l.trim()).length; $('memoryCount').textContent=`${lines}/10줄 · ${v.length}자`; localStorage.setItem('memory_10_'+currentRepo, v);}
-$('memory10').addEventListener('input',updateMemoryCount);
-$('templateBtn').onclick=()=>{$('memory10').value=getTemplate(currentRepo); updateMemoryCount(); log('템플릿 채움','info');}
+function updateMemoryCount(){const v=$('memory10').value; const l=v.split('\n').filter(x=>x.trim()).length; $('memoryCount').textContent=`${l}줄`; localStorage.setItem('memory_10_'+currentRepo, v); renderContext();}
+let saveTimeout=null; $('memory10').addEventListener('input',()=>{updateMemoryCount(); clearTimeout(saveTimeout); saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});
+$('templateBtn').onclick=()=>{$('memory10').value=getTemplate(); updateMemoryCount(); saveToSupabase(true);};
+['supabaseKeyInput','githubPatInput','geminiKeyInput','groqKeyInput','openaiKeyInput','openaiModelInput'].forEach(id=>{const key=id.replace('Input','').replace('Key','_key').replace('supabase','supabase_anon').replace('githubPat','github_pat').replace('openaiModel','openai_model'); if(id==='supabaseKeyInput') localStorage.setItem('supabase_anon_key',$('supabaseKeyInput').value); });
 $('supabaseKeyInput').addEventListener('input',e=>localStorage.setItem('supabase_anon_key',e.target.value.trim()));
 $('githubPatInput').addEventListener('input',e=>localStorage.setItem('github_pat',e.target.value.trim()));
 $('geminiKeyInput').addEventListener('input',e=>localStorage.setItem('gemini_key',e.target.value.trim()));
 $('groqKeyInput').addEventListener('input',e=>localStorage.setItem('groq_key',e.target.value.trim()));
 $('openaiKeyInput').addEventListener('input',e=>localStorage.setItem('openai_key',e.target.value.trim()));
+$('openaiModelInput').addEventListener('input',e=>localStorage.setItem('openai_model',e.target.value.trim()));
 
-async function loadRepos(){
-  try{
-    const res=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`);
-    const data=await res.json();
-    const sel=$('repoSelect'); sel.innerHTML='';
-    data.forEach(r=>{const opt=document.createElement('option'); opt.value=r.name; opt.textContent=`${r.name} - ${r.updated_at.slice(0,10)}`; if(r.name===currentRepo) opt.selected=true; sel.appendChild(opt);});
-    log(`GitHub 레포 ${data.length}개 로드`,'ok');
-  }catch(e){log('레포 로드 실패 '+e.message,'err');}
-}
+async function loadRepos(){try{const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`); const d=await r.json(); const s=$('repoSelect'); s.innerHTML=''; d.forEach(repo=>{const o=document.createElement('option'); o.value=repo.name; o.textContent=`${repo.name}`; if(repo.name===currentRepo) o.selected=true; s.appendChild(o);}); log(`레포 ${d.length}개`,'ok');}catch(e){log('레포 로드 실패','err');}}
 $('repoSelect').addEventListener('change',async e=>{
   currentRepo=e.target.value; localStorage.setItem('current_repo',currentRepo);
-  mainFile=localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);
-  $('mainFileInput').value=mainFile;
+  mainFile=localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo); $('mainFileInput').value=mainFile;
   connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');
   customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');
   draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';
   chats=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}'); if(!chats.meta) chats={meta:[],gemini:[],gpt:[]};
-  const mem=localStorage.getItem('memory_10_'+currentRepo); $('memory10').value=mem||getTemplate(currentRepo);
-  updateMemoryCount(); updateDraftStatus(); renderConnectedDocs(); renderCustomLinks(); renderChats(); $('currentRepoName').textContent=currentRepo;
-  log(`프로젝트 변경: ${currentRepo} → mainFile ${mainFile}`,'info');
-  // auto load code
-  await fetchCode();
-  await autoLoadSupabase();
+  const mem=localStorage.getItem('memory_10_'+currentRepo); $('memory10').value=mem||getTemplate();
+  updateMemoryCount(); updateDraftStatus(); renderConnectedDocs(); renderCustomLinks(); renderChats(); 
+  await fetchCode(); await autoLoadSupabase();
 });
 $('mainFileInput').addEventListener('input',e=>{mainFile=e.target.value.trim(); localStorage.setItem('main_file_'+currentRepo, mainFile);});
-$('copyBtn').onclick=()=>{
-  const txt=buildLinksText();
-  navigator.clipboard.writeText(txt).then(()=>log('복사 완료 10줄+링크N개 (B안: draft는 PWA 메모리에 공용)','ok'));
-};
-$('openRepoBtn').onclick=()=>window.open(`https://github.com/${GITHUB_USER}/${currentRepo}`,'_blank');
-$('openPagesBtn').onclick=()=>window.open(`https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.2`,'_blank');
-async function fetchCode(){
-  try{
-    const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;
-    const res=await fetch(url); if(!res.ok) throw new Error(res.status);
-    const code=await res.text(); draftCode=code; updateDraftStatus(); log(`코드 로드 ${code.length}자 → draft 공용 저장 (B안)`,'ok'); renderContext();
-  }catch(e){log(`코드 로드 실패 ${e.message} - 채팅으로 새로 생성 가능`,'err');}
-}
-$('fetchCodeBtn').onclick=fetchCode;
+async function fetchCode(){try{const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`; const r=await fetch(url); if(!r.ok) throw new Error(r.status); const code=await r.text(); draftCode=code; updateDraftStatus(); log(`코드 자동 로드 ${code.length}자 (숨김)`,'ok'); renderContext();}catch(e){log(`코드 로드 실패 - 채팅으로 생성`,'info');}}
 
-// Docs
-function renderConnectedDocs(){
-  const box=$('connectedDocs'); box.innerHTML=''; $('docCountBadge').textContent=`${connectedDocs.length}개`;
-  connectedDocs.forEach((doc,i)=>{
-    const div=document.createElement('div'); div.className='doc-card';
-    div.innerHTML=`<div class="flex justify-between"><span class="font-bold text-[12px]">📄 ${doc.title.slice(0,40)}</span><span class="text-[10px] text-[var(--muted)]">${doc.id.slice(0,8)}...</span></div><div class="flex gap-2 mt-2"><button class="btn text-[10px] open-doc" data-i="${i}">열기</button><button class="btn text-[10px] copy-id" data-i="${i}">ID복사</button><button class="btn text-[10px] preview-doc" data-i="${i}">미리보기</button><button class="btn text-[10px] text-red-600 remove-doc" data-i="${i}">해제 ❌</button></div>`;
-    box.appendChild(div);
-  });
-  box.querySelectorAll('.open-doc').forEach(b=>b.onclick=()=>{const d=connectedDocs[b.dataset.i]; window.open(`https://docs.google.com/document/d/${d.id}/edit`,'_blank');});
-  box.querySelectorAll('.copy-id').forEach(b=>b.onclick=()=>{const d=connectedDocs[b.dataset.i]; navigator.clipboard.writeText(d.id); log('Doc ID 복사','ok');});
-  box.querySelectorAll('.preview-doc').forEach(b=>b.onclick=async()=>{const d=connectedDocs[b.dataset.i]; await previewDoc(d.id);});
-  box.querySelectorAll('.remove-doc').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs)); renderConnectedDocs(); log('문서 해제','info');});
-  localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs));
-}
-async function previewDoc(id){if(!accessToken){log('Google 로그인 필요','err'); return;} try{const res=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}}); const data=await res.json(); let txt=''; data.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}}); $('docPreview').textContent=txt.slice(0,2000); $('docPreview').classList.remove('hidden'); log('미리보기 로드','ok');}catch(e){log('미리보기 실패 '+e.message,'err');}}
-async function appendDoc(id, text){if(!accessToken) return false; try{const docRes=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}}); const doc=await docRes.json(); let end=0; doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);}); const req={requests:[{insertText:{location:{index:end-1},text}}]}; const res=await fetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(req)}); return res.ok;}catch(e){log('Docs Append 실패 '+e.message,'err'); return false;}}
-$('newDocBtn').onclick=async()=>{
-  if(!accessToken){log('Google 로그인 필요','err'); return;}
-  const title=prompt('새 문서 제목','builder-a4u 기억팩 '+new Date().toLocaleDateString()); if(!title) return;
-  try{
-    const res=await fetch('https://docs.googleapis.com/v1/documents',{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify({title})});
-    const data=await res.json(); const id=data.documentId;
-    connectedDocs.push({id,title}); renderConnectedDocs(); log(`새 문서 생성 ${title}`,'ok');
-  }catch(e){log('새 문서 생성 실패 '+e.message,'err');}
-};
+function renderConnectedDocs(){const box=$('connectedDocs'); box.innerHTML=''; connectedDocs.forEach((doc,i)=>{const div=document.createElement('div'); div.className='doc-card'; div.style.borderStyle='solid'; div.style.background='var(--card)'; div.innerHTML=`<div class="flex justify-between"><span class="font-bold text-[11px]">📄 ${doc.title.slice(0,40)}</span><span class="text-[9px]">${doc.id.slice(0,6)}...</span></div><div class="flex gap-2 mt-2"><button class="btn text-[9px] open-doc" data-i="${i}">열기</button><button class="btn text-[9px] preview-doc" data-i="${i}">미리보기(불러오기)</button><button class="btn text-[9px] text-red-600 remove-doc" data-i="${i}">해제</button></div>`; box.appendChild(div);}); box.querySelectorAll('.open-doc').forEach(b=>b.onclick=()=>{window.open(`https://docs.google.com/document/d/${connectedDocs[b.dataset.i].id}/edit`,'_blank');}); box.querySelectorAll('.preview-doc').forEach(b=>b.onclick=async()=>{await previewDoc(connectedDocs[b.dataset.i].id);}); box.querySelectorAll('.remove-doc').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs)); saveToSupabase(true); renderConnectedDocs(); renderContext();}); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs));}
+async function previewDoc(id){if(!accessToken){log('로그인 필요','err'); return;} try{const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}}); const d=await r.json(); let txt=''; d.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}}); $('docPreview').textContent=`[구글문서에서 불러오기 성공 ${txt.length}자]\n\n${txt.slice(0,2000)}`; $('docPreview').classList.remove('hidden'); log(`문서 불러오기 성공 ${txt.length}자`,'ok');}catch(e){log('불러오기 실패','err');}}
+async function appendDoc(id, text){if(!accessToken) return false; try{const dr=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}}); const doc=await dr.json(); let end=0; doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);}); const req={requests:[{insertText:{location:{index:end-1},text}}]}; const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(req)}); return r.ok;}catch{return false;}}
 function collapseDriveResults(){ $('driveResultsBox').classList.add('hidden'); if(connectedDocs.length>0){$('driveCollapsedInfo').classList.remove('hidden'); $('collapsedText').textContent=`✅ ${connectedDocs[0].title} 연결됨`;}}
 function expandDriveResults(){ $('driveResultsBox').classList.remove('hidden'); $('driveCollapsedInfo').classList.add('hidden');}
 $('collapseBtn').onclick=collapseDriveResults; $('expandBtn').onclick=expandDriveResults;
-async function searchDrive(query, exact){
-  if(!accessToken){log('Google 로그인 필요','err'); return;}
+
+async function searchDrive(query, exact, target){
+  if(!accessToken){log('로그인 필요','err'); return;}
   const q=exact?`mimeType='application/vnd.google-apps.document' and trashed=false and name = '${query.replace(/'/g,"\\'")}'`:`mimeType='application/vnd.google-apps.document' and trashed=false and name contains '${query.replace(/'/g,"\\'")}'`;
   try{
     const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30`;
     const res=await fetch(url,{headers:{Authorization:`Bearer ${accessToken}`}}); const data=await res.json();
-    const box=$('driveResultsBox'); box.classList.remove('hidden'); $('driveResultsTitle').textContent=`검색 결과 ${data.files?.length||0}개 - ${exact?'정확':'포함'}`;
-    const list=$('driveResults'); list.innerHTML='';
-    if(!data.files||data.files.length===0){list.innerHTML='<div class="text-[11px] text-[var(--muted)]">없음 - 포함 검색으로 재시도</div>'; if(exact) setTimeout(()=>searchDrive(query,false),500); return;}
+    const isMain=target==='driveResults'; const boxId=isMain?'driveResultsBox':'linkSearchResults'; const listId=target;
+    const box=$(boxId); box.classList.remove('hidden'); const list=$(listId); list.innerHTML='';
+    if(!data.files||data.files.length===0){list.innerHTML='<div class="text-[10px] text-[var(--muted)]">없음</div>'; if(exact) setTimeout(()=>searchDrive(query,false,target),400); return;}
     data.files.forEach(f=>{
-      const div=document.createElement('div'); div.className='doc-card cursor-pointer hover:bg-yellow-50';
-      div.innerHTML=`<div class="font-bold text-[12px]">${f.name}</div><div class="text-[10px] text-[var(--muted)]">${f.id.slice(0,12)}... ${f.modifiedTime.slice(0,10)}</div>`;
-      const handler=()=>{connectedDocs=[{id:f.id,title:f.name}]; renderConnectedDocs(); collapseDriveResults(); log(`문서 연결 ${f.name}`,'ok'); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs));};
-      div.addEventListener('click',handler); div.addEventListener('touchend',e=>{e.preventDefault(); handler();});
+      const div=document.createElement('div'); div.className='doc-card'; div.setAttribute('draggable','false');
+      div.innerHTML=`<div class="font-bold text-[11px]">${f.name}</div><div class="text-[9px] text-[var(--muted)]">${f.modifiedTime.slice(0,10)}</div>`;
+      const handler=()=>{
+        if(isMain){
+          connectedDocs=[{id:f.id,title:f.name}]; renderConnectedDocs(); collapseDriveResults(); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs)); saveToSupabase(true); log(`메인 연결 ${f.name} + Supabase 저장`,'ok');
+        } else {
+          const url=`https://docs.google.com/document/d/${f.id}/edit`;
+          if(customLinks.find(l=>l.url===url)){log('이미 추가됨','info'); return;}
+          customLinks.push({title:f.name, url}); renderCustomLinks(); renderContext(); localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks)); $('linkSearchResults').classList.add('hidden'); log(`추가링크 연결 ${f.name} - 구글문서에서 불러오기 가능`,'ok');
+        }
+      };
+      div.addEventListener('click',handler);
+      div.addEventListener('touchend',e=>{e.preventDefault(); handler();},{passive:false});
+      div.addEventListener('mousedown',e=>e.preventDefault());
+      div.addEventListener('dragstart',e=>e.preventDefault());
       list.appendChild(div);
     });
-  }catch(e){log('Drive 검색 실패 '+e.message,'err');}
+  }catch(e){log('검색 실패','err');}
 }
-$('searchExactBtn').onclick=()=>{const q=$('docSearchInput').value.trim(); if(q) searchDrive(q,true);};
+$('searchExactBtn').onclick=()=>{const q=$('docSearchInput').value.trim(); if(q) searchDrive(q,true,'driveResults');};
 $('searchAllBtn').onclick=async()=>{
   if(!accessToken){log('로그인 필요','err'); return;}
   try{
     const res=await fetch('https://www.googleapis.com/drive/v3/files?q=mimeType%3D%27application%2Fvnd.google-apps.document%27%20and%20trashed%3Dfalse&fields=files(id,name,modifiedTime)&orderBy=modifiedTime%20desc&pageSize=30',{headers:{Authorization:`Bearer ${accessToken}`}});
-    const data=await res.json(); const box=$('driveResultsBox'); box.classList.remove('hidden'); $('driveResultsTitle').textContent=`내 문서 30개`; const list=$('driveResults'); list.innerHTML='';
-    (data.files||[]).forEach(f=>{const div=document.createElement('div'); div.className='doc-card cursor-pointer'; div.innerHTML=`<div class="font-bold text-[12px]">${f.name}</div><div class="text-[10px]">${f.modifiedTime.slice(0,10)}</div>`; const h=()=>{connectedDocs=[{id:f.id,title:f.name}]; renderConnectedDocs(); collapseDriveResults(); log(`문서 연결 ${f.name}`,'ok');}; div.addEventListener('click',h); div.addEventListener('touchend',e=>{e.preventDefault(); h();}); list.appendChild(div);});
-  }catch(e){log('목록 실패 '+e.message,'err');}
+    const data=await res.json(); $('driveResultsBox').classList.remove('hidden'); const list=$('driveResults'); list.innerHTML='';
+    (data.files||[]).forEach(f=>{
+      const div=document.createElement('div'); div.className='doc-card'; div.setAttribute('draggable','false');
+      div.innerHTML=`<div class="font-bold text-[11px]">${f.name}</div>`;
+      const h=()=>{connectedDocs=[{id:f.id,title:f.name}]; renderConnectedDocs(); collapseDriveResults(); localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs)); saveToSupabase(true); log(`메인 연결 ${f.name}`,'ok');};
+      div.addEventListener('click',h); div.addEventListener('touchend',e=>{e.preventDefault(); h();},{passive:false}); div.addEventListener('mousedown',e=>e.preventDefault()); div.addEventListener('dragstart',e=>e.preventDefault());
+      list.appendChild(div);
+    });
+  }catch{}
 };
+$('linkSearchBtn').onclick=()=>{const q=$('linkSearchInput').value.trim(); if(q) searchDrive(q,false,'linkSearchResults');};
 
-// Custom links
-function renderCustomLinks(){const box=$('customLinksList'); box.innerHTML=''; $('linkCount').textContent=`${customLinks.length}개`; customLinks.forEach((l,i)=>{const div=document.createElement('div'); div.className='link-item'; div.innerHTML=`<span class="text-[11px] font-bold flex-1">${l.title}</span><a href="${l.url}" target="_blank" class="text-[10px] text-blue-600 truncate max-w-[200px]">${l.url}</a><button class="btn text-[9px] py-1" data-i="${i}">삭제</button>`; box.appendChild(div);}); box.querySelectorAll('button').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1); localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks)); renderCustomLinks(); renderContext();}); localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks));}
-$('addLinkBtn').onclick=()=>{const t=$('linkTitleInput').value.trim(); const u=$('linkUrlInput').value.trim(); if(!t||!u) return; customLinks.push({title:t,url:u}); $('linkTitleInput').value=''; $('linkUrlInput').value=''; renderCustomLinks(); renderContext(); log(`링크 추가 ${t}`,'ok');};
+function renderCustomLinks(){
+  const box=$('customLinksList'); box.innerHTML=''; $('linkCount').textContent=`${customLinks.length}개`;
+  customLinks.forEach((l,i)=>{
+    const div=document.createElement('div'); div.className='link-item';
+    div.innerHTML=`<span class="text-[10px] font-bold flex-1">${l.title.slice(0,28)}</span><button class="btn text-[9px] preview-link" data-i="${i}">불러오기</button><a href="${l.url}" target="_blank" class="text-[9px] text-blue-600">열기</a><button class="btn text-[9px] py-1" data-i="${i}">삭제</button>`;
+    box.appendChild(div);
+  });
+  box.querySelectorAll('.preview-link').forEach(b=>b.onclick=async()=>{
+    const l=customLinks[b.dataset.i];
+    const id=l.url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];
+    if(id) await previewDoc(id); else log('구글문서 링크 아님','info');
+  });
+  box.querySelectorAll('button:last-child').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1); localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks)); renderCustomLinks(); renderContext();});
+  localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks));
+}
+$('addLinkBtn').onclick=()=>{const t=$('linkTitleInput').value.trim(); const u=$('linkUrlInput').value.trim(); if(!t||!u) return; customLinks.push({title:t,url:u}); $('linkTitleInput').value=''; $('linkUrlInput').value=''; renderCustomLinks(); renderContext();};
 
-// Supabase
 async function saveToSupabase(silent){
   const key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim(); if(!key){if(!silent) log('Supabase key 없음','err'); return false;}
   try{
     const payload={project_name:currentRepo, repo:`${GITHUB_USER}/${currentRepo}`, main_file:mainFile, memory_10:$('memory10').value, doc_id:connectedDocs[0]?.id||null, doc_title:connectedDocs[0]?.title||null, draft_code:draftCode.slice(0,8000), updated_at:new Date().toISOString()};
     const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify(payload)});
-    if(!res.ok) throw new Error(await res.text());
-    if(!silent) log('Supabase 저장 성공','ok'); return true;
-  }catch(e){if(!silent) log('Supabase 실패 '+e.message,'err'); return false;}
+    if(!res.ok) throw new Error(await res.text()); if(!silent) log('Supabase 저장','ok'); return true;
+  }catch(e){if(!silent) log('Supabase 실패','err'); return false;}
 }
 async function autoLoadSupabase(){
   const key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim(); if(!key) return;
   try{
     const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?project_name=eq.${currentRepo}&select=*`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});
-    const data=await res.json(); if(data && data[0]){const row=data[0]; if(row.memory_10){$('memory10').value=row.memory_10; updateMemoryCount();} if(row.main_file){mainFile=row.main_file; $('mainFileInput').value=mainFile;} if(row.draft_code && !draftCode){draftCode=row.draft_code; updateDraftStatus();} log('Supabase 자동 로드','ok');}
-  }catch(e){log('Supabase 로드 실패 '+e.message,'err');}
+    const data=await res.json();
+    if(data && data[0]){
+      const row=data[0];
+      if(row.memory_10 && !$('memory10').value) {$('memory10').value=row.memory_10; updateMemoryCount();}
+      if(row.main_file) {mainFile=row.main_file; $('mainFileInput').value=mainFile;}
+      if(row.draft_code && !draftCode){draftCode=row.draft_code; updateDraftStatus();}
+      if(row.doc_id && connectedDocs.length===0){connectedDocs=[{id:row.doc_id,title:row.doc_title||'복구'}]; localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs)); renderConnectedDocs(); log(`문서 자동 복구 ${row.doc_title}`,'ok');}
+      log('Supabase 자동 복구 완료','ok');
+    }
+  }catch{}
 }
-$('saveBtn').onclick=()=>saveToSupabase(false);
-$('listSupabaseBtn').onclick=async()=>{
-  const key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim(); if(!key){log('key 없음','err'); return;}
-  try{
-    const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?select=project_name,updated_at&order=updated_at.desc&limit=20`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});
-    const data=await res.json(); log(`Supabase 목록 ${data.length}개: ${data.map(d=>d.project_name).join(', ')}`,'ok');
-  }catch(e){log('목록 실패 '+e.message,'err');}
-};
-
-// Robot
-async function geminiSummarize(prompt){
-  const key=localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim(); if(!key) return null;
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:prompt}]}]})});
-    const data=await res.json(); return data.candidates?.[0]?.content?.parts?.[0]?.text||null;
-  }catch{return null;}
-}
-$('robotBtn').onclick=async()=>{
-  $('robotLog').classList.remove('hidden'); $('robotLog').innerHTML='';
-  const dump=$('chatDump').value.trim();
-  let summarized=dump?await geminiSummarize(`아래 대화를 빌더 형식 10줄로 요약:\n1.프로젝트 2.목적 3.현재 4.다음 5.결정 6.제외 7.저장 8.버그 9.모드 10.상태\n\n${dump}`):null;
-  if(!summarized) summarized=$('memory10').value;
-  else {$('memory10').value=summarized; updateMemoryCount();}
-  robotLog('요약 완료','ok');
-  await saveToSupabase(true); robotLog('Supabase 저장','ok');
-  for(const doc of connectedDocs){await appendDoc(doc.id, `\n\n[업데이트 ${new Date().toLocaleString()} v5.2]\n${summarized.slice(0,200)}\n`);} robotLog('Docs Append','ok');
-  await pushDual();
-};
 
 function initGIS(){
-  const status=$('googleStatus');
-  if(!window.google || !google.accounts){status.textContent='GIS 로딩 실패 - https 필요'; return;}
+  const s=$('googleStatus');
+  if(!window.google || !google.accounts){s.textContent='GIS 로딩 실패'; return;}
   try{
-    const client=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',callback:(resp)=>{
-      if(resp.access_token){accessToken=resp.access_token; localStorage.setItem('google_access_token',accessToken); $('tokenInfo').textContent=`token ${accessToken.slice(0,20)}...`; status.textContent='✅ Drive 연결됨'; log('Google 로그인 성공','ok');}
+    const c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',callback:(r)=>{
+      if(r.access_token){accessToken=r.access_token; localStorage.setItem('google_access_token',accessToken); s.textContent='✅ Drive 연결됨'; log('Google 로그인 성공','ok');}
     }});
-    $('googleLoginBtn').onclick=()=>client.requestAccessToken();
-    if(accessToken){status.textContent='✅ Drive 연결됨 (캐시)'; $('tokenInfo').textContent=`token ${accessToken.slice(0,20)}... (캐시)`; log('캐시된 토큰 있음','info');}
-    else status.textContent='GIS 준비됨 - 로그인 클릭';
-  }catch(e){status.textContent='GIS 실패 '+e.message;}
+    $('googleLoginBtn').onclick=()=>c.requestAccessToken();
+    if(accessToken){s.textContent='✅ Drive 연결됨 (캐시)';} else s.textContent='GIS 준비됨';
+  }catch(e){s.textContent='GIS 실패';}
 }
 window.addEventListener('load',()=>{
   initTheme();
@@ -576,16 +378,13 @@ window.addEventListener('load',()=>{
   $('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';
   $('groqKeyInput').value=localStorage.getItem('groq_key')||'';
   $('openaiKeyInput').value=localStorage.getItem('openai_key')||'';
-  $('memory10').value=localStorage.getItem('memory_10_'+currentRepo)||getTemplate(currentRepo);
-  $('mainFileInput').value=mainFile;
-  $('currentRepoName').textContent=currentRepo;
-  updateMemoryCount(); updateDraftStatus(); renderConnectedDocs(); renderCustomLinks();
-  const savedTab=localStorage.getItem('current_tab_'+currentRepo)||'meta'; switchTab(savedTab);
-  loadRepos(); setTimeout(initGIS,800); setTimeout(()=>{fetchCode(); autoLoadSupabase();},1000);
-  log('v5.2 B안 초기화 - PWA 내부 3탭 채팅 + draft 공용 + 공용 빌드','ok');
-  log('동선: 메타 생성→제미나이 검증→GPT 효율성/유용성 검수→공용 빌드','info');
+  $('openaiModelInput').value=localStorage.getItem('openai_model')||'gpt-4o-mini';
+  $('memory10').value=localStorage.getItem('memory_10_'+currentRepo)||getTemplate();
+  $('mainFileInput').value=mainFile; updateMemoryCount(); updateDraftStatus(); renderConnectedDocs(); renderCustomLinks(); renderChats();
+  loadRepos(); setTimeout(initGIS,600); setTimeout(()=>{fetchCode(); autoLoadSupabase();},1000);
+  log('v5.2.2 초기화 - 코드숨김 + N개 문서 불러오기 + 드래그 차단','ok');
 });
-$('clearLogBtn').onclick=()=>{$('logArea').innerHTML=''; $('robotLog').innerHTML=''; $('robotLog').classList.add('hidden')};
+$('clearLogBtn').onclick=()=>{$('logArea').innerHTML=''; $('robotLog').innerHTML=''; $('robotLog').classList.add('hidden');};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
