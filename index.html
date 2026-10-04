@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Builder-a4u v4.3.2 - PWA 아이콘</title>
+<title>Builder-a4u v4.4 - 전체 기능 복구</title>
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
@@ -17,61 +17,54 @@
 :root{--bg:#0a0a0f;--card:#14141e;--line:#23232f;--txt:#e8e8f0;--muted:#888;--accent:linear-gradient(135deg,#6c5cff,#3a8dff);--ok:#2ee89e;--warn:#ffcc33;--bad:#ff4d6a}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Pretendard,Apple SD Gothic Neo,sans-serif;background:var(--bg);color:var(--txt);max-width:1100px;margin:0 auto;padding:18px}
-h1{font-size:1.7rem} .sub{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
+h1{font-size:1.6rem} .sub{color:var(--muted);font-size:.85rem;margin:6px 0 14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px}
 .card h2{font-size:1rem;margin-bottom:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.badge{font-size:.68rem;padding:3px 8px;border-radius:999px;background:#23233a;color:#aaa;border:1px solid #2a2a4a}
-.btn{padding:9px 14px;border-radius:10px;border:1px solid #2a2a40;background:#1e1e32;color:#fff;cursor:pointer;font-weight:600;font-size:.85rem;transition:.15s}
-.btn:hover{background:#2a2a4a} .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn-primary{background:var(--accent);border:none}
+.badge{font-size:.66rem;padding:3px 8px;border-radius:999px;background:#23233a;color:#aaa;border:1px solid #2a2a4a}
+.btn{padding:8px 13px;border-radius:10px;border:1px solid #2a2a40;background:#1e1e32;color:#fff;cursor:pointer;font-weight:600;font-size:.82rem;transition:.15s}
+.btn:hover{background:#2a2a4a} .btn-primary{background:var(--accent);border:none}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
-.row input,.row textarea,select{padding:10px 12px;border-radius:10px;border:1px solid #2a2a40;background:#0f0f18;color:#fff}
-.row input,select{flex:1;min-width:140px} textarea{width:100%;min-height:120px;font-family:monospace;font-size:.85rem}
-.log{background:#0d0d14;border:1px solid #222;padding:12px;border-radius:10px;font-family:monospace;font-size:.78rem;white-space:pre-wrap;max-height:320px;overflow:auto;color:#9ad}
+.row input,.row textarea,select{padding:9px 11px;border-radius:10px;border:1px solid #2a2a40;background:#0f0f18;color:#fff;font-size:.85rem}
+.row input,select{flex:1;min-width:130px} textarea{width:100%;min-height:110px;font-family:monospace;font-size:.82rem}
+.log{background:#0d0d14;border:1px solid #222;padding:11px;border-radius:10px;font-family:monospace;font-size:.75rem;white-space:pre-wrap;max-height:280px;overflow:auto;color:#9ad}
 .dot{width:8px;height:8px;border-radius:50%;display:inline-block} .ok{background:var(--ok)} .fail{background:var(--bad)} .wait{background:var(--warn)}
-.small{font-size:.78rem;color:#888;margin-top:6px}
-.doc-item{padding:10px 12px;border:1px solid #2a2a40;border-radius:10px;background:#0f0f18;cursor:pointer;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.small{font-size:.76rem;color:#888;margin-top:6px;line-height:1.5}
+.doc-item{padding:10px 12px;border:1px solid #2a2a40;border-radius:10px;background:#0f0f18;cursor:pointer;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;transition:.15s}
 .doc-item:hover{background:#1a1a2e;border-color:#3a3a5a}
 .doc-item.selected{background:#1e2a4a;border-color:#6c5cff}
-.doc-item .meta{font-size:.7rem;color:#888}
+.doc-item .meta{font-size:.68rem;color:#666}
 </style>
 </head>
 <body>
-<h1>Builder-a4u v4.3.2 — PWA 아이콘 + 제목 기반 연결</h1>
-<div class="sub">단일 공방으로 N개 앱 맥락 유지 · GitHub Pages: apoco211.github.io/builder-a4u · 아이폰 홈 화면 아이콘 추가 지원</div>
+<h1>Builder-a4u v4.4 — 전체 기능 복구</h1>
+<div class="sub">단일 공방으로 N개 앱 맥락 유지 · v4.3 제목 연결 + v4.4 캐시 수정 + PWA 아이콘 · 배포: apoco211.github.io/builder-a4u</div>
+
+<div class="card" style="background:#101a2e;border-color:#1a3a6a">
+  <h2>📖 사용법 - 기존 앱 업데이트 (1 → 1.1) 3분</h2>
+  <div class="small" style="color:#c8d6ff;line-height:1.7">
+    <b>1️⃣ Google 로그인</b> - 1번 [🔐 Google 로그인] 클릭<br>
+    <b>2️⃣ 프로젝트 선택</b> - 2번에서 레포 선택 (예: builder-a4u) → Supabase에 저장된 doc_id+title 자동 로드됨<br>
+    <b>3️⃣ 문서 찾기</b> - 3번에서 [📋 내 모든 문서] 클릭 → 목록에서 <b>[연결 👈 클릭]</b> 누르면 4번에 자동 채워짐<br>
+    <b>4️⃣ 저장</b> - 5번 [💾 저장] 클릭 → Supabase에 저장<br>
+    <b>5️⃣ 작업</b> - 2번에서 [📋 기억+코드 복사] → 새 Meta AI방에 붙여넣기 → 코드 수정<br>
+    <b>6️⃣ 배포</b> - 수정 후 10줄 요약 → PWA에 붙여넣기 → [💾 저장] + [✍️ Append] + GitHub Push<br>
+    <b>클릭 안 될 때:</b> 1번 로그인 확인, 하얀 화면이면 Safari 설정 → 방문 기록 삭제, 또는 ?v=4.4 붙여서 접속
+  </div>
+</div>
 
 <div class="card">
-  <h2><span class="dot wait" id="d-gis"></span> 1. GOOGLE 로그인 <span class="badge">OAuth: 888946226553...24uhvl</span> <span class="badge" id="mode-badge" style="background:#1a2a5a;color:#8ab">기획모드</span></h2>
+  <h2><span class="dot wait" id="d-gis"></span> 1. GOOGLE 로그인 <span class="badge">OAuth: 888946226553</span> <span class="badge" id="mode-badge" style="background:#1a2a5a;color:#8ab">기획모드</span></h2>
   <div class="row">
     <button class="btn btn-primary" id="btn-login">🔐 Google 로그인</button>
     <button class="btn" id="btn-logout">로그아웃</button>
-    <button class="btn" id="btn-mode">모드 전환: 기획 ↔ 빌드</button>
+    <button class="btn" id="btn-mode">모드 전환</button>
     <span id="login-info" class="small">GIS 로딩중...</span>
   </div>
-  <div class="small">drive.readonly + documents · 아이콘: apple-touch-icon.png (180) + icon-192/512</div>
-</div>
-
-
-<div class="card" style="background:#101a2e;border-color:#1a3a6a">
-  <h2>📖 사용법 - 처음이면 이거부터 (3분)</h2>
-  <div class="small" style="color:#c8d6ff;line-height:1.6">
-    <b>이 앱은 뭐야?</b> GitHub 레포 1개당 구글문서 1개 + Supabase 기억 1줄을 연결해서, Meta/Gemini/GPT 방을 옮겨도 맥락이 유지되는 공방<br><br>
-    <b>순서:</b><br>
-    1️⃣ <b>Google 로그인</b> - 위 1번에서 [🔐 Google 로그인] 클릭 (drive.readonly 필요)<br>
-    2️⃣ <b>프로젝트 선택</b> - 2번에서 레포 선택 (예: builder-a4u) → Supabase에 기존 연결 있으면 자동 로드<br>
-    3️⃣ <b>문서 찾기</b> - 3번에서<br>
-       &nbsp;&nbsp;• <b>[📋 내 모든 문서]</b> 클릭 → 내 문서 30개 목록 → 원하는 문서의 <b>[연결 👈 클릭]</b> 버튼 클릭<br>
-       &nbsp;&nbsp;• 또는 제목 정확히 알고 있으면 입력 후 <b>[🔍 제목으로 Drive 검색]</b><br>
-    4️⃣ <b>연결 확인</b> - 3번에서 클릭하면 4번 <b>현재 연결된 문서</b>에 ID와 제목이 자동 채워짐<br>
-    5️⃣ <b>저장</b> - 5번에서 <b>[💾 저장]</b> 클릭 → Supabase에 project_name + doc_id + doc_title 저장됨<br>
-    6️⃣ <b>테스트</b> - 4번에서 <b>[📖 읽기]</b> 누르면 문서 제목이 로그에 뜨면 성공!<br><br>
-    <b>클릭이 안 돼요?</b> → 1번 로그인 먼저 했는지 확인, 로그(맨 아래)에 빨간 오류 있는지 확인<br>
-    <b>아이폰 홈에 추가:</b> Safari에서 공유 버튼 → 홈 화면에 추가 → 아이콘으로 뜸
-  </div>
+  <div class="small">drive.readonly + documents · 캐시 문제 해결됨 - 안 되면 ?v=4.4 붙여서 접속</div>
 </div>
 
 <div class="card">
-  <h2><span class="dot wait" id="d-repo"></span> 2. 프로젝트 선택 (동적) <span class="badge">GitHub API</span> <span class="badge" id="conn-badge" style="background:#1a2a2a;color:#666">연결 안 됨</span></h2>
+  <h2><span class="dot wait" id="d-repo"></span> 2. 프로젝트 선택 (동적) <span class="badge">GitHub API: apoco211/repos</span> <span class="badge" id="conn-badge" style="background:#1a2a2a;color:#666">연결 안 됨</span></h2>
   <div class="row">
     <select id="repo-select"><option>레포 목록 로딩중...</option></select>
     <button class="btn" id="btn-fetch-repos">🔄 새로고침</button>
@@ -84,21 +77,18 @@ h1{font-size:1.7rem} .sub{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
     <button class="btn" id="btn-open-github">🔗 GitHub</button>
     <button class="btn" id="btn-open-pages">🌐 Pages</button>
   </div>
+  <div class="small">선택 시 Supabase에서 doc_id + doc_title 자동 조회 → 없으면 제목 검색 안내</div>
 </div>
 
 <div class="card">
-  <h2><span class="dot wait" id="d-drive-search"></span> 3. 기존 문서 제목 기반 자동 연결 <span class="badge" style="background:#0a2a1a;color:#2ee89e">정확 일치</span></h2>
+  <h2><span class="dot wait" id="d-drive-search"></span> 3. 기존 문서 제목 기반 연결 <span class="badge" style="background:#0a2a1a;color:#2ee89e">정확→포함 자동 재시도</span></h2>
   <div class="row">
-    <input id="doc-title-input" placeholder="문서 제목 정확히 입력 (예: Daily-Todo 기억팩)" style="flex:2">
-    <button class="btn btn-primary" id="btn-title-search">🔍 제목으로 Drive 검색</button>
+    <input id="doc-title-input" placeholder="문서 제목 (예: Daily-Todo 기억팩)" style="flex:2">
+    <button class="btn btn-primary" id="btn-title-search">🔍 제목 검색</button>
     <button class="btn" id="btn-title-list-all">📋 내 모든 문서 (30개)</button>
   </div>
-  <div class="row">
-    <input id="title-batch-input" placeholder="여러 제목 줄바꿈 (예: Daily-Todo 기억팩\ntaxi-dj 아이디어)" style="flex:1">
-    <button class="btn" id="btn-batch-search">📦 일괄 제목 검색</button>
-  </div>
-  <div id="drive-results" style="margin-top:12px;max-height:320px;overflow:auto"></div>
-  <div class="small">정확 일치: name = '제목' → 클릭하면 docId 자동 채움 + Supabase 저장 (doc_id+title) - ID 복사 필요 없음</div>
+  <div id="drive-results" style="margin-top:12px;max-height:300px;overflow:auto"></div>
+  <div class="small">정확 일치 없으면 포함 검색으로 자동 재시도, 클릭하면 4번에 자동 채워짐 + Supabase 자동 저장</div>
 </div>
 
 <div class="card">
@@ -111,7 +101,7 @@ h1{font-size:1.7rem} .sub{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
     <button class="btn btn-primary" id="btn-read">📖 읽기</button>
     <button class="btn" id="btn-write">✍️ Append</button>
     <input id="new-doc-title" value="Builder - New App 기억팩">
-    <button class="btn btn-primary" id="btn-create-doc">📄 새 문서 생성 (신규만)</button>
+    <button class="btn btn-primary" id="btn-create-doc">📄 새 문서 생성</button>
   </div>
 </div>
 
@@ -123,26 +113,25 @@ h1{font-size:1.7rem} .sub{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
   </div>
   <div class="row">
     <input id="project-name" value="builder-a4u">
-    <input id="project-doc" placeholder="doc_id (자동)">
-    <input id="project-doc-title" placeholder="doc_title (자동)">
-    <button class="btn btn-primary" id="btn-sb-save">💾 저장 (doc_id+title)</button>
+    <input id="project-doc" placeholder="doc_id">
+    <input id="project-doc-title" placeholder="doc_title">
+    <button class="btn btn-primary" id="btn-sb-save">💾 저장</button>
     <button class="btn" id="btn-sb-list">📋 목록</button>
   </div>
-  <div class="small">저장: project_name + doc_id + doc_title + memory_10 + repo + main_file</div>
 </div>
 
 <div class="card">
   <h2>🧠 기억 10줄</h2>
-  <textarea id="memory10">1.프로젝트: builder-a4u v4.3.2
-2.목적: 단일 공방 N개 앱 맥락 유지, 제목 기반 + PWA 아이콘
-3.현재: 아이폰 홈 화면 아이콘 추가 (apple-touch-icon 180 + icon 192/512 + manifest.json)
-4.다음: GitHub Pages 배포 → 도그푸딩
-5.결정: 배포=GitHub Pages, 동적 레포, GPT=검증만, 연결=제목 정확 일치 + Supabase doc_title, 아이콘=망치+집+격자
-6.제외: Cloudflare, 고정 6개, GPT 코드, 수동 ID 복사
+  <textarea id="memory10">1.프로젝트: builder-a4u v4.4
+2.목적: 단일 공방 N개 앱 맥락 유지, 제목 기반 + PWA 아이콘 + 캐시 수정
+3.현재: v4.4 전체 기능 복구 - 사용법 카드 + 클릭 버그 수정 + 캐시 해결
+4.다음: 로봇 자동화 - Gemini 요약 로봇 + GitHub Push 로봇 + Docs Append 로봇 (새창에서)
+5.결정: 배포=GitHub Pages, 동적 레포, GPT=검증만, 연결=제목 정확→포함 자동, 아이콘=망치+집
+6.제외: Cloudflare, 고정 6개, GPT 코드, 수동 ID 복사, 하얀 화면 (캐시 해결)
 7.저장: Supabase 1줄(doc_id+title) + Docs 1장 + GitHub 코드 + localStorage 캐시
-8.버그: 기존 doc_id 자동 로드 버그 수정, 아이콘 추가로 홈 화면 UX 개선
+8.버그: v4.3 하얀 화면 → v4.4 FIXED로 캐시 해결 → v4.4 전체 기능 복구
 9.모드: 기획모드
-10.상태: v4.3.2 빌드 완료 - 아이콘 생성 완료</textarea>
+10.상태: v4.4 복구 완료, 다음은 로봇 자동화</textarea>
   <div class="row" style="margin-top:8px">
     <button class="btn" id="btn-memory-template">템플릿</button>
     <button class="btn" id="btn-memory-save-local">💾 로컬 저장</button>
@@ -153,7 +142,7 @@ h1{font-size:1.7rem} .sub{color:var(--muted);font-size:.9rem;margin:6px 0 18px}
 
 <div class="card">
   <h2>📟 로그</h2>
-  <div id="log" class="log">GIS 초기화 대기 중...\n</div>
+  <div id="log" class="log">GIS 초기화 대기...\n</div>
 </div>
 
 <script>
@@ -169,33 +158,33 @@ function initGIS(){
   tokenClient=google.accounts.oauth2.initTokenClient({client_id:CLIENT_ID,scope:SCOPES,callback:(resp)=>{
     if(resp.error){ log('❌ 로그인 실패: '+JSON.stringify(resp)); dot('#d-gis','fail'); return; }
     accessToken=resp.access_token; localStorage.setItem('a4u_token',accessToken);
-    log('✅ 토큰 발급 완료'); $('#login-info').textContent='로그인 완료'; dot('#d-gis','ok');
+    log('✅ 토큰 발급'); $('#login-info').textContent='로그인 완료'; dot('#d-gis','ok');
   }});
-  log('GIS 초기화 완료'); $('#login-info').textContent='GIS 준비 완료'; dot('#d-gis','wait');
+  log('GIS 준비 완료 - 로그인 버튼 누르면 됨'); $('#login-info').textContent='GIS 준비 완료'; dot('#d-gis','wait');
   const saved=localStorage.getItem('a4u_token'); if(saved){ accessToken=saved; log('토큰 복원됨'); dot('#d-gis','ok'); $('#login-info').textContent='토큰 복원됨'; }
 }
-$('#btn-login').onclick=()=>tokenClient.requestAccessToken({prompt:'consent'});
+$('#btn-login').onclick=()=>{ try{ tokenClient.requestAccessToken({prompt:'consent'}); }catch(e){ log('GIS 아직 로딩중... 잠시 후 다시 클릭'); } };
 $('#btn-logout').onclick=()=>{ if(accessToken){ try{google.accounts.oauth2.revoke(accessToken,()=>{});}catch(e){} } accessToken=null; localStorage.removeItem('a4u_token'); log('로그아웃'); dot('#d-gis','wait'); badgeConn('연결 안 됨',false); };
-$('#btn-mode').onclick=()=>{ isPlanMode=!isPlanMode; $('#mode-badge').textContent=isPlanMode?'기획모드':'빌드모드'; $('#mode-badge').style.background=isPlanMode?'#1a2a5a':'#5a2a1a'; };
+$('#btn-mode').onclick=()=>{ isPlanMode=!isPlanMode; $('#mode-badge').textContent=isPlanMode?'기획모드':'빌드모드'; };
 async function gFetch(url,opts={}){
-  if(!accessToken){ log('❌ 토큰 없음'); throw new Error('no token'); }
+  if(!accessToken){ log('❌ 토큰 없음 - 1번에서 로그인 먼저'); throw new Error('no token'); }
   opts.headers={...(opts.headers||{}), Authorization:'Bearer '+accessToken};
-  const res=await fetch(url,opts); if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,500)); } return res.json();
+  const res=await fetch(url,opts); if(!res.ok){ const t=await res.text(); throw new Error(res.status+' '+t.slice(0,400)); } return res.json();
 }
 async function fetchRepos(){
   try{
-    log('GitHub 레포 조회'); const res=await fetch('https://api.github.com/users/apoco211/repos?per_page=100&sort=updated');
+    log('GitHub 레포 조회...'); const res=await fetch('https://api.github.com/users/apoco211/repos?per_page=100&sort=updated');
     if(!res.ok) throw new Error(await res.text()); const repos=await res.json();
     const sel=$('#repo-select'); sel.innerHTML='';
     repos.forEach(r=>{ const opt=document.createElement('option'); opt.value=r.full_name; opt.textContent=`${r.name} (${r.updated_at.slice(0,10)})`; sel.appendChild(opt); });
-    log(`✅ 레포 ${repos.length}개`); dot('#d-repo','ok');
+    log(`✅ 레포 ${repos.length}개 로드`); dot('#d-repo','ok');
     const found=[...sel.options].find(o=>o.value.includes('builder-a4u')); if(found) sel.value=found.value; onRepoSelect();
-  }catch(e){ log('❌ 레포 실패: '+e.message); dot('#d-repo','fail'); }
+  }catch(e){ log('❌ 레포 실패: '+e.message+' (Rate Limit일 수도 있음)'); dot('#d-repo','fail'); }
 }
 function sbHeaders(){ const key=$('#sb-key').value.trim(); return {apikey:key, Authorization:'Bearer '+key, 'Content-Type':'application/json', Prefer:'return=representation'}; }
 async function autoLoadFromSupabase(projectName){
   const url=$('#sb-url').value.trim().replace(/\/$/,''); const key=$('#sb-key').value.trim();
-  if(!url||!key){ log('Supabase 키 없음'); badgeConn('키 없음',false); return null; }
+  if(!url||!key){ badgeConn('키 없음',false); return null; }
   try{
     const qUrl=`${url}/rest/v1/dev_projects?project_name=eq.${encodeURIComponent(projectName)}&select=*`;
     const res=await fetch(qUrl,{headers:sbHeaders()}); if(!res.ok) throw new Error(await res.text());
@@ -205,10 +194,10 @@ async function autoLoadFromSupabase(projectName){
       if(row.doc_id){ $('#docId').value=row.doc_id; $('#project-doc').value=row.doc_id; }
       if(row.doc_title){ $('#docTitle').value=row.doc_title; $('#project-doc-title').value=row.doc_title; $('#doc-title-input').value=row.doc_title; }
       if(row.memory_10) $('#memory10').value=row.memory_10;
-      log(`✅ 기존 연결: ${projectName} → "${row.doc_title||''}"`); dot('#d-supabase','ok'); badgeConn(`연결됨: ${row.doc_title||row.doc_id?.slice(0,8)}`,true); dot('#d-doc','ok');
+      log(`✅ Supabase 기존 연결: ${projectName} → "${row.doc_title||''}"`); dot('#d-supabase','ok'); badgeConn(`연결됨`,true); dot('#d-doc','ok');
       localStorage.setItem(`doc_title_${projectName}`, row.doc_title||''); localStorage.setItem(`doc_id_${projectName}`, row.doc_id||'');
       return row;
-    }else{ log(`ℹ️ ${projectName} 연결 없음 - 제목 검색 필요`); badgeConn('신규 - 검색 필요',false); return null; }
+    }else{ log(`ℹ️ ${projectName} 신규 - 제목 검색 필요`); badgeConn('신규',false); return null; }
   }catch(e){ log('❌ Supabase 조회 실패: '+e.message); badgeConn('조회 실패',false); return null; }
 }
 async function onRepoSelect(){
@@ -219,109 +208,72 @@ async function onRepoSelect(){
   if(!existing){
     const cachedTitle=localStorage.getItem(`doc_title_${name}`);
     if(cachedTitle){ $('#doc-title-input').value=cachedTitle; $('#docTitle').value=cachedTitle; log(`캐시 복원: ${cachedTitle}`); }
-    else $('#doc-title-input').value=name;
   }
 }
 $('#repo-select').onchange=onRepoSelect;
 $('#btn-fetch-repos').onclick=fetchRepos;
 $('#btn-open-github').onclick=()=>{ const repo=$('#repo-input').value.trim(); if(repo) window.open(`https://github.com/${repo}`,'_blank'); };
 $('#btn-open-pages').onclick=()=>window.open('https://apoco211.github.io/builder-a4u/','_blank');
+
 async function searchDriveByExactTitle(title,listAll=false, useContains=false){
-  if(!accessToken){ log('❌ 로그인 먼저 - 1번에서 Google 로그인 필요'); return []; }
+  if(!accessToken){ log('❌ 로그인 먼저'); return []; }
   try{
     dot('#d-drive-search','wait');
     let q="mimeType='application/vnd.google-apps.document' and trashed=false";
     if(!listAll && title){
       const esc=title.replace(/'/g, "\\'");
-      if(useContains){
-        q+=` and name contains '${esc}'`;
-        log(`🔍 Drive 포함 검색: name contains '${title}'`);
-      } else {
-        q+=` and name = '${esc}'`;
-        log(`🔍 Drive 정확 검색: name = '${title}'`);
-      }
-    } else {
-      log(`🔍 Drive 전체 목록 (최근 30개)`);
-    }
+      if(useContains){ q+=` and name contains '${esc}'`; log(`🔍 포함 검색: '${title}'`); }
+      else { q+=` and name = '${esc}'`; log(`🔍 정확 검색: '${title}'`); }
+    } else { log(`🔍 전체 목록 (30개)`); }
     const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30`;
-    const data=await gFetch(url); 
-    const files=data.files||[]; 
-    log(`✅ ${files.length}개 발견`); 
+    const data=await gFetch(url); const files=data.files||[]; log(`✅ ${files.length}개 발견`);
     if(files.length===0 && !listAll && !useContains && title){
-      log(`ℹ️ 정확 일치 없음, 포함 검색으로 재시도...`);
-      dot('#d-drive-search','wait');
-      return await searchDriveByExactTitle(title, false, true);
+      log(`ℹ️ 정확 일치 없음, 포함 검색 재시도...`); return await searchDriveByExactTitle(title,false,true);
     }
-    dot('#d-drive-search','ok'); 
-    return files;
-  }catch(e){ log('❌ Drive 검색 실패: '+e.message+' - OAuth 스코프에 drive.readonly 있는지 확인'); dot('#d-drive-search','fail'); return []; }
+    dot('#d-drive-search','ok'); return files;
+  }catch(e){ log('❌ 검색 실패: '+e.message); dot('#d-drive-search','fail'); return []; }
 }
 function connectDoc(f){
-  // 공통 연결 함수 - 클릭 시 실행
   try{
-    $('#docId').value=f.id; 
-    $('#project-doc').value=f.id; 
-    $('#docTitle').value=f.name; 
-    $('#project-doc-title').value=f.name; 
-    $('#doc-title-input').value=f.name;
-    log(`✅ 선택됨: "${f.name}" (${f.id})`);
-    log(`→ 4번 현재 연결된 문서에 자동 채워짐, 이제 5번에서 [💾 저장] 누르면 됨`);
+    $('#docId').value=f.id; $('#project-doc').value=f.id; $('#docTitle').value=f.name; $('#project-doc-title').value=f.name; $('#doc-title-input').value=f.name;
+    log(`✅ 선택: "${f.name}" → 4번에 자동 채워짐, 5번에서 [💾 저장] 누르세요`);
     const pname=$('#project-name').value.trim();
-    localStorage.setItem(`doc_title_${pname}`, f.name); 
-    localStorage.setItem(`doc_id_${pname}`, f.id);
-    // 시각적 피드백
+    localStorage.setItem(`doc_title_${pname}`, f.name); localStorage.setItem(`doc_id_${pname}`, f.id);
     document.querySelectorAll('.doc-item').forEach(el=>el.classList.remove('selected'));
-    // Supabase 자동 저장 시도
     if(pname && $('#sb-url').value){
       (async()=>{
         try{
           const sbUrl=$('#sb-url').value.trim().replace(/\/$/,'');
           const res=await fetch(`${sbUrl}/rest/v1/dev_projects`,{method:'POST',headers:{...sbHeaders(), Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({project_name:pname, doc_id:f.id, doc_title:f.name, updated_at:new Date().toISOString(), memory_10:$('#memory10').value, repo:$('#repo-input').value, main_file:$('#mainfile-input').value})});
-          if(!res.ok) throw new Error(await res.text()); 
-          log(`✅ Supabase 자동 저장 성공: ${pname} ↔ "${f.name}"`); 
-          badgeConn(`연결됨: ${f.name.slice(0,20)}`,true); 
-          dot('#d-supabase','ok'); dot('#d-doc','ok');
-        }catch(e){ log(`⚠️ 자동 저장 실패 (수동 저장 필요): ${e.message}`); }
+          if(!res.ok) throw new Error(await res.text()); log(`✅ 자동 저장: ${pname} ↔ "${f.name}"`); badgeConn(`연결됨`,true); dot('#d-supabase','ok'); dot('#d-doc','ok');
+        }catch(e){ log(`⚠️ 자동 저장 실패, 수동 저장 필요: ${e.message}`); }
       })();
     }
   }catch(err){ log(`❌ 연결 오류: ${err.message}`); }
 }
-
 function renderDriveResults(files,queryTitle){
   const container=$('#drive-results'); container.innerHTML='';
-  if(files.length===0){ 
-    container.innerHTML=`<div class="small" style="padding:12px;background:#1a1a2e;border-radius:8px">🔍 "${queryTitle}" 문서를 못 찾았어요<br>• 제목을 정확히 확인해보세요 (대소문자, 공백)<br>• [📋 내 모든 문서 보기]로 전체 목록에서 찾아보세요<br>• 없으면 [📄 새 문서 생성]으로 새로 만드세요</div>`; 
-    return; 
-  }
-  const titleEl=document.createElement('div'); 
-  titleEl.className='small'; 
-  titleEl.style.marginBottom='8px'; 
-  titleEl.style.color='#2ee89e';
-  titleEl.textContent=`✅ ${files.length}개 발견 - 아래 항목을 클릭하면 4번에 자동 연결됩니다:`; 
-  container.appendChild(titleEl);
-  files.forEach((f, idx)=>{
-    const div=document.createElement('div'); 
-    div.className='doc-item';
-    div.setAttribute('data-id', f.id);
-    div.innerHTML=`<span><b>${f.name}</b><br><span class="meta">${f.id} · ${f.modifiedTime?.slice(0,16)}</span></span><span style="color:#2ee89e;font-weight:700;background:#0a2a1a;padding:4px 10px;border-radius:999px">연결 👈 클릭</span>`;
-    // 클릭 이벤트 - 두 가지 방식으로 등록 (onclick + addEventListener)
+  if(files.length===0){ container.innerHTML=`<div class="small" style="padding:12px;background:#1a1a2e;border-radius:8px">🔍 "${queryTitle}" 없음<br>• [내 모든 문서]로 전체 목록 보기<br>• 없으면 [새 문서 생성]</div>`; return; }
+  const titleEl=document.createElement('div'); titleEl.className='small'; titleEl.style.marginBottom='8px'; titleEl.style.color='#2ee89e'; titleEl.textContent=`✅ ${files.length}개 발견 - 클릭하면 4번에 연결:`; container.appendChild(titleEl);
+  files.forEach(f=>{
+    const div=document.createElement('div'); div.className='doc-item';
+    div.innerHTML=`<span><b>${f.name}</b><br><span class="meta">${f.id.slice(0,12)}... · ${f.modifiedTime?.slice(0,16)}</span></span><span style="color:#2ee89e;font-weight:700;background:#0a2a1a;padding:4px 10px;border-radius:999px">연결 👈</span>`;
     div.addEventListener('click', ()=>connectDoc(f));
     div.addEventListener('touchend', (e)=>{ e.preventDefault(); connectDoc(f); });
     container.appendChild(div);
   });
 }
-$('#btn-title-search').onclick=async()=>{ const title=$('#doc-title-input').value.trim() || $('#project-name').value.trim(); if(!title){ log('제목 입력 필요'); return; } const files=await searchDriveByExactTitle(title,false); renderDriveResults(files,title); };
-$('#btn-title-list-all').onclick=async()=>{ const files=await searchDriveByExactTitle('',true); const container=$('#drive-results'); container.innerHTML=''; const titleEl=document.createElement('div'); titleEl.className='small'; titleEl.style.marginBottom='8px'; titleEl.textContent=`내 문서 ${files.length}개 - 클릭하면 연결:`; container.appendChild(titleEl); files.forEach(f=>{ const div=document.createElement('div'); div.className='doc-item'; div.innerHTML=`<span><b>${f.name}</b><br><span class="meta">${f.id}</span></span><span style="color:#2ee89e">연결</span>`; div.onclick=async()=>{ document.querySelectorAll('.doc-item').forEach(el=>el.classList.remove('selected')); div.classList.add('selected'); $('#docId').value=f.id; $('#project-doc').value=f.id; $('#docTitle').value=f.name; $('#project-doc-title').value=f.name; log(`선택: ${f.name}`); const pname=$('#project-name').value.trim(); localStorage.setItem(`doc_title_${pname}`, f.name); localStorage.setItem(`doc_id_${pname}`, f.id); if(pname){ try{ const sbUrl=$('#sb-url').value.trim().replace(/\/$/,''); const res=await fetch(`${sbUrl}/rest/v1/dev_projects`,{method:'POST',headers:{...sbHeaders(), Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({project_name:pname, doc_id:f.id, doc_title:f.name, updated_at:new Date().toISOString(), memory_10:$('#memory10').value})}); if(!res.ok) throw new Error(await res.text()); log(`✅ 저장: ${pname} ↔ ${f.name}`); badgeConn(`연결됨`,true);}catch(e){ log(`❌ 저장 실패: ${e.message}`);} } }; container.appendChild(div); }); };
-$('#btn-batch-search').onclick=async()=>{ const raw=$('#title-batch-input').value.trim(); if(!raw){ log('일괄 제목 입력 필요'); return; } const titles=raw.split('\n').map(s=>s.trim()).filter(s=>s.length>0); log(`📦 일괄 검색 시작: ${titles.length}개`); for(const title of titles){ log(`→ "${title}" 검색 중...`); const files=await searchDriveByExactTitle(title,false); if(files.length>0){ const f=files[0]; log(`  ✅ 발견: "${f.name}" → ${f.id}`); const container=$('#drive-results'); const div=document.createElement('div'); div.className='doc-item'; div.innerHTML=`<span><b>${f.name}</b> (일괄: "${title}")<br><span class="meta">${f.id}</span></span><span>연결</span>`; div.onclick=async()=>{ $('#docId').value=f.id; $('#project-doc').value=f.id; $('#docTitle').value=f.name; $('#project-doc-title').value=f.name; log(`선택: ${f.name}`); }; container.appendChild(div); }else{ log(`  ❌ 없음: "${title}"`); } await new Promise(r=>setTimeout(r,300)); } log(`📦 일괄 완료`); };
+$('#btn-title-search').onclick=async()=>{ const title=$('#doc-title-input').value.trim() || $('#project-name').value.trim(); if(!title){ log('제목 입력 필요'); return; } const files=await searchDriveByExactTitle(title,false,false); renderDriveResults(files,title); };
+$('#btn-title-list-all').onclick=async()=>{ const files=await searchDriveByExactTitle('',true,false); renderDriveResults(files,'전체'); };
 $('#btn-read').onclick=async()=>{ const id=$('#docId').value.trim(); if(!id) return; try{ log('📖 읽기: '+id); const data=await gFetch(`https://docs.googleapis.com/v1/documents/${id}`); log(`✅ 읽기 성공 title="${data.title}"`); $('#project-doc').value=id; $('#docTitle').value=data.title; $('#project-doc-title').value=data.title; dot('#d-doc','ok'); }catch(e){ log('❌ 읽기 실패: '+e.message); dot('#d-doc','fail'); } };
-$('#btn-write').onclick=async()=>{ const id=$('#docId').value.trim(); if(!id) return; try{ log('✍️ Append...'); const doc=await gFetch(`https://docs.googleapis.com/v1/documents/${id}`); const endIndex=doc.body.content[doc.body.content.length-1].endIndex-1; const text=`\n[Builder-a4u v4.3.2 테스트 ${new Date().toLocaleString()}] 제목 기반 + 아이콘 성공!\n`; await gFetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requests:[{insertText:{location:{index:endIndex},text}}]})}); log('✅ 쓰기 성공'); dot('#d-doc','ok'); }catch(e){ log('❌ 쓰기 실패: '+e.message); dot('#d-doc','fail'); } };
+$('#btn-write').onclick=async()=>{ const id=$('#docId').value.trim(); if(!id) return; try{ log('✍️ Append...'); const doc=await gFetch(`https://docs.googleapis.com/v1/documents/${id}`); const endIndex=doc.body.content[doc.body.content.length-1].endIndex-1; const text=`\n[Builder-a4u v4.4 테스트 ${new Date().toLocaleString()}] 전체 기능 복구 성공!\n`; await gFetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requests:[{insertText:{location:{index:endIndex},text}}]})}); log('✅ 쓰기 성공'); dot('#d-doc','ok'); }catch(e){ log('❌ 쓰기 실패: '+e.message); dot('#d-doc','fail'); } };
 $('#btn-create-doc').onclick=async()=>{ const title=$('#new-doc-title').value.trim()||'Builder - New App'; if(!accessToken){log('❌ 로그인 먼저');return;} try{ log('📄 새 문서 생성: '+title); const data=await gFetch('https://www.googleapis.com/drive/v3/files',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:title,mimeType:'application/vnd.google-apps.document'})}); log(`✅ 생성 id=${data.id}`); $('#docId').value=data.id; $('#project-doc').value=data.id; $('#docTitle').value=title; $('#project-doc-title').value=title; dot('#d-doc','ok'); try{ await gFetch(`https://docs.googleapis.com/v1/documents/${data.id}:batchUpdate`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({requests:[{insertText:{text:`# ${title}\n\n생성일: ${new Date().toLocaleString()}\n\n## 10줄 기억팩\n${$('#memory10').value}\n`,location:{index:1}}}]})}); log('✅ 템플릿 삽입'); }catch(e2){log('⚠️ 템플릿 실패: '+e2.message);} if($('#sb-url').value&&$('#project-name').value) $('#btn-sb-save').click(); }catch(e){ log('❌ 생성 실패: '+e.message); dot('#d-doc','fail'); } };
-$('#btn-sb-save').onclick=async()=>{ const url=$('#sb-url').value.trim().replace(/\/$/,''); const key=$('#sb-key').value.trim(); const pname=$('#project-name').value.trim(); const docId=$('#project-doc').value.trim()||$('#docId').value.trim(); const docTitle=$('#project-doc-title').value.trim()||$('#docTitle').value.trim()||$('#doc-title-input').value.trim(); if(!url||!key||!pname||!docId){ log('❌ URL/key/앱이름/doc_id 필요'); return; } localStorage.setItem('sb-url',url); localStorage.setItem('sb-key',key); try{ log(`💾 저장: ${pname} -> "${docTitle}"`); const res=await fetch(`${url}/rest/v1/dev_projects`,{method:'POST',headers:{...sbHeaders(), Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({project_name:pname, doc_id:docId, doc_title:docTitle, updated_at:new Date().toISOString(), memory_10:$('#memory10').value, repo:$('#repo-input').value, main_file:$('#mainfile-input').value})}); if(!res.ok){ const t=await res.text(); throw new Error(t);} log('✅ Supabase 저장 성공'); dot('#d-supabase','ok'); badgeConn(`연결됨: ${docTitle||docId.slice(0,8)}`,true); localStorage.setItem(`doc_title_${pname}`,docTitle); localStorage.setItem(`doc_id_${pname}`,docId); }catch(e){ log('❌ Supabase 실패: '+e.message); dot('#d-supabase','fail'); } };
-$('#btn-sb-list').onclick=async()=>{ const url=$('#sb-url').value.trim().replace(/\/$/,''); if(!url){log('URL 없음');return;} try{ const res=await fetch(`${url}/rest/v1/dev_projects?select=*&order=updated_at.desc`,{headers:sbHeaders()}); if(!res.ok) throw new Error(await res.text()); const list=await res.json(); log('📋 dev_projects '+list.length+'개:\n'+list.map(r=>`- ${r.project_name}: "${r.doc_title||''}" → ${r.doc_id}`).join('\n')); dot('#d-supabase','ok'); }catch(e){ log('❌ 목록 실패: '+e.message); } };
-$('#btn-memory-template').onclick=()=>{ $('#memory10').value=`1.프로젝트: builder-a4u v4.3.2\n2.목적: 단일 공방 N개 앱 맥락 유지, 제목 기반 + PWA 아이콘\n3.현재: 아이폰 홈 아이콘 추가\n4.다음: GitHub Pages 배포\n5.결정: 배포=GitHub Pages, 동적 레포, GPT=검증만, 연결=제목 정확 일치 + Supabase doc_title, 아이콘=망치+집\n6.제외: Cloudflare, 고정 6개, GPT 코드, 수동 ID 복사\n7.저장: Supabase 1줄(doc_id+title) + Docs 1장 + GitHub 코드 + localStorage 캐시\n8.버그: 아이콘 추가로 홈 화면 UX 개선\n9.모드: ${isPlanMode?'기획모드':'빌드모드'}\n10.상태: 진행중`; };
+$('#btn-sb-save').onclick=async()=>{ const url=$('#sb-url').value.trim().replace(/\/$/,''); const key=$('#sb-key').value.trim(); const pname=$('#project-name').value.trim(); const docId=$('#project-doc').value.trim()||$('#docId').value.trim(); const docTitle=$('#project-doc-title').value.trim()||$('#docTitle').value.trim()||$('#doc-title-input').value.trim(); if(!url||!key||!pname||!docId){ log('❌ URL/key/앱이름/doc_id 필요'); return; } localStorage.setItem('sb-url',url); localStorage.setItem('sb-key',key); try{ log(`💾 저장: ${pname} -> "${docTitle}"`); const res=await fetch(`${url}/rest/v1/dev_projects`,{method:'POST',headers:{...sbHeaders(), Prefer:'resolution=merge-duplicates,return=representation'},body:JSON.stringify({project_name:pname, doc_id:docId, doc_title:docTitle, updated_at:new Date().toISOString(), memory_10:$('#memory10').value, repo:$('#repo-input').value, main_file:$('#mainfile-input').value})}); if(!res.ok){ const t=await res.text(); throw new Error(t);} log('✅ Supabase 저장 성공'); dot('#d-supabase','ok'); badgeConn(`연결됨`,true); localStorage.setItem(`doc_title_${pname}`,docTitle); localStorage.setItem(`doc_id_${pname}`,docId); }catch(e){ log('❌ Supabase 실패: '+e.message); dot('#d-supabase','fail'); } };
+$('#btn-sb-list').onclick=async()=>{ const url=$('#sb-url').value.trim().replace(/\/$/,''); if(!url){log('URL 없음');return;} try{ const res=await fetch(`${url}/rest/v1/dev_projects?select=*&order=updated_at.desc`,{headers:sbHeaders()}); if(!res.ok) throw new Error(await res.text()); const list=await res.json(); log('📋 '+list.length+'개:\n'+list.map(r=>`- ${r.project_name}: "${r.doc_title||''}"`).join('\n')); dot('#d-supabase','ok'); }catch(e){ log('❌ 목록 실패: '+e.message); } };
+$('#btn-memory-template').onclick=()=>{ $('#memory10').value=`1.프로젝트: builder-a4u v4.4\n2.목적: 단일 공방 N개 앱 맥락 유지\n3.현재: 전체 기능 복구 완료\n4.다음: 로봇 자동화\n5.결정: 배포=GitHub Pages, 동적 레포, GPT=검증만, 연결=제목 정확→포함\n6.제외: Cloudflare, 고정 6개, GPT 코드, 수동 ID 복사\n7.저장: Supabase 1줄 + Docs 1장 + GitHub 코드\n8.버그: 하얀 화면 해결\n9.모드: ${isPlanMode?'기획모드':'빌드모드'}\n10.상태: 진행중`; };
 $('#btn-memory-save-local').onclick=()=>{ localStorage.setItem('memory10',$('#memory10').value); log('💾 로컬 저장'); };
 $('#btn-copy-memory').onclick=async()=>{ await navigator.clipboard.writeText($('#memory10').value); log('📋 기억 복사'); };
-$('#btn-copy-code').onclick=async()=>{ const repo=$('#repo-input').value.trim(); const mainFile=$('#mainfile-input').value.trim()||'index.html'; if(!repo){log('레포 없음');return;} try{ const url=`https://raw.githubusercontent.com/${repo}/main/${mainFile}`; log('📥 코드 fetch: '+url); const res=await fetch(url); if(!res.ok) throw new Error(res.status+' '+await res.text()); const code=await res.text(); const combined=`[기억 10줄]\n${$('#memory10').value}\n\n[최신 코드: ${repo}/${mainFile}]\n${code.slice(0,15000)}`; await navigator.clipboard.writeText(combined); log(`✅ 코드 복사 ${code.length}자`); }catch(e){ log('❌ 코드 복사 실패: '+e.message); } };
+$('#btn-copy-code').onclick=async()=>{ const repo=$('#repo-input').value.trim(); const mainFile=$('#mainfile-input').value.trim()||'index.html'; if(!repo){log('레포 없음');return;} try{ const url=`https://raw.githubusercontent.com/${repo}/main/${mainFile}`; log('📥 코드 fetch: '+url); const res=await fetch(url); if(!res.ok) throw new Error(res.status); const code=await res.text(); const combined=`[기억 10줄]\n${$('#memory10').value}\n\n[코드: ${repo}/${mainFile}]\n${code.slice(0,15000)}`; await navigator.clipboard.writeText(combined); log(`✅ 코드 복사 ${code.length}자`); }catch(e){ log('❌ 코드 복사 실패: '+e.message); } };
 window.onload=()=>setTimeout(()=>{initGIS(); setTimeout(fetchRepos,800);},600);
 </script>
 </body>

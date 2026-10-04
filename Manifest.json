@@ -1,0 +1,26 @@
+{
+  "name": "Builder-a4u - 단일 공방으로 N개 앱",
+  "short_name": "Builder-a4u",
+  "description": "단일 공방으로 N개 앱 맥락 유지 - 제목 기반 자동 연결 + PWA",
+  "start_url": "/builder-a4u/",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#0a0a0f",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
