@@ -43,7 +43,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 
-/* v5.3.25 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.3.27 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -64,14 +64,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.3.25 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
+<title>Builder-a4u v5.3.27 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.3.25">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.3.25">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.3.25">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.3.25">
+<link rel="manifest" href="./manifest.json?v=5.3.27">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.3.27">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.3.27">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.3.27">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -121,7 +121,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 /* iPhone 최적화 - 폰트 확대 및 터치 영역 확보 */
 @media (max-width: 768px){
-  /* v5.3.25: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
+  /* v5.3.27: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
@@ -155,7 +155,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 }
 .view-hidden{display:none !important}
 
-/* v5.3.25 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.3.27 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -175,8 +175,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.25</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.3.25</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.27</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.3.27</span></div>
 </div>
 
 <!-- 상단 탭: 작업 / 설정 -->
@@ -279,7 +279,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.3.25 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.3.25</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.3.27 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.3.27</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -305,16 +305,16 @@ function getProjectTemplate(repo){
   if(name.toLowerCase().includes('daily') || name.toLowerCase().includes('todo')){
     return `1.프로젝트: ${name} v2.1\n2.목적: 할일 관리 + 공방 연동\n3.현재: ${d} 기억 초기화\n4.다음: 기능 확인\n5.결정: 링크 기반\n6.제외: 없음\n7.저장: Supabase+Docs+GitHub\n8.버그: 없음\n9.모드: 빌드모드\n10.상태: 진행중`;
   }
-  return `1.프로젝트: ${name} v5.3.25\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.3.25`;
+  return `1.프로젝트: ${name} v5.3.27\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.3.27`;
 }
 function getTemplate(){ return getProjectTemplate(currentRepo); }
 function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
 function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크 N개]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
 function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
 function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
-// v5.3.25 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
+// v5.3.27 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
 
-// v5.3.25: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
+// v5.3.27: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
 let lastSummaryAt = 0;
 async function incrementalSummarize(force=false){
   const all = chats[currentTab]||[];
@@ -329,18 +329,11 @@ async function incrementalSummarize(force=false){
     const geminiKey = localStorage.getItem('gemini_api_key') || localStorage.getItem('GEMINI_API_KEY');
     if(geminiKey){
       log('🤖 증분 요약 중... (Gemini)', 'info');
-      const controller2 = new AbortController();
-      const timeoutId2 = setTimeout(()=>controller2.abort(), 10000);
-      let res;
-      try{
-        res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
-          signal: controller2.signal,
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
         method:'POST',
         headers:{'Content-Type':'application/json'},
         body: JSON.stringify({contents:[{parts:[{text:`다음 대화를 10줄 기억팩으로 압축해줘. 형식: 1.프로젝트 2.목적 3.현재 4.다음 5.결정 6.제외 7.저장 8.버그 9.모드 10.상태\n\n${textToSum}`}]}]})
       });
-      }catch(e){ clearTimeout(timeoutId2); throw e; }
-      clearTimeout(timeoutId2);
       const data = await res.json();
       summaryText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
@@ -378,9 +371,7 @@ async function incrementalSummarize(force=false){
 }
 
 // 자동 주입: 레포 선택 시 memory10 + summary + 최근 20개 + 링크 N개를 3탭 채팅에 자동 주입
-async function triggerSummaryOnBuild(){ 
-  try{ await incrementalSummarize(true); }catch(e){ log(`증분 요약 실패 무시 ${e.message}`,'info'); }
-}
+async function triggerSummaryOnBuild(){ await incrementalSummarize(true); }
 function autoInjectOnRepoSelect(){
   try{
     const mem = document.getElementById('memory10')?.value || '';
@@ -403,12 +394,12 @@ function autoInjectOnRepoSelect(){
 
 
 
-// v5.3.25: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
+// v5.3.27: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
 // - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다
 const ORIGINAL_WINDOW = 20;
 
 const CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만
-const CHAT_SUMMARY_THRESHOLD = 15; // v5.3.25: 30→15, 실제 빌드는 10~15번 대화가 많음
+const CHAT_SUMMARY_THRESHOLD = 15; // v5.3.27: 30→15, 실제 빌드는 10~15번 대화가 많음
 let chatArchive = {}; // {tab: [older messages]}
 
 function getChatArchiveKey(){return `chat_archive_${currentRepo}_${currentTab}`;}
@@ -499,7 +490,7 @@ const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
 const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
 const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
 function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}
-// v5.3.25: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
+// v5.3.27: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
 if(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도
 }
 function extractCode(t){const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i);return m?m[1].trim():null;}
@@ -552,13 +543,10 @@ async function callGemini(p, imageBase64=null, imageMime=null){
   const k=(()=>{try{return localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim();}catch{return $('geminiKeyInput').value.trim();}})();
   if(!k) throw new Error('Gemini Key 없음 - 설정탭에서 넣어줘');
   const models=[
-    'gemini-2.5-flash',
-    'gemini-2.5-flash-lite',
-    'gemini-3.5-flash',
-    'gemini-3.6-flash',
-    'gemini-3.1-flash-lite',
     'gemini-2.0-flash',
-    'gemini-1.5-flash'
+    'gemini-2.0-flash-lite',
+    'gemini-1.5-flash',
+    'gemini-1.5-flash-8b'
   ];
   let lastErr='';
   for(const model of models){
@@ -570,17 +558,7 @@ async function callGemini(p, imageBase64=null, imageMime=null){
       } else {
         body={contents:[{parts:[{text:p}]}]};
       }
-      const controller = new AbortController();
-      const timeoutId = setTimeout(()=>controller.abort(), 15000);
-      let r;
-      try{
-        r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body), signal: controller.signal});
-      }catch(fetchErr){
-        clearTimeout(timeoutId);
-        if(fetchErr.name==='AbortError'){ log(`Gemini ${model} 타임아웃 15초 - 다음 모델 시도`,'info'); continue; }
-        throw fetchErr;
-      }
-      clearTimeout(timeoutId);
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       if(!r.ok){
         const txt=await r.text();
         lastErr=txt.slice(0,500);
@@ -598,17 +576,7 @@ async function callGemini(p, imageBase64=null, imageMime=null){
       continue;
     }
   }
-  // v5.3.25: Gemini 전부 실패시 Groq Llama로 폴백
-  log(`⚠️ Gemini 전부 실패 - Groq Llama로 폴백 시도`,'info');
-  try{
-    const groqPrompt = `다음 대화를 10줄 기억팩으로 압축해줘: ${p.slice(0,2000)}`;
-    const groqOut = await callGroq(groqPrompt);
-    if(groqOut) return groqOut;
-  }catch(e){ log(`Groq 폴백도 실패 ${e.message}`,'info'); }
-  // 최후 폴백: 로컬 요약
-  log(`⚠️ AI 요약 전부 실패 - 로컬 키워드 요약으로 대체`,'info');
-  return `1.프로젝트: ${currentRepo} v5.3.25\n2.목적: Gemini 404 폴백\n3.현재: ${new Date().toLocaleDateString()} 요약 실패 - 로컬 대체\n4.다음: Gemini API 키 확인\n5.결정: main 배포\n6.제외: gh-pages\n7.저장: Supabase+GitHub\n8.버그: Gemini 모델 404\n9.모드: 빌드모드\n10.상태: 진행중`;
-}
+  throw new Error(`Gemini 전부 실패. 마지막: ${lastErr.slice(0,500)}`);
 }
 async function callGroq(p, imageBase64=null, imageMime=null){
   const k=(()=>{try{return localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();}catch{return $('groqKeyInput').value.trim();}})();
@@ -656,7 +624,7 @@ async function sendChat(){const input=$('chatInput');if(!input) return;const tex
   if(code){
     if(code.length < 10000 && draftCode && draftCode.length > 20000){
       // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
-      log(`[v5.3.25] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
+      log(`[v5.3.27] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
       // 대신 채팅에만 표시하고 draft는 유지
     } else {
       draftCode=code;
@@ -669,7 +637,7 @@ const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown
 const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
 const saveDraftBtn=$('saveDraftBtn');
 if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
-  // v5.3.25: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
+  // v5.3.27: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
   let finalCode = draftCode;
   const editorVal = document.getElementById('codeEditor')?.value || '';
   const memory10 = document.getElementById('memory10')?.value || '';
@@ -684,7 +652,7 @@ if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
       if(fullMain.length > 10000){
         // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지
         if(!finalCode || finalCode.length < 10000){
-          log(`[v5.3.25] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
+          log(`[v5.3.27] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
           finalCode = fullMain;
           draftCode = finalCode;
         } else {
@@ -756,12 +724,6 @@ async function pushToBranch(branch,code){
     const gr=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`}});
     if(gr.ok){const j=await gr.json(); sha=j.sha;}
     else if(gr.status===404 && branch==='gh-pages'){
-      log(`ℹ️ gh-pages 브랜치 없음 - main 배포라 무시 가능`,'info');
-      if(branch==='gh-pages'){
-        // Pages가 main을 보고 있으면 gh-pages 실패는 무시
-        log(`ℹ️ Pages Source가 main이면 gh-pages 푸시는 선택사항`,'info');
-        return {skipped:true, reason:'Pages source is main'};
-      }
       log(`gh-pages 브랜치 없음 - main에서 생성 시도`,'info');
       // Try to get main sha and create gh-pages branch via ref API
       try{
@@ -779,14 +741,6 @@ async function pushToBranch(branch,code){
   if(sha) body.sha=sha;
   const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
   if(!res.ok){
-      const txt = await res.text();
-      // v5.3.25: gh-pages는 Pages가 main이면 실패해도 무시
-      if(branch==='gh-pages' && (res.status===422 || txt.includes('sha'))){ 
-        log(`ℹ️ gh-pages 422 무시 - Pages Source가 main이면 정상 (main만 성공하면 배포됨)`,'info'); 
-        return {skipped:true, status:res.status}; 
-      }
-      const _txt = txt;
-      if(true){
     const txt=await res.text();
     if(branch==='gh-pages'){
       // gh-pages 실패해도 main 성공이면 사이트는 main으로 배포 가능하므로 경고만
@@ -797,47 +751,40 @@ async function pushToBranch(branch,code){
   }
   return (await res.json()).commit.sha;
 }
+
 function getNextVersion(current){
-  // current like v5.3.25 -> v5.3.25
   const m = current.match(/v(\d+)\.(\d+)\.(\d+)/);
-  if(!m) return 'v5.3.25';
+  if(!m) return 'v5.3.27';
   let major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
   patch++;
   return `v${major}.${minor}.${patch}`;
 }
 function bumpVersionInCode(code, nextVer){
-  // 모든 v5.3.x 를 nextVer로 교체
   let newCode = code.replace(/v5\.3\.\d+/g, nextVer);
   newCode = newCode.replace(/\?v=5\.3\.\d+/g, `?v=${nextVer.slice(1)}`);
   newCode = newCode.replace(/manifest\.json\?v=5\.3\.\d+/g, `manifest.json?v=${nextVer.slice(1)}`);
   return newCode;
 }
+
 async function pushDual(){
   let pat='';try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}
   if(!pat){log('PAT 없음 - 설정탭에서 넣어줘','err');return;}
   if(!draftCode){log('draft 없음','err');return;}
-  if(draftCode.length < 10000){log(`[v5.3.25 가드] draft ${draftCode.length}자 너무 짧음 - 푸시 차단 (가짜)`,'err');alert('draftCode가 너무 짧습니다. 가짜 페이지입니다. 복구 푸셔로 main을 먼저 복구하거나, 에디터에 진짜 빌더 코드를 로드하세요.');return;}
+  if(draftCode.length < 10000){log(`[가드] draft ${draftCode.length}자 너무 짧음 - 푸시 차단`,'err');return;}
   const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}
   try{
-    // v5.3.25: 버전 자동 증가
     const curMatch = draftCode.match(/v5\.3\.(\d+)/);
-    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.3.25';
+    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.3.27';
     const nextVer = getNextVersion(curVer);
     log(`🔢 버전 자동 증가 ${curVer} -> ${nextVer}`,'info');
     draftCode = bumpVersionInCode(draftCode, nextVer);
     updateDraftStatus();
-    // footer 버전도 업데이트
-    try{
-      const footer = document.querySelector('div.text-\\[8px\\]');
-      if(footer) footer.textContent = `${nextVer} · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=${nextVer.slice(1)}`;
-    }catch{}
-    await saveToSupabase(true);robotLog('Supabase 저장','ok');
-    for(const doc of connectedDocs){await appendDoc(doc.id,`\n\n[${nextVer} ${new Date().toLocaleString()}] 빌드\n`);}
-    const s1=await pushToBranch('main',draftCode);robotLog(`main ${s1.commit? s1.commit.sha.slice(0,7): s1.slice? s1.slice(0,7): 'ok'}`,'ok');
-    try{const s2=await pushToBranch('gh-pages',draftCode);robotLog(`gh-pages ${s2.commit? s2.commit.sha.slice(0,7): s2.slice? s2.slice(0,7): 'ok'}`,'ok');}catch(e){robotLog(`gh-pages 실패`,'err');}
-    log(`🚀 빌드 완료 ?v=${nextVer.slice(1)}`,'ok');
-    // URL도 다음 버전으로
+    await saveToSupabase(true);log('Supabase 저장','ok');
+    const s1=await pushToBranch('main',draftCode);log(`main ${s1.commit? s1.commit.sha.slice(0,7): 'ok'}`,'ok');
+    try{const s2=await pushToBranch('gh-pages',draftCode);log(`gh-pages ${s2.commit? s2.commit.sha.slice(0,7): 'ok'}`,'ok');}catch(e){log(`gh-pages 무시 (main 배포)`,'info');}
+    log(`🚀 빌드 완료 ?v=${nextVer.slice(1)} - 90초 후 새로고침 가능`,'ok');
     history.replaceState(null,'',`?v=${nextVer.slice(1)}`);
+    setTimeout(()=>{ if(confirm(`${nextVer} 배포 완료! 새로고침할까?`)) location.href=`?v=${nextVer.slice(1)}&t=${Date.now()}`; }, 90000);
   }catch(e){log(`빌드 실패 ${e.message}`,'err');}finally{if(btn){btn.disabled=false;btn.textContent='🚀 공용 빌드 + 요약';}}
 }
 const buildBtn=$('buildBtn');if(buildBtn) buildBtn.onclick=pushDual;
@@ -851,7 +798,21 @@ const groqInput=$('groqKeyInput');if(groqInput) groqInput.addEventListener('inpu
 const openInput=$('openaiKeyInput');if(openInput) openInput.addEventListener('input',e=>{try{localStorage.setItem('openai_key',e.target.value.trim());}catch{}updateStorageStatus();});
 const modelInput=$('openaiModelInput');if(modelInput) modelInput.addEventListener('input',e=>{try{localStorage.setItem('openai_model',e.target.value.trim());}catch{}});
 
-async function loadRepos(){try{const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`);const d=await r.json();const s=$('repoSelect');if(!s) return;s.innerHTML='';d.forEach(repo=>{const o=document.createElement('option');o.value=repo.name;o.textContent=`${repo.name}`;if(repo.name===currentRepo) o.selected=true;s.appendChild(o);});log(`레포 ${d.length}개`,'ok');}catch(e){log('레포 로드 실패','err');}}
+async function loadRepos(){
+  try{
+    const headers={}; try{ const pat=localStorage.getItem('github_pat'); if(pat) headers.Authorization=`Bearer ${pat}`; }catch{}
+    const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,{headers});
+    if(!r.ok) throw new Error(r.status);
+    const d=await r.json();
+    const s=$('repoSelect');if(!s) return;s.innerHTML='';
+    d.forEach(repo=>{const o=document.createElement('option');o.value=repo.name;o.textContent=`${repo.name}`;if(repo.name===currentRepo) o.selected=true;s.appendChild(o);});
+    log(`레포 ${d.length}개`,'ok');
+  }catch(e){
+    log(`레포 로드 실패 ${e.message} - 폴백`,'info');
+    const s=$('repoSelect');if(!s) return;s.innerHTML='';
+    ['builder-a4u','sudataxi-k','taxi-dj','greenlight-a25','daily-todo'].forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;if(name===currentRepo) o.selected=true;s.appendChild(o);});
+  }
+}
 const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
 const mainFileInput=$('mainFileInput');if(mainFileInput) mainFileInput.addEventListener('input',e=>{mainFile=e.target.value.trim();try{localStorage.setItem('main_file_'+currentRepo,mainFile);}catch{}});
 async function fetchCode(){
@@ -860,10 +821,10 @@ async function fetchCode(){
     const r=await fetch(url);
     if(!r.ok) throw new Error(r.status);
     const code=await r.text();
-    // v5.3.25 가짜 페이지 가드 - 디자인 유지, 로직만 추가
+    // v5.3.27 가짜 페이지 가드 - 디자인 유지, 로직만 추가
     const isFake = code.length < 10000 || (code.includes('Supabase anon key') && code.includes('GitHub PAT') && code.length < 5000);
     if(isFake){
-      log(`[v5.3.25 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
+      log(`[v5.3.27 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
       robotLog(`[가드] raw ${code.length}자 가짜 차단 - localStorage draft 유지`,'err');
       // localStorage draft 우선 유지
       try{
@@ -900,7 +861,7 @@ async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supab
   if(row.memory_10){
     const memInput=$('memory10');
     if(memInput){
-      // v5.3.25: 다른 프로젝트 기억이 builder로 덮인 오염 체크
+      // v5.3.27: 다른 프로젝트 기억이 builder로 덮인 오염 체크
       const isBuilderMemory = row.memory_10.includes('Builder-a4u') || row.memory_10.includes('builder-a4u');
       const isForThisProject = row.memory_10.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
       // 만약 현재가 builder-a4u가 아닌데 Supabase에 builder 기억이 들어있으면 오염된 것으로 보고 무시
@@ -995,13 +956,13 @@ if(forceResetBtn) forceResetBtn.onclick = async () => {
   await fetchCode();
 };
 
-  log('v5.3.25 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  log('v5.3.27 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
   setTimeout(initTheme,200);
 });
 const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();
-// v5.3.25: 링크 N개 무제한 - 접힘/펼침
+// v5.3.27: 링크 N개 무제한 - 접힘/펼침
 let linksCollapsed = localStorage.getItem('linksCollapsed') === 'true';
 function toggleLinksBox(){
   linksCollapsed = !linksCollapsed;
