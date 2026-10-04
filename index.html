@@ -1,48 +1,82 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+
+/* v5.3.18 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+.dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
+.dark #contextText{color:#e2e8f0 !important}
+.dark #contextBox #contextText{color:#cbd5e1 !important}
+.dark textarea#memory10{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
+.dark textarea#memory10::placeholder{color:#94a3b8 !important}
+/* 노란 링크 박스 - 스크린샷 문제 부분 */
+.dark div[style*="background:#fffbeb"], .dark div[style*="background: #fffbeb"]{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
+.dark #contextBox[style*="fffbeb"]{background:#252a36 !important;color:#e2e8f0 !important}
+/* contextBox 내부 링크 텍스트 */
+.dark #contextBox a{color:#60a5fa !important}
+.dark .p-2.rounded-\[12px\].bg-\[\#fffbeb\]{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
+/* 기억10줄 위 라벨 */
+.dark span.text-\[8px\]{color:#94a3b8 !important;opacity:1 !important}
+.dark .text-\[9px\]{color:#94a3b8 !important}
+
+</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
 <title>Builder-a4u v5.3.18 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-
 <link rel="manifest" href="./manifest.json?v=5.3.18">
-<link rel="shortcut icon" href="./favicon.ico">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-
 <style>
-/* ---------- 1. 폰트 및 기본 변수 ---------- */
-@font-face{
-  font-family:"Optimistic";font-style:normal;font-weight:400 600;font-display:swap;
-  src:url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2")
-}
-@font-face{
-  font-family:"Optimistic Mono";font-style:normal;font-weight:400;font-display:swap;
-  src:url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2")
-}
-:where(html){font-family:"Optimistic",system-ui,sans-serif}
-:where(code,pre,kbd,samp){font-family:"Optimistic Mono",ui-monospace,monospace}
-
-/* ---------- 2. 색상 변수 ---------- */
-:root{
-  --bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;
-  --accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981
-}
+:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
-
-/* ---------- 3. 공통 스타일 ---------- */
-html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{
-  background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;
-  padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-  transition:.2s;font-size:15px;line-height:1.5
-}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%} 
+body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:.2s;font-size:15px;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;transition:.2s}
+.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--bg);display:flex;gap:10px;align-items:center}
+.doc-card input[type=checkbox]{width:20px;height:20px;flex-shrink:0}
 .btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px}
 .btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
 .btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
@@ -71,6 +105,7 @@ body{
 .dark .chat-box{background:#0f1115 !important;border-color:#2a2f3a !important}
 .dark .msg-ai{background:#1a1d24 !important;color:#e2e8f0 !important;border-color:#2a2f3a !important}
 .dark .log{background:#0f1115 !important;color:#cbd5e1 !important;border-color:#2a2f3a !important}
+/* 하얀 배경 버튼 다크모드 강제 수정 - 스크린샷 문제 해결 */
 .dark button[style*="background:#fff"], .dark button[style*="background: #fff"], .dark #saveDraftBtn{background:#252a36 !important;color:#e2e8f0 !important;border:2px solid #3a4152 !important}
 .dark #saveDraftBtn span, .dark #saveDraftBtn{color:#e2e8f0 !important}
 .dark .top-tab{background:#1a1d24 !important;color:#e2e8f0 !important;border-color:#2a2f3a !important}
@@ -81,38 +116,28 @@ body{
 .link-item{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .view-hidden{display:none !important}
 
-/* ---------- 4. 다크 모드 - 중간 노란 박스, 기억10줄 ---------- */
-.dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
-.dark #contextText{color:#e2e8f0 !important}
-.dark #contextBox #contextText{color:#cbd5e1 !important}
-.dark textarea#memory10{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
-.dark textarea#memory10::placeholder{color:#94a3b8 !important}
-.dark div[style*="background:#fffbeb"], .dark div[style*="background: #fffbeb"]{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
-.dark #contextBox[style*="fffbeb"]{background:#252a36 !important;color:#e2e8f0 !important}
-.dark #contextBox a{color:#60a5fa !important}
-.dark .p-2.rounded-[12px].bg-[#fffbeb]{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
-.dark span.text-[8px]{color:#94a3b8 !important;opacity:1 !important}
-.dark .text-[9px]{color:#94a3b8 !important}
-
-/* ---------- 5. 반응형 ---------- */
-@media (max-width:768px){
+/* iPhone 최적화 - 폰트 확대 및 터치 영역 확보 */
+@media (max-width: 768px){
+  /* v5.3.18: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
   .btn{font-size:12.5px;padding:10px 12px;min-height:40px}
   .btn-sm{font-size:11.5px;padding:8px 10px;min-height:34px}
-  .input{font-size:15px !important;padding:12px;min-height:44px}
+  .input{font-size:15px !important;padding:12px;min-height:44px} /* iOS 줌 16px이지만 15px로 타협 - 메타 수준 */
   .textarea{font-size:13.5px !important}
   .chat-box{height:48vh;min-height:360px}
-  .msg{font-size:13.5px !important;line-height:1.5;padding:10px 12px}
+  .msg{font-size:13.5px !important;line-height:1.5;padding:10px 12px} /* 대화창 - 메타 수준 */
   .msg-system{font-size:11.5px}
-  .msg-user,.msg-ai{font-size:13.5px !important}
+  .msg-user{font-size:13.5px !important}
+  .msg-ai{font-size:13.5px !important}
   h1{font-size:17px !important}
   h2{font-size:12.5px !important}
   .log{font-size:10.5px}
   .badge{font-size:9px}
   .doc-card{font-size:12px}
 }
+
 @media (min-width:1024px){
   body{max-width:980px;padding:24px 28px 120px 28px;font-size:15px}
   .chat-box{height:520px}
@@ -125,131 +150,708 @@ body{
 @media (min-width:760px) and (max-width:1023px){
   body{max-width:860px;font-size:15px}
 }
+.view-hidden{display:none !important}
+
+/* v5.3.18 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+.dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
+.dark #contextText{color:#e2e8f0 !important}
+.dark #contextBox #contextText{color:#cbd5e1 !important}
+.dark textarea#memory10{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
+.dark textarea#memory10::placeholder{color:#94a3b8 !important}
+/* 노란 링크 박스 - 스크린샷 문제 부분 */
+.dark div[style*="background:#fffbeb"], .dark div[style*="background: #fffbeb"]{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
+.dark #contextBox[style*="fffbeb"]{background:#252a36 !important;color:#e2e8f0 !important}
+/* contextBox 내부 링크 텍스트 */
+.dark #contextBox a{color:#60a5fa !important}
+.dark .p-2.rounded-\[12px\].bg-\[\#fffbeb\]{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
+/* 기억10줄 위 라벨 */
+.dark span.text-\[8px\]{color:#94a3b8 !important;opacity:1 !important}
+.dark .text-\[9px\]{color:#94a3b8 !important}
+
 </style>
 </head>
-
 <body>
-  <!-- 헤더 + 테마 토글 -->
-  <div class="flex justify-between items-center mb-3">
-    <div>
-      <h1 class="text-[18px] font-black">Builder-a4u v5.3.18</h1>
-      <p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p>
-    </div>
-    <div class="flex gap-2 items-center">
-      <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button>
-      <span class="badge" style="background:#111;color:#fff">v5.3.18</span>
-    </div>
-  </div>
+<div class="flex justify-between items-center mb-3">
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.18</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.3.18</span></div>
+</div>
 
-  <!-- 상단 탭 -->
-  <div class="flex gap-2 mb-3">
-    <button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
-    <button id="topTabSettings" class="top-tab">⚙️ 설정</button>
-  </div>
+<!-- 상단 탭: 작업 / 설정 -->
+<div class="flex gap-2 mb-3">
+<button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
+<button id="topTabSettings" class="top-tab">⚙️ 설정</button>
+</div>
 
-  <!-- 작업 뷰 -->
-  <div id="workspaceView">
-    <!-- 프로젝트 선택 카드 -->
-    <div class="card">
-      <h2 class="font-bold text-[11px] mb-2">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-      <select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 로딩중...</option></select>
-      <div class="flex gap-1 mt-1">
-        <input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동">
-        <button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap" title="GitHub raw에서 진짜 코드 다시 불러오기">📥 GitHub 복구</button>
-        <button id="forceDraftResetBtn" class="btn text-[9px] whitespace-nowrap" title="로컬 draft 비우고 GitHub 최신으로 강제 복구">🔄 강제 복구</button>
-      </div>
-      <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
-      <div class="flex justify-end mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button></div>
-    </div>
+<!-- 작업 뷰 -->
+<div id="workspaceView">
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
+<select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 로딩중...</option></select>
+<div class="flex gap-1 mt-1">
+<input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동">
+<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap" title="GitHub raw에서 진짜 코드 다시 불러오기">📥 GitHub 복구</button>
+<button id="forceDraftResetBtn" class="btn text-[9px] whitespace-nowrap" title="로컬 draft 비우고 GitHub 최신으로 강제 복구">🔄 강제 복구</button>
+</div>
+<textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
+<div class="flex justify-end mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button></div>
+</div>
 
-    <!-- 메인 문서 카드 -->
-    <div class="card">
-      <h2 class="font-bold text-[11px] mb-2">📄 메인 문서 - 계속 업데이트 1개 (체크박스)</h2>
-      <div class="flex gap-2 mb-2">
-        <input id="docSearchInput" class="input text-[12px]" placeholder="제목 검색">
-        <button id="searchExactBtn" class="btn text-[10px]">🔍 Drive에서 찾기</button>
-      </div>
-      <div id="driveResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto"></div>
-    </div>
-  </div>
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">📄 메인 문서 - 계속 업데이트 1개 (체크박스)</h2>
+<div class="flex gap-2 mb-2"><input id="docSearchInput" class="input text-[12px]" placeholder="제목 검색"><button id="searchExactBtn" class="btn text-[10px]">🔍 Drive에서 찾기</button></div>
+<div id="driveResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto hidden" style="border-color:var(--line)"><div id="driveResults"></div><div class="mt-2"><button id="connectCheckedMainBtn" class="btn btn-primary text-[10px] w-full">✅ 체크한 문서 메인으로 연결</button></div></div>
+<div id="connectedDocs" class="mt-2"></div>
+<div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
+</div>
 
-  <!-- 설정 뷰 (숨김) -->
-  <div id="settingsView" class="hidden">
-    <div class="card">
-      <h2 class="font-bold text-[11px] mb-2">⚙️ 설정 (API, 인증 등)</h2>
-      <!-- API 키 입력란은 비활성화 -->
-      <input id="apiKeyInput" class="input mb-2 text-[12px]" placeholder="API 키" disabled>
-      <p class="text-[12px] text-muted mb-2">API 키는 설정 탭에서만 보이도록 비활성화되었습니다.</p>
-      <!-- Draft B 숨김 -->
-      <div id="draftB" class="view-hidden">
-        <p>Draft B 내용 (숨김)</p>
-      </div>
-    </div>
-  </div>
+<div class="card" style="border-color:var(--gemini)">
+<h2 class="font-bold text-[11px] mb-2">🔗 추가 문서 N개 - Drive 체크박스 <span id="linkCount" class="badge ml-2">0개</span></h2>
+<div class="flex gap-2 mb-2"><input id="linkSearchInput" class="input text-[12px]" placeholder="추가 문서 제목"><button id="linkSearchBtn" class="btn text-[10px]">🔍 Drive에서 찾기</button></div>
+<div id="linkSearchResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto hidden" style="border-color:var(--line)"><div id="linkSearchResults"></div><div class="mt-2"><button id="connectCheckedLinksBtn" class="btn btn-gemini text-[10px] w-full">✅ 체크한 문서들 추가 링크로</button></div></div>
+<div id="customLinksList" class="mt-2"></div>
+</div>
 
-  <!-- 스크립트 -->
-  <script>
-    // 테마 토글
-    const themeToggle = document.getElementById('themeToggle');
-    const htmlEl = document.documentElement;
-    themeToggle.addEventListener('click', () => {
-      htmlEl.classList.toggle('dark');
-      themeToggle.textContent = htmlEl.classList.contains('dark') ? '☀️' : '🌙';
-    });
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">🧠 기억 10줄 - 자동 저장/자동 주입 <span id="memoryCount" class="badge ml-2">0줄</span></h2>
+<textarea id="memory10" class="textarea h-[140px]"></textarea>
+<div class="flex justify-between mt-2"><span class="text-[8px] opacity-60">입력 즉시 자동 저장 + 3탭 자동 주입</span><button id="templateBtn" class="btn text-[8px]">📝 템플릿</button></div>
+</div>
 
-    // 탭 전환
-    const topTabWorkspace = document.getElementById('topTabWorkspace');
-    const topTabSettings = document.getElementById('topTabSettings');
-    const workspaceView = document.getElementById('workspaceView');
-    const settingsView = document.getElementById('settingsView');
-    topTabWorkspace.addEventListener('click', () => {
-      topTabWorkspace.classList.add('active');
-      topTabSettings.classList.remove('active');
-      workspaceView.classList.remove('hidden');
-      settingsView.classList.add('hidden');
-    });
-    topTabSettings.addEventListener('click', () => {
-      topTabSettings.classList.add('active');
-      topTabWorkspace.classList.remove('active');
-      settingsView.classList.remove('hidden');
-      workspaceView.classList.add('hidden');
-    });
+<div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (B안)</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
+<div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
+<div class="flex justify-between items-center mb-1"><span class="text-[10px] text-gray-500 dark:text-gray-400">📎 복사될 링크 N개 (raw + Docs + GitHub + 추가 무제한)</span><button id="toggleLinksBtn" onclick="toggleLinksBox()" class="text-[10px] px-2 py-1 rounded bg-gray-100 dark:bg-[#252a36] border">▼ 링크 N개 (무제한) 보기</button></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto" style="background:#fffbeb;border-color:#fde68a"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
+<div id="screenshotPreview" class="hidden card" style="border-color:#f59e0b;background:#fffbeb;padding:8px;margin-bottom:8px;display:none;gap:8px;align-items:center">
+<img id="screenshotImg" style="max-width:120px;max-height:80px;border-radius:8px;border:1px solid #e5e7eb">
+<div class="flex-1"><p class="text-[10px] font-bold">📸 스크린샷 첨부됨</p><p class="text-[9px] opacity-60">Vision이 화면 분석</p></div>
+<button id="removeScreenshotBtn" class="btn text-[9px]">❌ 제거</button>
+</div>
+<div id="chatBox" class="chat-box mb-2" style="position:relative">
+<div id="dropOverlay" class="hidden" style="position:absolute;inset:0;background:rgba(124,58,237,0.1);border:2px dashed #7c3aed;border-radius:14px;display:flex;align-items:center;justify-content:center;z-index:10"><span class="text-[12px] font-black text-[#7c3aed]">📸 드롭!</span></div>
+</div>
+<div class="flex gap-2"><input id="chatInput" class="input flex-1 text-[12px]" placeholder="기능 요청... (Ctrl+V로 스크린샷 붙여넣기)"><button id="chatSendBtn" class="btn btn-primary text-[11px]">전송</button></div>
+<div class="flex gap-2 mt-2"><button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 공용 빌드 + 요약</button><button id="saveDraftBtn" class="btn flex-1 py-3 text-[11px] font-bold" style="background:var(--card);border:2px solid var(--line);color:var(--txt)">💾 현재 draft 저장</button><button id="clearChatBtn" class="btn text-[8px]">초기화</button></div>
+</div>
 
-    // Draft 토글
-    const toggleDraftBtn = document.getElementById('toggleDraftBtn');
-    const codeEditor = document.getElementById('codeEditor');
-    toggleDraftBtn.addEventListener('click', () => {
-      codeEditor.classList.toggle('hidden');
-      toggleDraftBtn.textContent = codeEditor.classList.contains('hidden') ? 'draft 보기 ▼' : 'draft 숨기기 ▲';
-    });
+<div class="card">
+<div class="flex justify-between mb-1"><h2 class="font-bold text-[10px]">📟 로그</h2><button id="clearLogBtn" class="btn text-[8px]">clear</button></div>
+<div id="logArea" class="log"></div><div id="robotLog" class="log mt-2 hidden"></div>
+</div>
+</div>
 
-    // GitHub 복구 (샘플 로직)
-    document.getElementById('fetchMainBtn').addEventListener('click', () => {
-      const repo = document.getElementById('repoSelect').value;
-      const mainFile = document.getElementById('mainFileInput').value || 'main.py';
-      fetch(`https://raw.githubusercontent.com/${repo}/main/${mainFile}`)
-        .then(r => r.text())
-        .then(text => { codeEditor.value = text; codeEditor.classList.remove('hidden'); })
-        .catch(err => alert('GitHub 복구 실패: ' + err));
-    });
+<!-- 설정 뷰 -->
+<div id="settingsView" class="view-hidden">
+<div class="card" style="border-color:var(--accent)">
+<h2 class="font-black text-[13px] mb-3">⚙️ 설정 - 한 번만 설정하면 됨</h2>
+<div class="mb-4">
+<h3 class="font-bold text-[11px] mb-2">🔐 GOOGLE 로그인 (문서 검색용)</h3>
+<button id="googleLoginBtn" class="btn btn-primary w-full text-[11px]">🔐 Google 로그인</button>
+<div id="googleStatus" class="text-[10px] mt-2 opacity-60">GIS 로딩중...</div>
+<div class="text-[9px] mt-1 opacity-60">* 문서 검색/연결할 때만 필요, 채팅은 API 키만 있으면 됨</div>
+</div>
+<div class="border-t pt-4" style="border-color:var(--line)">
+<h3 class="font-bold text-[11px] mb-2">🔑 API 보관소 - 5개 키</h3>
+<div class="grid gap-2 mb-3">
+<div><label class="text-[10px] font-bold">Supabase anon key (기억10줄 백업용)</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ... / sb_publishable_..."></div>
+<div><label class="text-[10px] font-bold">GitHub PAT (빌드 Push용 - repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_..."></div>
+<div><label class="text-[10px] font-bold">Gemini Key (제미나이 검증 - 무료)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio에서 발급"></div>
+<div><label class="text-[10px] font-bold">Groq Key (메타 생성 - 무료, llama-3.3)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="console.groq.com/keys"></div>
+<div><label class="text-[10px] font-bold">OpenAI Key (GPT 검수 - 4000토큰 4원)</label><input id="openaiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="sk-proj-..."></div>
+<div><label class="text-[10px] font-bold">OpenAI 모델</label><input id="openaiModelInput" class="input text-[9px] mt-1" value="gpt-4o-mini"></div>
+</div>
+<div class="text-[9px] opacity-60 leading-[1.4]">* 모든 키는 네 브라우저 localStorage에만 저장, 서버에 안 올라감<br>* Supabase key는 기억10줄 자동 백업용으로만 사용<br>* Groq + Gemini 2개만 넣어도 무료로 메타→제미나이 파이프라인 테스트 가능</div>
+</div>
+<div class="border-t pt-4 mt-4" style="border-color:var(--line)">
+<h3 class="font-bold text-[11px] mb-2">🎨 테마 / 기타</h3>
+<div class="flex gap-2 mb-2"><button id="settingsThemeToggle" class="btn w-[36px] h-[36px] p-0 flex items-center justify-center text-[16px] rounded-full" title="주야간 전환">🌙</button><button id="exportSettingsBtn" class="btn text-[10px]">📤 설정 내보내기</button><button id="importSettingsBtn" class="btn text-[10px]">📥 가져오기</button></div>
+<div id="settingsStatus" class="text-[10px] opacity-60">설정 상태 확인중...</div>
+</div>
+</div>
 
-    // 강제 복구 (샘플 로직)
-    document.getElementById('forceDraftResetBtn').addEventListener('click', () => {
-      localStorage.removeItem('draft');
-      alert('로컬 draft 삭제 후 최신 GitHub 코드 로드 중...');
-      // 재로드 로직 추가 가능
-    });
-  </script>
+<div class="card">
+<h3 class="font-bold text-[11px] mb-2">📊 저장 상태</h3>
+<div id="storageStatus" class="text-[10px] leading-[1.6] opacity-80"></div>
+</div>
+</div>
 
-  <!-- Service Worker 등록 (PWA) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js?v=5.3.18')
-          .then(reg => console.log('ServiceWorker 등록 완료:', reg.scope))
-          .catch(err => console.error('ServiceWorker 등록 실패:', err));
+<div class="text-[8px] text-center opacity-60 mt-4">v5.3.18 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.3.18</div>
+
+<script>
+const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
+let accessToken='';try{accessToken=localStorage.getItem('google_access_token')||'';}catch{}let currentRepo='builder-a4u';try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}let mainFile='index.html';try{mainFile=localStorage.getItem('main_file_'+currentRepo)||'index.html';}catch{}let connectedDocs=[];try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{}let customLinks=[];try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{}let draftCode='';try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{}let currentTab='meta';try{currentTab=localStorage.getItem('current_tab_'+currentRepo)||'meta';}catch{}let chats={meta:[],gemini:[],gpt:[]};try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}let tempMainResults=[];let tempLinkResults=[];let topView='workspace';
+const $=id=>document.getElementById(id);
+function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML=`<span style="opacity:.6">${time}</span> ${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;a.appendChild(d);a.scrollTop=a.scrollHeight;}
+function robotLog(m,t='info'){const b=$('robotLog');if(!b) return;b.classList.remove('hidden');const d=document.createElement('div');d.innerHTML=`${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;b.appendChild(d);b.scrollTop=b.scrollHeight;log(m,t);}
+function setTheme(th){const html=document.documentElement;if(th==='dark'){html.classList.add('dark');}else{html.classList.remove('dark');}try{localStorage.setItem('theme',th);}catch{}const btns=[$('themeToggle'),$('settingsThemeToggle')];btns.forEach(btn=>{if(btn){btn.textContent=th==='dark'?'☀️':'🌙'; btn.title=th==='dark'?'라이트모드로 전환':'다크모드로 전환';}});log(`${th==='dark'?'다크모드 ON':'라이트모드 ON'} ${th}`,'ok');updateStorageStatus();}
+function initTheme(){let saved=null;try{saved=localStorage.getItem('theme');}catch{}let th=saved;if(!th){try{th=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch{th='light';}}setTheme(th);}
+function switchTopView(view){topView=view;const ws=$('workspaceView');const st=$('settingsView');const btnW=$('topTabWorkspace');const btnS=$('topTabSettings');if(view==='workspace'){ws.classList.remove('view-hidden');st.classList.add('view-hidden');btnW.classList.add('active');btnS.classList.remove('active');}else{ws.classList.add('view-hidden');st.classList.remove('view-hidden');btnW.classList.remove('active');btnS.classList.add('active');updateStorageStatus();}try{localStorage.setItem('top_view',view);}catch{}}
+$('topTabWorkspace').onclick=()=>switchTopView('workspace');$('topTabSettings').onclick=()=>switchTopView('settings');
+$('themeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
+$('settingsThemeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
+function updateStorageStatus(){const el=$('storageStatus');if(!el) return;let html='';try{const keys=['google_access_token','current_repo','supabase_anon_key','github_pat','gemini_key','groq_key','openai_key'];keys.forEach(k=>{const v=localStorage.getItem(k);html+=`${k}: ${v?`✅ ${v.slice(0,8)}... (${v.length}자)`:'❌ 없음'}<br>`;});html+=`<br>connected_docs_${currentRepo}: ${localStorage.getItem('connected_docs_'+currentRepo)?'✅ 있음':'❌ 없음'}<br>`;html+=`customLinks_${currentRepo}: ${localStorage.getItem('customLinks_'+currentRepo)?JSON.parse(localStorage.getItem('customLinks_'+currentRepo)).length+'개':'0개'}<br>`;html+=`draft_code_${currentRepo}: ${localStorage.getItem('draft_code_'+currentRepo)?localStorage.getItem('draft_code_'+currentRepo).length+'자':'0자'}<br>`;html+=`theme: ${localStorage.getItem('theme')||'light'}<br>`;html+=`top_view: ${topView}`;}catch(e){html=`오류 ${e.message}`;}el.innerHTML=html;const s2=$('settingsStatus');if(s2){const hasGroq=(()=>{try{return !!localStorage.getItem('groq_key');}catch{return false;}})();const hasGemini=(()=>{try{return !!localStorage.getItem('gemini_key');}catch{return false;}})();const hasOpenAI=(()=>{try{return !!localStorage.getItem('openai_key');}catch{return false;}})();s2.innerHTML=`채팅 가능 여부: 메타(🟣 Groq) ${hasGroq?'✅':'❌'} / 제미나이(🔵) ${hasGemini?'✅':'❌'} / GPT(🟢) ${hasOpenAI?'✅':'❌'}<br>무료 테스트는 Groq+Gemini 2개만 넣으면 OK`;}
+}
+$('exportSettingsBtn').onclick=()=>{try{const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.includes('_key')||k.includes('_pat')||k.includes('anon_key')) data[k]=localStorage.getItem(k);}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`builder-a4u-settings-${new Date().toISOString().slice(0,10)}.json`;a.click();log('설정 내보내기 완료','ok');}catch(e){log('내보내기 실패','err');}};
+$('importSettingsBtn').onclick=()=>{const input=document.createElement('input');input.type='file';input.accept='.json';input.onchange=e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);Object.entries(data).forEach(([k,v])=>{try{localStorage.setItem(k,v);}catch{}});log('설정 가져오기 완료 - 새로고침','ok');setTimeout(()=>location.reload(),1000);}catch{log('가져오기 실패','err');}};reader.readAsText(file);};input.click();};
+
+function inferMainFile(r){const s=r.toLowerCase();if(s.includes('daily-todo')||s.includes('todo')) return 'src/App.jsx';return 'index.html';}
+function getTemplate(){const d=new Date().toLocaleDateString();return `1.프로젝트: Builder-a4u v5.3.7\n2.목적: 설정탭 분리 + 작업창 깔끔\n3.현재: v5.3.7 - 설정탭에 API 5개 + 구글 로그인 이동, 작업탭은 프로젝트+문서+기억+채팅만\n4.다음: ?v=5.3.18 배포\n5.결정: 설정탭 분리, B안 draft 숨김\n6.제외: 작업창 API 노출\n7.저장: Supabase+Docs+GitHub\n8.버그: 다크모드 class 수정\n9.모드: 빌드모드\n10.상태: v5.3.18 ${d}`;}
+function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
+function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크 N개]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
+function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
+function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
+// v5.3.18 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
+
+// v5.3.18: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
+let lastSummaryAt = 0;
+async function incrementalSummarize(force=false){
+  const all = chats[currentTab]||[];
+  if(!force && all.length < 10) return;
+  if(!force && all.length - lastSummaryAt < 10) return; // 10개마다
+  if(all.length === lastSummaryAt && !force) return;
+  const toSummarize = all.slice(-20); // 최근 20개로 요약
+  const textToSum = toSummarize.map(m=>`${m.role}: ${m.content.slice(0,300)}`).join('\n');
+  let summaryText = '';
+  // Gemini API 있으면 진짜 요약
+  try{
+    const geminiKey = localStorage.getItem('gemini_api_key') || localStorage.getItem('GEMINI_API_KEY');
+    if(geminiKey){
+      log('🤖 증분 요약 중... (Gemini)', 'info');
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({contents:[{parts:[{text:`다음 대화를 10줄 기억팩으로 압축해줘. 형식: 1.프로젝트 2.목적 3.현재 4.다음 5.결정 6.제외 7.저장 8.버그 9.모드 10.상태\n\n${textToSum}`}]}]})
       });
+      const data = await res.json();
+      summaryText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-  </script>
-</body>
+  }catch(e){ console.log('gemini summary fail', e); }
+  if(!summaryText){
+    // 로컬 fallback 요약
+    const keywords = [...new Set(toSummarize.flatMap(m=>m.content.split(/\s+/).filter(w=>w.length>2)).slice(-30))].slice(0,10).join(', ');
+    summaryText = `-요약: 최근 대화 ${toSummarize.length}개, 키워드: ${keywords}`;
+  }
+  if(summaryText){
+    lastSummaryAt = all.length;
+    // memory10에 추가
+    const memEl = document.getElementById('memory10');
+    if(memEl && summaryText.length > 20){
+      // 기존 memory10에 요약 줄 추가 (중복 방지)
+      if(!memEl.value.includes(summaryText.slice(0,20))){
+        memEl.value = memEl.value + '\n' + summaryText.slice(0,500);
+        try{localStorage.setItem('memory10_'+currentRepo, memEl.value);}catch{}
+        // Supabase 자동 저장 시도
+        if(typeof saveToSupabase === 'function') saveToSupabase(false);
+      }
+    }
+    log(`✨ 증분 요약 완료 (${all.length}개 중 최근 20개)`, 'ok');
+    // chatStore summary 갱신
+    try{
+      const storeKey = 'chatStore_'+currentRepo;
+      let store = {};
+      try{ store = JSON.parse(localStorage.getItem(storeKey)||'{}'); }catch{}
+      if(!store[currentTab]) store[currentTab] = {memory10:'', summary:'', recent:[], archive:[]};
+      store[currentTab].summary = summaryText.slice(0,500);
+      store[currentTab].recent = all.slice(-20);
+      localStorage.setItem(storeKey, JSON.stringify(store));
+    }catch{}
+  }
+}
+
+// 자동 주입: 레포 선택 시 memory10 + summary + 최근 20개 + 링크 N개를 3탭 채팅에 자동 주입
+async function triggerSummaryOnBuild(){ await incrementalSummarize(true); }
+function autoInjectOnRepoSelect(){
+  try{
+    const mem = document.getElementById('memory10')?.value || '';
+    const linksBox = document.getElementById('contextBox')?.innerText || '';
+    const storeKey = 'chatStore_'+currentRepo;
+    let store = {};
+    try{ store = JSON.parse(localStorage.getItem(storeKey)||'{}'); }catch{}
+    const tabData = store[currentTab] || {};
+    const summary = tabData.summary || '';
+    const recent = tabData.recent || (chats[currentTab]||[]).slice(-5);
+    const injectText = `[자동 주입]\n[기억 10줄]\n${mem}\n\n[요약]\n${summary}\n\n[링크 N개]\n${linksBox}\n\n[최근 대화 5개]\n${recent.map(m=>`${m.role}: ${m.content.slice(0,200)}`).join('\n')}`;
+    // 채팅창에 시스템 메시지로 주입 (AI가 바로 읽을 수 있게)
+    if(chats[currentTab] && chats[currentTab].length === 0){
+      chats[currentTab].push({role:'system', content: injectText});
+      saveChats(); renderChats();
+      log('🔄 자동 주입 완료 - 10줄+링크N개+최근대화', 'ok');
+    }
+  }catch(e){ console.log('autoInject fail', e); }
+}
+
+
+
+// v5.3.18: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
+// - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다
+const ORIGINAL_WINDOW = 20;
+
+const CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만
+const CHAT_SUMMARY_THRESHOLD = 15; // v5.3.18: 30→15, 실제 빌드는 10~15번 대화가 많음
+let chatArchive = {}; // {tab: [older messages]}
+
+function getChatArchiveKey(){return `chat_archive_${currentRepo}_${currentTab}`;}
+function loadArchive(){
+  try{
+    const raw = localStorage.getItem(getChatArchiveKey());
+    if(raw) chatArchive[currentTab] = JSON.parse(raw);
+  }catch{ chatArchive[currentTab] = []; }
+  if(!chatArchive[currentTab]) chatArchive[currentTab]=[];
+}
+function saveArchive(){
+  try{localStorage.setItem(getChatArchiveKey(), JSON.stringify(chatArchive[currentTab]||[]));}catch{}
+}
+function maybeSummarize(){
+  const arr = chats[currentTab]||[];
+  if(arr.length <= CHAT_SUMMARY_THRESHOLD) return;
+  // 오래된 것 아카이브로 이동, 최근 20개만 유지
+  loadArchive();
+  const toArchive = arr.splice(0, arr.length - CHAT_WINDOW);
+  chatArchive[currentTab] = (chatArchive[currentTab]||[]).concat(toArchive);
+  // 최대 200개까지만 보관
+  if(chatArchive[currentTab].length > 200) chatArchive[currentTab] = chatArchive[currentTab].slice(-200);
+  saveArchive();
+  chats[currentTab] = arr;
+  saveChats();
+  log(`[최적화] ${toArchive.length}개 아카이브 이동 - 화면 ${CHAT_WINDOW}개 유지`,'info');
+  // 기억 10줄 자동 요약 트리거 (간단 요약)
+  try{
+    const memEl=$('memory10');
+    if(memEl && toArchive.length>0){
+      const last = toArchive.slice(-5).map(m=>m.content.slice(0,80)).join(' / ');
+      if(memEl.value.length < 2000){
+        memEl.value += `\n-요약: ${new Date().toLocaleDateString()} ${currentTab} ${toArchive.length}개 대화 압축`;
+        updateMemoryCount();
+      }
+    }
+  }catch{}
+}
+
+function renderChats(){
+  loadArchive();
+  const box=$('chatBox');if(!box) return;
+  box.innerHTML='';
+  const all = chats[currentTab]||[];
+  const archivedCount = (chatArchive[currentTab]||[]).length;
+  // 아카이브 배너
+  if(archivedCount>0){
+    const banner=document.createElement('div');
+    banner.className='msg msg-system';
+    banner.innerHTML=`📦 아카이브 ${archivedCount}개 - <button onclick="loadMoreChats()" class="btn btn-sm" style="margin-left:6px">이전 ${CHAT_WINDOW}개 불러오기</button> <button onclick="clearArchive()" class="btn btn-sm">아카이브 비우기</button>`;
+    box.appendChild(banner);
+  }
+  // 가상 윈도우: 최근 CHAT_WINDOW만 렌더
+  const toRender = all.slice(-CHAT_WINDOW);
+  const frag=document.createDocumentFragment();
+  toRender.forEach(m=>{
+    const d=document.createElement('div');
+    d.className='msg '+(m.role==='user'?'msg-user':'msg-ai');
+    d.textContent=m.content;
+    frag.appendChild(d);
+  });
+  box.appendChild(frag);
+  box.scrollTop=box.scrollHeight;
+  const badge=$('chatCountBadge');
+  if(badge) badge.textContent=`${all.length}개 (화면 ${toRender.length}/${all.length})${archivedCount?` + 아카이브 ${archivedCount}`:''}`;
+  const lbl=$('currentTabLabel');
+  if(lbl){lbl.textContent={meta:'메타',gemini:'제미나이',gpt:'GPT'}[currentTab];lbl.style.background={meta:'var(--meta)',gemini:'var(--gemini)',gpt:'var(--gpt)'}[currentTab];}
+  renderContext();
+}
+function loadMoreChats(){
+  loadArchive();
+  const archive = chatArchive[currentTab]||[];
+  if(archive.length===0) return;
+  const take = archive.splice(-CHAT_WINDOW);
+  chats[currentTab] = take.concat(chats[currentTab]||[]);
+  saveArchive(); saveChats(); renderChats();
+  log(`이전 ${take.length}개 복원`,'ok');
+}
+function clearArchive(){
+  if(!confirm('아카이브 전체 삭제?')) return;
+  chatArchive[currentTab]=[];
+  saveArchive(); renderChats();
+  log('아카이브 비움','ok');
+}
+
+function switchTab(tab){currentTab=tab;loadArchive();document.querySelectorAll('[id^=tab]').forEach(b=>b.classList.remove('tab-active'));const el=$(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`);if(el) el.classList.add('tab-active');try{localStorage.setItem('current_tab_'+currentRepo,tab);}catch{}renderChats();}
+const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
+const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
+const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
+function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}
+// v5.3.18: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
+if(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도
+}
+function extractCode(t){const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i);return m?m[1].trim():null;}
+
+let pendingScreenshot=null;
+function compressImage(file){
+  return new Promise((resolve)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        let w=img.width, h=img.height;
+        const max=1024;
+        if(w>max || h>max){
+          if(w>h){h=h*max/w; w=max;} else {w=w*max/h; h=max;}
+        }
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        const dataUrl=canvas.toDataURL('image/jpeg',0.75);
+        const base64=dataUrl.split(',')[1];
+        resolve({base64, mime:'image/jpeg', dataUrl});
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function handleImageFile(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  log(`📸 이미지 처리중... ${Math.round(file.size/1024)}KB`,'info');
+  const compressed=await compressImage(file);
+  pendingScreenshot=compressed;
+  const preview=document.getElementById('screenshotPreview');
+  const imgEl=document.getElementById('screenshotImg');
+  if(preview && imgEl){
+    imgEl.src=compressed.dataUrl;
+    preview.classList.remove('hidden');
+    preview.style.display='flex';
+  }
+  log(`📸 스크린샷 첨부됨`,'ok');
+}
+function clearScreenshot(){
+  pendingScreenshot=null;
+  const preview=document.getElementById('screenshotPreview');
+  if(preview){preview.classList.add('hidden'); preview.style.display='none';}
+}
+async function callGemini(p, imageBase64=null, imageMime=null){
+  const k=(()=>{try{return localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim();}catch{return $('geminiKeyInput').value.trim();}})();
+  if(!k) throw new Error('Gemini Key 없음 - 설정탭에서 넣어줘');
+  const models=[
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.1-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
+  ];
+  let lastErr='';
+  for(const model of models){
+    try{
+      log(`Gemini ${model} 시도...`,'info');
+      let body;
+      if(imageBase64){
+        body={contents:[{parts:[{text:p},{inline_data:{mime_type:imageMime||'image/jpeg',data:imageBase64}}]}]};
+      } else {
+        body={contents:[{parts:[{text:p}]}]};
+      }
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(!r.ok){
+        const txt=await r.text();
+        lastErr=txt.slice(0,500);
+        if(r.status===404 || txt.toLowerCase().includes('not found') || txt.toLowerCase().includes('not supported')){
+          log(`Gemini ${model} 404 - 다음 모델 시도`,'info');
+          continue;
+        }
+        throw new Error(`Gemini ${r.status} ${txt.slice(0,300)}`);
+      }
+      const d=await r.json();
+      const out=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+      if(out){log(`Gemini ${model} 성공`,'ok'); return out;}
+    }catch(e){
+      lastErr=e.message;
+      continue;
+    }
+  }
+  throw new Error(`Gemini 전부 실패. 마지막: ${lastErr.slice(0,500)}`);
+}
+async function callGroq(p, imageBase64=null, imageMime=null){
+  const k=(()=>{try{return localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();}catch{return $('groqKeyInput').value.trim();}})();
+  if(!k) throw new Error('Groq Key 없음 - 설정탭에서 넣어줘');
+  const models=[
+    'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
+    'meta-llama/llama-4-maverick-17b-128e-instruct',
+    'meta-llama/llama-4-scout-17b-16e-instruct',
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant'
+  ];
+  let lastErr='';
+  for(const model of models){
+    try{
+      log(`Groq ${model} 시도...`,'info');
+      let messages;
+      if(imageBase64 && model.includes('llama-4')){
+        messages=[{role:'user',content:[{type:'text',text:p},{type:'image_url',image_url:{url:`data:${imageMime||'image/jpeg'};base64,${imageBase64}`}}]}];
+      } else {
+        messages=[{role:'user',content:p}];
+      }
+      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages,temperature:0.7,max_tokens:8000})});
+      if(!r.ok){
+        const txt=await r.text();
+        lastErr=txt.slice(0,400);
+        if(r.status===404 || txt.toLowerCase().includes('model') || txt.includes('decommissioned') || txt.includes('does not exist')){
+          log(`Groq ${model} 404/decommissioned - 다음 모델 시도`,'info');
+          continue;
+        }
+        throw new Error(`Groq ${r.status} ${txt.slice(0,300)}`);
+      }
+      const d=await r.json();
+      const out=d.choices?.[0]?.message?.content||'';
+      if(out){log(`Groq ${model} 성공`,'ok'); return out;}
+    }catch(e){
+      lastErr=e.message;
+      continue;
+    }
+  }
+  throw new Error(`Groq 전부 실패. 마지막: ${lastErr.slice(0,400)}`);
+}
+async function callOpenAI(p){const k=(()=>{try{return localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim();}catch{return $('openaiKeyInput').value.trim();}})();if(!k) throw new Error('OpenAI Key 없음 - 설정탭에서 넣어줘');const model=$('openaiModelInput').value.trim()||'gpt-4o-mini';const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages:[{role:'user',content:p}],temperature:0.5,max_tokens:2000})});if(!r.ok) throw new Error('OpenAI '+r.status);const d=await r.json();return d.choices?.[0]?.message?.content||'';}
+async function sendChat(){const input=$('chatInput');if(!input) return;const text=input.value.trim();if(!text) return;const system=buildSystemPrompt(currentTab);const full=`${system}\n\n[사용자]\n${text}`;chats[currentTab].push({role:'user',content:text});maybeSummarize();renderChats();input.value='';if(text.includes('빌드해줘')||text.includes('확정')){log('빌드 트리거','info');setTimeout(()=>pushDual(),600);}try{log(`${currentTab} 호출중...`,'info');let reply='';if(currentTab==='meta') reply=await callGroq(full);else if(currentTab==='gemini') reply=await callGemini(full);else reply=await callOpenAI(full);chats[currentTab].push({role:'ai',content:reply});maybeSummarize();saveChats();renderChats();const code=extractCode(reply);
+  if(code){
+    if(code.length < 10000 && draftCode && draftCode.length > 20000){
+      // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
+      log(`[v5.3.18] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
+      // 대신 채팅에만 표시하고 draft는 유지
+    } else {
+      draftCode=code;
+      updateDraftStatus();
+      log(`코드 감지 ${code.length}자`,'ok');
+    }
+  }log(`${currentTab} 완료`,'ok');}catch(e){chats[currentTab].push({role:'ai',content:`❌ ${e.message}\n설정탭에서 API 키 확인해줘`});saveChats();renderChats();log(e.message,'err');}}
+const sendBtn=$('chatSendBtn');if(sendBtn) sendBtn.onclick=sendChat;
+const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendChat();});
+const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
+const saveDraftBtn=$('saveDraftBtn');
+if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
+  // v5.3.18: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
+  let finalCode = draftCode;
+  const editorVal = document.getElementById('codeEditor')?.value || '';
+  const memory10 = document.getElementById('memory10')?.value || '';
+  const linksText = buildLinksText();
+  
+  // 1. 현재 GitHub main 전체 코드를 기준으로 유지 (가장 안전)
+  try{
+    const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;
+    const r=await fetch(url);
+    if(r.ok){
+      const fullMain = await r.text();
+      if(fullMain.length > 10000){
+        // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지
+        if(!finalCode || finalCode.length < 10000){
+          log(`[v5.3.18] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
+          finalCode = fullMain;
+          draftCode = finalCode;
+        } else {
+          // 이미 전체 코드면 그대로
+          finalCode = draftCode;
+        }
+      }
+    }
+  }catch(e){ log(`GitHub full load 실패 ${e.message} - 로컬 draft 유지`,'info'); }
+
+  if(!finalCode){log('저장할 draft 없음 - GitHub 복구 먼저','err'); return;}
+  
+  // 3. 문서+링크 읽어서 기억에 반영은 하되, 코드는 전체 유지
+  if(finalCode.length < 500){log('draft 너무 짧음 - 전체 코드 유지 필요','err'); return;}
+  
+  try{localStorage.setItem('draft_code_'+currentRepo, finalCode);}catch{}
+  draftCode = finalCode;
+  updateDraftStatus();
+  saveToSupabase(false);
+  
+  const promptText=`💾 전체 코드 draft 저장 (${finalCode.length}자) - 문서+링크 기반 전체 보존`;
+  chats[currentTab].push({role:'user',content:promptText});
+  chats[currentTab].push({role:'ai',content:`✅ 전체 코드 draft 저장 완료! ${finalCode.length}자
+- 문서/링크 읽어서 전체 코드 보존 (스니펫은 버리고 전체 유지)
+- localStorage: draft_code_${currentRepo}
+- memory10: ${memory10.length}자 포함
+- 링크: ${linksText.split('\n').length}개
+- Supabase 백업 시도
+- GitHub 반영은 공용 빌드 버튼`});
+  saveChats(); renderChats();
+  log(`💾 전체 draft 저장 ${finalCode.length}자 - 문서+링크 기반`,'ok');
+};
+const chatBoxEl=$('chatBox');
+const dropOverlay=$('dropOverlay');
+if(chatBoxEl){
+  chatBoxEl.addEventListener('dragover',e=>{e.preventDefault(); if(dropOverlay){dropOverlay.classList.remove('hidden'); dropOverlay.style.display='flex';}});
+  chatBoxEl.addEventListener('dragleave',e=>{if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}});
+  chatBoxEl.addEventListener('drop',async e=>{
+    e.preventDefault();
+    if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}
+    const files=e.dataTransfer?.files;
+    if(files && files[0]) await handleImageFile(files[0]);
+  });
+}
+document.addEventListener('paste',async e=>{
+  const items=e.clipboardData?.items;
+  if(!items) return;
+  for(const item of items){
+    if(item.type.startsWith('image/')){
+      e.preventDefault();
+      const file=item.getAsFile();
+      if(file) await handleImageFile(file);
+      break;
+    }
+  }
+});
+const removeBtn=$('removeScreenshotBtn');
+if(removeBtn) removeBtn.onclick=()=>clearScreenshot();
+
+const toggleBtn=$('toggleDraftBtn');if(toggleBtn) toggleBtn.onclick=()=>{const ed=$('codeEditor');if(ed){ed.classList.toggle('hidden');toggleBtn.textContent=ed.classList.contains('hidden')?'draft 보기 ▼':'draft 숨기기 ▲';}};
+
+async function pushToBranch(branch,code){
+  let pat='';
+  try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}
+  if(!pat) throw new Error('PAT 없음 - 설정탭');
+  const url=`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${mainFile}`;
+  let sha=null;
+  try{
+    const gr=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`}});
+    if(gr.ok){const j=await gr.json(); sha=j.sha;}
+    else if(gr.status===404 && branch==='gh-pages'){
+      log(`gh-pages 브랜치 없음 - main에서 생성 시도`,'info');
+      // Try to get main sha and create gh-pages branch via ref API
+      try{
+        const mainRefRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs/heads/main`,{headers:{Authorization:`Bearer ${pat}`}});
+        if(mainRefRes.ok){
+          const mainRef=await mainRefRes.json();
+          const createRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs`,{method:'POST',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify({ref:`refs/heads/${branch}`,sha:mainRef.object.sha})});
+          if(createRes.ok){log(`gh-pages 브랜치 생성 성공`,'ok');}
+          else{const t=await createRes.text(); log(`gh-pages 생성 실패 ${createRes.status} ${t.slice(0,200)}`,'info');}
+        }
+      }catch(e){log(`gh-pages 생성 중 오류 ${e.message}`,'info');}
+    }
+  }catch{}
+  const body={message:`v5.3.7 ${branch} ${new Date().toISOString()}`,content:btoa(unescape(encodeURIComponent(code))),branch};
+  if(sha) body.sha=sha;
+  const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok){
+    const txt=await res.text();
+    if(branch==='gh-pages'){
+      // gh-pages 실패해도 main 성공이면 사이트는 main으로 배포 가능하므로 경고만
+      log(`⚠️ gh-pages 실패 ${res.status}: ${txt.slice(0,200)} - Settings > Pages > Source를 main으로 바꾸면 해결됨`,'info');
+      throw new Error(`gh-pages 실패 ${res.status} (무시 가능): ${txt.slice(0,300)} | 해결: GitHub repo Settings > Pages > Build and deployment > Source를 'Deploy from a branch' + Branch: main / root 로 변경하면 main만으로 사이트 배포됨. 지금 main 1ed7b6e는 성공했으므로 빌드는 완료됨.`);
+    }
+    throw new Error(txt);
+  }
+  return (await res.json()).commit.sha;
+}
+async function pushDual(){let pat='';try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}if(!pat){log('PAT 없음 - 설정탭에서 넣어줘','err');return;}if(!draftCode){log('draft 없음','err');return;}if(draftCode.length < 10000){log(`[v5.3.18 가드] draft ${draftCode.length}자 너무 짧음 - 푸시 차단 (가짜)`,'err');alert('draftCode가 너무 짧습니다. 가짜 페이지입니다. 복구 푸셔로 main을 먼저 복구하거나, 에디터에 진짜 빌더 코드를 로드하세요.');return;}if(draftCode.includes('Supabase anon key') && draftCode.includes('GitHub PAT') && draftCode.length < 5000){log('[가드] 가짜 키 목록 페이지 - 푸시 차단','err');return;}const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}try{await saveToSupabase(true);robotLog('Supabase 저장','ok');for(const doc of connectedDocs){await appendDoc(doc.id,`\n\n[v5.3.7 ${new Date().toLocaleString()}]\n`);}const s1=await pushToBranch('main',draftCode);robotLog(`main ${s1.slice(0,7)}`,'ok');try{const s2=await pushToBranch('gh-pages',draftCode);robotLog(`gh-pages ${s2.slice(0,7)}`,'ok');}catch(e){robotLog(`gh-pages 실패`,'err');}log(`🚀 빌드 완료 ?v=5.3.18`,'ok');}catch(e){log(`빌드 실패 ${e.message}`,'err');}finally{if(btn){btn.disabled=false;btn.textContent='🚀 공용 빌드 + 요약';}}}
+const buildBtn=$('buildBtn');if(buildBtn) buildBtn.onclick=pushDual;
+function updateMemoryCount(){const memEl=$('memory10');if(!memEl) return;const v=memEl.value;const l=v.split('\n').filter(x=>x.trim()).length;const mc=$('memoryCount');if(mc) mc.textContent=`${l}줄`;try{localStorage.setItem('memory_10_'+currentRepo,v);}catch{}renderContext();}
+let saveTimeout=null;const memEl=$('memory10');if(memEl) memEl.addEventListener('input',()=>{updateMemoryCount();clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});
+const tmplBtn=$('templateBtn');if(tmplBtn) tmplBtn.onclick=()=>{const el=$('memory10');if(el){el.value=getTemplate();updateMemoryCount();saveToSupabase(true);}};
+const sbInput=$('supabaseKeyInput');if(sbInput) sbInput.addEventListener('input',e=>{try{localStorage.setItem('supabase_anon_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const ghInput=$('githubPatInput');if(ghInput) ghInput.addEventListener('input',e=>{try{localStorage.setItem('github_pat',e.target.value.trim());}catch{}updateStorageStatus();});
+const gemInput=$('geminiKeyInput');if(gemInput) gemInput.addEventListener('input',e=>{try{localStorage.setItem('gemini_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const groqInput=$('groqKeyInput');if(groqInput) groqInput.addEventListener('input',e=>{try{localStorage.setItem('groq_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const openInput=$('openaiKeyInput');if(openInput) openInput.addEventListener('input',e=>{try{localStorage.setItem('openai_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const modelInput=$('openaiModelInput');if(modelInput) modelInput.addEventListener('input',e=>{try{localStorage.setItem('openai_model',e.target.value.trim());}catch{}});
+
+async function loadRepos(){try{const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`);const d=await r.json();const s=$('repoSelect');if(!s) return;s.innerHTML='';d.forEach(repo=>{const o=document.createElement('option');o.value=repo.name;o.textContent=`${repo.name}`;if(repo.name===currentRepo) o.selected=true;s.appendChild(o);});log(`레포 ${d.length}개`,'ok');}catch(e){log('레포 로드 실패','err');}}
+const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
+const mainFileInput=$('mainFileInput');if(mainFileInput) mainFileInput.addEventListener('input',e=>{mainFile=e.target.value.trim();try{localStorage.setItem('main_file_'+currentRepo,mainFile);}catch{}});
+async function fetchCode(){
+  try{
+    const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;
+    const r=await fetch(url);
+    if(!r.ok) throw new Error(r.status);
+    const code=await r.text();
+    // v5.3.18 가짜 페이지 가드 - 디자인 유지, 로직만 추가
+    const isFake = code.length < 10000 || (code.includes('Supabase anon key') && code.includes('GitHub PAT') && code.length < 5000);
+    if(isFake){
+      log(`[v5.3.18 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
+      robotLog(`[가드] raw ${code.length}자 가짜 차단 - localStorage draft 유지`,'err');
+      // localStorage draft 우선 유지
+      try{
+        const localDraft = localStorage.getItem('draft_code_'+currentRepo);
+        if(localDraft && localDraft.length > 10000){
+          log(`로컬 draft 복원 ${localDraft.length}자`,'ok');
+        }
+      }catch{}
+      return;
+    }
+    draftCode=code;
+    updateDraftStatus();
+    log(`코드 로드 ${code.length}자`,'ok');
+    renderContext();
+  }catch(e){log(`코드 로드 실패 ${e.message}`,'info');}
+}
+function renderConnectedDocs(){const box=$('connectedDocs');if(!box) return;box.innerHTML='';connectedDocs.forEach((doc,i)=>{const div=document.createElement('div');div.className='doc-card';div.innerHTML=`<input type="checkbox" checked disabled><div class="doc-info"><div class="font-bold text-[11px]">📄 ${doc.title.slice(0,40)}</div></div><div class="flex gap-1"><button class="btn btn-sm open-doc" data-i="${i}">열기</button><button class="btn btn-sm preview-doc" data-i="${i}">불러오기</button><button class="btn btn-sm text-red-600 remove-doc" data-i="${i}">해제</button></div>`;box.appendChild(div);});box.querySelectorAll('.open-doc').forEach(b=>b.onclick=()=>{window.open(`https://docs.google.com/document/d/${connectedDocs[b.dataset.i].id}/edit`,'_blank');});box.querySelectorAll('.preview-doc').forEach(b=>b.onclick=async()=>{await previewDoc(connectedDocs[b.dataset.i].id);});box.querySelectorAll('.remove-doc').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1);try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);renderConnectedDocs();renderContext();});try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}}
+async function previewDoc(id){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}try{const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const d=await r.json();let txt='';d.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}});const pv=$('docPreview');if(pv){pv.textContent=`[불러오기 ${txt.length}자]\n\n${txt.slice(0,2000)}`;pv.classList.remove('hidden');}log(`불러오기 성공`,'ok');}catch(e){log('불러오기 실패','err');}}
+async function appendDoc(id,text){if(!accessToken) return false;try{const dr=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const doc=await dr.json();let end=0;doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);});const req={requests:[{insertText:{location:{index:end-1},text}}]};const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(req)});return r.ok;}catch{return false;}}
+function renderSearchResults(files,target){
+  const isMain=target==='driveResults';const listId=isMain?'driveResults':'linkSearchResults';const boxId=isMain?'driveResultsBox':'linkSearchResultsBox';const list=$(listId);if(!list) return;list.innerHTML='';const box=$(boxId);if(box) box.classList.remove('hidden');if(isMain) tempMainResults=files;else tempLinkResults=files;
+  if(!files||files.length===0){list.innerHTML='<div class="text-[10px]">없음</div>';return;}
+  files.forEach((f,idx)=>{const div=document.createElement('div');div.className='doc-card';div.setAttribute('draggable','false');div.innerHTML=`<input type="checkbox" class="chk-doc" data-idx="${idx}" data-target="${target}"><div class="doc-info"><div class="font-bold text-[11px]">${f.name}</div><div class="text-[9px] opacity-60">${f.modifiedTime.slice(0,10)}</div></div><button class="btn btn-sm connect-one" data-idx="${idx}" data-target="${target}">연결</button>`;div.addEventListener('mousedown',e=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON') e.preventDefault();});div.addEventListener('dragstart',e=>e.preventDefault());div.addEventListener('click',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON') return;const chk=div.querySelector('input[type=checkbox]');chk.checked=!chk.checked;});list.appendChild(div);});
+  list.querySelectorAll('.connect-one').forEach(btn=>{btn.onclick=()=>{const idx=parseInt(btn.dataset.idx);const tgt=btn.dataset.target;const file=(tgt==='driveResults'?tempMainResults:tempLinkResults)[idx];if(tgt==='driveResults'){connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');}else{const url=`https://docs.google.com/document/d/${file.id}/edit`;if(customLinks.find(l=>l.url===url)){log('이미 추가됨','info');return;}customLinks.push({title:file.name,url});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}log(`추가 연결 ${file.name}`,'ok');}};});
+}
+async function searchDrive(query,target){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}const q=query?`mimeType='application/vnd.google-apps.document' and trashed=false and name contains '${query.replace(/'/g,"\\'")}'`:`mimeType='application/vnd.google-apps.document' and trashed=false`;try{const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30`;const res=await fetch(url,{headers:{Authorization:`Bearer ${accessToken}`}});const data=await res.json();renderSearchResults(data.files||[],target);}catch(e){log('검색 실패','err');}}
+const searchExactBtn=$('searchExactBtn');if(searchExactBtn) searchExactBtn.onclick=()=>{const q=$('docSearchInput').value.trim();searchDrive(q,'driveResults');};
+const linkSearchBtn=$('linkSearchBtn');if(linkSearchBtn) linkSearchBtn.onclick=()=>{const q=$('linkSearchInput').value.trim();searchDrive(q,'linkSearchResults');};
+const connMainBtn=$('connectCheckedMainBtn');if(connMainBtn) connMainBtn.onclick=()=>{const chks=document.querySelectorAll('#driveResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}const idx=parseInt(chks[0].dataset.idx);const file=tempMainResults[idx];connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');};
+const connLinksBtn=$('connectCheckedLinksBtn');if(connLinksBtn) connLinksBtn.onclick=()=>{const chks=document.querySelectorAll('#linkSearchResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}let added=0;chks.forEach(chk=>{const idx=parseInt(chk.dataset.idx);const file=tempLinkResults[idx];const url=`https://docs.google.com/document/d/${file.id}/edit`;if(!customLinks.find(l=>l.url===url)){customLinks.push({title:file.name,url});added++;}});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}const box=$('linkSearchResultsBox');if(box) box.classList.add('hidden');log(`추가 ${added}개 연결`,'ok');};
+function renderCustomLinks(){const box=$('customLinksList');if(!box) return;box.innerHTML='';const lc=$('linkCount');if(lc) lc.textContent=`${customLinks.length}개`;customLinks.forEach((l,i)=>{const div=document.createElement('div');div.className='link-item';div.innerHTML=`<input type="checkbox" checked disabled><span class="text-[10px] font-bold flex-1">${l.title.slice(0,28)}</span><button class="btn text-[8px] preview-link" data-i="${i}">불러오기</button><a href="${l.url}" target="_blank" class="text-[8px] text-blue-600">열기</a><button class="btn text-[8px] py-1" data-i="${i}">삭제</button>`;box.appendChild(div);});box.querySelectorAll('.preview-link').forEach(b=>b.onclick=async()=>{const l=customLinks[b.dataset.i];const id=l.url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];if(id) await previewDoc(id);});box.querySelectorAll('button:last-child').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1);try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}renderCustomLinks();renderContext();});try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}}
+async function saveToSupabase(silent){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key){if(!silent) log('Supabase key 없음','err');return false;}try{const payload={project_name:currentRepo,repo:`${GITHUB_USER}/${currentRepo}`,main_file:mainFile,memory_10:$('memory10').value,doc_id:connectedDocs[0]?.id||null,doc_title:connectedDocs[0]?.title||null,draft_code:draftCode.slice(0,8000),updated_at:new Date().toISOString()};const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify(payload)});if(!res.ok) throw new Error(await res.text());if(!silent) log('Supabase 저장','ok');return true;}catch(e){if(!silent) log('Supabase 실패','err');return false;}}
+async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key) return;try{const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?project_name=eq.${currentRepo}&select=*`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});const data=await res.json();if(data&&data[0]){const row=data[0];if(row.memory_10){const memInput=$('memory10');if(memInput&&!memInput.value){memInput.value=row.memory_10;updateMemoryCount();}}if(row.main_file){mainFile=row.main_file;const mf=$('mainFileInput');if(mf) mf.value=mainFile;}if(row.draft_code&&!draftCode){draftCode=row.draft_code;updateDraftStatus();}if(row.doc_id&&connectedDocs.length===0){connectedDocs=[{id:row.doc_id,title:row.doc_title||'복구'}];try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}renderConnectedDocs();log(`문서 복구 ${row.doc_title}`,'ok');}log('Supabase 복구','ok');}}catch{}}
+function initGIS(){const s=$('googleStatus');if(!s) return;if(!window.google||!google.accounts){s.textContent='GIS 로딩 실패';return;}try{const c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',callback:(r)=>{if(r.access_token){accessToken=r.access_token;try{localStorage.setItem('google_access_token',accessToken);}catch{}s.textContent='✅ Drive 연결됨';log('Google 로그인 성공','ok');}}});const btn=$('googleLoginBtn');if(btn) btn.onclick=()=>c.requestAccessToken();if(accessToken){s.textContent='✅ Drive 연결됨 (캐시)';}else s.textContent='GIS 준비됨 - 설정탭에서 로그인';}catch(e){s.textContent='GIS 실패';}}
+window.addEventListener('load',()=>{
+  initTheme();
+  try{const tv=localStorage.getItem('top_view');if(tv) switchTopView(tv);}catch{}
+  try{$('supabaseKeyInput').value=localStorage.getItem('supabase_anon_key')||'';}catch{}
+  try{$('githubPatInput').value=localStorage.getItem('github_pat')||'';}catch{}
+  try{$('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';}catch{}
+  try{$('groqKeyInput').value=localStorage.getItem('groq_key')||'';}catch{}
+  try{$('openaiKeyInput').value=localStorage.getItem('openai_key')||'';}catch{}
+  try{$('openaiModelInput').value=localStorage.getItem('openai_model')||'gpt-4o-mini';}catch{}
+  const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();
+  const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();
+  const mf=$('mainFileInput');if(mf) mf.value=mainFile;
+  updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();
+  loadRepos();setTimeout(initGIS,600);setTimeout(()=>{fetchCode();autoLoadSupabase();},1000);
+  
+const fetchMainBtn = document.getElementById('fetchMainBtn');
+if(fetchMainBtn) fetchMainBtn.onclick = async () => { log('📥 GitHub main 수동 복구 시작','info'); await fetchCode(); log('✅ 복구 완료 - draft가 6만자로 복원됐는지 확인','ok'); };
+const forceResetBtn = document.getElementById('forceDraftResetBtn');
+if(forceResetBtn) forceResetBtn.onclick = async () => {
+  if(!confirm('로컬 draft 1371자 버리고 GitHub 최신 6만자로 강제 복구할까?')) return;
+  try{ localStorage.removeItem('draft_code_'+currentRepo); }catch{}
+  draftCode='';
+  log('🗑️ 로컬 draft 삭제, GitHub에서 재로딩','info');
+  await fetchCode();
+};
+
+  log('v5.3.18 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  setTimeout(initTheme,200);
+});
+const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();
+// v5.3.18: 링크 N개 무제한 - 접힘/펼침
+let linksCollapsed = localStorage.getItem('linksCollapsed') === 'true';
+function toggleLinksBox(){
+  linksCollapsed = !linksCollapsed;
+  localStorage.setItem('linksCollapsed', linksCollapsed);
+  const box = document.getElementById('contextBox');
+  const btn = document.getElementById('toggleLinksBtn');
+  if(!box) return;
+  if(linksCollapsed){
+    box.style.maxHeight = '32px';
+    box.style.overflow = 'hidden';
+    if(btn) btn.textContent = '▼ 링크 N개 (무제한) 보기';
+  } else {
+    box.style.maxHeight = '200px';
+    box.style.overflow = 'auto';
+    if(btn) btn.textContent = '▲ 접기';
+  }
+}
+
+</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
