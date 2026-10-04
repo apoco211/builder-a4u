@@ -1,388 +1,450 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Builder‑a4u v5.3.0 – 프로젝트 대시보드</title>
-  <style>
-    /* 기존 : :root{--bg:#f8fafc; … }   (그대로 두고 아래만 추가) */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="color-scheme" content="light dark">
+<meta http-equiv="Cache-Control" content="no-cache">
+<title>Builder-a4u v5.3.6 - draft 저장 + 스크린샷 + 404 수정 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={darkMode:'class'}</script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<link rel="manifest" href="./manifest.json?v=5.3.6">
+<style>
+:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
+.dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
+html{background:var(--bg)} body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:.2s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;transition:.2s}
+.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;background:var(--bg);display:flex;gap:10px;align-items:center}
+.doc-card input[type=checkbox]{width:18px;height:18px;flex-shrink:0}
+.btn{border-radius:12px;padding:8px 12px;font-weight:700;font-size:11px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt)}
+.btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
+.btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
+.btn-meta{background:var(--meta) !important;color:#fff !important;border-color:var(--meta) !important}
+.btn-gemini{background:var(--gemini) !important;color:#fff !important;border-color:var(--gemini) !important}
+.btn-gpt{background:var(--gpt) !important;color:#fff !important;border-color:var(--gpt) !important}
+.btn-sm{padding:6px 10px;font-size:10px}
+.btn:active{transform:scale(.97)}
+.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:9px 11px;background:var(--card);color:var(--txt);font-size:12px;outline:none}
+.textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:11px;background:var(--card);color:var(--txt);font-size:11px;line-height:1.6;outline:none;resize:vertical}
+.badge{display:inline-flex;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:800;border:1px solid var(--line)}
+.log{font-family:monospace;font-size:11px;line-height:1.5;max-height:200px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px}
+.chat-box{border:1px solid var(--line);border-radius:14px;background:var(--bg);height:380px;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:85%;padding:9px 11px;border-radius:14px;font-size:11px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
+.msg-user{align-self:flex-end;background:#111;color:#fff;border-bottom-right-radius:4px}
+.msg-ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.msg-system{align-self:center;background:#fffbeb;border:1px dashed #f59e0b;font-size:10px;max-width:95%}
+.dark .msg-system{background:#2a2410 !important;color:#fef3c7 !important}
+.top-tab{flex:1;padding:12px 8px;border-radius:12px;font-weight:900;font-size:13px;border:2px solid var(--line);background:var(--card);color:var(--txt)}
+.top-tab.active{background:#111 !important;color:#fff !important;border-color:#111 !important;box-shadow:0 0 0 2px var(--accent)}
+.tab-active{border:2px solid #111 !important;box-shadow:0 0 0 2px var(--accent)}
+.link-item{display:flex;gap:6px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line)}
+.view-hidden{display:none !important}
 
-    /* 1) 뷰포트 기반 폰트 사이즈 (clamp 로 최소‑최대값 지정) */
-    html{
-      /* 14 px ~ 18 px 사이를 화면 너비에 따라 가변 */
-      font-size: clamp(14px, 1vw + 0.5rem, 18px);
-    }
-
-    /* 2) 기존 색·다크모드 변수는 그대로 유지 */
-    :root{
-      --bg:#f8fafc;
-      --card:#ffffff;
-      --line:#e2e8f0;
-      --txt:#0f172a;
-      --muted:#64748b;
-      --accent:#FFC800;
-      --meta:#7c3aed;
-      --gemini:#0ea5e9;
-      --gpt:#10b981;
-    }
-    .dark{
-      --bg:#0f1115;
-      --card:#1a1d24;
-      --line:#2a2f3a;
-      --txt:#e2e8f0;
-      --muted:#94a3b8;
-    }
-
-    /* 3) 기본 레이아웃·폭을 크게 잡아 PC에서 너무 좁게 보이는 현상 방지 */
-    body{
-      max-width: 960px;               /* 기존 900 → 960 (조금 넓게) */
-      padding: 20px 24px 120px 24px;   /* 기존 14 → 20 (PC) */
-      margin: 0 auto;
-      background-color: var(--bg);
-      color: var(--txt);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.6;
-    }
-
-    /* 4) 카드·버튼·입력창 등 UI 요소에 반응형 폰트·패딩 적용 */
-    .card{
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: .5rem;
-      padding:1.125rem;
-      font-size:0.95rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,.05);
-    }
-    .btn{
-      display: inline-block;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      border-radius: .375rem;
-      padding:0.5rem 0.75rem;
-      font-size:0.85rem;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn:hover{ opacity:.9; }
-    .input,.textarea{
-      width: 100%;
-      padding: .5rem;
-      font-size:0.85rem;
-      border: 1px solid var(--line);
-      border-radius: .375rem;
-      background: var(--card);
-      color: var(--txt);
-    }
-    .textarea{ resize: vertical; }
-
-    /* 5) 큰 화면(≥1024px)에서는 더 넉넉하게 */
-    @media (min-width:1024px){
-      body{max-width:1080px; padding:24px 32px 140px 32px;}
-      .card{padding:1.5rem;}
-      .btn{padding:0.75rem 1rem;}
-      .chat-box{height:560px;}   /* 기존 480 → 560 */
-    }
-
-    /* 6) 중간 화면(760‑1023px)에서도 충분히 보이게 */
-    @media (min-width:760px) and (max-width:1023px){
-      body{max-width:860px;}
-    }
-
-    /* 7) 텍스트·버튼에 Tailwind responsive 클래스도 병행 가능 */
-    .section-title{
-      font-size:1.5rem;
-      font-weight:600;
-      margin-top:2rem;
-      margin-bottom:.5rem;
-      color: var(--meta);
-    }
-    .footer{
-      margin-top:3rem;
-      text-align:center;
-      font-size:.85rem;
-      color: var(--muted);
-    }
-  </style>
+@media (min-width:1024px){
+  body{max-width:960px;padding:20px 24px 120px 24px}
+  .chat-box{height:480px}
+  .card{padding:18px}
+}
+@media (min-width:760px) and (max-width:1023px){
+  body{max-width:840px}
+}
+.view-hidden{display:none !important}
+</style>
 </head>
-<body class="">
+<body>
+<div class="flex justify-between items-center mb-3">
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.6</h1><p class="text-[10px] opacity-60">설정탭 분리 + 작업창 깔끔 + 다크모드</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn text-[11px] font-black">🌙 다크</button><span class="badge" style="background:#111;color:#fff">v5.3.6</span></div>
+</div>
 
-  <!-- Header -->
-  <header class="card">
-    <h1>Builder‑a4u v5.3.0</h1>
-    <p>프로젝트 대시보드 – 설정 탭 분리와 작업창 정리</p>
-    <nav>
-      <a href="#settings" class="btn">설정</a>
-      <a href="#work" class="btn">작업</a>
-      <a href="#about" class="btn">About</a>
-    </nav>
-  </header>
+<!-- 상단 탭: 작업 / 설정 -->
+<div class="flex gap-2 mb-3">
+<button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
+<button id="topTabSettings" class="top-tab">⚙️ 설정</button>
+</div>
 
-  <!-- Settings Tab (분리된) -->
-  <section id="settings" class="card">
-    <h2 class="section-title">설정</h2>
-    <p>현재 API 5개와 구글 로그인 연동이 설정 탭에 포함됩니다.</p>
-    <ul>
-      <li>API 1 – 사용자 인증</li>
-      <li>API 2 – 데이터 저장</li>
-      <li>API 3 – 실시간 알림</li>
-      <li>API 4 – 파일 업로드</li>
-      <li>API 5 – 통계 분석</li>
-    </ul>
-    <button class="btn">구글 로그인 연동</button>
-  </section>
+<!-- 작업 뷰 -->
+<div id="workspaceView">
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
+<select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 로딩중...</option></select>
+<input id="mainFileInput" class="input text-[10px]" placeholder="mainFile 자동">
+<textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
+<div class="flex justify-end mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button></div>
+</div>
 
-  <!-- Work Tab (프로젝트·문서·기억·채팅) -->
-  <section id="work" class="card">
-    <h2 class="section-title">작업</h2>
-    <nav>
-      <a href="#project" class="btn">프로젝트</a>
-      <a href="#docs" class="btn">문서</a>
-      <a href="#memory" class="btn">기억</a>
-      <a href="#chat" class="btn">채팅</a>
-    </nav>
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">📄 메인 문서 - 계속 업데이트 1개 (체크박스)</h2>
+<div class="flex gap-2 mb-2"><input id="docSearchInput" class="input text-[12px]" placeholder="제목 검색"><button id="searchExactBtn" class="btn text-[10px]">🔍 Drive에서 찾기</button></div>
+<div id="driveResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto hidden" style="border-color:var(--line)"><div id="driveResults"></div><div class="mt-2"><button id="connectCheckedMainBtn" class="btn btn-primary text-[10px] w-full">✅ 체크한 문서 메인으로 연결</button></div></div>
+<div id="connectedDocs" class="mt-2"></div>
+<div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
+</div>
 
-    <article id="project" class="card">
-      <h3 class="section-title">프로젝트</h3>
-      <p>프로젝트 관리 영역 – 현재 진행 중인 프로젝트 리스트와 상태를 확인합니다.</p>
-    </article>
+<div class="card" style="border-color:var(--gemini)">
+<h2 class="font-bold text-[11px] mb-2">🔗 추가 문서 N개 - Drive 체크박스 <span id="linkCount" class="badge ml-2">0개</span></h2>
+<div class="flex gap-2 mb-2"><input id="linkSearchInput" class="input text-[12px]" placeholder="추가 문서 제목"><button id="linkSearchBtn" class="btn text-[10px]">🔍 Drive에서 찾기</button></div>
+<div id="linkSearchResultsBox" class="border rounded-[12px] p-2 max-h-[240px] overflow-auto hidden" style="border-color:var(--line)"><div id="linkSearchResults"></div><div class="mt-2"><button id="connectCheckedLinksBtn" class="btn btn-gemini text-[10px] w-full">✅ 체크한 문서들 추가 링크로</button></div></div>
+<div id="customLinksList" class="mt-2"></div>
+</div>
 
-    <article id="docs" class="card">
-      <h3 class="section-title">문서</h3>
-      <p>문서 편집기 – 마크다운 기반 에디터와 버전 관리 기능을 제공합니다.</p>
-    </article>
+<div class="card">
+<h2 class="font-bold text-[11px] mb-2">🧠 기억 10줄 - 자동 저장/자동 주입 <span id="memoryCount" class="badge ml-2">0줄</span></h2>
+<textarea id="memory10" class="textarea h-[140px]"></textarea>
+<div class="flex justify-between mt-2"><span class="text-[8px] opacity-60">입력 즉시 자동 저장 + 3탭 자동 주입</span><button id="templateBtn" class="btn text-[8px]">📝 템플릿</button></div>
+</div>
 
-    <article id="memory" class="card">
-      <h3 class="section-title">기억</h3>
-      <p>AI 기억 저장소 – 대화와 작업 이력을 저장하고 재활용합니다.</p>
-    </article>
+<div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (B안)</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
+<div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[9px] mb-2 max-h-[70px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
+<div id="screenshotPreview" class="hidden card" style="border-color:#f59e0b;background:#fffbeb;padding:8px;margin-bottom:8px;display:none;gap:8px;align-items:center">
+<img id="screenshotImg" style="max-width:120px;max-height:80px;border-radius:8px;border:1px solid #e5e7eb">
+<div class="flex-1"><p class="text-[10px] font-bold">📸 스크린샷 첨부됨</p><p class="text-[9px] opacity-60">Vision이 화면 분석</p></div>
+<button id="removeScreenshotBtn" class="btn text-[9px]">❌ 제거</button>
+</div>
+<div id="chatBox" class="chat-box mb-2" style="position:relative">
+<div id="dropOverlay" class="hidden" style="position:absolute;inset:0;background:rgba(124,58,237,0.1);border:2px dashed #7c3aed;border-radius:14px;display:flex;align-items:center;justify-content:center;z-index:10"><span class="text-[12px] font-black text-[#7c3aed]">📸 드롭!</span></div>
+</div>
+<div class="flex gap-2"><input id="chatInput" class="input flex-1 text-[12px]" placeholder="기능 요청... (Ctrl+V로 스크린샷 붙여넣기)"><button id="chatSendBtn" class="btn btn-primary text-[11px]">전송</button></div>
+<div class="flex gap-2 mt-2"><button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 공용 빌드</button><button id="saveDraftBtn" class="btn flex-1 py-3 text-[10px]" style="background:#fff;border:2px solid #111">💾 현재 draft 저장</button><button id="clearChatBtn" class="btn text-[8px]">초기화</button></div>
+</div>
 
-    <article id="chat" class="card">
-      <h3 class="section-title">채팅</h3>
-      <div class="chat-box" style="background:#fff;border:1px solid var(--line);border-radius:.5rem;overflow:auto;padding:.5rem;">
-        <p><strong>Bot:</strong> 안녕하세요! 무엇을 도와드릴까요?</p>
-      </div>
-      <textarea class="textarea" rows="3" placeholder="메시지를 입력하세요..."></textarea>
-      <button class="btn" style="margin-top:.5rem;">전송</button>
-    </article>
-  </section>
+<div class="card">
+<div class="flex justify-between mb-1"><h2 class="font-bold text-[10px]">📟 로그</h2><button id="clearLogBtn" class="btn text-[8px]">clear</button></div>
+<div id="logArea" class="log"></div><div id="robotLog" class="log mt-2 hidden"></div>
+</div>
+</div>
 
-  <!-- 대량 더미 콘텐츠 (40000자 이상) -->
-  <!-- 아래 섹션들은 실제 내용 대신 Lorem Ipsum을 반복해서 삽입합니다. -->
-  <!-- 250개의 섹션을 생성하여 전체 길이를 확보합니다. -->
-  <!-- 시작 -->
-  <!-- SECTION 1 -->
-  <section class="card">
-    <h2 class="section-title">섹션 1</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa.</p>
-    <p>Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
-  </section>
+<!-- 설정 뷰 -->
+<div id="settingsView" class="view-hidden">
+<div class="card" style="border-color:var(--accent)">
+<h2 class="font-black text-[13px] mb-3">⚙️ 설정 - 한 번만 설정하면 됨</h2>
+<div class="mb-4">
+<h3 class="font-bold text-[11px] mb-2">🔐 GOOGLE 로그인 (문서 검색용)</h3>
+<button id="googleLoginBtn" class="btn btn-primary w-full text-[11px]">🔐 Google 로그인</button>
+<div id="googleStatus" class="text-[10px] mt-2 opacity-60">GIS 로딩중...</div>
+<div class="text-[9px] mt-1 opacity-60">* 문서 검색/연결할 때만 필요, 채팅은 API 키만 있으면 됨</div>
+</div>
+<div class="border-t pt-4" style="border-color:var(--line)">
+<h3 class="font-bold text-[11px] mb-2">🔑 API 보관소 - 5개 키</h3>
+<div class="grid gap-2 mb-3">
+<div><label class="text-[10px] font-bold">Supabase anon key (기억10줄 백업용)</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ... / sb_publishable_..."></div>
+<div><label class="text-[10px] font-bold">GitHub PAT (빌드 Push용 - repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_..."></div>
+<div><label class="text-[10px] font-bold">Gemini Key (제미나이 검증 - 무료)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio에서 발급"></div>
+<div><label class="text-[10px] font-bold">Groq Key (메타 생성 - 무료, llama-3.3)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="console.groq.com/keys"></div>
+<div><label class="text-[10px] font-bold">OpenAI Key (GPT 검수 - 4000토큰 4원)</label><input id="openaiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="sk-proj-..."></div>
+<div><label class="text-[10px] font-bold">OpenAI 모델</label><input id="openaiModelInput" class="input text-[9px] mt-1" value="gpt-4o-mini"></div>
+</div>
+<div class="text-[9px] opacity-60 leading-[1.4]">* 모든 키는 네 브라우저 localStorage에만 저장, 서버에 안 올라감<br>* Supabase key는 기억10줄 자동 백업용으로만 사용<br>* Groq + Gemini 2개만 넣어도 무료로 메타→제미나이 파이프라인 테스트 가능</div>
+</div>
+<div class="border-t pt-4 mt-4" style="border-color:var(--line)">
+<h3 class="font-bold text-[11px] mb-2">🎨 테마 / 기타</h3>
+<div class="flex gap-2 mb-2"><button id="settingsThemeToggle" class="btn text-[10px]">🌙 다크모드 토글</button><button id="exportSettingsBtn" class="btn text-[10px]">📤 설정 내보내기</button><button id="importSettingsBtn" class="btn text-[10px]">📥 가져오기</button></div>
+<div id="settingsStatus" class="text-[10px] opacity-60">설정 상태 확인중...</div>
+</div>
+</div>
 
-  <!-- SECTION 2 -->
-  <section class="card">
-    <h2 class="section-title">섹션 2</h2>
-    <p>Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis.</p>
-    <p>Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.</p>
-  </section>
+<div class="card">
+<h3 class="font-bold text-[11px] mb-2">📊 저장 상태</h3>
+<div id="storageStatus" class="text-[10px] leading-[1.6] opacity-80"></div>
+</div>
+</div>
 
-  <!-- SECTION 3 -->
-  <section class="card">
-    <h2 class="section-title">섹션 3</h2>
-    <p>Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus.</p>
-    <p>Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem.</p>
-  </section>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.3.6 · 설정탭 분리 · 작업창 깔끔 · 다크모드 class · 체크박스 · ?v=5.3.6</div>
 
-  <!-- SECTION 4 -->
-  <section class="card">
-    <h2 class="section-title">섹션 4</h2>
-    <p>Donec vitae sapien ut libero venenatis faucibus. Nullam quis risus eget urna mollis ornare vel eu leo. Cras mattis consectetur purus sit amet fermentum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</p>
-    <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
-  </section>
+<script>
+const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
+let accessToken='';try{accessToken=localStorage.getItem('google_access_token')||'';}catch{}let currentRepo='builder-a4u';try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}let mainFile='index.html';try{mainFile=localStorage.getItem('main_file_'+currentRepo)||'index.html';}catch{}let connectedDocs=[];try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{}let customLinks=[];try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{}let draftCode='';try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{}let currentTab='meta';try{currentTab=localStorage.getItem('current_tab_'+currentRepo)||'meta';}catch{}let chats={meta:[],gemini:[],gpt:[]};try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}let tempMainResults=[];let tempLinkResults=[];let topView='workspace';
+const $=id=>document.getElementById(id);
+function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML=`<span style="opacity:.6">${time}</span> ${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;a.appendChild(d);a.scrollTop=a.scrollHeight;}
+function robotLog(m,t='info'){const b=$('robotLog');if(!b) return;b.classList.remove('hidden');const d=document.createElement('div');d.innerHTML=`${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;b.appendChild(d);b.scrollTop=b.scrollHeight;log(m,t);}
+function setTheme(th){const html=document.documentElement;if(th==='dark'){html.classList.add('dark');}else{html.classList.remove('dark');}try{localStorage.setItem('theme',th);}catch{}const btns=[$('themeToggle'),$('settingsThemeToggle')];btns.forEach(btn=>{if(btn) btn.textContent=th==='dark'?'☀️ 라이트':'🌙 다크';});log(`${th==='dark'?'다크모드 ON':'라이트모드 ON'} ${th}`,'ok');updateStorageStatus();}
+function initTheme(){let saved=null;try{saved=localStorage.getItem('theme');}catch{}let th=saved;if(!th){try{th=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch{th='light';}}setTheme(th);}
+function switchTopView(view){topView=view;const ws=$('workspaceView');const st=$('settingsView');const btnW=$('topTabWorkspace');const btnS=$('topTabSettings');if(view==='workspace'){ws.classList.remove('view-hidden');st.classList.add('view-hidden');btnW.classList.add('active');btnS.classList.remove('active');}else{ws.classList.add('view-hidden');st.classList.remove('view-hidden');btnW.classList.remove('active');btnS.classList.add('active');updateStorageStatus();}try{localStorage.setItem('top_view',view);}catch{}}
+$('topTabWorkspace').onclick=()=>switchTopView('workspace');$('topTabSettings').onclick=()=>switchTopView('settings');
+$('themeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
+$('settingsThemeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
+function updateStorageStatus(){const el=$('storageStatus');if(!el) return;let html='';try{const keys=['google_access_token','current_repo','supabase_anon_key','github_pat','gemini_key','groq_key','openai_key'];keys.forEach(k=>{const v=localStorage.getItem(k);html+=`${k}: ${v?`✅ ${v.slice(0,8)}... (${v.length}자)`:'❌ 없음'}<br>`;});html+=`<br>connected_docs_${currentRepo}: ${localStorage.getItem('connected_docs_'+currentRepo)?'✅ 있음':'❌ 없음'}<br>`;html+=`customLinks_${currentRepo}: ${localStorage.getItem('customLinks_'+currentRepo)?JSON.parse(localStorage.getItem('customLinks_'+currentRepo)).length+'개':'0개'}<br>`;html+=`draft_code_${currentRepo}: ${localStorage.getItem('draft_code_'+currentRepo)?localStorage.getItem('draft_code_'+currentRepo).length+'자':'0자'}<br>`;html+=`theme: ${localStorage.getItem('theme')||'light'}<br>`;html+=`top_view: ${topView}`;}catch(e){html=`오류 ${e.message}`;}el.innerHTML=html;const s2=$('settingsStatus');if(s2){const hasGroq=(()=>{try{return !!localStorage.getItem('groq_key');}catch{return false;}})();const hasGemini=(()=>{try{return !!localStorage.getItem('gemini_key');}catch{return false;}})();const hasOpenAI=(()=>{try{return !!localStorage.getItem('openai_key');}catch{return false;}})();s2.innerHTML=`채팅 가능 여부: 메타(🟣 Groq) ${hasGroq?'✅':'❌'} / 제미나이(🔵) ${hasGemini?'✅':'❌'} / GPT(🟢) ${hasOpenAI?'✅':'❌'}<br>무료 테스트는 Groq+Gemini 2개만 넣으면 OK`;}
+}
+$('exportSettingsBtn').onclick=()=>{try{const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.includes('_key')||k.includes('_pat')||k.includes('anon_key')) data[k]=localStorage.getItem(k);}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`builder-a4u-settings-${new Date().toISOString().slice(0,10)}.json`;a.click();log('설정 내보내기 완료','ok');}catch(e){log('내보내기 실패','err');}};
+$('importSettingsBtn').onclick=()=>{const input=document.createElement('input');input.type='file';input.accept='.json';input.onchange=e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);Object.entries(data).forEach(([k,v])=>{try{localStorage.setItem(k,v);}catch{}});log('설정 가져오기 완료 - 새로고침','ok');setTimeout(()=>location.reload(),1000);}catch{log('가져오기 실패','err');}};reader.readAsText(file);};input.click();};
 
-  <!-- SECTION 5 -->
-  <section class="card">
-    <h2 class="section-title">섹션 5</h2>
-    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-    <p>Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur.</p>
-  </section>
+function inferMainFile(r){const s=r.toLowerCase();if(s.includes('daily-todo')||s.includes('todo')) return 'src/App.jsx';return 'index.html';}
+function getTemplate(){const d=new Date().toLocaleDateString();return `1.프로젝트: Builder-a4u v5.3.6\n2.목적: 설정탭 분리 + 작업창 깔끔\n3.현재: v5.3.6 - 설정탭에 API 5개 + 구글 로그인 이동, 작업탭은 프로젝트+문서+기억+채팅만\n4.다음: ?v=5.3.6 배포\n5.결정: 설정탭 분리, B안 draft 숨김\n6.제외: 작업창 API 노출\n7.저장: Supabase+Docs+GitHub\n8.버그: 다크모드 class 수정\n9.모드: 빌드모드\n10.상태: v5.3.6 ${d}`;}
+function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
+function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
+function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
+function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
+function renderChats(){const box=$('chatBox');if(!box) return;box.innerHTML='';(chats[currentTab]||[]).forEach(m=>{const d=document.createElement('div');d.className='msg '+(m.role==='user'?'msg-user':'msg-ai');d.textContent=m.content;box.appendChild(d);});box.scrollTop=box.scrollHeight;const badge=$('chatCountBadge');if(badge) badge.textContent=`${(chats[currentTab]||[]).length}개`;const lbl=$('currentTabLabel');if(lbl){lbl.textContent={meta:'메타',gemini:'제미나이',gpt:'GPT'}[currentTab];lbl.style.background={meta:'var(--meta)',gemini:'var(--gemini)',gpt:'var(--gpt)'}[currentTab];}renderContext();}
+function switchTab(tab){currentTab=tab;document.querySelectorAll('[id^=tab]').forEach(b=>b.classList.remove('tab-active'));const el=$(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`);if(el) el.classList.add('tab-active');try{localStorage.setItem('current_tab_'+currentRepo,tab);}catch{}renderChats();}
+const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
+const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
+const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
+function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}}
+function extractCode(t){const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i);return m?m[1].trim():null;}
 
-  <!-- SECTION 6 -->
-  <section class="card">
-    <h2 class="section-title">섹션 6</h2>
-    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    <p>Nulla vitae elit libero, a pharetra augue. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-  </section>
+let pendingScreenshot=null;
+function compressImage(file){
+  return new Promise((resolve)=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const canvas=document.createElement('canvas');
+        let w=img.width, h=img.height;
+        const max=1024;
+        if(w>max || h>max){
+          if(w>h){h=h*max/w; w=max;} else {w=w*max/h; h=max;}
+        }
+        canvas.width=w; canvas.height=h;
+        const ctx=canvas.getContext('2d');
+        ctx.drawImage(img,0,0,w,h);
+        const dataUrl=canvas.toDataURL('image/jpeg',0.75);
+        const base64=dataUrl.split(',')[1];
+        resolve({base64, mime:'image/jpeg', dataUrl});
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+async function handleImageFile(file){
+  if(!file || !file.type.startsWith('image/')) return;
+  log(`📸 이미지 처리중... ${Math.round(file.size/1024)}KB`,'info');
+  const compressed=await compressImage(file);
+  pendingScreenshot=compressed;
+  const preview=document.getElementById('screenshotPreview');
+  const imgEl=document.getElementById('screenshotImg');
+  if(preview && imgEl){
+    imgEl.src=compressed.dataUrl;
+    preview.classList.remove('hidden');
+    preview.style.display='flex';
+  }
+  log(`📸 스크린샷 첨부됨`,'ok');
+}
+function clearScreenshot(){
+  pendingScreenshot=null;
+  const preview=document.getElementById('screenshotPreview');
+  if(preview){preview.classList.add('hidden'); preview.style.display='none';}
+}
+async function callGemini(p, imageBase64=null, imageMime=null){
+  const k=(()=>{try{return localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim();}catch{return $('geminiKeyInput').value.trim();}})();
+  if(!k) throw new Error('Gemini Key 없음 - 설정탭에서 넣어줘');
+  const models=[
+    'gemini-2.5-flash',
+    'gemini-2.5-flash-lite',
+    'gemini-3.5-flash',
+    'gemini-3.6-flash',
+    'gemini-3.1-flash-lite',
+    'gemini-2.0-flash',
+    'gemini-1.5-flash'
+  ];
+  let lastErr='';
+  for(const model of models){
+    try{
+      log(`Gemini ${model} 시도...`,'info');
+      let body;
+      if(imageBase64){
+        body={contents:[{parts:[{text:p},{inline_data:{mime_type:imageMime||'image/jpeg',data:imageBase64}}]}]};
+      } else {
+        body={contents:[{parts:[{text:p}]}]};
+      }
+      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+      if(!r.ok){
+        const txt=await r.text();
+        lastErr=txt.slice(0,500);
+        if(r.status===404 || txt.toLowerCase().includes('not found') || txt.toLowerCase().includes('not supported')){
+          log(`Gemini ${model} 404 - 다음 모델 시도`,'info');
+          continue;
+        }
+        throw new Error(`Gemini ${r.status} ${txt.slice(0,300)}`);
+      }
+      const d=await r.json();
+      const out=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+      if(out){log(`Gemini ${model} 성공`,'ok'); return out;}
+    }catch(e){
+      lastErr=e.message;
+      continue;
+    }
+  }
+  throw new Error(`Gemini 전부 실패. 마지막: ${lastErr.slice(0,500)}`);
+}
+async function callGroq(p, imageBase64=null, imageMime=null){
+  const k=(()=>{try{return localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();}catch{return $('groqKeyInput').value.trim();}})();
+  if(!k) throw new Error('Groq Key 없음 - 설정탭에서 넣어줘');
+  const models=[
+    'openai/gpt-oss-120b',
+    'openai/gpt-oss-20b',
+    'meta-llama/llama-4-maverick-17b-128e-instruct',
+    'meta-llama/llama-4-scout-17b-16e-instruct',
+    'llama-3.3-70b-versatile',
+    'llama-3.1-8b-instant'
+  ];
+  let lastErr='';
+  for(const model of models){
+    try{
+      log(`Groq ${model} 시도...`,'info');
+      let messages;
+      if(imageBase64 && model.includes('llama-4')){
+        messages=[{role:'user',content:[{type:'text',text:p},{type:'image_url',image_url:{url:`data:${imageMime||'image/jpeg'};base64,${imageBase64}`}}]}];
+      } else {
+        messages=[{role:'user',content:p}];
+      }
+      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages,temperature:0.7,max_tokens:8000})});
+      if(!r.ok){
+        const txt=await r.text();
+        lastErr=txt.slice(0,400);
+        if(r.status===404 || txt.toLowerCase().includes('model') || txt.includes('decommissioned') || txt.includes('does not exist')){
+          log(`Groq ${model} 404/decommissioned - 다음 모델 시도`,'info');
+          continue;
+        }
+        throw new Error(`Groq ${r.status} ${txt.slice(0,300)}`);
+      }
+      const d=await r.json();
+      const out=d.choices?.[0]?.message?.content||'';
+      if(out){log(`Groq ${model} 성공`,'ok'); return out;}
+    }catch(e){
+      lastErr=e.message;
+      continue;
+    }
+  }
+  throw new Error(`Groq 전부 실패. 마지막: ${lastErr.slice(0,400)}`);
+}
+async function callOpenAI(p){const k=(()=>{try{return localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim();}catch{return $('openaiKeyInput').value.trim();}})();if(!k) throw new Error('OpenAI Key 없음 - 설정탭에서 넣어줘');const model=$('openaiModelInput').value.trim()||'gpt-4o-mini';const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages:[{role:'user',content:p}],temperature:0.5,max_tokens:2000})});if(!r.ok) throw new Error('OpenAI '+r.status);const d=await r.json();return d.choices?.[0]?.message?.content||'';}
+async function sendChat(){const input=$('chatInput');if(!input) return;const text=input.value.trim();if(!text) return;const system=buildSystemPrompt(currentTab);const full=`${system}\n\n[사용자]\n${text}`;chats[currentTab].push({role:'user',content:text});renderChats();input.value='';if(text.includes('빌드해줘')||text.includes('확정')){log('빌드 트리거','info');setTimeout(()=>pushDual(),600);}try{log(`${currentTab} 호출중...`,'info');let reply='';if(currentTab==='meta') reply=await callGroq(full);else if(currentTab==='gemini') reply=await callGemini(full);else reply=await callOpenAI(full);chats[currentTab].push({role:'ai',content:reply});saveChats();renderChats();const code=extractCode(reply);if(code){draftCode=code;updateDraftStatus();log(`코드 감지 ${code.length}자`,'ok');}log(`${currentTab} 완료`,'ok');}catch(e){chats[currentTab].push({role:'ai',content:`❌ ${e.message}\n설정탭에서 API 키 확인해줘`});saveChats();renderChats();log(e.message,'err');}}
+const sendBtn=$('chatSendBtn');if(sendBtn) sendBtn.onclick=sendChat;
+const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendChat();});
+const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
+const saveDraftBtn=$('saveDraftBtn');
+if(saveDraftBtn) saveDraftBtn.onclick=()=>{
+  if(!draftCode){log('저장할 draft 없음','err'); return;}
+  try{localStorage.setItem('draft_code_'+currentRepo, draftCode);}catch{}
+  saveToSupabase(false);
+  const promptText='💾 드래프트 코드 저장해줘 - '+draftCode.length+'자 백업';
+  chats[currentTab].push({role:'user',content:promptText});
+  chats[currentTab].push({role:'ai',content:`✅ draft 저장 완료! ${draftCode.length}자\n- localStorage 저장됨\n- Supabase 백업 시도\n- GitHub는 공용빌드로 반영`});
+  saveChats(); renderChats();
+  log(`💾 draft 저장 ${draftCode.length}자`,'ok');
+};
+const chatBoxEl=$('chatBox');
+const dropOverlay=$('dropOverlay');
+if(chatBoxEl){
+  chatBoxEl.addEventListener('dragover',e=>{e.preventDefault(); if(dropOverlay){dropOverlay.classList.remove('hidden'); dropOverlay.style.display='flex';}});
+  chatBoxEl.addEventListener('dragleave',e=>{if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}});
+  chatBoxEl.addEventListener('drop',async e=>{
+    e.preventDefault();
+    if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}
+    const files=e.dataTransfer?.files;
+    if(files && files[0]) await handleImageFile(files[0]);
+  });
+}
+document.addEventListener('paste',async e=>{
+  const items=e.clipboardData?.items;
+  if(!items) return;
+  for(const item of items){
+    if(item.type.startsWith('image/')){
+      e.preventDefault();
+      const file=item.getAsFile();
+      if(file) await handleImageFile(file);
+      break;
+    }
+  }
+});
+const removeBtn=$('removeScreenshotBtn');
+if(removeBtn) removeBtn.onclick=()=>clearScreenshot();
 
-  <!-- SECTION 7 -->
-  <section class="card">
-    <h2 class="section-title">섹션 7</h2>
-    <p>Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum.</p>
-    <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-  </section>
+const toggleBtn=$('toggleDraftBtn');if(toggleBtn) toggleBtn.onclick=()=>{const ed=$('codeEditor');if(ed){ed.classList.toggle('hidden');toggleBtn.textContent=ed.classList.contains('hidden')?'draft 보기 ▼':'draft 숨기기 ▲';}};
 
-  <!-- SECTION 8 -->
-  <section class="card">
-    <h2 class="section-title">섹션 8</h2>
-    <p>Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
-    <p>Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
-  </section>
+async function pushToBranch(branch,code){
+  let pat='';
+  try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}
+  if(!pat) throw new Error('PAT 없음 - 설정탭');
+  const url=`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${mainFile}`;
+  let sha=null;
+  try{
+    const gr=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`}});
+    if(gr.ok){const j=await gr.json(); sha=j.sha;}
+    else if(gr.status===404 && branch==='gh-pages'){
+      log(`gh-pages 브랜치 없음 - main에서 생성 시도`,'info');
+      // Try to get main sha and create gh-pages branch via ref API
+      try{
+        const mainRefRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs/heads/main`,{headers:{Authorization:`Bearer ${pat}`}});
+        if(mainRefRes.ok){
+          const mainRef=await mainRefRes.json();
+          const createRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs`,{method:'POST',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify({ref:`refs/heads/${branch}`,sha:mainRef.object.sha})});
+          if(createRes.ok){log(`gh-pages 브랜치 생성 성공`,'ok');}
+          else{const t=await createRes.text(); log(`gh-pages 생성 실패 ${createRes.status} ${t.slice(0,200)}`,'info');}
+        }
+      }catch(e){log(`gh-pages 생성 중 오류 ${e.message}`,'info');}
+    }
+  }catch{}
+  const body={message:`v5.3.6 ${branch} ${new Date().toISOString()}`,content:btoa(unescape(encodeURIComponent(code))),branch};
+  if(sha) body.sha=sha;
+  const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok){
+    const txt=await res.text();
+    if(branch==='gh-pages'){
+      throw new Error(`gh-pages 실패 ${res.status}: ${txt.slice(0,300)} - GitHub Settings > Pages 에서 Source를 main으로 바꾸면 main만으로도 배포됨`);
+    }
+    throw new Error(txt);
+  }
+  return (await res.json()).commit.sha;
+}
+async function pushDual(){let pat='';try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}if(!pat){log('PAT 없음 - 설정탭에서 넣어줘','err');return;}if(!draftCode){log('draft 없음','err');return;}const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}try{await saveToSupabase(true);robotLog('Supabase 저장','ok');for(const doc of connectedDocs){await appendDoc(doc.id,`\n\n[v5.3.6 ${new Date().toLocaleString()}]\n`);}const s1=await pushToBranch('main',draftCode);robotLog(`main ${s1.slice(0,7)}`,'ok');try{const s2=await pushToBranch('gh-pages',draftCode);robotLog(`gh-pages ${s2.slice(0,7)}`,'ok');}catch(e){robotLog(`gh-pages 실패`,'err');}log(`🚀 빌드 완료 ?v=5.3.6`,'ok');}catch(e){log(`빌드 실패 ${e.message}`,'err');}finally{if(btn){btn.disabled=false;btn.textContent='🚀 공용 빌드';}}}
+const buildBtn=$('buildBtn');if(buildBtn) buildBtn.onclick=pushDual;
+function updateMemoryCount(){const memEl=$('memory10');if(!memEl) return;const v=memEl.value;const l=v.split('\n').filter(x=>x.trim()).length;const mc=$('memoryCount');if(mc) mc.textContent=`${l}줄`;try{localStorage.setItem('memory_10_'+currentRepo,v);}catch{}renderContext();}
+let saveTimeout=null;const memEl=$('memory10');if(memEl) memEl.addEventListener('input',()=>{updateMemoryCount();clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});
+const tmplBtn=$('templateBtn');if(tmplBtn) tmplBtn.onclick=()=>{const el=$('memory10');if(el){el.value=getTemplate();updateMemoryCount();saveToSupabase(true);}};
+const sbInput=$('supabaseKeyInput');if(sbInput) sbInput.addEventListener('input',e=>{try{localStorage.setItem('supabase_anon_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const ghInput=$('githubPatInput');if(ghInput) ghInput.addEventListener('input',e=>{try{localStorage.setItem('github_pat',e.target.value.trim());}catch{}updateStorageStatus();});
+const gemInput=$('geminiKeyInput');if(gemInput) gemInput.addEventListener('input',e=>{try{localStorage.setItem('gemini_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const groqInput=$('groqKeyInput');if(groqInput) groqInput.addEventListener('input',e=>{try{localStorage.setItem('groq_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const openInput=$('openaiKeyInput');if(openInput) openInput.addEventListener('input',e=>{try{localStorage.setItem('openai_key',e.target.value.trim());}catch{}updateStorageStatus();});
+const modelInput=$('openaiModelInput');if(modelInput) modelInput.addEventListener('input',e=>{try{localStorage.setItem('openai_model',e.target.value.trim());}catch{}});
 
-  <!-- SECTION 9 -->
-  <section class="card">
-    <h2 class="section-title">섹션 9</h2>
-    <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.</p>
-    <p>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor.</p>
-  </section>
-
-  <!-- SECTION 10 -->
-  <section class="card">
-    <h2 class="section-title">섹션 10</h2>
-    <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nullam porttitor lacus at turpis.</p>
-    <p>Donec vitae sapien ut libero venenatis faucibus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
-  </section>
-
-  <!-- SECTION 11 -->
-  <section class="card">
-    <h2 class="section-title">섹션 11</h2>
-    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-    <p>Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur.</p>
-  </section>
-
-  <!-- SECTION 12 -->
-  <section class="card">
-    <h2 class="section-title">섹션 12</h2>
-    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    <p>Nulla vitae elit libero, a pharetra augue. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-  </section>
-
-  <!-- SECTION 13 -->
-  <section class="card">
-    <h2 class="section-title">섹션 13</h2>
-    <p>Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum.</p>
-    <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-  </section>
-
-  <!-- SECTION 14 -->
-  <section class="card">
-    <h2 class="section-title">섹션 14</h2>
-    <p>Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
-    <p>Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
-  </section>
-
-  <!-- SECTION 15 -->
-  <section class="card">
-    <h2 class="section-title">섹션 15</h2>
-    <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.</p>
-    <p>Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor.</p>
-  </section>
-
-  <!-- SECTION 16 -->
-  <section class="card">
-    <h2 class="section-title">섹션 16</h2>
-    <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nullam porttitor lacus at turpis.</p>
-    <p>Donec vitae sapien ut libero venenatis faucibus. Nullam quis risus eget urna mollis ornare vel eu leo.</p>
-  </section>
-
-  <!-- SECTION 17 -->
-  <section class="card">
-    <h2 class="section-title">섹션 17</h2>
-    <p>Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.</p>
-    <p>Curabitur blandit tempus porttitor. Maecenas faucibus mollis interdum. Aenean lacinia bibendum nulla sed consectetur.</p>
-  </section>
-
-  <!-- SECTION 18 -->
-  <section class="card">
-    <h2 class="section-title">섹션 18</h2>
-    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-    <p>Nulla vitae elit libero, a pharetra augue. Sed posuere consectetur est at lobortis. Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
-  </section>
-
-  <!-- SECTION 19 -->
-  <section class="card">
-    <h2 class="section-title">섹션 19</h2>
-    <p>Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum.</p>
-    <p>Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-  </section>
-
-  <!-- SECTION 20 -->
-  <section class="card">
-    <h2 class="section-title">섹션 20</h2>
-    <p>Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
-    <p>Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
-  </section>
-
-  <!-- 섹션 21 ~ 250까지 동일 패턴 반복 (생략) -->
-  <!-- 실제 배포 시에는 아래와 같은 블록을 자동 스크립트로 복제해서 250개 정도 만들면 40,000자를 쉽게 초과합니다. -->
-  <!-- 여기서는 예시로 30개 정도만 전시하고, 나머지는 동일하게 복제된다고 가정합니다. -->
-
-  <!-- SECTION 21 -->
-  <section class="card">
-    <h2 class="section-title">섹션 21</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 22 -->
-  <section class="card">
-    <h2 class="section-title">섹션 22</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 23 -->
-  <section class="card">
-    <h2 class="section-title">섹션 23</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 24 -->
-  <section class="card">
-    <h2 class="section-title">섹션 24</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 25 -->
-  <section class="card">
-    <h2 class="section-title">섹션 25</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 26 -->
-  <section class="card">
-    <h2 class="section-title">섹션 26</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 27 -->
-  <section class="card">
-    <h2 class="section-title">섹션 27</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 28 -->
-  <section class="card">
-    <h2 class="section-title">섹션 28</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 29 -->
-  <section class="card">
-    <h2 class="section-title">섹션 29</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- SECTION 30 -->
-  <section class="card">
-    <h2 class="section-title">섹션 30</h2>
-    <p>... (동일한 Lorem Ipsum 내용) ...</p>
-  </section>
-
-  <!-- ... (섹션 31~250) ... -->
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>© 2026 Builder‑a4u. All rights reserved.</p>
-    <p>버전: v5.3.0 | 배포일: 2026‑10‑04</p>
-  </footer>
-
+async function loadRepos(){try{const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`);const d=await r.json();const s=$('repoSelect');if(!s) return;s.innerHTML='';d.forEach(repo=>{const o=document.createElement('option');o.value=repo.name;o.textContent=`${repo.name}`;if(repo.name===currentRepo) o.selected=true;s.appendChild(o);});log(`레포 ${d.length}개`,'ok');}catch(e){log('레포 로드 실패','err');}}
+const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
+const mainFileInput=$('mainFileInput');if(mainFileInput) mainFileInput.addEventListener('input',e=>{mainFile=e.target.value.trim();try{localStorage.setItem('main_file_'+currentRepo,mainFile);}catch{}});
+async function fetchCode(){try{const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;const r=await fetch(url);if(!r.ok) throw new Error(r.status);const code=await r.text();draftCode=code;updateDraftStatus();log(`코드 로드 ${code.length}자`,'ok');renderContext();}catch(e){log(`코드 로드 실패`,'info');}}
+function renderConnectedDocs(){const box=$('connectedDocs');if(!box) return;box.innerHTML='';connectedDocs.forEach((doc,i)=>{const div=document.createElement('div');div.className='doc-card';div.innerHTML=`<input type="checkbox" checked disabled><div class="doc-info"><div class="font-bold text-[11px]">📄 ${doc.title.slice(0,40)}</div></div><div class="flex gap-1"><button class="btn btn-sm open-doc" data-i="${i}">열기</button><button class="btn btn-sm preview-doc" data-i="${i}">불러오기</button><button class="btn btn-sm text-red-600 remove-doc" data-i="${i}">해제</button></div>`;box.appendChild(div);});box.querySelectorAll('.open-doc').forEach(b=>b.onclick=()=>{window.open(`https://docs.google.com/document/d/${connectedDocs[b.dataset.i].id}/edit`,'_blank');});box.querySelectorAll('.preview-doc').forEach(b=>b.onclick=async()=>{await previewDoc(connectedDocs[b.dataset.i].id);});box.querySelectorAll('.remove-doc').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1);try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);renderConnectedDocs();renderContext();});try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}}
+async function previewDoc(id){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}try{const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const d=await r.json();let txt='';d.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}});const pv=$('docPreview');if(pv){pv.textContent=`[불러오기 ${txt.length}자]\n\n${txt.slice(0,2000)}`;pv.classList.remove('hidden');}log(`불러오기 성공`,'ok');}catch(e){log('불러오기 실패','err');}}
+async function appendDoc(id,text){if(!accessToken) return false;try{const dr=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const doc=await dr.json();let end=0;doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);});const req={requests:[{insertText:{location:{index:end-1},text}}]};const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(req)});return r.ok;}catch{return false;}}
+function renderSearchResults(files,target){
+  const isMain=target==='driveResults';const listId=isMain?'driveResults':'linkSearchResults';const boxId=isMain?'driveResultsBox':'linkSearchResultsBox';const list=$(listId);if(!list) return;list.innerHTML='';const box=$(boxId);if(box) box.classList.remove('hidden');if(isMain) tempMainResults=files;else tempLinkResults=files;
+  if(!files||files.length===0){list.innerHTML='<div class="text-[10px]">없음</div>';return;}
+  files.forEach((f,idx)=>{const div=document.createElement('div');div.className='doc-card';div.setAttribute('draggable','false');div.innerHTML=`<input type="checkbox" class="chk-doc" data-idx="${idx}" data-target="${target}"><div class="doc-info"><div class="font-bold text-[11px]">${f.name}</div><div class="text-[9px] opacity-60">${f.modifiedTime.slice(0,10)}</div></div><button class="btn btn-sm connect-one" data-idx="${idx}" data-target="${target}">연결</button>`;div.addEventListener('mousedown',e=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON') e.preventDefault();});div.addEventListener('dragstart',e=>e.preventDefault());div.addEventListener('click',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON') return;const chk=div.querySelector('input[type=checkbox]');chk.checked=!chk.checked;});list.appendChild(div);});
+  list.querySelectorAll('.connect-one').forEach(btn=>{btn.onclick=()=>{const idx=parseInt(btn.dataset.idx);const tgt=btn.dataset.target;const file=(tgt==='driveResults'?tempMainResults:tempLinkResults)[idx];if(tgt==='driveResults'){connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');}else{const url=`https://docs.google.com/document/d/${file.id}/edit`;if(customLinks.find(l=>l.url===url)){log('이미 추가됨','info');return;}customLinks.push({title:file.name,url});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}log(`추가 연결 ${file.name}`,'ok');}};});
+}
+async function searchDrive(query,target){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}const q=query?`mimeType='application/vnd.google-apps.document' and trashed=false and name contains '${query.replace(/'/g,"\\'")}'`:`mimeType='application/vnd.google-apps.document' and trashed=false`;try{const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30`;const res=await fetch(url,{headers:{Authorization:`Bearer ${accessToken}`}});const data=await res.json();renderSearchResults(data.files||[],target);}catch(e){log('검색 실패','err');}}
+const searchExactBtn=$('searchExactBtn');if(searchExactBtn) searchExactBtn.onclick=()=>{const q=$('docSearchInput').value.trim();searchDrive(q,'driveResults');};
+const linkSearchBtn=$('linkSearchBtn');if(linkSearchBtn) linkSearchBtn.onclick=()=>{const q=$('linkSearchInput').value.trim();searchDrive(q,'linkSearchResults');};
+const connMainBtn=$('connectCheckedMainBtn');if(connMainBtn) connMainBtn.onclick=()=>{const chks=document.querySelectorAll('#driveResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}const idx=parseInt(chks[0].dataset.idx);const file=tempMainResults[idx];connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');};
+const connLinksBtn=$('connectCheckedLinksBtn');if(connLinksBtn) connLinksBtn.onclick=()=>{const chks=document.querySelectorAll('#linkSearchResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}let added=0;chks.forEach(chk=>{const idx=parseInt(chk.dataset.idx);const file=tempLinkResults[idx];const url=`https://docs.google.com/document/d/${file.id}/edit`;if(!customLinks.find(l=>l.url===url)){customLinks.push({title:file.name,url});added++;}});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}const box=$('linkSearchResultsBox');if(box) box.classList.add('hidden');log(`추가 ${added}개 연결`,'ok');};
+function renderCustomLinks(){const box=$('customLinksList');if(!box) return;box.innerHTML='';const lc=$('linkCount');if(lc) lc.textContent=`${customLinks.length}개`;customLinks.forEach((l,i)=>{const div=document.createElement('div');div.className='link-item';div.innerHTML=`<input type="checkbox" checked disabled><span class="text-[10px] font-bold flex-1">${l.title.slice(0,28)}</span><button class="btn text-[8px] preview-link" data-i="${i}">불러오기</button><a href="${l.url}" target="_blank" class="text-[8px] text-blue-600">열기</a><button class="btn text-[8px] py-1" data-i="${i}">삭제</button>`;box.appendChild(div);});box.querySelectorAll('.preview-link').forEach(b=>b.onclick=async()=>{const l=customLinks[b.dataset.i];const id=l.url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];if(id) await previewDoc(id);});box.querySelectorAll('button:last-child').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1);try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}renderCustomLinks();renderContext();});try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}}
+async function saveToSupabase(silent){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key){if(!silent) log('Supabase key 없음','err');return false;}try{const payload={project_name:currentRepo,repo:`${GITHUB_USER}/${currentRepo}`,main_file:mainFile,memory_10:$('memory10').value,doc_id:connectedDocs[0]?.id||null,doc_title:connectedDocs[0]?.title||null,draft_code:draftCode.slice(0,8000),updated_at:new Date().toISOString()};const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify(payload)});if(!res.ok) throw new Error(await res.text());if(!silent) log('Supabase 저장','ok');return true;}catch(e){if(!silent) log('Supabase 실패','err');return false;}}
+async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key) return;try{const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?project_name=eq.${currentRepo}&select=*`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});const data=await res.json();if(data&&data[0]){const row=data[0];if(row.memory_10){const memInput=$('memory10');if(memInput&&!memInput.value){memInput.value=row.memory_10;updateMemoryCount();}}if(row.main_file){mainFile=row.main_file;const mf=$('mainFileInput');if(mf) mf.value=mainFile;}if(row.draft_code&&!draftCode){draftCode=row.draft_code;updateDraftStatus();}if(row.doc_id&&connectedDocs.length===0){connectedDocs=[{id:row.doc_id,title:row.doc_title||'복구'}];try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}renderConnectedDocs();log(`문서 복구 ${row.doc_title}`,'ok');}log('Supabase 복구','ok');}}catch{}}
+function initGIS(){const s=$('googleStatus');if(!s) return;if(!window.google||!google.accounts){s.textContent='GIS 로딩 실패';return;}try{const c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',callback:(r)=>{if(r.access_token){accessToken=r.access_token;try{localStorage.setItem('google_access_token',accessToken);}catch{}s.textContent='✅ Drive 연결됨';log('Google 로그인 성공','ok');}}});const btn=$('googleLoginBtn');if(btn) btn.onclick=()=>c.requestAccessToken();if(accessToken){s.textContent='✅ Drive 연결됨 (캐시)';}else s.textContent='GIS 준비됨 - 설정탭에서 로그인';}catch(e){s.textContent='GIS 실패';}}
+window.addEventListener('load',()=>{
+  initTheme();
+  try{const tv=localStorage.getItem('top_view');if(tv) switchTopView(tv);}catch{}
+  try{$('supabaseKeyInput').value=localStorage.getItem('supabase_anon_key')||'';}catch{}
+  try{$('githubPatInput').value=localStorage.getItem('github_pat')||'';}catch{}
+  try{$('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';}catch{}
+  try{$('groqKeyInput').value=localStorage.getItem('groq_key')||'';}catch{}
+  try{$('openaiKeyInput').value=localStorage.getItem('openai_key')||'';}catch{}
+  try{$('openaiModelInput').value=localStorage.getItem('openai_model')||'gpt-4o-mini';}catch{}
+  const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();
+  const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();
+  const mf=$('mainFileInput');if(mf) mf.value=mainFile;
+  updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();
+  loadRepos();setTimeout(initGIS,600);setTimeout(()=>{fetchCode();autoLoadSupabase();},1000);
+  log('v5.3.6 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  setTimeout(initTheme,200);
+});
+const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
+</script>
 </body>
 </html>
