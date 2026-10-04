@@ -1,0 +1,26 @@
+{
+  "name": "Builder-a4u v5.3.18",
+  "short_name": "Builder-a4u",
+  "description": "단일 공방으로 N개 앱 맥락 유지 - v5.3.18 메타 글씨",
+  "start_url": "./index.html?v=5.3.18",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}
