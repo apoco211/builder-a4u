@@ -21,29 +21,8 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
-</style><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
 
-/* v5.3.31 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.3.33 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -61,17 +40,17 @@
 
 </style>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.3.31 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
+<title>Builder-a4u v5.3.33 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.3.31">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.3.31">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.3.31">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.3.31">
+<link rel="manifest" href="./manifest.json?v=5.3.33">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.3.33">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.3.33">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.3.33">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -121,7 +100,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 /* iPhone 최적화 - 폰트 확대 및 터치 영역 확보 */
 @media (max-width: 768px){
-  /* v5.3.31: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
+  /* v5.3.33: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
@@ -141,21 +120,50 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   .doc-card{font-size:12px}
 }
 
+/* v5.3.33 PC 최적화 - 대화창 크게, 글씨 크게 */
 @media (min-width:1024px){
-  body{max-width:980px;padding:24px 28px 120px 28px;font-size:15px}
-  .chat-box{height:520px}
-  .card{padding:20px}
-  .msg{font-size:13.5px}
-  .input{font-size:15px}
-  .textarea{font-size:14px}
-  h1{font-size:22px !important}
+  body{max-width:1280px !important;padding:28px 32px 120px 32px !important;font-size:17px !important;line-height:1.6 !important}
+  .card{padding:24px !important;border-radius:20px !important;margin-bottom:18px !important}
+  .chat-box{height:68vh !important;min-height:580px !important;max-height:780px !important;padding:20px !important;gap:16px !important}
+  .msg{font-size:16px !important;line-height:1.7 !important;padding:14px 18px !important;max-width:80% !important}
+  .msg-system{font-size:14px !important;padding:14px 16px !important}
+  .input{font-size:16.5px !important;padding:14px 16px !important;min-height:52px !important;border-radius:14px !important}
+  .textarea{font-size:15.5px !important;line-height:1.7 !important;padding:14px !important}
+  .btn{font-size:15px !important;padding:12px 18px !important;min-height:48px !important;border-radius:14px !important}
+  .btn-sm{font-size:14px !important;padding:10px 16px !important;min-height:42px !important}
+  .top-tab{font-size:16px !important;padding:16px 12px !important;min-height:56px !important;border-radius:16px !important}
+  h1{font-size:26px !important}
+  h2{font-size:15px !important;letter-spacing:0.05em !important}
+  .log{font-size:13px !important;line-height:1.7 !important;max-height:300px !important;padding:16px !important}
+  .badge{font-size:12px !important;padding:6px 12px !important}
+  .doc-card{padding:16px !important;font-size:14px !important}
+  /* PC에서는 2컬럼 레이아웃 가능하도록 */
+  .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+}
+@media (min-width:1280px){
+  body{max-width:1360px !important;padding:32px 40px 120px 40px !important;font-size:17.5px !important}
+  .chat-box{height:70vh !important;min-height:620px !important}
+  .card{padding:26px !important}
 }
 @media (min-width:760px) and (max-width:1023px){
-  body{max-width:860px;font-size:15px}
+  body{max-width:900px !important;font-size:16px !important;padding:20px 24px 100px 24px !important}
+  .chat-box{height:60vh !important;min-height:480px !important}
+  .msg{font-size:15px !important}
+  .input{font-size:16px !important}
+  .card{padding:18px !important}
 }
+/* PC에서 줌 버튼 */
+.pc-zoom-controls{position:fixed;bottom:20px;right:20px;z-index:9999;display:none;gap:8px}
+@media (min-width:1024px){
+  .pc-zoom-controls{display:flex}
+}
+.pc-zoom-btn{width:44px;height:44px;border-radius:50%;background:#111;color:#fff;border:2px solid #333;font-size:18px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.pc-zoom-btn:hover{background:#333;transform:scale(1.05)}
+.dark .pc-zoom-btn{background:#e2e8f0 !important;color:#0f1115 !important;border-color:#3a4152 !important}
+
 .view-hidden{display:none !important}
 
-/* v5.3.31 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.3.33 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -175,8 +183,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.31</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.3.31</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.3.33</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.3.33</span></div>
 </div>
 
 <!-- 상단 탭: 작업 / 설정 -->
@@ -260,7 +268,9 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div><label class="text-[10px] font-bold">Supabase anon key (기억10줄 백업용)</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ... / sb_publishable_..."></div>
 <div><label class="text-[10px] font-bold">GitHub PAT (빌드 Push용 - repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_..."></div>
 <div><label class="text-[10px] font-bold">Gemini Key (제미나이 검증 - 무료)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio에서 발급"></div>
-<div><label class="text-[10px] font-bold">Groq Key (메타 생성 - 무료, llama-3.3)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="console.groq.com/keys"></div>
+<div><label class="text-[10px] font-bold">Groq Key (메타 + GPT-OSS 무료 - 1개 키로 둘 다!)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="console.groq.com/keys">
+<select id="groqModelInput" class="input text-[9px] mt-1"><option value="auto">🤖 자동 (gpt-oss-120b → 20b → llama 순)</option><option value="llama-3.3-70b-versatile">llama-3.3-70b (메타, 가장 똑똑)</option><option value="llama-3.1-8b-instant">llama-3.1-8b (메타, 초고속)</option><option value="openai/gpt-oss-20b">gpt-oss-20b (OpenAI 오픈소스, 빠름)</option><option value="openai/gpt-oss-120b">gpt-oss-120b (OpenAI 오픈소스, GPT-4급! 추천)</option><option value="meta-llama/llama-4-maverick-17b-128e-instruct">llama-4-maverick (메타 최신)</option></select>
+<div class="text-[8px] text-gray-400 mt-1">💡 Groq 키 1개로 Llama + gpt-oss 모두 무료! 120b가 코딩 제일 잘해</div></div>
 <div><label class="text-[10px] font-bold">OpenAI Key (GPT 검수 - 4000토큰 4원)</label><input id="openaiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="sk-proj-..."></div>
 <div><label class="text-[10px] font-bold">OpenAI 모델</label><input id="openaiModelInput" class="input text-[9px] mt-1" value="gpt-4o-mini"></div>
 </div>
@@ -279,7 +289,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.3.31 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.3.31</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.3.33 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.3.33</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -305,16 +315,16 @@ function getProjectTemplate(repo){
   if(name.toLowerCase().includes('daily') || name.toLowerCase().includes('todo')){
     return `1.프로젝트: ${name} v2.1\n2.목적: 할일 관리 + 공방 연동\n3.현재: ${d} 기억 초기화\n4.다음: 기능 확인\n5.결정: 링크 기반\n6.제외: 없음\n7.저장: Supabase+Docs+GitHub\n8.버그: 없음\n9.모드: 빌드모드\n10.상태: 진행중`;
   }
-  return `1.프로젝트: ${name} v5.3.31\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.3.31`;
+  return `1.프로젝트: ${name} v5.3.33\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.3.33`;
 }
 function getTemplate(){ return getProjectTemplate(currentRepo); }
 function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
 function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크 N개]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
 function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
 function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
-// v5.3.31 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
+// v5.3.33 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
 
-// v5.3.31: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
+// v5.3.33: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
 let lastSummaryAt = 0;
 async function incrementalSummarize(force=false){
   const all = chats[currentTab]||[];
@@ -394,12 +404,12 @@ function autoInjectOnRepoSelect(){
 
 
 
-// v5.3.31: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
+// v5.3.33: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
 // - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다
 const ORIGINAL_WINDOW = 20;
 
 const CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만
-const CHAT_SUMMARY_THRESHOLD = 15; // v5.3.31: 30→15, 실제 빌드는 10~15번 대화가 많음
+const CHAT_SUMMARY_THRESHOLD = 15; // v5.3.33: 30→15, 실제 빌드는 10~15번 대화가 많음
 let chatArchive = {}; // {tab: [older messages]}
 
 function getChatArchiveKey(){return `chat_archive_${currentRepo}_${currentTab}`;}
@@ -490,7 +500,7 @@ const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
 const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
 const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
 function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}
-// v5.3.31: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
+// v5.3.33: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
 if(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도
 }
 function extractCode(t){ if(!t || typeof t!=='string') return null; try{ const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i); return m?m[1].trim():null; }catch{ return null; } }
@@ -547,7 +557,7 @@ async function callGemini(p, imageBase64=null, imageMime=null){
     'gemini-2.0-flash'
   ];
   let lastErr='';
-  // v5.3.31: 사용 가능 모델 목록 먼저 확인 시도 (키 유효성 체크)
+  // v5.3.33: 사용 가능 모델 목록 먼저 확인 시도 (키 유효성 체크)
   try{
     const listRes = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${k}`).then(r=>r.ok?r:fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${k}`));
     if(listRes.ok){
@@ -594,14 +604,15 @@ async function callGemini(p, imageBase64=null, imageMime=null){
 async function callGroq(p, imageBase64=null, imageMime=null){
   const k=(()=>{try{return localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();}catch{return $('groqKeyInput').value.trim();}})();
   if(!k) throw new Error('Groq Key 없음 - 설정탭에서 넣어줘');
-  const models=[
+  const selectedModel = (()=>{try{return localStorage.getItem('groq_model')||'auto';}catch{return 'auto';}})();
+  const models = selectedModel==='auto' ? [
     'openai/gpt-oss-120b',
     'openai/gpt-oss-20b',
     'meta-llama/llama-4-maverick-17b-128e-instruct',
     'meta-llama/llama-4-scout-17b-16e-instruct',
     'llama-3.3-70b-versatile',
     'llama-3.1-8b-instant'
-  ];
+  ] : [selectedModel];
   let lastErr='';
   for(const model of models){
     try{
@@ -637,7 +648,7 @@ async function sendChat(){const input=$('chatInput');if(!input) return;const tex
   if(code){
     if(code.length < 10000 && draftCode && draftCode.length > 20000){
       // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
-      log(`[v5.3.31] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
+      log(`[v5.3.33] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
       // 대신 채팅에만 표시하고 draft는 유지
     } else {
       draftCode=code;
@@ -650,7 +661,7 @@ const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown
 const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
 const saveDraftBtn=$('saveDraftBtn');
 if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
-  // v5.3.31: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
+  // v5.3.33: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
   let finalCode = draftCode;
   const editorVal = document.getElementById('codeEditor')?.value || '';
   const memory10 = document.getElementById('memory10')?.value || '';
@@ -665,7 +676,7 @@ if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
       if(fullMain.length > 10000){
         // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지
         if(!finalCode || finalCode.length < 10000){
-          log(`[v5.3.31] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
+          log(`[v5.3.33] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
           finalCode = fullMain;
           draftCode = finalCode;
         } else {
@@ -767,7 +778,7 @@ async function pushToBranch(branch,code){
 
 function getNextVersion(current){
   const m = current.match(/v(\d+)\.(\d+)\.(\d+)/);
-  if(!m) return 'v5.3.31';
+  if(!m) return 'v5.3.33';
   let major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
   patch++;
   return `v${major}.${minor}.${patch}`;
@@ -787,7 +798,7 @@ async function pushDual(){
   const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}
   try{
     const curMatch = (draftCode||'').match(/v5\.3\.(\d+)/);
-    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.3.31';
+    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.3.33';
     const nextVer = getNextVersion(curVer);
     log(`🔢 버전 자동 증가 ${curVer} -> ${nextVer}`,'info');
     draftCode = bumpVersionInCode(draftCode, nextVer);
@@ -804,6 +815,7 @@ const buildBtn=$('buildBtn');if(buildBtn) buildBtn.onclick=pushDual;
 function updateMemoryCount(){const memEl=$('memory10');if(!memEl) return;const v=memEl.value;const l=v.split('\n').filter(x=>x.trim()).length;const mc=$('memoryCount');if(mc) mc.textContent=`${l}줄`;try{localStorage.setItem('memory_10_'+currentRepo,v);}catch{}renderContext();}
 let saveTimeout=null;const memEl=$('memory10');if(memEl) memEl.addEventListener('input',()=>{updateMemoryCount();clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});
 const tmplBtn=$('templateBtn');if(tmplBtn) tmplBtn.onclick=()=>{const el=$('memory10');if(el){el.value=getTemplate();updateMemoryCount();saveToSupabase(true);}};
+const groqModelEl=$('groqModelInput'); if(groqModelEl) groqModelEl.addEventListener('change',e=>{ try{localStorage.setItem('groq_model',e.target.value); log(`Groq 모델: ${e.target.value}`,'ok');}catch{} });
 const sbInput=$('supabaseKeyInput');if(sbInput) sbInput.addEventListener('input',e=>{try{localStorage.setItem('supabase_anon_key',e.target.value.trim());}catch{}updateStorageStatus();});
 const ghInput=$('githubPatInput');if(ghInput) ghInput.addEventListener('input',e=>{try{localStorage.setItem('github_pat',e.target.value.trim());}catch{}updateStorageStatus();});
 const gemInput=$('geminiKeyInput');if(gemInput) gemInput.addEventListener('input',e=>{try{localStorage.setItem('gemini_key',e.target.value.trim());}catch{}updateStorageStatus();});
@@ -834,10 +846,10 @@ async function fetchCode(){
     const r=await fetch(url);
     if(!r.ok) throw new Error(r.status);
     const code=await r.text();
-    // v5.3.31 가짜 페이지 가드 - 디자인 유지, 로직만 추가
+    // v5.3.33 가짜 페이지 가드 - 디자인 유지, 로직만 추가
     const isFake = code.length < 10000 || (code.includes('Supabase anon key') && code.includes('GitHub PAT') && code.length < 5000);
     if(isFake){
-      log(`[v5.3.31 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
+      log(`[v5.3.33 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
       robotLog(`[가드] raw ${code.length}자 가짜 차단 - localStorage draft 유지`,'err');
       // localStorage draft 우선 유지
       try{
@@ -874,7 +886,7 @@ async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supab
   if(row.memory_10){
     const memInput=$('memory10');
     if(memInput){
-      // v5.3.31: 다른 프로젝트 기억이 builder로 덮인 오염 체크
+      // v5.3.33: 다른 프로젝트 기억이 builder로 덮인 오염 체크
       const isBuilderMemory = row.memory_10.includes('Builder-a4u') || row.memory_10.includes('builder-a4u');
       const isForThisProject = row.memory_10.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
       // 만약 현재가 builder-a4u가 아닌데 Supabase에 builder 기억이 들어있으면 오염된 것으로 보고 무시
@@ -918,6 +930,7 @@ window.addEventListener('load',()=>{
   try{$('githubPatInput').value=localStorage.getItem('github_pat')||'';}catch{}
   try{$('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';}catch{}
   try{$('groqKeyInput').value=localStorage.getItem('groq_key')||'';}catch{}
+  try{const gm=localStorage.getItem('groq_model')||'auto'; const el=$('groqModelInput'); if(el) el.value=gm;}catch{}
   try{$('openaiKeyInput').value=localStorage.getItem('openai_key')||'';}catch{}
   try{$('openaiModelInput').value=localStorage.getItem('openai_model')||'gpt-4o-mini';}catch{}
   const mem=(()=>{
@@ -969,13 +982,13 @@ if(forceResetBtn) forceResetBtn.onclick = async () => {
   await fetchCode();
 };
 
-  log('v5.3.31 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  log('v5.3.33 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
   setTimeout(initTheme,200);
 });
 const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();
-// v5.3.31: 링크 N개 무제한 - 접힘/펼침
+// v5.3.33: 링크 N개 무제한 - 접힘/펼침
 let linksCollapsed = localStorage.getItem('linksCollapsed') === 'true';
 function toggleLinksBox(){
   linksCollapsed = !linksCollapsed;
@@ -994,5 +1007,57 @@ function toggleLinksBox(){
   }
 }
 
-</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</script>
+<div class="pc-zoom-controls">
+  <button class="pc-zoom-btn" id="pcZoomOut" title="글씨 작게">A-</button>
+  <button class="pc-zoom-btn" id="pcZoomIn" title="글씨 크게">A+</button>
+</div>
+<script>
+// v5.3.33 PC 글씨 크기 조절
+(function(){
+  let pcScale = parseFloat(localStorage.getItem('pc_font_scale')||'1');
+  function applyPcScale(){
+    if(window.innerWidth >= 1024){
+      document.documentElement.style.fontSize = (16 * pcScale) + 'px';
+      document.body.style.zoom = pcScale;
+    }
+  }
+  applyPcScale();
+  const zoomIn = document.getElementById('pcZoomIn');
+  const zoomOut = document.getElementById('pcZoomOut');
+  if(zoomIn) zoomIn.onclick = ()=>{
+    pcScale = Math.min(1.4, pcScale + 0.1);
+    localStorage.setItem('pc_font_scale', pcScale);
+    applyPcScale();
+  };
+  if(zoomOut) zoomOut.onclick = ()=>{
+    pcScale = Math.max(0.8, pcScale - 0.1);
+    localStorage.setItem('pc_font_scale', pcScale);
+    applyPcScale();
+  };
+  // Ctrl + +/- 지원
+  document.addEventListener('keydown', e=>{
+    if((e.ctrlKey || e.metaKey) && (e.key==='+' || e.key==='=')){
+      e.preventDefault();
+      pcScale = Math.min(1.4, pcScale + 0.1);
+      localStorage.setItem('pc_font_scale', pcScale);
+      applyPcScale();
+    }
+    if((e.ctrlKey || e.metaKey) && e.key==='-'){
+      e.preventDefault();
+      pcScale = Math.max(0.8, pcScale - 0.1);
+      localStorage.setItem('pc_font_scale', pcScale);
+      applyPcScale();
+    }
+    if((e.ctrlKey || e.metaKey) && e.key==='0'){
+      e.preventDefault();
+      pcScale = 1;
+      localStorage.setItem('pc_font_scale', pcScale);
+      applyPcScale();
+    }
+  });
+})();
+</script>
+
+</body>
 </html>
