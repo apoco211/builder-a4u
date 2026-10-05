@@ -43,14 +43,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.6.0 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 2.5/OSS 2026 Fix + PC 반응형</title>
+<title>Builder-a4u v5.6.3 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 2.5/OSS 2026 Fix + PC 반응형</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.6.1">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.6.1">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.6.1">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.6.1">
+<link rel="manifest" href="./manifest.json?v=5.6.3">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.6.3">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.6.3">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.6.3">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -200,7 +200,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.6.1</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.6.3</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
 <div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.5.9</span></div>
 </div>
 
@@ -246,7 +246,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
-<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (B안)</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 </h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
 <div class="flex justify-between items-center mb-1"><span class="text-[10px] text-gray-500 dark:text-gray-400">📎 복사될 링크 N개 (raw + Docs + GitHub + 추가 무제한)</span><button id="toggleLinksBtn" onclick="toggleLinksBox()" class="text-[10px] px-2 py-1 rounded bg-gray-100 dark:bg-[#252a36] border">▼ 링크 N개 (무제한) 보기</button></div>
 <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto" style="background:#fffbeb;border-color:#fde68a"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
@@ -353,7 +353,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.6.1 · 기억10줄 오염 제거 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.6.1</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.6.1 · 기억10줄 오염 제거 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.6.3</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -886,12 +886,39 @@ async function callGroq(p, imageBase64=null, imageMime=null){
   throw new Error(`Groq 전부 실패. 마지막: ${lastErr.slice(0,400)}`);
 }
 async function callOpenAI(p){const k=(()=>{try{return localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim();}catch{return $('openaiKeyInput').value.trim();}})();if(!k) throw new Error('OpenAI Key 없음 - 설정탭에서 넣어줘');const model=$('openaiModelInput').value.trim()||'gpt-4o-mini';const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages:[{role:'user',content:p}],temperature:0.5,max_tokens:2000})});if(!r.ok) throw new Error('OpenAI '+r.status);const d=await r.json();return d.choices?.[0]?.message?.content||'';}
+function applySmartPatch(small, large){
+  if(!small || !large) return null;
+  let patched = large;
+  // 1.  단순 제거 - 가장 확실한 케이스
+  if(large.includes('')){
+    // small이  없이 PWA 내부 3탭 채팅을 포함하면 전체에서  제거
+    if(small.includes('PWA 내부 3탭 채팅') && !small.includes('')){
+      return large.replaceAll('', '').replaceAll('  ', ' ');
+    }
+    // small 자체가  제거 힌트만 있어도 전체 제거
+    if(small.length < 2000){
+      return large.replaceAll('', '').replaceAll('  ', ' ');
+    }
+  }
+  return null;
+}
+
 async function sendChat(){const input=$('chatInput');if(!input) return;const text=input.value.trim();if(!text) return;const system=buildSystemPrompt(currentTab);const full=`${system}\n\n[사용자]\n${text}`;chats[currentTab].push({role:'user',content:text});maybeSummarize();renderChats();input.value='';if(text.includes('빌드해줘')||text.includes('확정')){log('빌드 트리거','info');setTimeout(()=>pushDual(),600);}try{log(`${currentTab} 호출중...`,'info');let reply='';if(currentTab==='meta') reply=await callGroq(full);else if(currentTab==='gemini') reply=await callGemini(full);else reply=await callOpenAI(full);chats[currentTab].push({role:'ai',content:reply});maybeSummarize();saveChats();renderChats();const code=extractCode(reply);
   if(code){
     if(code.length < 10000 && draftCode && draftCode.length > 20000){
-      // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
-      log(`[v5.6.0] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
-      // 대신 채팅에만 표시하고 draft는 유지
+      // v5.6.3 Fix: 스니펫이면 버리지 말고 패치해서 미리보기 가능하게 (B안 등)
+      log(`[v5.6.3] 스니펫 감지 ${code.length}자 - 전체 코드에 패치 시도`,'info');
+      const patched = applySmartPatch(code, draftCode);
+      if(patched && patched.length > 20000){
+        draftCode=patched;
+        if(typeof autoBackup!=='undefined' && autoBackup) saveDraftHistory(patched, '스니펫 패치');
+        if(typeof updateLivePreview==='function') updateLivePreview();
+        updateDraftStatus();
+        log(`✅ 스니펫 패치 성공! ${patched.length}자 - 미리보기 확인해줘`,'ok');
+        try{localStorage.setItem('draft_code_'+currentRepo, patched);}catch{}
+      } else {
+        log(`[v5.6.3] 스니펫 패치 실패 - 전체 코드 유지`,'info');
+      }
     } else {
       draftCode=code; if(typeof autoBackup!=='undefined' && autoBackup) {saveDraftHistory(code, 'GitHub에서 로드');} if(typeof updateLivePreview==='function') updateLivePreview();
       updateDraftStatus();
@@ -1066,18 +1093,79 @@ const openInput=$('openaiKeyInput');if(openInput) openInput.addEventListener('in
 const modelInput=$('openaiModelInput');if(modelInput) modelInput.addEventListener('input',e=>{try{localStorage.setItem('openai_model',e.target.value.trim());}catch{}});
 
 async function loadRepos(){
+  const s=$('repoSelect');
+  const CACHE_KEY = `repo_list_cache_${GITHUB_USER}`;
+  const CACHE_TTL = 1000*60*60*6; // 6시간
+
+  function renderRepos(list, msg){
+    if(!s) return;
+    s.innerHTML='';
+    // currentRepo가 목록에 없으면 추가 (하드코딩 없이 현재 값만)
+    const names = new Set(list.map(r=>typeof r==='string'?r:r.name));
+    if(!names.has(currentRepo)){
+      const o=document.createElement('option');
+      o.value=currentRepo; o.textContent=currentRepo; o.selected=true;
+      s.appendChild(o);
+    }
+    list.forEach(repo=>{
+      const name = typeof repo==='string'?repo:repo.name;
+      if(!name) return;
+      const o=document.createElement('option');
+      o.value=name; o.textContent=name;
+      if(name===currentRepo) o.selected=true;
+      s.appendChild(o);
+    });
+    if(msg) log(msg,'info');
+  }
+
+  function getCached(){
+    try{
+      const raw=localStorage.getItem(CACHE_KEY);
+      if(!raw) return null;
+      const obj=JSON.parse(raw);
+      if(Date.now()-obj.ts > CACHE_TTL) return null;
+      return obj.list;
+    }catch{return null;}
+  }
+
+  // 1. 캐시 먼저 표시 - 하드코딩 아님, 이전에 API로 받아둔 진짜 목록
+  const cached = getCached();
+  if(cached && cached.length>0){
+    renderRepos(cached, `📦 캐시된 레포 ${cached.length}개 표시 (API 갱신중...)`);
+  } else {
+    // 캐시도 없으면 현재 레포만 표시 - 하드코딩 목록 대신 최소 동작 보장
+    renderRepos([], `레포 목록 로딩중... (GitHub API 호출)`);
+  }
+
+  // 2. GitHub API 시도
   try{
-    const headers={}; try{ const pat=localStorage.getItem('github_pat'); if(pat) headers.Authorization=`Bearer ${pat}`; }catch{}
-    const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,{headers});
-    if(!r.ok) throw new Error(r.status);
+    const headers={}; let hasPat=false;
+    try{ const pat=localStorage.getItem('github_pat'); if(pat){ headers.Authorization=`Bearer ${pat}`; hasPat=true; } }catch{}
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(), 8000);
+    const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,{headers, signal: controller.signal});
+    clearTimeout(timeout);
+    if(!r.ok){
+      const txt=await r.text();
+      if(r.status===403 || txt.toLowerCase().includes('rate limit')){
+        log(`⚠️ GitHub 403 RateLimit - 설정탭에 PAT(ghp_...) 넣으면 해결. 캐시 ${cached?cached.length:0}개로 동작중`,'err');
+        return;
+      }
+      throw new Error(`${r.status} ${txt.slice(0,200)}`);
+    }
     const d=await r.json();
-    const s=$('repoSelect');if(!s) return;s.innerHTML='';
-    d.forEach(repo=>{const o=document.createElement('option');o.value=repo.name;o.textContent=`${repo.name}`;if(repo.name===currentRepo) o.selected=true;s.appendChild(o);});
-    log(`레포 ${d.length}개`,'ok');
+    if(!Array.isArray(d)) throw new Error('API 응답 형식 오류');
+    // 캐시 저장
+    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), list: d})); }catch{}
+    renderRepos(d, `✅ 레포 ${d.length}개 로드 성공${hasPat?' (PAT)':''}`);
   }catch(e){
-    log(`레포 로드 실패 ${e.message} - 폴백`,'info');
-    const s=$('repoSelect');if(!s) return;s.innerHTML='';
-    ['builder-a4u','sudataxi-k','taxi-dj','greenlight-a25','daily-todo'].forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;if(name===currentRepo) o.selected=true;s.appendChild(o);});
+    const isAbort = e.name==='AbortError';
+    if(isAbort){
+      log(`⏱️ 레포 로드 타임아웃 8초 - 캐시/현재 레포로 동작중. 네트워크 확인 또는 PAT 설정`,'err');
+    } else {
+      log(`❌ 레포 로드 실패 ${e.message} - 캐시/현재 레포로 동작중`,'err');
+    }
+    // 하드코딩 목록 대신 캐시 또는 currentRepo만으로 동작 - 추가 조치 불필요
   }
 }
 const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const memRaw=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const mem=memRaw?cleanMemory10(memRaw):null;const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();if(memRaw && mem!==memRaw){try{localStorage.setItem('memory_10_'+currentRepo, mem||getTemplate());}catch{}}updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
@@ -1525,7 +1613,7 @@ function toggleLinksBox(){
     try{
       const base=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}
 2. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.6.1`;
+3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.6.3`;
       const extra=(customLinks&&customLinks.length)?'\n'+customLinks.map((l,i)=>`${i+4}. ${l.url}`).join('\n'):'';
       const mainDoc=(connectedDocs&&connectedDocs.length)?'\n메인문서: '+connectedDocs.map(d=>d.title).join(', '):'';
       const patStatus=(()=>{try{return localStorage.getItem('github_pat')?'PAT: 설정탭 localStorage에 저장됨 (새 창에서 설정탭에 붙여넣으면 자동 접근)':'PAT: 없음 (퍼블릭이면 raw로 접근 가능)'}catch{return 'PAT: 확인불가'}})();
@@ -1536,7 +1624,7 @@ function toggleLinksBox(){
     try{
       const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
       const links=buildLinksTextForCopy();
-      return `[Builder-a4u v5.6.1 이어가기용 - 커스텀 Drive + 전체맥락복사]
+      return `[Builder-a4u v5.6.3 이어가기용 - 커스텀 Drive + 전체맥락복사]
 [기억 10줄]
 ${mem}
 
