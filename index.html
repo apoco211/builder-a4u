@@ -22,7 +22,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 
-/* v5.5.6 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.5.8 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -43,14 +43,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.5.6 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
+<title>Builder-a4u v5.5.8 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 404 모두 수정 + PC 반응형</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.5.6">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.5.6">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.5.6">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.5.6">
+<link rel="manifest" href="./manifest.json?v=5.5.8">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.5.8">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.5.8">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.5.8">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -100,7 +100,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 /* iPhone 최적화 - 폰트 확대 및 터치 영역 확보 */
 @media (max-width: 768px){
-  /* v5.5.6: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
+  /* v5.5.8: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
@@ -120,7 +120,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   .doc-card{font-size:12px}
 }
 
-/* v5.5.6 PC 최적화 - 대화창 크게, 글씨 크게 */
+/* v5.5.8 PC 최적화 - 대화창 크게, 글씨 크게 */
 @media (min-width:1024px){
   body{max-width:1280px !important;padding:28px 32px 120px 32px !important;font-size:17px !important;line-height:1.6 !important}
   .card{padding:24px !important;border-radius:20px !important;margin-bottom:18px !important}
@@ -159,7 +159,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 }
 .pc-zoom-btn{width:44px;height:44px;border-radius:50%;background:#111;color:#fff;border:2px solid #333;font-size:18px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
 .pc-zoom-btn:hover{background:#333;transform:scale(1.05)}
-/* v5.5.6 미리보기 + 롤백 타임머신 */
+/* v5.5.8 미리보기 + 롤백 타임머신 */
 .live-preview-box{border:2px solid var(--meta);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
 .live-preview-box.active{display:block}
 .live-preview-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:12px;font-weight:800}
@@ -180,7 +180,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 .view-hidden{display:none !important}
 
-/* v5.5.6 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.5.8 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -197,11 +197,11 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .dark .text-\[9px\]{color:#94a3b8 !important}
 
 </style>
-<script src="https://apis.google.com/js/api.js"></script></head>
+</head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.5.6</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.5.6</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.5.8</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.5.8</span></div>
 </div>
 
 <!-- 상단 탭: 작업 / 설정 -->
@@ -270,7 +270,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 
 </div>
-<!-- v5.5.6 라이브 미리보기 -->
+<!-- v5.5.8 라이브 미리보기 -->
 <div id="livePreviewBox" class="live-preview-box mt-3">
   <div class="live-preview-header">
     <span>👁️ 실시간 미리보기 - 빌드 전 확인</span>
@@ -282,7 +282,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
   <div class="p-2 text-[10px] text-gray-500">💡 draft 코드가 바뀔 때마다 자동 갱신. 빌드 전 여기서 확인하고 [공용 빌드] 눌러</div>
 </div>
-<!-- v5.5.6 버전 타임머신 -->
+<!-- v5.5.8 버전 타임머신 -->
 <div class="card mt-3" id="versionHistoryCard">
   <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 이전 버전으로 롤백 <span id="versionCount" class="badge ml-2">0개</span></h2>
   <div class="flex gap-1 mb-2 flex-wrap">
@@ -341,7 +341,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.5.6 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.5.6</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.5.8 · 복구 버튼 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.5.8</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -367,16 +367,16 @@ function getProjectTemplate(repo){
   if(name.toLowerCase().includes('daily') || name.toLowerCase().includes('todo')){
     return `1.프로젝트: ${name} v2.1\n2.목적: 할일 관리 + 공방 연동\n3.현재: ${d} 기억 초기화\n4.다음: 기능 확인\n5.결정: 링크 기반\n6.제외: 없음\n7.저장: Supabase+Docs+GitHub\n8.버그: 없음\n9.모드: 빌드모드\n10.상태: 진행중`;
   }
-  return `1.프로젝트: ${name} v5.5.6\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.5.6`;
+  return `1.프로젝트: ${name} v5.5.8\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.5.8`;
 }
 function getTemplate(){ return getProjectTemplate(currentRepo); }
 function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
 function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크 N개]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
 function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
 function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
-// v5.5.6 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
+// v5.5.8 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
 
-// v5.5.6: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
+// v5.5.8: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
 let lastSummaryAt = 0;
 async function incrementalSummarize(force=false){
   const all = chats[currentTab]||[];
@@ -456,12 +456,12 @@ function autoInjectOnRepoSelect(){
 
 
 
-// v5.5.6: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
+// v5.5.8: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
 // - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다
 const ORIGINAL_WINDOW = 20;
 
 const CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만
-const CHAT_SUMMARY_THRESHOLD = 15; // v5.5.6: 30→15, 실제 빌드는 10~15번 대화가 많음
+const CHAT_SUMMARY_THRESHOLD = 15; // v5.5.8: 30→15, 실제 빌드는 10~15번 대화가 많음
 let chatArchive = {}; // {tab: [older messages]}
 
 function getChatArchiveKey(){return `chat_archive_${currentRepo}_${currentTab}`;}
@@ -502,7 +502,7 @@ function maybeSummarize(){
 }
 
 
-// v5.5.6 라이브 미리보기 + 롤백
+// v5.5.8 라이브 미리보기 + 롤백
 let draftHistory = [];
 let githubCommits = [];
 let autoBackup = true;
@@ -673,7 +673,7 @@ const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
 const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
 const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
 function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}
-// v5.5.6: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
+// v5.5.8: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
 if(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도
 }
 function extractCode(t){ if(!t || typeof t!=='string') return null; try{ const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i); return m?m[1].trim():null; }catch{ return null; } }
@@ -730,7 +730,7 @@ async function callGemini(p, imageBase64=null, imageMime=null){
     'gemini-2.0-flash'
   ];
   let lastErr='';
-  // v5.5.6: 사용 가능 모델 목록 먼저 확인 시도 (키 유효성 체크)
+  // v5.5.8: 사용 가능 모델 목록 먼저 확인 시도 (키 유효성 체크)
   try{
     const listRes = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${k}`).then(r=>r.ok?r:fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${k}`));
     if(listRes.ok){
@@ -821,7 +821,7 @@ async function sendChat(){const input=$('chatInput');if(!input) return;const tex
   if(code){
     if(code.length < 10000 && draftCode && draftCode.length > 20000){
       // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
-      log(`[v5.5.6] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
+      log(`[v5.5.8] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
       // 대신 채팅에만 표시하고 draft는 유지
     } else {
       draftCode=code; if(typeof autoBackup!=='undefined' && autoBackup) {saveDraftHistory(code, 'GitHub에서 로드');} if(typeof updateLivePreview==='function') updateLivePreview();
@@ -834,7 +834,7 @@ const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown
 const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
 const saveDraftBtn=$('saveDraftBtn');
 if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
-  // v5.5.6: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
+  // v5.5.8: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
   let finalCode = draftCode;
   const editorVal = document.getElementById('codeEditor')?.value || '';
   const memory10 = document.getElementById('memory10')?.value || '';
@@ -849,7 +849,7 @@ if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
       if(fullMain.length > 10000){
         // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지
         if(!finalCode || finalCode.length < 10000){
-          log(`[v5.5.6] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
+          log(`[v5.5.8] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
           finalCode = fullMain;
           draftCode = finalCode;
         } else {
@@ -951,7 +951,7 @@ async function pushToBranch(branch,code){
 
 function getNextVersion(current){
   const m = current.match(/v(\d+)\.(\d+)\.(\d+)/);
-  if(!m) return 'v5.5.6';
+  if(!m) return 'v5.5.8';
   let major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
   patch++;
   return `v${major}.${minor}.${patch}`;
@@ -971,7 +971,7 @@ async function pushDual(){
   const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}
   try{
     const curMatch = (draftCode||'').match(/v5\.3\.(\d+)/);
-    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.5.6';
+    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.5.8';
     const nextVer = getNextVersion(curVer);
     log(`🔢 버전 자동 증가 ${curVer} -> ${nextVer}`,'info');
     draftCode = bumpVersionInCode(draftCode, nextVer);
@@ -1019,10 +1019,10 @@ async function fetchCode(){
     const r=await fetch(url);
     if(!r.ok) throw new Error(r.status);
     const code=await r.text();
-    // v5.5.6 가짜 페이지 가드 - 디자인 유지, 로직만 추가
+    // v5.5.8 가짜 페이지 가드 - 디자인 유지, 로직만 추가
     const isFake = code.length < 10000 || (code.includes('Supabase anon key') && code.includes('GitHub PAT') && code.length < 5000);
     if(isFake){
-      log(`[v5.5.6 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
+      log(`[v5.5.8 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
       robotLog(`[가드] raw ${code.length}자 가짜 차단 - localStorage draft 유지`,'err');
       // localStorage draft 우선 유지
       try{
@@ -1059,7 +1059,7 @@ async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supab
   if(row.memory_10){
     const memInput=$('memory10');
     if(memInput){
-      // v5.5.6: 다른 프로젝트 기억이 builder로 덮인 오염 체크
+      // v5.5.8: 다른 프로젝트 기억이 builder로 덮인 오염 체크
       const isBuilderMemory = row.memory_10.includes('Builder-a4u') || row.memory_10.includes('builder-a4u');
       const isForThisProject = row.memory_10.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
       // 만약 현재가 builder-a4u가 아닌데 Supabase에 builder 기억이 들어있으면 오염된 것으로 보고 무시
@@ -1155,8 +1155,8 @@ if(forceResetBtn) forceResetBtn.onclick = async () => {
   await fetchCode();
 };
 
-  log('v5.5.6 초기화 - 안건 프롬프트 자동 생성','ok');
-  // v5.5.6 1클릭 저장 + 미리보기 확인 - 원클릭 카드 제거, 깔끔 워크플로우
+  log('v5.5.8 초기화 - 안건 프롬프트 자동 생성','ok');
+  // v5.5.8 1클릭 저장 + 미리보기 확인 - 원클릭 카드 제거, 깔끔 워크플로우
   function getRecentChatSummary(){
     try{
       const all = (typeof chats!=='undefined' && chats[currentTab]) ? chats[currentTab] : [];
@@ -1246,7 +1246,7 @@ ${recent}
       log('👁️ 미리보기 토글','info');
     }
   };
-  log('v5.5.6 초기화 - 미리보기 + 타임머신 롤백','ok');
+  log('v5.5.8 초기화 - 미리보기 + 타임머신 롤백','ok');
   if(typeof updateVersionCount==='function') updateVersionCount();
   const previewToggle = document.getElementById('previewToggleBtn');
   if(previewToggle) previewToggle.onclick = ()=>{
@@ -1264,13 +1264,13 @@ ${recent}
   if(showGithubBtn) showGithubBtn.onclick = ()=> { if(typeof fetchGithubCommits==='function') fetchGithubCommits(); };
   const autoBackupBtn = document.getElementById('autoBackupToggle');
   if(autoBackupBtn){ autoBackupBtn.textContent = autoBackup ? '🔒 자동 백업 ON' : '🔓 자동 백업 OFF'; autoBackupBtn.onclick = ()=>{ autoBackup=!autoBackup; try{localStorage.setItem('auto_backup', autoBackup);}catch{}; autoBackupBtn.textContent = autoBackup ? '🔒 자동 백업 ON' : '🔓 자동 백업 OFF'; log(autoBackup?'자동 백업 ON':'자동 백업 OFF','info'); };}
-  log('v5.5.6 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  log('v5.5.8 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
   setTimeout(initTheme,200);
 });
 const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();
-// v5.5.6: 링크 N개 무제한 - 접힘/펼침
+// v5.5.8: 링크 N개 무제한 - 접힘/펼침
 let linksCollapsed = localStorage.getItem('linksCollapsed') === 'true';
 function toggleLinksBox(){
   linksCollapsed = !linksCollapsed;
@@ -1295,7 +1295,7 @@ function toggleLinksBox(){
   <button class="pc-zoom-btn" id="pcZoomIn" title="글씨 크게">A+</button>
 </div>
 <script>
-// v5.5.6 PC 글씨 크기 조절
+// v5.5.8 PC 글씨 크기 조절
 (function(){
   let pcScale = parseFloat(localStorage.getItem('pc_font_scale')||'1');
   function applyPcScale(){
@@ -1342,136 +1342,215 @@ function toggleLinksBox(){
 </script>
 
 
+<style>
+.drive-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;}
+.drive-modal-content{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.dark .drive-modal-content{background:#1e222f;color:#fff;}
+.drive-modal-header{padding:16px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;}
+.dark .drive-modal-header{border-color:#333;}
+.drive-modal-body{flex:1;overflow:auto;padding:12px;}
+.drive-file{padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid transparent;}
+.drive-file:hover{background:#f5f5f5;border-color:#ddd;}
+.dark .drive-file:hover{background:#2a2f3f;}
+.drive-file.folder{font-weight:600;}
+.drive-file.doc{color:#1a73e8;}
+.drive-breadcrumb{display:flex;gap:6px;flex-wrap:wrap;padding:8px 0;font-size:12px;}
+.drive-breadcrumb span{cursor:pointer;color:#1a73e8;}
+.drive-breadcrumb span:hover{text-decoration:underline;}
+</style>
+<div id="driveModal" class="drive-modal" style="display:none;">
+  <div class="drive-modal-content">
+    <div class="drive-modal-header">
+      <div><b>📂 Drive 열어서 선택</b> <span id="driveModalPath" style="font-size:11px;opacity:0.6;"></span></div>
+      <button id="driveModalClose" class="btn text-[12px]">✕ 닫기</button>
+    </div>
+    <div style="padding:12px;border-bottom:1px solid #eee;display:flex;gap:8px;">
+      <input id="driveSearchInput" class="input text-[12px]" placeholder="제목 검색 - 엔터" style="flex:1;">
+      <button id="driveSearchBtn" class="btn text-[10px]">🔍 검색</button>
+      <button id="driveBackBtn" class="btn text-[10px]">⬆️ 상위</button>
+    </div>
+    <div id="driveBreadcrumb" class="drive-breadcrumb px-3"></div>
+    <div id="driveFileList" class="drive-modal-body">
+      <div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
+    </div>
+    <div style="padding:12px;border-top:1px solid #eee;font-size:10px;opacity:0.6;">
+      폴더를 클릭하면 이동, 문서(📄)를 클릭하면 연결됨. Google Picker 403 없이 Drive API로 직접 동작.
+    </div>
+  </div>
+</div>
 <script>
-// v5.5.6 - 원본 100% 유지, 레포 로딩/설정 절대 건드리지 않음, Picker만 추가
 (function(){
-  let pickerApiLoaded = false;
-  function loadPickerApi(){
-    return new Promise((res, rej)=>{
-      if(pickerApiLoaded){res();return;}
-      if(!window.gapi){
-        const s=document.createElement('script');
-        s.src='https://apis.google.com/js/api.js';
-        s.onload=()=>{ gapi.load('picker', ()=>{ pickerApiLoaded=true; res(); }); };
-        s.onerror=()=>rej('gapi load fail');
-        document.head.appendChild(s);
-      } else {
-        gapi.load('picker', ()=>{ pickerApiLoaded=true; res(); });
+  let currentFolderId = 'root';
+  let folderStack = [{id:'root', name:'내 드라이브'}];
+  let isMainMode = true;
+  let allFilesCache = [];
+  
+  function getToken(){
+    try{ return localStorage.getItem('google_access_token')||accessToken||''; }catch{return accessToken||'';}
+  }
+  
+  async function fetchDriveFiles(folderId, query){
+    const token = getToken();
+    if(!token){ alert('설정탭에서 Google 로그인 먼저'); return []; }
+    let q = "trashed=false";
+    if(query){
+      q += ` and name contains '${query.replace(/'/g, "\\'")}'`;
+    } else {
+      if(folderId && folderId!=='root'){
+        q += ` and '${folderId}' in parents`;
       }
+    }
+    // 문서 + 폴더 둘 다
+    q += ` and (mimeType='application/vnd.google-apps.document' or mimeType='application/vnd.google-apps.folder')`;
+    const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,modifiedTime,parents)&orderBy=folder desc, modifiedTime desc&pageSize=100`;
+    try{
+      const res = await fetch(url, {headers:{Authorization:`Bearer ${token}`}});
+      if(res.status===401){
+        alert('토큰 만료 - 설정탭에서 Google 로그인 다시 해줘');
+        return [];
+      }
+      const data = await res.json();
+      if(data.error){
+        console.error(data.error);
+        alert('Drive API 오류: '+(data.error.message||''));
+        return [];
+      }
+      return data.files||[];
+    }catch(e){
+      console.error(e);
+      alert('Drive 로드 실패: '+e.message);
+      return [];
+    }
+  }
+  
+  function renderBreadcrumb(){
+    const bc = document.getElementById('driveBreadcrumb');
+    if(!bc) return;
+    bc.innerHTML='';
+    folderStack.forEach((f, idx)=>{
+      const span = document.createElement('span');
+      span.textContent = f.name;
+      if(idx < folderStack.length-1){
+        span.textContent += ' >';
+        span.onclick = ()=>{
+          folderStack = folderStack.slice(0, idx+1);
+          currentFolderId = f.id;
+          loadFolder(currentFolderId);
+        };
+      } else {
+        span.style.fontWeight='700';
+        span.style.color='#000';
+      }
+      bc.appendChild(span);
     });
   }
-  window._showGooglePicker = async function(isMain){
-    let token = '';
-    try{ token = localStorage.getItem('google_access_token') || window.accessToken || ''; }catch(e){}
-    if(!token){
-      if(window.tokenClient){
-        window._pendingPicker = isMain;
-        window.tokenClient.requestAccessToken();
-        alert('Google 로그인 필요 - 설정탭에서 로그인 후 다시 눌러줘');
-      } else {
-        alert('설정탭에서 Google 로그인 먼저 해줘');
-      }
+  
+  async function loadFolder(folderId, query){
+    const listEl = document.getElementById('driveFileList');
+    const pathEl = document.getElementById('driveModalPath');
+    if(listEl) listEl.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>';
+    if(pathEl) pathEl.textContent = query ? `검색: ${query}` : '';
+    const files = await fetchDriveFiles(folderId, query);
+    allFilesCache = files;
+    renderBreadcrumb();
+    if(!listEl) return;
+    listEl.innerHTML='';
+    if(files.length===0){
+      listEl.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">파일 없음</div>';
       return;
     }
-    try{ await loadPickerApi(); }catch(e){ alert('Picker API 로드 실패'); return; }
-    try{
-      const docsView = new google.picker.DocsView(google.picker.ViewId.DOCS);
-      docsView.setIncludeFolders(true);
-      docsView.setSelectFolderEnabled(false);
-      docsView.setMimeTypes('application/vnd.google-apps.document');
-      const folderView = new google.picker.DocsView(google.picker.ViewId.FOLDERS);
-      folderView.setIncludeFolders(true);
-      const builder = new google.picker.PickerBuilder()
-        .setOAuthToken(token)
-        .setOrigin(window.location.protocol + '//' + window.location.host)
-        .addView(docsView)
-        .addView(folderView)
-        .setCallback((data)=>{
-          if(data.action === google.picker.Action.PICKED){
-            if(isMain){
-              const doc=data.docs[0];
-              window.connectedDocs=[{id:doc.id, title:doc.name}];
-              try{localStorage.setItem('connected_docs_'+window.currentRepo, JSON.stringify(window.connectedDocs));}catch{}
-              if(window.renderConnectedDocs) window.renderConnectedDocs();
-              if(window.saveToSupabase) window.saveToSupabase(true);
-              if(window.log) window.log('📄 Picker 메인 '+doc.name,'ok');
-            } else {
-              data.docs.forEach(doc=>{
-                const url='https://docs.google.com/document/d/'+doc.id+'/edit';
-                if(window.customLinks && window.customLinks.find(l=>l.url===url)) return;
-                if(!window.customLinks) window.customLinks=[];
-                window.customLinks.push({title:doc.name, url:url});
-              });
-              if(window.renderCustomLinks) window.renderCustomLinks();
-              try{localStorage.setItem('custom_links_'+window.currentRepo, JSON.stringify(window.customLinks));}catch{}
-              if(window.saveToSupabase) window.saveToSupabase(true);
-              if(window.log) window.log('🔗 Picker 추가 '+data.docs.length+'개','ok');
-            }
+    files.forEach(file=>{
+      const div = document.createElement('div');
+      const isFolder = file.mimeType==='application/vnd.google-apps.folder';
+      div.className='drive-file '+(isFolder?'folder':'doc');
+      div.innerHTML = `
+        <span style="font-size:16px;">${isFolder?'📁':'📄'}</span>
+        <div style="flex:1;">
+          <div style="font-size:12px;">${file.name}</div>
+          <div style="font-size:10px;opacity:0.5;">${file.modifiedTime ? file.modifiedTime.slice(0,10) : ''} ${isFolder?'· 폴더':''}</div>
+        </div>
+        ${isFolder?'<span style="font-size:12px;">→</span>':'<span style="font-size:10px;color:#1a73e8;">선택</span>'}
+      `;
+      div.onclick = ()=>{
+        if(isFolder){
+          folderStack.push({id:file.id, name:file.name});
+          currentFolderId = file.id;
+          loadFolder(currentFolderId);
+        } else {
+          // 문서 선택
+          if(isMainMode){
+            connectedDocs=[{id:file.id, title:file.name}];
+            try{localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs));}catch{}
+            if(window.renderConnectedDocs) renderConnectedDocs();
+            if(window.saveToSupabase) saveToSupabase(true);
+            if(window.log) log('📄 Drive 브라우저 메인 연결 '+file.name,'ok');
+          } else {
+            const url='https://docs.google.com/document/d/'+file.id+'/edit';
+            if(customLinks.find(l=>l.url==url)){ log('이미 추가됨','info'); return; }
+            customLinks.push({title:file.name, url:url});
+            if(window.renderCustomLinks) renderCustomLinks();
+            try{localStorage.setItem('custom_links_'+currentRepo, JSON.stringify(customLinks));}catch{}
+            if(window.saveToSupabase) saveToSupabase(true);
+            if(window.log) log('🔗 추가 '+file.name,'ok');
           }
-        });
-      try{ builder.setAppId('888946226553'); }catch(e){}
-      try{ builder.setTitle(isMain?'📄 메인 문서 선택':'🔗 추가 문서 선택'); }catch(e){}
-      const picker = builder.build();
-      picker.setVisible(true);
-      if(window.log) window.log('📂 Picker 열림','ok');
-    }catch(e){
-      if(window.log) window.log('Picker 실패 '+e.message,'err');
-      alert('Picker 실패: '+e.message);
-    }
-  };
-  // Store tokenClient globally when initGIS creates it - monkey patch initGIS
-  const origInitGIS = window.initGIS;
-  window.initGIS = function(){
-    if(origInitGIS) origInitGIS();
-    // After orig, try to capture tokenClient if exists via global
-    setTimeout(()=>{
-      // initGIS creates c locally, but we can intercept by checking if tokenClient already set by previous patch
-      // If not, we will set up our own observer for google login button
-      const btn = document.getElementById('googleLoginBtn');
-      if(btn && window.google && window.google.accounts){
-        // If orig didn't set window.tokenClient, create our own
-        if(!window.tokenClient){
-          try{
-            const c = google.accounts.oauth2.initTokenClient({
-              client_id: '888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com',
-              scope: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',
-              callback: (r)=>{
-                if(r.access_token){
-                  window.accessToken = r.access_token;
-                  try{localStorage.setItem('google_access_token', r.access_token);}catch{}
-                  const s=document.getElementById('googleStatus');
-                  if(s) s.textContent='✅ Drive 연결됨';
-                  if(window.log) window.log('Google 로그인 성공','ok');
-                  if(window._pendingPicker!==undefined){
-                    const p=window._pendingPicker; window._pendingPicker=null;
-                    setTimeout(()=>window._showGooglePicker(p),400);
-                  }
-                }
-              }
-            });
-            window.tokenClient = c;
-            btn.onclick = ()=>c.requestAccessToken();
-          }catch(e){}
+          closeModal();
         }
-      }
-    }, 1000);
-  };
-  // Override buttons after load - do not touch repoSelect
+      };
+      listEl.appendChild(div);
+    });
+  }
+  
+  function openModal(isMain){
+    isMainMode = isMain;
+    currentFolderId = folderStack.length ? folderStack[folderStack.length-1].id : 'root';
+    const modal = document.getElementById('driveModal');
+    if(modal) modal.style.display='flex';
+    const searchInput = document.getElementById('driveSearchInput');
+    if(searchInput) searchInput.value='';
+    loadFolder(currentFolderId);
+  }
+  
+  function closeModal(){
+    const modal = document.getElementById('driveModal');
+    if(modal) modal.style.display='none';
+  }
+  
+  window.showCustomDriveBrowser = openModal;
+  
   window.addEventListener('load', ()=>{
     setTimeout(()=>{
-      const mainBtn=document.getElementById('searchExactBtn');
-      if(mainBtn){
-        mainBtn.textContent='📂 Drive 열어서 선택';
-        mainBtn.className='btn text-[10px]';
-        mainBtn.onclick=()=>{ window._showGooglePicker(true); };
+      const closeBtn = document.getElementById('driveModalClose');
+      if(closeBtn) closeBtn.onclick = closeModal;
+      const backBtn = document.getElementById('driveBackBtn');
+      if(backBtn) backBtn.onclick = ()=>{
+        if(folderStack.length>1){
+          folderStack.pop();
+          currentFolderId = folderStack[folderStack.length-1].id;
+          loadFolder(currentFolderId);
+        } else {
+          currentFolderId='root';
+          folderStack=[{id:'root', name:'내 드라이브'}];
+          loadFolder(currentFolderId);
+        }
+      };
+      const searchBtn = document.getElementById('driveSearchBtn');
+      const searchInput = document.getElementById('driveSearchInput');
+      function doSearch(){
+        const q = searchInput ? searchInput.value.trim() : '';
+        if(q) loadFolder(null, q);
+        else loadFolder(currentFolderId);
       }
-      const linkBtn=document.getElementById('linkSearchBtn');
-      if(linkBtn){
-        linkBtn.textContent='📂 Drive 열어서 선택';
-        linkBtn.className='btn text-[10px]';
-        linkBtn.onclick=()=>{ window._showGooglePicker(false); };
-      }
-    }, 1000);
+      if(searchBtn) searchBtn.onclick = doSearch;
+      if(searchInput) searchInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') doSearch(); });
+      const modal = document.getElementById('driveModal');
+      if(modal) modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+      
+      // 기존 버튼 1개만 교체
+      const b1=document.getElementById('searchExactBtn');
+      if(b1){ b1.textContent='📂 Drive 열어서 선택'; b1.className='btn text-[10px]'; b1.onclick=()=>openModal(true); }
+      const b2=document.getElementById('linkSearchBtn');
+      if(b2){ b2.textContent='📂 Drive 열어서 선택'; b2.className='btn text-[10px]'; b2.onclick=()=>openModal(false); }
+    }, 600);
   });
 })();
 </script>
