@@ -22,28 +22,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-
-/* v5.7.8 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.7.9 - 디자인 유지 및 다크모드 가시성 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -55,21 +34,20 @@
 .dark .p-2.rounded-\[12px\].bg-\[\#fffbeb\]{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark span.text-\[8px\]{color:#94a3b8 !important;opacity:1 !important}
 .dark .text-\[9px\]{color:#94a3b8 !important}
-
 </style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.7.8 - Google 로그인 패치 + 공방 통합 환경</title>
+<title>Builder-a4u v5.7.9 - GitHub 레포 실시간 로드 복원 + Google GIS 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 및 동적 폴백 설정 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.7.8">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.7.8">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.7.8">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.7.8">
+<link rel="manifest" href="./manifest.json?v=5.7.9">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.7.9">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.7.9">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.7.9">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -77,7 +55,6 @@ html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:.2s;font-size:15px;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;transition:.2s}
 .doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--bg);display:flex;gap:10px;align-items:center}
-.doc-card input[type=checkbox]{width:20px;height:20px;flex-shrink:0}
 .btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px}
 .btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
 .btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
@@ -154,12 +131,6 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   .doc-card{padding:16px !important;font-size:14px !important}
 }
 
-.pc-zoom-controls{position:fixed;bottom:20px;right:20px;z-index:9999;display:none;gap:8px}
-@media (min-width:1024px){.pc-zoom-controls{display:flex}}
-.pc-zoom-btn{width:44px;height:44px;border-radius:50%;background:#111;color:#fff;border:2px solid #333;font-size:18px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.pc-zoom-btn:hover{background:#333;transform:scale(1.05)}
-.dark .pc-zoom-btn{background:#e2e8f0 !important;color:#0f1115 !important;border-color:#3a4152 !important}
-
 .live-preview-box{border:2px solid var(--meta);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
 .live-preview-box.active{display:block}
 .live-preview-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:12px;font-weight:800}
@@ -183,15 +154,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .drive-file{padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px;cursor:pointer;border:1px solid transparent;}
 .drive-file:hover{background:#f5f5f5;border-color:#ddd;}
 .dark .drive-file:hover{background:#2a2f3f;}
-.drive-breadcrumb{display:flex;gap:6px;flex-wrap:wrap;padding:8px 0;font-size:12px;}
-.drive-breadcrumb span{cursor:pointer;color:#1a73e8;}
-.drive-breadcrumb span:hover{text-decoration:underline;}
 </style>
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.7.8</h1><p class="text-[10px] opacity-60">Google 로그인 패치 + 공방 통합 환경</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.7.8 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.7.9</h1><p class="text-[10px] opacity-60">GitHub 레포 실시간 로드 복원 + Google GIS 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.7.9 정식</span></div>
 </div>
 
 <div class="flex gap-2 mb-3">
@@ -202,10 +170,13 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <!-- 작업 뷰 -->
 <div id="workspaceView">
 <div class="card">
-<h2 class="font-bold text-[11px] mb-2">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-<select id="repoSelect" class="input mb-2 text-[12px]"><option>builder-a4u...</option></select>
+<div class="flex justify-between items-center mb-2">
+  <h2 class="font-bold text-[11px]">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
+  <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
+</div>
+<select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
 <div class="flex gap-1 mt-1">
-<input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동">
+<input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동" value="index.html">
 <button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 GitHub 복구</button>
 </div>
 <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
@@ -287,7 +258,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <h3 class="font-bold text-[11px] mb-2">🔑 API 보관소</h3>
 <div class="grid gap-2 mb-3">
 <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ..."></div>
-<div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_..."></div>
+<div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
 <div><label class="text-[10px] font-bold">Gemini Key</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
 <div><label class="text-[10px] font-bold">Groq Key</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="Groq Key"></div>
 </div>
@@ -322,7 +293,99 @@ function updateGisStatus(msg){
   if(el) el.innerHTML=msg;
 }
 
-// v5.7.8 강화된 GIS 초기화 및 동적 재주입 패치
+// 1. GitHub PAT 가져오기
+function getGitHubPat(){
+  try{
+    const keys=['github_pat','github_token','GITHUB_PAT','GITHUB_TOKEN','gh_pat','pat'];
+    for(const k of keys){
+      const v=localStorage.getItem(k);
+      if(v && v.trim().length>10) return v.trim();
+    }
+    const input=document.getElementById('githubPatInput');
+    if(input && input.value && input.value.trim().length>10) return input.value.trim();
+    return '';
+  }catch(e){ return ''; }
+}
+
+// 2. GitHub 레포지토리 실시간 로드
+async function loadRepos(){
+  const s=document.getElementById('repoSelect');
+  if(!s) return;
+  const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
+
+  function renderRepos(list){
+    if(!s || !list || list.length===0) return;
+    const currentVal=s.value||currentRepo;
+    s.innerHTML='';
+    list.forEach(repo=>{
+      const name=typeof repo==='string'?repo:(repo.full_name||repo.name||'');
+      if(!name) return;
+      const displayName=name.includes('/')?name.split('/')[1]:name;
+      const o=document.createElement('option');
+      o.value=displayName;
+      o.textContent=displayName;
+      if(displayName===currentRepo || name===currentRepo) o.selected=true;
+      s.appendChild(o);
+    });
+    if(!Array.from(s.options).some(o=>o.value===currentRepo)){
+      const o=document.createElement('option'); o.value=currentRepo; o.textContent=currentRepo; o.selected=true;
+      s.insertBefore(o, s.firstChild);
+    }
+  }
+
+  function getCached(){
+    try{
+      const raw=localStorage.getItem(CACHE_KEY);
+      if(!raw) return null;
+      const obj=JSON.parse(raw);
+      return obj.list||obj.data||null;
+    }catch{return null;}
+  }
+
+  const cached=getCached();
+  if(cached && cached.length>0){
+    renderRepos(cached);
+    log('📦 캐시 레포 '+cached.length+'개 표시', 'info');
+  }
+
+  try{
+    const pat=getGitHubPat();
+    const headers={'Accept':'application/vnd.github.v3+json'};
+    let hasPat=false;
+    if(pat && pat.length>10){
+      headers.Authorization='Bearer '+pat;
+      hasPat=true;
+    }
+
+    const url=hasPat 
+      ? 'https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'
+      : 'https://api.github.com/users/'+GITHUB_USER+'/repos?per_page=100&sort=updated';
+
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(), 10000);
+    const r=await fetch(url, {headers, signal:controller.signal});
+    clearTimeout(timeout);
+
+    if(!r.ok){
+      const txt=await r.text();
+      log('GitHub API 오류 ('+r.status+'): '+(hasPat?'PAT 인식됨':'PAT 없음')+' '+txt.slice(0,80), 'err');
+      if(cached) renderRepos(cached);
+      return;
+    }
+
+    const d=await r.json();
+    if(!Array.isArray(d) || d.length===0) return;
+    renderRepos(d);
+    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
+    log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
+  }catch(e){
+    if(e.name!=='AbortError') log('레포 로드 실패: '+e.message, 'err');
+    const cached2=getCached();
+    if(cached2) renderRepos(cached2);
+  }
+}
+
+// 3. GIS 로그인 초기화 및 동적 재주입
 function initGis(){
   try{
     if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
@@ -439,7 +502,6 @@ const gBtn=$('googleLoginBtn');
 if(gBtn) gBtn.onclick=handleGoogleLogin;
 
 // 드라이브 모달 기능
-let currentDriveFolder='root';
 async function fetchDriveFiles(folderId){
   const token=accessToken || localStorage.getItem('google_access_token');
   if(!token){ alert('설정탭에서 Google 로그인을 먼저 해주세요.'); return []; }
@@ -457,7 +519,6 @@ function openDriveModal(isMain){
   const modal=$('driveModal');
   if(!modal) return;
   modal.style.display='flex';
-  currentDriveFolder='root';
   loadDriveFolder('root', isMain);
 }
 
@@ -498,29 +559,52 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
 $('driveModalClose').onclick=()=>{$('driveModal').style.display='none';};
 $('searchExactBtn').onclick=()=>openDriveModal(true);$('linkSearchBtn').onclick=()=>openDriveModal(false);
 
-function buildContextCopyV58(){
+function buildContextCopyV59(){
   const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
-  return `[Builder-a4u v5.7.8 이어가기용]
+  return `[Builder-a4u v5.7.9 이어가기용]
 [기억 10줄]
 ${mem}
 [링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.7.8`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.7.9`;
 }
 
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
-  if(ta) ta.value=buildContextCopyV58();
+  if(ta) ta.value=buildContextCopyV59();
 }
 
 $('btn-copy-context-settings')?.addEventListener('click', async()=>{
   try{
-    await navigator.clipboard.writeText(buildContextCopyV58());
+    await navigator.clipboard.writeText(buildContextCopyV59());
     alert('전체맥락복사 완료!');
   }catch(e){alert('복사 실패');}
 });
 
+// 설정 값 불러오기 및 이벤트 바인딩
+function initSettingsInputs(){
+  const ghInput=$('githubPatInput');
+  if(ghInput){
+    ghInput.value=getGitHubPat();
+    ghInput.addEventListener('input', e=>{
+      try{ localStorage.setItem('github_pat', e.target.value.trim()); }catch{}
+      loadRepos(); // PAT 수정 시 즉시 레포 갱신
+    });
+  }
+}
+
+// 레포 변경 이벤트
+$('repoSelect')?.addEventListener('change', e=>{
+  currentRepo=e.target.value;
+  try{ localStorage.setItem('current_repo', currentRepo); }catch{}
+  log('📌 레포 변경됨: '+currentRepo, 'ok');
+});
+
+$('refreshRepoBtn')?.addEventListener('click', ()=>loadRepos());
+
 window.addEventListener('load', ()=>{
+  initSettingsInputs();
+  loadRepos(); // GitHub 레포 자동 로드
   setTimeout(initGis, 800);
 });
 </script>
