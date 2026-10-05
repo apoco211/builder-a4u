@@ -22,7 +22,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 
-/* v5.5.9 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.7.4 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -43,14 +43,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.6.4 - 주야간 아이콘 토글 + 실전 빌드 개선 - Groq+Gemini 2.5/OSS 2026 Fix + PC 반응형</title>
+<title>Builder-a4u v5.7.4 - PAT 인식 수정 + AI GitHub 권한 + 드라이브 팝업 + 실시간 레포</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.6.4">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.6.4">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.6.4">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.6.4">
+<link rel="manifest" href="./manifest.json?v=5.7.4">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.7.4">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.7.4">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.7.4">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -100,7 +100,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 /* iPhone 최적화 - 폰트 확대 및 터치 영역 확보 */
 @media (max-width: 768px){
-  /* v5.5.9: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
+  /* v5.7.4: 메타 수준 글씨 크기 - 너무 컸던 것 축소 */
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
@@ -120,7 +120,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   .doc-card{font-size:12px}
 }
 
-/* v5.5.9 PC 최적화 - 대화창 크게, 글씨 크게 */
+/* v5.7.4 PC 최적화 - 대화창 크게, 글씨 크게 */
 @media (min-width:1024px){
   body{max-width:1280px !important;padding:28px 32px 120px 32px !important;font-size:17px !important;line-height:1.6 !important}
   .card{padding:24px !important;border-radius:20px !important;margin-bottom:18px !important}
@@ -159,7 +159,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 }
 .pc-zoom-btn{width:44px;height:44px;border-radius:50%;background:#111;color:#fff;border:2px solid #333;font-size:18px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
 .pc-zoom-btn:hover{background:#333;transform:scale(1.05)}
-/* v5.5.9 미리보기 + 롤백 타임머신 */
+/* v5.7.4 미리보기 + 롤백 타임머신 */
 .live-preview-box{border:2px solid var(--meta);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
 .live-preview-box.active{display:block}
 .live-preview-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:12px;font-weight:800}
@@ -180,7 +180,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 .view-hidden{display:none !important}
 
-/* v5.5.9 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
+/* v5.7.4 - 중간 노란 박스 + 기억10줄 가시성 추가 수정 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -200,8 +200,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.6.4</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.5.9</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.7.4</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.7.4 정식</span></div>
 </div>
 
 <!-- 상단 탭: 작업 / 설정 -->
@@ -214,7 +214,18 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div id="workspaceView">
 <div class="card">
 <h2 class="font-bold text-[11px] mb-2">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-<select id="repoSelect" class="input mb-2 text-[12px]"><option>builder-a4u</option></select>
+<select id="repoSelect" class="input mb-2 text-[12px]"><option>builder-a4u...</option></select>
+<div style="display:none;"><!-- v5.7.4 AI 전용 - 사용자는 볼 필요 없음 --><button id="listFilesBtn" class="btn text-[10px]" onclick="listAllRepoFiles()" style="flex:1;">📁 GitHub 파일 전체 보기</button>
+  <button id="refreshFilesBtn" class="btn text-[10px]" onclick="listAllRepoFiles()" title="새로고침">🔄</button>
+</div>
+<div id="repoFileList" style="max-height:300px;overflow-y:auto;border:1px solid #eee;border-radius:8px;margin-bottom:12px;background:#fff;display:none;"></div>
+<script>
+document.getElementById('listFilesBtn')?.addEventListener('click', function(){
+  const list=document.getElementById('repoFileList');
+  if(list) list.style.display = list.style.display==='none'?'block':'block';
+});
+</script>
+
 <div class="flex gap-1 mt-1">
 <input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동">
 <button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap" title="GitHub raw에서 진짜 코드 다시 불러오기">📥 GitHub 복구</button>
@@ -270,7 +281,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 
 </div>
-<!-- v5.5.9 라이브 미리보기 -->
+<!-- v5.7.4 라이브 미리보기 -->
 <div id="livePreviewBox" class="live-preview-box mt-3">
   <div class="live-preview-header">
     <span>👁️ 실시간 미리보기 - 빌드 전 확인</span>
@@ -282,7 +293,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
   <div class="p-2 text-[10px] text-gray-500">💡 draft 코드가 바뀔 때마다 자동 갱신. 빌드 전 여기서 확인하고 [공용 빌드] 눌러</div>
 </div>
-<!-- v5.5.9 버전 타임머신 -->
+<!-- v5.7.4 버전 타임머신 -->
 <div class="card mt-3" id="versionHistoryCard">
   <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 이전 버전으로 롤백 <span id="versionCount" class="badge ml-2">0개</span></h2>
   <div class="flex gap-1 mb-2 flex-wrap">
@@ -353,23 +364,23 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.6.1 · 기억10줄 오염 제거 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.6.4</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.6.1 · 기억10줄 오염 제거 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.7.4</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
 let accessToken='';try{accessToken=localStorage.getItem('google_access_token')||'';}catch{}let currentRepo='builder-a4u';try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}let mainFile='index.html';try{mainFile=localStorage.getItem('main_file_'+currentRepo)||'index.html';}catch{}let connectedDocs=[];try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{}let customLinks=[];try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{}let draftCode='';try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{}let currentTab='meta';try{currentTab=localStorage.getItem('current_tab_'+currentRepo)||'meta';}catch{}let chats={meta:[],gemini:[],gpt:[]};try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}let tempMainResults=[];let tempLinkResults=[];let topView='workspace';
 const $=id=>document.getElementById(id);
-function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML=`<span style="opacity:.6">${time}</span> ${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;a.appendChild(d);a.scrollTop=a.scrollHeight;}
-function robotLog(m,t='info'){const b=$('robotLog');if(!b) return;b.classList.remove('hidden');const d=document.createElement('div');d.innerHTML=`${t==='ok'?'✅':t==='err'?'❌':'ℹ️'} ${m}`;b.appendChild(d);b.scrollTop=b.scrollHeight;log(m,t);}
-function setTheme(th){const html=document.documentElement;if(th==='dark'){html.classList.add('dark');}else{html.classList.remove('dark');}try{localStorage.setItem('theme',th);}catch{}const btns=[$('themeToggle'),$('settingsThemeToggle')];btns.forEach(btn=>{if(btn){btn.textContent=th==='dark'?'☀️':'🌙'; btn.title=th==='dark'?'라이트모드로 전환':'다크모드로 전환';}});log(`${th==='dark'?'다크모드 ON':'라이트모드 ON'} ${th}`,'ok');updateStorageStatus();}
+function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML='<span style="opacity:.6">' + (time) + '</span> ${t===\'ok\'?\'✅\':t===\'err\'?\'❌\':\'ℹ️\'} ${m}';a.appendChild(d);a.scrollTop=a.scrollHeight;}
+function robotLog(m,t='info'){const b=$('robotLog');if(!b) return;b.classList.remove('hidden');const d=document.createElement('div');d.innerHTML='' + (t==='ok'?'✅':t==='err'?'❌':'ℹ️') + ' ${m}';b.appendChild(d);b.scrollTop=b.scrollHeight;log(m,t);}
+function setTheme(th){const html=document.documentElement;if(th==='dark'){html.classList.add('dark');}else{html.classList.remove('dark');}try{localStorage.setItem('theme',th);}catch{}const btns=[$('themeToggle'),$('settingsThemeToggle')];btns.forEach(btn=>{if(btn){btn.textContent=th==='dark'?'☀️':'🌙'; btn.title=th==='dark'?'라이트모드로 전환':'다크모드로 전환';}});log('' + (th==='dark'?'다크모드 ON':'라이트모드 ON') + ' ${th}','ok');updateStorageStatus();}
 function initTheme(){let saved=null;try{saved=localStorage.getItem('theme');}catch{}let th=saved;if(!th){try{th=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}catch{th='light';}}setTheme(th);}
 function switchTopView(view){topView=view;const ws=$('workspaceView');const st=$('settingsView');const btnW=$('topTabWorkspace');const btnS=$('topTabSettings');if(view==='workspace'){ws.classList.remove('view-hidden');st.classList.add('view-hidden');btnW.classList.add('active');btnS.classList.remove('active');}else{ws.classList.add('view-hidden');st.classList.remove('view-hidden');btnW.classList.remove('active');btnS.classList.add('active');updateStorageStatus();}try{localStorage.setItem('top_view',view);}catch{}}
 $('topTabWorkspace').onclick=()=>switchTopView('workspace');$('topTabSettings').onclick=()=>switchTopView('settings');
 $('themeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
 $('settingsThemeToggle').onclick=()=>{const isDark=document.documentElement.classList.contains('dark');setTheme(isDark?'light':'dark');};
-function updateStorageStatus(){const el=$('storageStatus');if(!el) return;let html='';try{const keys=['google_access_token','current_repo','supabase_anon_key','github_pat','gemini_key','groq_key','openai_key'];keys.forEach(k=>{const v=localStorage.getItem(k);html+=`${k}: ${v?`✅ ${v.slice(0,8)}... (${v.length}자)`:'❌ 없음'}<br>`;});html+=`<br>connected_docs_${currentRepo}: ${localStorage.getItem('connected_docs_'+currentRepo)?'✅ 있음':'❌ 없음'}<br>`;html+=`customLinks_${currentRepo}: ${localStorage.getItem('customLinks_'+currentRepo)?JSON.parse(localStorage.getItem('customLinks_'+currentRepo)).length+'개':'0개'}<br>`;html+=`draft_code_${currentRepo}: ${localStorage.getItem('draft_code_'+currentRepo)?localStorage.getItem('draft_code_'+currentRepo).length+'자':'0자'}<br>`;html+=`theme: ${localStorage.getItem('theme')||'light'}<br>`;html+=`top_view: ${topView}`;}catch(e){html=`오류 ${e.message}`;}el.innerHTML=html;const s2=$('settingsStatus');if(s2){const hasGroq=(()=>{try{return !!localStorage.getItem('groq_key');}catch{return false;}})();const hasGemini=(()=>{try{return !!localStorage.getItem('gemini_key');}catch{return false;}})();const hasOpenAI=(()=>{try{return !!localStorage.getItem('openai_key');}catch{return false;}})();s2.innerHTML=`채팅 가능 여부: 메타(🟣 Groq) ${hasGroq?'✅':'❌'} / 제미나이(🔵) ${hasGemini?'✅':'❌'} / GPT(🟢) ${hasOpenAI?'✅':'❌'}<br>무료 테스트는 Groq+Gemini 2개만 넣으면 OK`;}
+function updateStorageStatus(){const el=$('storageStatus');if(!el) return;let html='';try{const keys=['google_access_token','current_repo','supabase_anon_key','github_pat','gemini_key','groq_key','openai_key'];keys.forEach(k=>{let v=null; if(k==='github_pat') v=getGitHubPat(); else try{v=localStorage.getItem(k);}catch{} html+=k+': '+(v?'✅ '+v.slice(0,8)+'... ('+v.length+'자)':'❌ 없음')+'<br>';});html+=\\'<br>connected_docs_\\' + (currentRepo) + \\': \' + (localStorage.getItem(\\'connected_docs_\\'+currentRepo)?\\'✅ 있음\\':\\'❌ 없음\\') + \'<br>\\';html+=\'customLinks_' + (currentRepo) + ': ${localStorage.getItem(\'customLinks_\'+currentRepo)?JSON.parse(localStorage.getItem(\'customLinks_\'+currentRepo)).length+\'개\':\'0개\'}<br>';html+='draft_code_' + (currentRepo) + ': ${localStorage.getItem(\'draft_code_\'+currentRepo)?localStorage.getItem(\'draft_code_\'+currentRepo).length+\'자\':\'0자\'}<br>';html+='theme: ' + (localStorage.getItem('theme')||'light') + '<br>';html+='top_view: ' + (topView) + '';}catch(e){html='오류 ' + (e.message) + '';}el.innerHTML=html;const s2=$('settingsStatus');if(s2){const hasGroq=(()=>{try{return !!localStorage.getItem('groq_key');}catch{return false;}})();const hasGemini=(()=>{try{return !!localStorage.getItem('gemini_key');}catch{return false;}})();const hasOpenAI=(()=>{try{return !!localStorage.getItem('openai_key');}catch{return false;}})();s2.innerHTML='채팅 가능 여부: 메타(🟣 Groq) ' + (hasGroq?'✅':'❌') + ' / 제미나이(🔵) ${hasGemini?\'✅\':\'❌\'} / GPT(🟢) ${hasOpenAI?\'✅\':\'❌\'}<br>무료 테스트는 Groq+Gemini 2개만 넣으면 OK';}
 }
-$('exportSettingsBtn').onclick=()=>{try{const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.includes('_key')||k.includes('_pat')||k.includes('anon_key')) data[k]=localStorage.getItem(k);}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`builder-a4u-settings-${new Date().toISOString().slice(0,10)}.json`;a.click();log('설정 내보내기 완료','ok');}catch(e){log('내보내기 실패','err');}};
+$('exportSettingsBtn').onclick=()=>{try{const data={};for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k.includes('_key')||k.includes('_pat')||k.includes('anon_key')) data[k]=localStorage.getItem(k);}const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='builder-a4u-settings-' + (new Date().toISOString().slice(0,10)) + '.json';a.click();log('설정 내보내기 완료','ok');}catch(e){log('내보내기 실패','err');}};
 $('importSettingsBtn').onclick=()=>{const input=document.createElement('input');input.type='file';input.accept='.json';input.onchange=e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);Object.entries(data).forEach(([k,v])=>{try{localStorage.setItem(k,v);}catch{}});log('설정 가져오기 완료 - 새로고침','ok');setTimeout(()=>location.reload(),1000);}catch{log('가져오기 실패','err');}};reader.readAsText(file);};input.click();};
 
 function inferMainFile(r){const s=r.toLowerCase();if(s.includes('daily-todo')||s.includes('todo')) return 'src/App.jsx';return 'index.html';}
@@ -392,955 +403,175 @@ function cleanMemory10(text){
   // 10줄 형식 없으면 그대로 clean 반환 (최대 15줄)
   return clean.slice(0,15).join('\n');
 }
+
+// v5.7.4 - GitHub 파일 전체 읽기 & 앱에서 수정 (구글문서 요구사항)
+let allRepoFiles=[];
+let currentRepoTreeSha='';
+async function listAllRepoFiles(){
+  const repoSel=document.getElementById('repoSelect');
+  const repoFull=repoSel?repoSel.value:currentRepo;
+  const token=(function(){try{return getGitHubPat()||'';}catch{return ''}})();
+  if(!repoFull){ log('레포 선택 먼저', 'err'); return []; }
+  log('📁 GitHub 파일 목록 조회중... '+repoFull, 'info');
+  try{
+    const headers={'Accept':'application/vnd.github.v3+json'};
+    if(token) headers.Authorization='Bearer '+token;
+    // 1) main 브랜치의 tree SHA 가져오기
+    const branchUrl='https://api.github.com/repos/'+repoFull+'/git/refs/heads/main';
+    const branchRes=await fetch(branchUrl, {headers});
+    if(!branchRes.ok){ 
+      // main 없으면 master 시도
+      const masterUrl='https://api.github.com/repos/'+repoFull+'/git/refs/heads/master';
+      const masterRes=await fetch(masterUrl, {headers});
+      if(!masterRes.ok) throw new Error('main/master 브랜치 없음');
+      const masterData=await masterRes.json();
+      currentRepoTreeSha=masterData.object.sha;
+      // commit에서 tree 가져오기
+      const commitUrl='https://api.github.com/repos/'+repoFull+'/git/commits/'+currentRepoTreeSha;
+      const commitRes=await fetch(commitUrl, {headers});
+      const commitData=await commitRes.json();
+      const treeSha=commitData.tree.sha;
+      const treeUrl='https://api.github.com/repos/'+repoFull+'/git/trees/'+treeSha+'?recursive=1';
+      const treeRes=await fetch(treeUrl, {headers});
+      const treeData=await treeRes.json();
+      allRepoFiles=treeData.tree||[];
+      renderRepoFileList(allRepoFiles);
+      log('✅ GitHub 파일 '+allRepoFiles.length+'개 로드', 'ok');
+      return allRepoFiles;
+    }
+    const branchData=await branchRes.json();
+    currentRepoTreeSha=branchData.object.sha;
+    const commitUrl='https://api.github.com/repos/'+repoFull+'/git/commits/'+currentRepoTreeSha;
+    const commitRes=await fetch(commitUrl, {headers});
+    const commitData=await commitRes.json();
+    const treeSha=commitData.tree.sha;
+    const treeUrl='https://api.github.com/repos/'+repoFull+'/git/trees/'+treeSha+'?recursive=1';
+    const treeRes=await fetch(treeUrl, {headers});
+    const treeData=await treeRes.json();
+    allRepoFiles=treeData.tree||[];
+    renderRepoFileList(allRepoFiles);
+    log('✅ GitHub 파일 '+allRepoFiles.length+'개 로드 (main)', 'ok');
+    return allRepoFiles;
+  }catch(e){
+    log('GitHub 파일 목록 실패: '+e.message, 'err');
+    // fallback: contents API로 루트만
+    try{
+      const headers={'Accept':'application/vnd.github.v3+json'};
+      if(token) headers.Authorization='Bearer '+token;
+      const url='https://api.github.com/repos/'+repoFull+'/contents';
+      const res=await fetch(url, {headers});
+      const data=await res.json();
+      if(Array.isArray(data)){
+        allRepoFiles=data.map(f=>({path:f.path||f.name, type:f.type, sha:f.sha}));
+        renderRepoFileList(allRepoFiles);
+        log('✅ GitHub 파일 (루트) '+allRepoFiles.length+'개 로드 fallback', 'ok');
+        return allRepoFiles;
+      }
+    }catch(e2){}
+    return [];
+  }
+}
+function renderRepoFileList(files){
+  const container=document.getElementById('repoFileList');
+  if(!container) return;
+  if(!files||files.length===0){
+    container.innerHTML='<div style="text-align:center;padding:20px;opacity:0.6;">파일 없음</div>';
+    return;
+  }
+  // 필터: 코드 파일 위주로, .git 제외
+  const filtered=files.filter(f=>f.type==='blob' || f.type==='file').slice(0,200);
+  let html='<div style="font-size:10px;opacity:0.6;margin-bottom:8px;">📁 '+files.length+'개 파일 (클릭하면 앱에서 열기/수정)</div>';
+  filtered.forEach(f=>{
+    const path=f.path||'';
+    const isMain=path===mainFile || path.endsWith('/'+mainFile) || path=== 'src/App.jsx' || path==='index.html';
+    const icon=path.endsWith('.jsx')?'⚛️':path.endsWith('.js')?'📜':path.endsWith('.json')?'📦':path.endsWith('.md')?'📝':path.endsWith('.html')?'🌐':'📄';
+    const safePath=path.replace(/'/g, "\'");
+    html+='<div class="drive-file-item" style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid #eee;cursor:pointer;'+(isMain?'background:#fef3c7;':'')+'" onclick="loadRepoFile(\''+safePath+'\')"><span>'+icon+' '+path+'</span><span style="font-size:9px;opacity:0.5;">'+(isMain?'메인':'')+'</span></div>';
+  });
+  container.innerHTML=html;
+}
+
+// v5.7.4 - AI에게 GitHub 파일 수정 권한 부여 (사용자는 볼 필요 없음, AI가 직접 수정)
+window.builderAPI = {
+  listFiles: listAllRepoFiles,
+  readFile: loadRepoFile,
+  getCurrentRepo: ()=>{ const el=document.getElementById('repoSelect'); return el?el.value:currentRepo; },
+  getMainFile: ()=>mainFile,
+  saveDraft: (code)=>{ draftCode=code; const ed=document.getElementById('codeEditor'); if(ed) ed.value=code; if(typeof updateDraftStatus==='function') updateDraftStatus(); log('✅ AI가 draft 저장 '+code.length+'자', 'ok'); },
+  pushToGitHub: async (message)=>{
+    const repoFull=document.getElementById('repoSelect')?document.getElementById('repoSelect').value:currentRepo;
+    const pat=(function(){try{return getGitHubPat()||'';}catch{return ''}})();
+    if(!pat){ log('PAT 없음 - 설정에서 GitHub PAT 저장 필요', 'err'); return false; }
+    if(!draftCode){ log('draft 없음', 'err'); return false; }
+    try{
+      const filePath=mainFile||'index.html';
+      const headers={'Accept':'application/vnd.github.v3+json', Authorization:'Bearer '+pat};
+      const getUrl='https://api.github.com/repos/'+repoFull+'/contents/'+filePath;
+      const getRes=await fetch(getUrl, {headers});
+      let sha=null;
+      if(getRes.ok){ const j=await getRes.json(); sha=j.sha; }
+      const content=btoa(unescape(encodeURIComponent(draftCode)));
+      const putRes=await fetch(getUrl, {method:'PUT', headers, body:JSON.stringify({message:message||'Builder AI auto push '+new Date().toISOString(), content:content, sha:sha, branch:'main'})});
+      if(putRes.ok){ log('✅ GitHub Push 성공: '+filePath, 'ok'); return true; }
+      else { const err=await putRes.text(); log('Push 실패: '+err, 'err'); return false; }
+    }catch(e){ log('Push 에러: '+e.message, 'err'); return false; }
+  }
+};
+// AI 채팅에서 파일 수정 요청 감지 시 자동 실행을 위한 헬퍼
+async function aiFileAccessHandler(action, path, content){
+  if(action==='list') return await listAllRepoFiles();
+  if(action==='read') return await loadRepoFile(path);
+  if(action==='save' && content){ window.builderAPI.saveDraft(content); return true; }
+  return null;
+}
+
+
+async function loadRepoFile(filePath){
+  const repoFull=document.getElementById('repoSelect')?document.getElementById('repoSelect').value:currentRepo;
+  const token=(function(){try{return getGitHubPat()||'';}catch{return ''}})();
+  if(!filePath){ log('파일 경로 없음', 'err'); return; }
+  log('📄 파일 로드중... '+filePath, 'info');
+  try{
+    const headers={'Accept':'application/vnd.github.v3+json'};
+    if(token) headers.Authorization='Bearer '+token;
+    const url='https://api.github.com/repos/'+repoFull+'/contents/'+filePath;
+    const res=await fetch(url, {headers});
+    const data=await res.json();
+    if(data.content){
+      const content=atob(data.content.replace(/
+/g,''));
+      // 에디터에 로드
+      const editor=document.getElementById('codeEditor');
+      if(editor){ editor.value=content; }
+      draftCode=content;
+      mainFile=filePath;
+      const mainInput=document.getElementById('mainfile-input');
+      if(mainInput) mainInput.value=filePath;
+      if(typeof updateDraftStatus==='function') updateDraftStatus();
+      log('✅ 파일 열림: '+filePath+' ('+content.length+'자) - 수정 후 Push 가능', 'ok');
+      // 미리보기 업데이트
+      if(typeof updateLivePreview==='function'){ try{ updateLivePreview(); }catch{} }
+    } else {
+      log('파일 내용 없음: '+filePath, 'err');
+    }
+  }catch(e){
+    log('파일 로드 실패: '+e.message, 'err');
+  }
+}
+
+
 function getProjectTemplate(repo){
   const d=new Date().toLocaleDateString();
   const name = repo || currentRepo || 'builder-a4u';
   if(name.toLowerCase().includes('daily') || name.toLowerCase().includes('todo')){
-    return `1.프로젝트: ${name} v2.1\n2.목적: 할일 관리 + 공방 연동\n3.현재: ${d} 기억 초기화\n4.다음: 기능 확인\n5.결정: 링크 기반\n6.제외: 없음\n7.저장: Supabase+Docs+GitHub\n8.버그: 없음\n9.모드: 빌드모드\n10.상태: 진행중`;
+    return '1.프로젝트: ' + (name) + ' v2.1\n2.목적: 할일 관리 + 공방 연동\n3.현재: ${d} 기억 초기화\n4.다음: 기능 확인\n5.결정: 링크 기반\n6.제외: 없음\n7.저장: Supabase+Docs+GitHub\n8.버그: 없음\n9.모드: 빌드모드\n10.상태: 진행중';
   }
-  return `1.프로젝트: ${name} v5.6.0\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.6.0`;
+  return '1.프로젝트: ' + (name) + ' v5.6.0\n2.목적: 단일 공방으로 N개 앱 맥락 유지\n3.현재: ${d} - ${name} 선택\n4.다음: GitHub Push + Pages 배포\n5.결정: 소문자 index.html, manifest.json, 아이콘 링크\n6.제외: 대문자 파일\n7.저장: Supabase+Docs+GitHub+localStorage\n8.버그: 기억10줄 프로젝트 전환 시 안 바뀌던 버그 수정\n9.모드: 빌드모드\n10.상태: v5.6.0';
 }
 function getTemplate(){ return getProjectTemplate(currentRepo); }
-function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent=`draft: ${l}자 · ${l>0?'3탭 공용':'없음'}`;const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
-function buildLinksText(){let t=`[기억 10줄]\n${$('memory10')?$('memory10').value:''}\n\n[링크 N개]\n`;t+=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}\n`;connectedDocs.forEach((d,i)=>{t+=`${i+2}. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n`;});customLinks.forEach((l,i)=>{t+=`${connectedDocs.length+3+i}. ${l.title}: ${l.url}\n`;});return t;}
-function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?`\n\n[draft ${draftCode.length}자]\n${draftCode.slice(0,12000)}`:'\n[draft 없음]';let base=`너는 Builder-a4u ${tab}\n\n${links}${draftInfo}\n\n[원칙] 코드 \`\`\` 블록`;if(tab==='meta') return base+`\n[메타 생성]`;if(tab==='gemini') return base+`\n[제미나이 검증]`;if(tab==='gpt') return base+`\n[GPT 검수]`;return base;}
-function renderContext(){const el=$('contextText');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?'\n...':'');}
-// v5.5.9 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약
-
-// v5.5.9: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약
-let lastSummaryAt = 0;
-async function incrementalSummarize(force=false){
-  const all = chats[currentTab]||[];
-  if(!force && all.length < 10) return;
-  if(!force && all.length - lastSummaryAt < 10) return; // 10개마다
-  if(all.length === lastSummaryAt && !force) return;
-  const toSummarize = all.slice(-20); // 최근 20개로 요약
-  const textToSum = toSummarize.map(m=>`${m.role}: ${m.content.slice(0,300)}`).join('\n');
-  let summaryText = '';
-  // Gemini API 있으면 진짜 요약
-  try{
-    const geminiKey = localStorage.getItem('gemini_api_key') || localStorage.getItem('GEMINI_API_KEY');
-    if(geminiKey){
-      log('🤖 증분 요약 중... (Gemini)', 'info');
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${geminiKey}`, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({contents:[{parts:[{text:`다음 대화를 10줄 기억팩으로 압축해줘. 형식: 1.프로젝트 2.목적 3.현재 4.다음 5.결정 6.제외 7.저장 8.버그 9.모드 10.상태\n\n${textToSum}`}]}]})
-      });
-      const data = await res.json();
-      summaryText = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    }
-  }catch(e){ console.log('gemini summary fail', e); }
-  if(!summaryText){
-    // 로컬 fallback 요약
-    const keywords = [...new Set(toSummarize.flatMap(m=>m.content.split(/\s+/).filter(w=>w.length>2)).slice(-30))].slice(0,10).join(', ');
-    summaryText = `-요약: 최근 대화 ${toSummarize.length}개, 키워드: ${keywords}`;
-  }
-  if(summaryText){
-    lastSummaryAt = all.length;
-    // v5.6.1 Fix: "-요약:" 오염 방지 - memory10에 append 금지, 10줄 형식만 교체
-    const isClean10 = summaryText.includes('1.프로젝트:') && summaryText.includes('2.목적:');
-    const isPolluted = summaryText.trim().startsWith('-요약:');
-    if(isClean10){
-      const memEl = document.getElementById('memory10');
-      if(memEl){
-        memEl.value = summaryText.slice(0,2000);
-        try{
-          localStorage.setItem('memory10_'+currentRepo, memEl.value);
-          localStorage.setItem('memory10', memEl.value);
-          localStorage.setItem('connected_docs_'+currentRepo, memEl.value);
-        }catch{}
-        if(typeof saveToSupabase === 'function') saveToSupabase(false);
-        if(window.renderContextCopySettings) renderContextCopySettings();
-      }
-      log(`✨ 10줄 기억 갱신 완료`, 'ok');
-    } else if(isPolluted){
-      log(`✨ 요약 생성됨 (memory10 오염 방지 - 저장 안 함)`, 'info');
-    } else {
-      log(`✨ 증분 요약 완료 (${all.length}개 중 최근 20개)`, 'ok');
-    }
-    // chatStore summary 갱신
-    try{
-      const storeKey = 'chatStore_'+currentRepo;
-      let store = {};
-      try{ store = JSON.parse(localStorage.getItem(storeKey)||'{}'); }catch{}
-      if(!store[currentTab]) store[currentTab] = {memory10:'', summary:'', recent:[], archive:[]};
-      store[currentTab].summary = summaryText.slice(0,500);
-      store[currentTab].recent = all.slice(-20);
-      localStorage.setItem(storeKey, JSON.stringify(store));
-    }catch{}
-  }
-}
-
-// 자동 주입: 레포 선택 시 memory10 + summary + 최근 20개 + 링크 N개를 3탭 채팅에 자동 주입
-async function triggerSummaryOnBuild(){ await incrementalSummarize(true); }
-function autoInjectOnRepoSelect(){
-  try{
-    const mem = document.getElementById('memory10')?.value || '';
-    const linksBox = document.getElementById('contextBox')?.innerText || '';
-    const storeKey = 'chatStore_'+currentRepo;
-    let store = {};
-    try{ store = JSON.parse(localStorage.getItem(storeKey)||'{}'); }catch{}
-    const tabData = store[currentTab] || {};
-    const summary = tabData.summary || '';
-    const recent = tabData.recent || (chats[currentTab]||[]).slice(-5);
-    const injectText = `[자동 주입]\n[기억 10줄]\n${mem}\n\n[요약]\n${summary}\n\n[링크 N개]\n${linksBox}\n\n[최근 대화 5개]\n${recent.map(m=>`${m.role}: ${m.content.slice(0,200)}`).join('\n')}`;
-    // 채팅창에 시스템 메시지로 주입 (AI가 바로 읽을 수 있게)
-    if(chats[currentTab] && chats[currentTab].length === 0){
-      chats[currentTab].push({role:'system', content: injectText});
-      saveChats(); renderChats();
-      log('🔄 자동 주입 완료 - 10줄+링크N개+최근대화', 'ok');
-    }
-  }catch(e){ console.log('autoInject fail', e); }
-}
-
-
-
-// v5.5.9: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤
-// - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다
-const ORIGINAL_WINDOW = 20;
-
-const CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만
-const CHAT_SUMMARY_THRESHOLD = 15; // v5.5.9: 30→15, 실제 빌드는 10~15번 대화가 많음
-let chatArchive = {}; // {tab: [older messages]}
-
-function getChatArchiveKey(){return `chat_archive_${currentRepo}_${currentTab}`;}
-function loadArchive(){
-  try{
-    const raw = localStorage.getItem(getChatArchiveKey());
-    if(raw) chatArchive[currentTab] = JSON.parse(raw);
-  }catch{ chatArchive[currentTab] = []; }
-  if(!chatArchive[currentTab]) chatArchive[currentTab]=[];
-}
-function saveArchive(){
-  try{localStorage.setItem(getChatArchiveKey(), JSON.stringify(chatArchive[currentTab]||[]));}catch{}
-}
-function maybeSummarize(){
-  const arr = chats[currentTab]||[];
-  if(arr.length <= CHAT_SUMMARY_THRESHOLD) return;
-  // 오래된 것 아카이브로 이동, 최근 20개만 유지
-  loadArchive();
-  const toArchive = arr.splice(0, arr.length - CHAT_WINDOW);
-  chatArchive[currentTab] = (chatArchive[currentTab]||[]).concat(toArchive);
-  // 최대 200개까지만 보관
-  if(chatArchive[currentTab].length > 200) chatArchive[currentTab] = chatArchive[currentTab].slice(-200);
-  saveArchive();
-  chats[currentTab] = arr;
-  saveChats();
-  log(`[최적화] ${toArchive.length}개 아카이브 이동 - 화면 ${CHAT_WINDOW}개 유지`,'info');
-  // 기억 10줄 자동 요약 트리거 (간단 요약)
-  try{
-    const memEl=$('memory10');
-    if(memEl && toArchive.length>0){
-      const last = toArchive.slice(-5).map(m=>m.content.slice(0,80)).join(' / ');
-      if(memEl.value.length < 2000){
-        memEl.value += `\n-요약: ${new Date().toLocaleDateString()} ${currentTab} ${toArchive.length}개 대화 압축`;
-        updateMemoryCount();
-      }
-    }
-  }catch{}
-}
-
-
-// v5.5.9 라이브 미리보기 + 롤백
-let draftHistory = [];
-let githubCommits = [];
-let autoBackup = true;
-try{const cr = typeof currentRepo!=='undefined'?currentRepo:'builder-a4u'; draftHistory = JSON.parse(localStorage.getItem('draft_history_'+cr)||'[]');}catch{}
-try{autoBackup = localStorage.getItem('auto_backup')!=='false';}catch{}
-
-function saveDraftHistory(code, msg='자동 백업'){
-  if(!code || code.length < 500) return;
-  const key = 'draft_history_'+currentRepo;
-  try{
-    let hist = JSON.parse(localStorage.getItem(key)||'[]');
-    if(hist.length>0 && Math.abs(hist[hist.length-1].len - code.length) < 100) return;
-    hist.push({time: new Date().toISOString(), len: code.length, msg, code: code.slice(0,80000)});
-    if(hist.length > 20) hist = hist.slice(-20);
-    localStorage.setItem(key, JSON.stringify(hist));
-    draftHistory = hist;
-    updateVersionCount();
-  }catch{}
-}
-function updateVersionCount(){
-  const el = document.getElementById('versionCount');
-  if(el) el.textContent = `${draftHistory.length}개 draft + ${githubCommits.length}개 커밋`;
-}
-function renderDraftHistory(){
-  const box = document.getElementById('versionHistoryBox');
-  if(!box) return;
-  box.innerHTML = '';
-  if(draftHistory.length===0){box.innerHTML='<div class="text-[11px] text-gray-400 p-4 text-center">로컬 기록 없음 - 빌드할 때마다 자동 저장돼</div>'; return;}
-  [...draftHistory].reverse().forEach((v,i)=>{
-    const realIdx = draftHistory.length-1-i;
-    const div = document.createElement('div');
-    div.className='version-item';
-    const d = new Date(v.time);
-    div.innerHTML=`<span class="version-badge" style="background:var(--meta)">${v.len.toLocaleString()}자</span><div class="flex-1"><div class="font-bold">${d.toLocaleString()} - ${v.msg}</div><div class="opacity-60 text-[10px]">${v.time.slice(0,19)}</div></div><button class="btn btn-sm text-[9px] restore-btn" data-idx="${realIdx}">복원</button><button class="btn btn-sm text-[9px] preview-btn" data-idx="${realIdx}">미리보기</button>`;
-    box.appendChild(div);
-  });
-  box.querySelectorAll('.restore-btn').forEach(b=>b.onclick=()=>restoreDraft(parseInt(b.dataset.idx)));
-  box.querySelectorAll('.preview-btn').forEach(b=>b.onclick=()=>previewDraft(parseInt(b.dataset.idx)));
-}
-async function fetchGithubCommits(){
-  const pat = (()=>{try{return localStorage.getItem('github_pat')||''}catch{return ''}})();
-  if(!pat){log('GitHub PAT 없음 - 설정탭에서 넣어줘','err'); return;}
-  try{
-    const url = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?per_page=20`;
-    const r = await fetch(url,{headers:{Authorization:`Bearer ${pat}`}});
-    if(!r.ok) throw new Error(r.status);
-    githubCommits = await r.json();
-    renderGithubCommits();
-    log(`🐙 GitHub 커밋 ${githubCommits.length}개 로드`,'ok');
-  }catch(e){log('커밋 로드 실패 '+e.message,'err')}
-}
-function renderGithubCommits(){
-  const box = document.getElementById('versionHistoryBox');
-  if(!box) return;
-  box.innerHTML='';
-  if(githubCommits.length===0){box.innerHTML='<div class="text-[11px] text-gray-400 p-4 text-center">커밋 없음</div>'; return;}
-  githubCommits.forEach((c,i)=>{
-    const div = document.createElement('div');
-    div.className='version-item';
-    const d = new Date(c.commit.author.date);
-    div.innerHTML=`<span class="version-badge" style="background:#111">${c.sha.slice(0,7)}</span><div class="flex-1"><div class="font-bold">${c.commit.message.slice(0,60)}</div><div class="opacity-60 text-[10px]">${c.commit.author.name} - ${d.toLocaleString()}</div></div><button class="btn btn-sm text-[9px] github-restore" data-sha="${c.sha}">롤백</button><a href="${c.html_url}" target="_blank" class="btn btn-sm text-[9px]">열기</a>`;
-    box.appendChild(div);
-  });
-  box.querySelectorAll('.github-restore').forEach(b=>b.onclick=()=>rollbackToCommit(b.dataset.sha));
-}
-function restoreDraft(idx){
-  const v = draftHistory[idx];
-  if(!v) return;
-  if(!confirm(`${new Date(v.time).toLocaleString()} 버전 ${v.len}자를 복원할까?\n현재 draft는 자동 백업돼`)) return;
-  if(typeof draftCode !== 'undefined' && draftCode) saveDraftHistory(draftCode, '롤백 전 백업');
-  draftCode = v.code;
-  try{localStorage.setItem('draft_code_'+currentRepo, draftCode);}catch{}
-  if(typeof updateDraftStatus==='function') updateDraftStatus();
-  updateLivePreview();
-  log(`⏰ ${v.len}자 복원 완료 - 미리보기 확인 후 빌드해줘`,'ok');
-  if(typeof renderContext==='function') renderContext();
-}
-function previewDraft(idx){
-  const v = draftHistory[idx];
-  if(!v) return;
-  showLivePreview(v.code);
-  log(`👁️ ${v.len}자 미리보기`,'info');
-}
-async function rollbackToCommit(sha){
-  if(!confirm(`커밋 ${sha.slice(0,7)}로 롤백할까?\nGitHub에 새 커밋으로 복원돼`)) return;
-  const pat = localStorage.getItem('github_pat')||'';
-  try{
-    const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${mainFile}?ref=${sha}`;
-    const r = await fetch(fileUrl,{headers:{Authorization:`Bearer ${pat}`}});
-    if(!r.ok) throw new Error('파일 조회 실패 '+r.status);
-    const data = await r.json();
-    const content = atob(data.content.replace(/\n/g,''));
-    if(typeof draftCode !== 'undefined') saveDraftHistory(draftCode, 'GitHub 롤백 전 백업');
-    draftCode = content;
-    try{localStorage.setItem('draft_code_'+currentRepo, draftCode);}catch{}
-    if(typeof updateDraftStatus==='function') updateDraftStatus();
-    updateLivePreview();
-    log(`⏰ GitHub ${sha.slice(0,7)} ${content.length}자 복원 - 미리보기 확인 후 [공용 빌드]로 배포`,'ok');
-    if(confirm('바로 GitHub에 Push해서 배포할까?')){ if(typeof pushDual==='function') pushDual(); }
-  }catch(e){log('롤백 실패 '+e.message,'err')}
-}
-function showLivePreview(code){
-  const box = document.getElementById('livePreviewBox');
-  const frame = document.getElementById('livePreviewFrame');
-  if(!box||!frame) return;
-  box.classList.add('active');
-  try{ frame.srcdoc = code || (typeof draftCode!=='undefined'?draftCode:''); }catch(e){}
-}
-function updateLivePreview(){
-  const box = document.getElementById('livePreviewBox');
-  if(!box || !box.classList.contains('active')) return;
-  const frame = document.getElementById('livePreviewFrame');
-  if(frame) frame.srcdoc = (typeof draftCode!=='undefined'?draftCode:'');
-}
-function hideLivePreview(){
-  const box = document.getElementById('livePreviewBox');
-  if(box) box.classList.remove('active');
-}
-function renderChats(){
-
-  loadArchive();
-  const box=$('chatBox');if(!box) return;
-  box.innerHTML='';
-  const all = chats[currentTab]||[];
-  const archivedCount = (chatArchive[currentTab]||[]).length;
-  // 아카이브 배너
-  if(archivedCount>0){
-    const banner=document.createElement('div');
-    banner.className='msg msg-system';
-    banner.innerHTML=`📦 아카이브 ${archivedCount}개 - <button onclick="loadMoreChats()" class="btn btn-sm" style="margin-left:6px">이전 ${CHAT_WINDOW}개 불러오기</button> <button onclick="clearArchive()" class="btn btn-sm">아카이브 비우기</button>`;
-    box.appendChild(banner);
-  }
-  // 가상 윈도우: 최근 CHAT_WINDOW만 렌더
-  const toRender = all.slice(-CHAT_WINDOW);
-  const frag=document.createDocumentFragment();
-  toRender.forEach(m=>{
-    const d=document.createElement('div');
-    d.className='msg '+(m.role==='user'?'msg-user':'msg-ai');
-    d.textContent=m.content;
-    frag.appendChild(d);
-  });
-  box.appendChild(frag);
-  box.scrollTop=box.scrollHeight;
-  const badge=$('chatCountBadge');
-  if(badge) badge.textContent=`${all.length}개 (화면 ${toRender.length}/${all.length})${archivedCount?` + 아카이브 ${archivedCount}`:''}`;
-  const lbl=$('currentTabLabel');
-  if(lbl){lbl.textContent={meta:'메타',gemini:'제미나이',gpt:'GPT'}[currentTab];lbl.style.background={meta:'var(--meta)',gemini:'var(--gemini)',gpt:'var(--gpt)'}[currentTab];}
-  renderContext();
-}
-function loadMoreChats(){
-  loadArchive();
-  const archive = chatArchive[currentTab]||[];
-  if(archive.length===0) return;
-  const take = archive.splice(-CHAT_WINDOW);
-  chats[currentTab] = take.concat(chats[currentTab]||[]);
-  saveArchive(); saveChats(); renderChats();
-  log(`이전 ${take.length}개 복원`,'ok');
-}
-function clearArchive(){
-  if(!confirm('아카이브 전체 삭제?')) return;
-  chatArchive[currentTab]=[];
-  saveArchive(); renderChats();
-  log('아카이브 비움','ok');
-}
-
-function switchTab(tab){currentTab=tab;loadArchive();document.querySelectorAll('[id^=tab]').forEach(b=>b.classList.remove('tab-active'));const el=$(`tab${tab.charAt(0).toUpperCase()+tab.slice(1)}`);if(el) el.classList.add('tab-active');try{localStorage.setItem('current_tab_'+currentRepo,tab);}catch{}renderChats();}
-const tabMeta=$('tabMeta');if(tabMeta) tabMeta.onclick=()=>switchTab('meta');
-const tabGemini=$('tabGemini');if(tabGemini) tabGemini.onclick=()=>switchTab('gemini');
-const tabGpt=$('tabGpt');if(tabGpt) tabGpt.onclick=()=>switchTab('gpt');
-function saveChats(){try{localStorage.setItem('chats_'+currentRepo,JSON.stringify(chats));}catch{}
-// v5.5.9: 저장 후 증분 요약 트리거 (10개마다 백그라운드)
-if(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도
-}
-function extractCode(t){ if(!t || typeof t!=='string') return null; try{ const m=t.match(/```(?:html|jsx|tsx|js)?\n?([\s\S]*?)```/i); return m?m[1].trim():null; }catch{ return null; } }
-
-let pendingScreenshot=null;
-function compressImage(file){
-  return new Promise((resolve)=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      const img=new Image();
-      img.onload=()=>{
-        const canvas=document.createElement('canvas');
-        let w=img.width, h=img.height;
-        const max=1024;
-        if(w>max || h>max){
-          if(w>h){h=h*max/w; w=max;} else {w=w*max/h; h=max;}
-        }
-        canvas.width=w; canvas.height=h;
-        const ctx=canvas.getContext('2d');
-        ctx.drawImage(img,0,0,w,h);
-        const dataUrl=canvas.toDataURL('image/jpeg',0.75);
-        const base64=dataUrl.split(',')[1];
-        resolve({base64, mime:'image/jpeg', dataUrl});
-      };
-      img.src=e.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-async function handleImageFile(file){
-  if(!file || !file.type.startsWith('image/')) return;
-  log(`📸 이미지 처리중... ${Math.round(file.size/1024)}KB`,'info');
-  const compressed=await compressImage(file);
-  pendingScreenshot=compressed;
-  const preview=document.getElementById('screenshotPreview');
-  const imgEl=document.getElementById('screenshotImg');
-  if(preview && imgEl){
-    imgEl.src=compressed.dataUrl;
-    preview.classList.remove('hidden');
-    preview.style.display='flex';
-  }
-  log(`📸 스크린샷 첨부됨`,'ok');
-}
-function clearScreenshot(){
-  pendingScreenshot=null;
-  const preview=document.getElementById('screenshotPreview');
-  if(preview){preview.classList.add('hidden'); preview.style.display='none';}
-}
-async function callGemini(p, imageBase64=null, imageMime=null){
-  const k=(()=>{try{return localStorage.getItem('gemini_key')||$('geminiKeyInput').value.trim();}catch{return $('geminiKeyInput').value.trim();}})();
-  if(!k) throw new Error('Gemini Key 없음 - 설정탭에서 넣어줘');
-  // v5.6.0 Fix: 2.5 + flash-latest 별칭으로 교체 - 1.5/2.0은 2026년 종료
-  const models=[
-    'gemini-2.5-flash',
-    'gemini-flash-latest',
-    'gemini-2.5-flash-lite',
-    'gemini-2.5-pro',
-    'gemini-2.5-flash-image'
-  ];
-  let lastErr='';
-  // v5.6.0 Fix: live 목록 조회 + 2.5 우선
-  try{
-    const listRes = await fetch(`https://generativelanguage.googleapis.com/v1/models?key=${k}`).then(r=>r.ok?r:fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${k}`));
-    if(listRes.ok){
-      const listData = await listRes.json();
-      const avail = (listData.models||[]).map(m=>m.name.replace('models/','')).slice(0,8).join(', ');
-      log(`📋 사용가능 모델: ${avail}`,'info');
-      // 목록에 있는 2.5 / flash-latest 우선
-      const preferred = listData.models?.map(m=>m.name.replace('models/','')).filter(n=> n.includes('2.5') || n.includes('flash-latest') || n.includes('flash'))||[];
-      if(preferred.length>0){
-        // 최신 모델을 앞에, 기존 fallback 뒤에
-        const uniq = [...new Set([...preferred, ...models])];
-        // 1.5/2.0 같은 구형은 제외
-        models.length = 0;
-        uniq.filter(m=> !m.includes('1.5') && !m.includes('2.0-preview')).slice(0,6).forEach(m=>models.push(m));
-      }
-    }
-  }catch(e){ log(`모델 목록 조회 실패 - 기존 목록으로 진행`,'info'); }
-
-  for(const model of models){
-    try{
-      log(`Gemini ${model} 시도...`,'info');
-      let body;
-      if(imageBase64){
-        body={contents:[{parts:[{text:p},{inline_data:{mime_type:imageMime||'image/jpeg',data:imageBase64}}]}]};
-      } else {
-        body={contents:[{parts:[{text:p}]}]};
-      }
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${k}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-      if(!r.ok){
-        const txt=await r.text();
-        lastErr=txt.slice(0,500);
-        if(r.status===404 || txt.toLowerCase().includes('not found') || txt.toLowerCase().includes('not supported')){
-          log(`Gemini ${model} 404 - 다음 모델 시도`,'info');
-          continue;
-        }
-        throw new Error(`Gemini ${r.status} ${txt.slice(0,300)}`);
-      }
-      const d=await r.json();
-      const out=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-      if(out){log(`Gemini ${model} 성공`,'ok'); return out;}
-    }catch(e){
-      lastErr=e.message;
-      continue;
-    }
-  }
-  log(`⚠️ Gemini 전부 실패 - 빌드 계속 진행 (요약은 Groq/로컬로 대체)`,'info'); lastErr=''; // 블로킹 방지
-}
-async function callGroq(p, imageBase64=null, imageMime=null){
-  const k=(()=>{try{return localStorage.getItem('groq_key')||$('groqKeyInput').value.trim();}catch{return $('groqKeyInput').value.trim();}})();
-  if(!k) throw new Error('Groq Key 없음 - 설정탭에서 넣어줘');
-  const selectedModel = (()=>{try{return localStorage.getItem('groq_model')||'auto';}catch{return 'auto';}})();
-  // v5.6.0 Fix: 2026년 9월 기준 현재 동작 모델 + live fetch
-  let models;
-  if(selectedModel!=='auto'){
-    models=[selectedModel];
-  } else {
-    // live fetch 먼저 시도
-    try{
-      const listRes=await fetch('https://api.groq.com/openai/v1/models',{headers:{'Authorization':`Bearer ${k}`}});
-      if(listRes.ok){
-        const listData=await listRes.json();
-        const liveIds=(listData.data||[]).map(m=>m.id);
-        const preferred=liveIds.filter(id=> id.includes('gpt-oss') || id.includes('qwen') || id.includes('llama-3.3') || id.includes('llama-3.1'));
-        if(preferred.length){
-          models=preferred.slice(0,6);
-          log(`📋 Groq 사용가능 모델: ${models.slice(0,5).join(', ')}`,'info');
-        }
-      }
-    }catch(e){ log('Groq 모델 목록 조회 실패 - 기존 목록으로 진행','info'); }
-    if(!models){
-      models=[
-        'openai/gpt-oss-20b',
-        'openai/gpt-oss-120b',
-        'qwen/qwen3-32b',
-        'qwen/qwen3.8-27b',
-        'llama-3.3-70b-versatile',
-        'llama-3.1-8b-instant'
-      ];
-    }
-  }
-  let lastErr='';
-  for(const model of models){
-    try{
-      log(`Groq ${model} 시도...`,'info');
-      let messages;
-      if(imageBase64 && model.includes('llama-4')){
-        messages=[{role:'user',content:[{type:'text',text:p},{type:'image_url',image_url:{url:`data:${imageMime||'image/jpeg'};base64,${imageBase64}`}}]}];
-      } else {
-        messages=[{role:'user',content:p}];
-      }
-      const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages,temperature:0.7,max_tokens:8000})});
-      if(!r.ok){
-        const txt=await r.text();
-        lastErr=txt.slice(0,400);
-        if(r.status===404 || txt.toLowerCase().includes('model') || txt.includes('decommissioned') || txt.includes('does not exist')){
-          log(`Groq ${model} 404/decommissioned - 다음 모델 시도`,'info');
-          continue;
-        }
-        throw new Error(`Groq ${r.status} ${txt.slice(0,300)}`);
-      }
-      const d=await r.json();
-      const out=d.choices?.[0]?.message?.content||'';
-      if(out){log(`Groq ${model} 성공`,'ok'); return out;}
-    }catch(e){
-      lastErr=e.message;
-      continue;
-    }
-  }
-  throw new Error(`Groq 전부 실패. 마지막: ${lastErr.slice(0,400)}`);
-}
-async function callOpenAI(p){const k=(()=>{try{return localStorage.getItem('openai_key')||$('openaiKeyInput').value.trim();}catch{return $('openaiKeyInput').value.trim();}})();if(!k) throw new Error('OpenAI Key 없음 - 설정탭에서 넣어줘');const model=$('openaiModelInput').value.trim()||'gpt-4o-mini';const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},body:JSON.stringify({model,messages:[{role:'user',content:p}],temperature:0.5,max_tokens:2000})});if(!r.ok) throw new Error('OpenAI '+r.status);const d=await r.json();return d.choices?.[0]?.message?.content||'';}
-async function sendChat(){const input=$('chatInput');if(!input) return;const text=input.value.trim();if(!text) return;const system=buildSystemPrompt(currentTab);const full=`${system}\n\n[사용자]\n${text}`;chats[currentTab].push({role:'user',content:text});maybeSummarize();renderChats();input.value='';if(text.includes('빌드해줘')||text.includes('확정')){log('빌드 트리거','info');setTimeout(()=>pushDual(),600);}try{log(`${currentTab} 호출중...`,'info');let reply='';if(currentTab==='meta') reply=await callGroq(full);else if(currentTab==='gemini') reply=await callGemini(full);else reply=await callOpenAI(full);chats[currentTab].push({role:'ai',content:reply});maybeSummarize();saveChats();renderChats();const code=extractCode(reply);
-  if(code){
-    if(code.length < 10000 && draftCode && draftCode.length > 20000){
-      // 스니펫이면 전체 코드 덮어쓰지 않고 로그만
-      log(`[v5.6.0] 스니펫 감지 ${code.length}자 - 전체 코드(${draftCode.length}자) 유지, draft 덮어쓰기 안 함`,'info');
-      // 대신 채팅에만 표시하고 draft는 유지
-    } else {
-      draftCode=code; if(typeof autoBackup!=='undefined' && autoBackup) {saveDraftHistory(code, 'GitHub에서 로드');} if(typeof updateLivePreview==='function') updateLivePreview();
-      updateDraftStatus();
-      log(`코드 감지 ${code.length}자`,'ok');
-    }
-  }log(`${currentTab} 완료`,'ok');}catch(e){chats[currentTab].push({role:'ai',content:`❌ ${e.message}\n설정탭에서 API 키 확인해줘`});saveChats();renderChats();log(e.message,'err');}}
-const sendBtn=$('chatSendBtn');if(sendBtn) sendBtn.onclick=sendChat;
-const chatInput=$('chatInput');if(chatInput) chatInput.addEventListener('keydown',e=>{if(e.key==='Enter') sendChat();});
-const clearChatBtn=$('clearChatBtn');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(`${currentTab} 초기화?`)){chats[currentTab]=[];saveChats();renderChats();}};
-const saveDraftBtn=$('saveDraftBtn');
-if(saveDraftBtn) saveDraftBtn.onclick=async()=>{
-  // v5.5.9: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장
-  let finalCode = draftCode;
-  const editorVal = document.getElementById('codeEditor')?.value || '';
-  const memory10 = document.getElementById('memory10')?.value || '';
-  const linksText = buildLinksText();
-  
-  // 1. 현재 GitHub main 전체 코드를 기준으로 유지 (가장 안전)
-  try{
-    const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;
-    const r=await fetch(url);
-    if(r.ok){
-      const fullMain = await r.text();
-      if(fullMain.length > 10000){
-        // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지
-        if(!finalCode || finalCode.length < 10000){
-          log(`[v5.6.0] draft가 스니펫(${finalCode?finalCode.length:0}자)이라 전체 main(${fullMain.length}자)으로 자동 복구 저장`,'info');
-          finalCode = fullMain;
-          draftCode = finalCode;
-        } else {
-          // 이미 전체 코드면 그대로
-          finalCode = draftCode;
-        }
-      }
-    }
-  }catch(e){ log(`GitHub full load 실패 ${e.message} - 로컬 draft 유지`,'info'); }
-
-  if(!finalCode){log('저장할 draft 없음 - GitHub 복구 먼저','err'); return;}
-  
-  // 3. 문서+링크 읽어서 기억에 반영은 하되, 코드는 전체 유지
-  if(finalCode.length < 500){log('draft 너무 짧음 - 전체 코드 유지 필요','err'); return;}
-  
-  try{localStorage.setItem('draft_code_'+currentRepo, finalCode);}catch{}
-  draftCode = finalCode;
-  updateDraftStatus();
-  saveToSupabase(false);
-  
-  const promptText=`💾 전체 코드 draft 저장 (${finalCode.length}자) - 문서+링크 기반 전체 보존`;
-  chats[currentTab].push({role:'user',content:promptText});
-  chats[currentTab].push({role:'ai',content:`✅ 전체 코드 draft 저장 완료! ${finalCode.length}자
-- 문서/링크 읽어서 전체 코드 보존 (스니펫은 버리고 전체 유지)
-- localStorage: draft_code_${currentRepo}
-- memory10: ${memory10.length}자 포함
-- 링크: ${linksText.split('\n').length}개
-- Supabase 백업 시도
-- GitHub 반영은 공용 빌드 버튼`});
-  saveChats(); renderChats();
-  log(`💾 전체 draft 저장 ${finalCode.length}자 - 문서+링크 기반`,'ok');
-};
-const chatBoxEl=$('chatBox');
-const dropOverlay=$('dropOverlay');
-if(chatBoxEl){
-  chatBoxEl.addEventListener('dragover',e=>{e.preventDefault(); if(dropOverlay){dropOverlay.classList.remove('hidden'); dropOverlay.style.display='flex';}});
-  chatBoxEl.addEventListener('dragleave',e=>{if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}});
-  chatBoxEl.addEventListener('drop',async e=>{
-    e.preventDefault();
-    if(dropOverlay){dropOverlay.classList.add('hidden'); dropOverlay.style.display='none';}
-    const files=e.dataTransfer?.files;
-    if(files && files[0]) await handleImageFile(files[0]);
-  });
-}
-document.addEventListener('paste',async e=>{
-  const items=e.clipboardData?.items;
-  if(!items) return;
-  for(const item of items){
-    if(item.type.startsWith('image/')){
-      e.preventDefault();
-      const file=item.getAsFile();
-      if(file) await handleImageFile(file);
-      break;
-    }
-  }
-});
-const removeBtn=$('removeScreenshotBtn');
-if(removeBtn) removeBtn.onclick=()=>clearScreenshot();
-
-const toggleBtn=$('toggleDraftBtn');if(toggleBtn) toggleBtn.onclick=()=>{const ed=$('codeEditor');if(ed){ed.classList.toggle('hidden');toggleBtn.textContent=ed.classList.contains('hidden')?'draft 보기 ▼':'draft 숨기기 ▲';}};
-
-async function pushToBranch(branch,code){
-  let pat='';
-  try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}
-  if(!pat) throw new Error('PAT 없음 - 설정탭');
-  const url=`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${mainFile}`;
-  let sha=null;
-  try{
-    const gr=await fetch(`${url}?ref=${branch}`,{headers:{Authorization:`Bearer ${pat}`}});
-    if(gr.ok){const j=await gr.json(); sha=j.sha;}
-    else if(gr.status===404 && branch==='gh-pages'){
-      log(`gh-pages 브랜치 없음 - main에서 생성 시도`,'info');
-      // Try to get main sha and create gh-pages branch via ref API
-      try{
-        const mainRefRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs/heads/main`,{headers:{Authorization:`Bearer ${pat}`}});
-        if(mainRefRes.ok){
-          const mainRef=await mainRefRes.json();
-          const createRes=await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs`,{method:'POST',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify({ref:`refs/heads/${branch}`,sha:mainRef.object.sha})});
-          if(createRes.ok){log(`gh-pages 브랜치 생성 성공`,'ok');}
-          else{const t=await createRes.text(); log(`gh-pages 생성 실패 ${createRes.status} ${t.slice(0,200)}`,'info');}
-        }
-      }catch(e){log(`gh-pages 생성 중 오류 ${e.message}`,'info');}
-    }
-  }catch{}
-  const body={message:`v5.3.7 ${branch} ${new Date().toISOString()}`,content:btoa(unescape(encodeURIComponent(code))),branch};
-  if(sha) body.sha=sha;
-  const res=await fetch(url,{method:'PUT',headers:{Authorization:`Bearer ${pat}`,'Content-Type':'application/json'},body:JSON.stringify(body)});
-  if(!res.ok){
-    const txt=await res.text();
-    if(branch==='gh-pages'){
-      // gh-pages 실패해도 main 성공이면 사이트는 main으로 배포 가능하므로 경고만
-      log(`⚠️ gh-pages 실패 ${res.status}: ${txt.slice(0,200)} - Settings > Pages > Source를 main으로 바꾸면 해결됨`,'info');
-      throw new Error(`gh-pages 실패 ${res.status} (무시 가능): ${txt.slice(0,300)} | 해결: GitHub repo Settings > Pages > Build and deployment > Source를 'Deploy from a branch' + Branch: main / root 로 변경하면 main만으로 사이트 배포됨. 지금 main 1ed7b6e는 성공했으므로 빌드는 완료됨.`);
-    }
-    throw new Error(txt);
-  }
-  return (await res.json()).commit.sha;
-}
-
-function getNextVersion(current){
-  const m = current.match(/v(\d+)\.(\d+)\.(\d+)/);
-  if(!m) return 'v5.5.9';
-  let major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
-  patch++;
-  return `v${major}.${minor}.${patch}`;
-}
-function bumpVersionInCode(code, nextVer){
-  let newCode = code.replace(/v5\.3\.\d+/g, nextVer);
-  newCode = newCode.replace(/\?v=5\.3\.\d+/g, `?v=${nextVer.slice(1)}`);
-  newCode = newCode.replace(/manifest\.json\?v=5\.3\.\d+/g, `manifest.json?v=${nextVer.slice(1)}`);
-  return newCode;
-}
-
-async function pushDual(){
-  let pat='';try{pat=localStorage.getItem('github_pat')||$('githubPatInput').value.trim();}catch{pat=$('githubPatInput').value.trim();}
-  if(!pat){log('PAT 없음 - 설정탭에서 넣어줘','err');return;}
-  if(!draftCode){log('draft 없음','err');return;}
-  if(draftCode.length < 10000){log(`[가드] draft ${draftCode.length}자 너무 짧음 - 푸시 차단`,'err');return;}
-  const btn=$('buildBtn');if(btn){btn.disabled=true;btn.textContent='⏳ 빌드중...';}
-  try{
-    const curMatch = (draftCode||'').match(/v5\.3\.(\d+)/);
-    const curVer = curMatch ? `v5.3.${curMatch[1]}` : 'v5.5.9';
-    const nextVer = getNextVersion(curVer);
-    log(`🔢 버전 자동 증가 ${curVer} -> ${nextVer}`,'info');
-    draftCode = bumpVersionInCode(draftCode, nextVer);
-    updateDraftStatus();
-    await saveToSupabase(true);log('Supabase 저장','ok');
-    const s1=await pushToBranch('main',draftCode);log(`main ${s1.commit? s1.commit.sha.slice(0,7): 'ok'}`,'ok');
-    try{const s2=await pushToBranch('gh-pages',draftCode);log(`gh-pages ${s2.commit? s2.commit.sha.slice(0,7): 'ok'}`,'ok');}catch(e){log(`gh-pages 무시 (main 배포)`,'info');}
-    log(`🚀 빌드 완료 ?v=${nextVer.slice(1)} - 90초 후 새로고침 가능`,'ok');
-    history.replaceState(null,'',`?v=${nextVer.slice(1)}`);
-    setTimeout(()=>{ if(confirm(`${nextVer} 배포 완료! 새로고침할까?`)) location.href=`?v=${nextVer.slice(1)}&t=${Date.now()}`; }, 90000);
-  }catch(e){log(`빌드 실패 ${e.message}`,'err');}finally{if(btn){btn.disabled=false;btn.textContent='🚀 공용 빌드 + 요약';}}
-}
-const buildBtn=$('buildBtn');if(buildBtn) buildBtn.onclick=pushDual;
-function updateMemoryCount(){const memEl=$('memory10');if(!memEl) return;const v=memEl.value;const l=v.split('\n').filter(x=>x.trim()).length;const mc=$('memoryCount');if(mc) mc.textContent=`${l}줄`;try{localStorage.setItem('memory_10_'+currentRepo,v);}catch{}renderContext();}
-let saveTimeout=null;const memEl=$('memory10');if(memEl) memEl.addEventListener('input',()=>{updateMemoryCount();clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});
-const tmplBtn=$('templateBtn');if(tmplBtn) tmplBtn.onclick=()=>{const el=$('memory10');if(el){el.value=getTemplate();updateMemoryCount();saveToSupabase(true);}};
-const groqModelEl=$('groqModelInput'); if(groqModelEl) groqModelEl.addEventListener('change',e=>{ try{localStorage.setItem('groq_model',e.target.value); log(`Groq 모델: ${e.target.value}`,'ok');}catch{} });
-const sbInput=$('supabaseKeyInput');if(sbInput) sbInput.addEventListener('input',e=>{try{localStorage.setItem('supabase_anon_key',e.target.value.trim());}catch{}updateStorageStatus();});
-const ghInput=$('githubPatInput');if(ghInput) ghInput.addEventListener('input',e=>{try{localStorage.setItem('github_pat',e.target.value.trim());}catch{}updateStorageStatus();});
-const gemInput=$('geminiKeyInput');if(gemInput) gemInput.addEventListener('input',e=>{try{localStorage.setItem('gemini_key',e.target.value.trim());}catch{}updateStorageStatus();});
-const groqInput=$('groqKeyInput');if(groqInput) groqInput.addEventListener('input',e=>{try{localStorage.setItem('groq_key',e.target.value.trim());}catch{}updateStorageStatus();});
-const openInput=$('openaiKeyInput');if(openInput) openInput.addEventListener('input',e=>{try{localStorage.setItem('openai_key',e.target.value.trim());}catch{}updateStorageStatus();});
-const modelInput=$('openaiModelInput');if(modelInput) modelInput.addEventListener('input',e=>{try{localStorage.setItem('openai_model',e.target.value.trim());}catch{}});
-
-async function loadRepos(){
-  const s=$('repoSelect');
-  const CACHE_KEY = `repo_list_cache_${GITHUB_USER}`;
-  const CACHE_TTL = 1000*60*60*6; // 6시간
-
-  function renderRepos(list, msg){
-    if(!s) return;
-    s.innerHTML='';
-    // currentRepo가 목록에 없으면 추가 (하드코딩 없이 현재 값만)
-    const names = new Set(list.map(r=>typeof r==='string'?r:r.name));
-    if(!names.has(currentRepo)){
-      const o=document.createElement('option');
-      o.value=currentRepo; o.textContent=currentRepo; o.selected=true;
-      s.appendChild(o);
-    }
-    list.forEach(repo=>{
-      const name = typeof repo==='string'?repo:repo.name;
-      if(!name) return;
-      const o=document.createElement('option');
-      o.value=name; o.textContent=name;
-      if(name===currentRepo) o.selected=true;
-      s.appendChild(o);
-    });
-    if(msg) log(msg,'info');
-  }
-
-  function getCached(){
-    try{
-      const raw=localStorage.getItem(CACHE_KEY);
-      if(!raw) return null;
-      const obj=JSON.parse(raw);
-      if(Date.now()-obj.ts > CACHE_TTL) return null;
-      return obj.list;
-    }catch{return null;}
-  }
-
-  // 1. 캐시 먼저 표시 - 하드코딩 아님, 이전에 API로 받아둔 진짜 목록
-  const cached = getCached();
-  if(cached && cached.length>0){
-    renderRepos(cached, `📦 캐시된 레포 ${cached.length}개 표시 (API 갱신중...)`);
-  } else {
-    // 캐시도 없으면 현재 레포만 표시 - 하드코딩 목록 대신 최소 동작 보장
-    renderRepos([], null); // v5.6.4: 로딩 문구 제거 - 미리보기 노출 방지
-  }
-
-  // 2. GitHub API 시도
-  try{
-    const headers={}; let hasPat=false;
-    try{ const pat=localStorage.getItem('github_pat'); if(pat){ headers.Authorization=`Bearer ${pat}`; hasPat=true; } }catch{}
-    const controller = new AbortController();
-    const timeout = setTimeout(()=>controller.abort(), 8000);
-    const r=await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`,{headers, signal: controller.signal});
-    clearTimeout(timeout);
-    if(!r.ok){
-      const txt=await r.text();
-      if(r.status===403 || txt.toLowerCase().includes('rate limit')){
-        log(`⚠️ GitHub 403 RateLimit - 설정탭에 PAT(ghp_...) 넣으면 해결. 캐시 ${cached?cached.length:0}개로 동작중`,'err');
-        return;
-      }
-      throw new Error(`${r.status} ${txt.slice(0,200)}`);
-    }
-    const d=await r.json();
-    if(!Array.isArray(d)) throw new Error('API 응답 형식 오류');
-    // 캐시 저장
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), list: d})); }catch{}
-    renderRepos(d, `✅ 레포 ${d.length}개 로드 성공${hasPat?' (PAT)':''}`);
-  }catch(e){
-    const isAbort = e.name==='AbortError';
-    if(isAbort){
-      log(`⏱️ 레포 로드 타임아웃 8초 - 캐시/현재 레포로 동작중. 네트워크 확인 또는 PAT 설정`,'err');
-    } else {
-      log(`❌ 레포 로드 실패 ${e.message} - 캐시/현재 레포로 동작중`,'err');
-    }
-    // 하드코딩 목록 대신 캐시 또는 currentRepo만으로 동작 - 추가 조치 불필요
-  }
-}
-const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const memRaw=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const mem=memRaw?cleanMemory10(memRaw):null;const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();if(memRaw && mem!==memRaw){try{localStorage.setItem('memory_10_'+currentRepo, mem||getTemplate());}catch{}}updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
-const mainFileInput=$('mainFileInput');if(mainFileInput) mainFileInput.addEventListener('input',e=>{mainFile=e.target.value.trim();try{localStorage.setItem('main_file_'+currentRepo,mainFile);}catch{}});
-async function fetchCode(){
-  try{
-    const url=`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}?t=${Date.now()}`;
-    const r=await fetch(url);
-    if(!r.ok) throw new Error(r.status);
-    const code=await r.text();
-    // v5.5.9 가짜 페이지 가드 - 디자인 유지, 로직만 추가
-    const isFake = code.length < 10000 || (code.includes('Supabase anon key') && code.includes('GitHub PAT') && code.length < 5000);
-    if(isFake){
-      log(`[v5.5.9 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)`,'err');
-      robotLog(`[가드] raw ${code.length}자 가짜 차단 - localStorage draft 유지`,'err');
-      // localStorage draft 우선 유지
-      try{
-        const localDraft = localStorage.getItem('draft_code_'+currentRepo);
-        if(localDraft && localDraft.length > 10000){
-          log(`로컬 draft 복원 ${localDraft.length}자`,'ok');
-        }
-      }catch{}
-      return;
-    }
-    draftCode=code; if(typeof autoBackup!=='undefined' && autoBackup) {saveDraftHistory(code, 'GitHub에서 로드');} if(typeof updateLivePreview==='function') updateLivePreview();
-    updateDraftStatus();
-    log(`코드 로드 ${code.length}자`,'ok'); if(typeof autoBackup!=='undefined' && autoBackup) saveDraftHistory(code, '코드 로드'); if(typeof updateLivePreview==='function') updateLivePreview(); if(typeof updateVersionCount==='function') updateVersionCount();
-    renderContext();
-  }catch(e){log(`코드 로드 실패 ${e.message}`,'info');}
-}
-function renderConnectedDocs(){const box=$('connectedDocs');if(!box) return;box.innerHTML='';connectedDocs.forEach((doc,i)=>{const div=document.createElement('div');div.className='doc-card';div.innerHTML=`<input type="checkbox" checked disabled><div class="doc-info"><div class="font-bold text-[11px]">📄 ${doc.title.slice(0,40)}</div></div><div class="flex gap-1"><button class="btn btn-sm open-doc" data-i="${i}">열기</button><button class="btn btn-sm preview-doc" data-i="${i}">불러오기</button><button class="btn btn-sm text-red-600 remove-doc" data-i="${i}">해제</button></div>`;box.appendChild(div);});box.querySelectorAll('.open-doc').forEach(b=>b.onclick=()=>{window.open(`https://docs.google.com/document/d/${connectedDocs[b.dataset.i].id}/edit`,'_blank');});box.querySelectorAll('.preview-doc').forEach(b=>b.onclick=async()=>{await previewDoc(connectedDocs[b.dataset.i].id);});box.querySelectorAll('.remove-doc').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1);try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);renderConnectedDocs();renderContext();});try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}}
-async function previewDoc(id){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}try{const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const d=await r.json();let txt='';d.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}});const pv=$('docPreview');if(pv){pv.textContent=`[불러오기 ${txt.length}자]\n\n${txt.slice(0,2000)}`;pv.classList.remove('hidden');}log(`불러오기 성공`,'ok');}catch(e){log('불러오기 실패','err');}}
-async function appendDoc(id,text){if(!accessToken) return false;try{const dr=await fetch(`https://docs.googleapis.com/v1/documents/${id}`,{headers:{Authorization:`Bearer ${accessToken}`}});const doc=await dr.json();let end=0;doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);});const req={requests:[{insertText:{location:{index:end-1},text}}]};const r=await fetch(`https://docs.googleapis.com/v1/documents/${id}:batchUpdate`,{method:'POST',headers:{Authorization:`Bearer ${accessToken}`,'Content-Type':'application/json'},body:JSON.stringify(req)});return r.ok;}catch{return false;}}
-function renderSearchResults(files,target){
-  const isMain=target==='driveResults';const listId=isMain?'driveResults':'linkSearchResults';const boxId=isMain?'driveResultsBox':'linkSearchResultsBox';const list=$(listId);if(!list) return;list.innerHTML='';const box=$(boxId);if(box) box.classList.remove('hidden');if(isMain) tempMainResults=files;else tempLinkResults=files;
-  if(!files||files.length===0){list.innerHTML='<div class="text-[10px]">없음</div>';return;}
-  files.forEach((f,idx)=>{const div=document.createElement('div');div.className='doc-card';div.setAttribute('draggable','false');div.innerHTML=`<input type="checkbox" class="chk-doc" data-idx="${idx}" data-target="${target}"><div class="doc-info"><div class="font-bold text-[11px]">${f.name}</div><div class="text-[9px] opacity-60">${f.modifiedTime.slice(0,10)}</div></div><button class="btn btn-sm connect-one" data-idx="${idx}" data-target="${target}">연결</button>`;div.addEventListener('mousedown',e=>{if(e.target.tagName!=='INPUT'&&e.target.tagName!=='BUTTON') e.preventDefault();});div.addEventListener('dragstart',e=>e.preventDefault());div.addEventListener('click',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='BUTTON') return;const chk=div.querySelector('input[type=checkbox]');chk.checked=!chk.checked;});list.appendChild(div);});
-  list.querySelectorAll('.connect-one').forEach(btn=>{btn.onclick=()=>{const idx=parseInt(btn.dataset.idx);const tgt=btn.dataset.target;const file=(tgt==='driveResults'?tempMainResults:tempLinkResults)[idx];if(tgt==='driveResults'){connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');}else{const url=`https://docs.google.com/document/d/${file.id}/edit`;if(customLinks.find(l=>l.url===url)){log('이미 추가됨','info');return;}customLinks.push({title:file.name,url});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}log(`추가 연결 ${file.name}`,'ok');}};});
-}
-async function searchDrive(query,target){if(!accessToken){log('로그인 필요 - 설정탭에서 구글 로그인','err');return;}const q=query?`mimeType='application/vnd.google-apps.document' and trashed=false and name contains '${query.replace(/'/g,"\\'")}'`:`mimeType='application/vnd.google-apps.document' and trashed=false`;try{const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30`;const res=await fetch(url,{headers:{Authorization:`Bearer ${accessToken}`}});const data=await res.json();renderSearchResults(data.files||[],target);}catch(e){log('검색 실패','err');}}
-const searchExactBtn=$('searchExactBtn');if(searchExactBtn) searchExactBtn.onclick=()=>{const q=$('docSearchInput').value.trim();searchDrive(q,'driveResults');};
-const linkSearchBtn=$('linkSearchBtn');if(linkSearchBtn) linkSearchBtn.onclick=()=>{const q=$('linkSearchInput').value.trim();searchDrive(q,'linkSearchResults');};
-const connMainBtn=$('connectCheckedMainBtn');if(connMainBtn) connMainBtn.onclick=()=>{const chks=document.querySelectorAll('#driveResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}const idx=parseInt(chks[0].dataset.idx);const file=tempMainResults[idx];connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(`메인 연결 ${file.name}`,'ok');const box=$('driveResultsBox');if(box) box.classList.add('hidden');};
-const connLinksBtn=$('connectCheckedLinksBtn');if(connLinksBtn) connLinksBtn.onclick=()=>{const chks=document.querySelectorAll('#linkSearchResults input.chk-doc:checked');if(chks.length===0){log('체크 없음','info');return;}let added=0;chks.forEach(chk=>{const idx=parseInt(chk.dataset.idx);const file=tempLinkResults[idx];const url=`https://docs.google.com/document/d/${file.id}/edit`;if(!customLinks.find(l=>l.url===url)){customLinks.push({title:file.name,url});added++;}});renderCustomLinks();renderContext();try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}const box=$('linkSearchResultsBox');if(box) box.classList.add('hidden');log(`추가 ${added}개 연결`,'ok');};
-function renderCustomLinks(){const box=$('customLinksList');if(!box) return;box.innerHTML='';const lc=$('linkCount');if(lc) lc.textContent=`${customLinks.length}개`;customLinks.forEach((l,i)=>{const div=document.createElement('div');div.className='link-item';div.innerHTML=`<input type="checkbox" checked disabled><span class="text-[10px] font-bold flex-1">${l.title.slice(0,28)}</span><button class="btn text-[8px] preview-link" data-i="${i}">불러오기</button><a href="${l.url}" target="_blank" class="text-[8px] text-blue-600">열기</a><button class="btn text-[8px] py-1" data-i="${i}">삭제</button>`;box.appendChild(div);});box.querySelectorAll('.preview-link').forEach(b=>b.onclick=async()=>{const l=customLinks[b.dataset.i];const id=l.url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];if(id) await previewDoc(id);});box.querySelectorAll('button:last-child').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1);try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}renderCustomLinks();renderContext();});try{localStorage.setItem('customLinks_'+currentRepo,JSON.stringify(customLinks));}catch{}}
-async function saveToSupabase(silent){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key){if(!silent) log('Supabase key 없음','err');return false;}try{const payload={project_name:currentRepo,repo:`${GITHUB_USER}/${currentRepo}`,main_file:mainFile,memory_10:$('memory10').value,doc_id:connectedDocs[0]?.id||null,doc_title:connectedDocs[0]?.title||null,draft_code:draftCode.slice(0,8000),updated_at:new Date().toISOString()};const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify(payload)});if(!res.ok) throw new Error(await res.text());if(!silent) log('Supabase 저장','ok');return true;}catch(e){if(!silent) log('Supabase 실패','err');return false;}}
-async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key) return;try{const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?project_name=eq.${currentRepo}&select=*`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});const data=await res.json();if(data&&data[0]){const row=data[0];
-  if(row.memory_10){
-    const cleaned = cleanMemory10(row.memory_10);
-    const memInput=$('memory10');
-    if(memInput){
-      const isBuilderMemory = cleaned.includes('Builder-a4u') || cleaned.includes('builder-a4u');
-      const isForThisProject = cleaned.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
-      if(currentRepo !== 'builder-a4u' && !currentRepo.includes('builder-a4u') && isBuilderMemory && !isForThisProject){
-        log(`⚠️ Supabase ${currentRepo}에 builder 기억 오염 발견 - 무시하고 템플릿 사용`,'info');
-        const fresh = getProjectTemplate(currentRepo);
-        memInput.value = fresh;
-        try{localStorage.setItem('memory_10_'+currentRepo, fresh);}catch{}
-        updateMemoryCount();
-        renderContext();
-      } else {
-        if(memInput.value !== cleaned){
-          memInput.value=cleaned;
-          try{localStorage.setItem('memory_10_'+currentRepo, cleaned);}catch{}
-          updateMemoryCount();
-          log(`📥 기억10줄 복구 ${currentRepo}: ${cleaned.slice(0,30)}...`,'ok');
-          renderContext();
-        }
-      }
-    }
-  }
-  if(row.main_file){  if(row.main_file){mainFile=row.main_file;const mf=$('mainFileInput');if(mf) mf.value=mainFile;}
-  if(row.draft_code&&!draftCode){draftCode=row.draft_code;updateDraftStatus();}
-  if(row.doc_id){
-    // 문서도 항상 복구
-    if(connectedDocs.length===0 || connectedDocs[0].id !== row.doc_id){
-      connectedDocs=[{id:row.doc_id,title:row.doc_title||'복구'}];
-      try{localStorage.setItem('connected_docs_'+currentRepo,JSON.stringify(connectedDocs));}catch{}
-      renderConnectedDocs();
-      log(`문서 복구 ${row.doc_title}`,'ok');
-    }
-  }
-  log('Supabase 복구','ok');
-}}catch(e){log('Supabase 복구 실패 '+e.message,'info');}}
-function initGIS(){const s=$('googleStatus');if(!s) return;if(!window.google||!google.accounts){s.textContent='GIS 로딩 실패';return;}try{const c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents',callback:(r)=>{if(r.access_token){accessToken=r.access_token;try{localStorage.setItem('google_access_token',accessToken);}catch{}s.textContent='✅ Drive 연결됨';log('Google 로그인 성공','ok');}}});const btn=$('googleLoginBtn');if(btn) btn.onclick=()=>c.requestAccessToken();if(accessToken){s.textContent='✅ Drive 연결됨 (캐시)';}else s.textContent='GIS 준비됨 - 설정탭에서 로그인';}catch(e){s.textContent='GIS 실패';}}
-window.addEventListener('load',()=>{
-  initTheme();
-  try{const tv=localStorage.getItem('top_view');if(tv) switchTopView(tv);}catch{}
-  try{$('supabaseKeyInput').value=localStorage.getItem('supabase_anon_key')||'';}catch{}
-  try{$('githubPatInput').value=localStorage.getItem('github_pat')||'';}catch{}
-  try{$('geminiKeyInput').value=localStorage.getItem('gemini_key')||'';}catch{}
-  try{$('groqKeyInput').value=localStorage.getItem('groq_key')||'';}catch{}
-  try{const gm=localStorage.getItem('groq_model')||'auto'; const el=$('groqModelInput'); if(el) el.value=gm;}catch{}
-  try{$('openaiKeyInput').value=localStorage.getItem('openai_key')||'';}catch{}
-  try{$('openaiModelInput').value=localStorage.getItem('openai_model')||'gpt-4o-mini';}catch{}
-  const mem=(()=>{
-    try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}
-  })();
-  const memInput=$('memory10');
-  if(memInput){ 
-    const template = getProjectTemplate(currentRepo);
-    if(mem){
-      // 로컬에 있으면 로컬 사용하되, builder 오염 체크
-      if(currentRepo !== 'builder-a4u' && !currentRepo.includes('builder-a4u') && mem.includes('Builder-a4u') && !mem.toLowerCase().includes(currentRepo.toLowerCase())){
-        log(`⚠️ 로컬 ${currentRepo} 기억이 builder로 오염 - 템플릿으로 초기화`,'info');
-        memInput.value = template;
-        try{localStorage.setItem('memory_10_'+currentRepo, template);}catch{}
-      } else {
-        memInput.value = mem;
-      }
-    } else {
-      memInput.value = template;
-      try{localStorage.setItem('memory_10_'+currentRepo, template);}catch{}
-    }
-    updateMemoryCount(); 
-    renderContext(); 
-  }
-  const mf=$('mainFileInput');if(mf) mf.value=mainFile;
-  updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();
-  loadRepos();setTimeout(initGIS,600);setTimeout(()=>{fetchCode();autoLoadSupabase();},1000);
-  
-const fetchMainBtn = document.getElementById('fetchMainBtn');
-if(fetchMainBtn) fetchMainBtn.onclick = async () => { log('📥 GitHub main 수동 복구 시작','info'); await fetchCode(); log('✅ 복구 완료 - draft가 6만자로 복원됐는지 확인','ok'); };
-const forceResetBtn = document.getElementById('forceDraftResetBtn');
-const resetMemBtn = document.getElementById('resetMemoryBtn');
-if(resetMemBtn) resetMemBtn.onclick = () => {
-  if(!confirm(`${currentRepo} 기억10줄을 템플릿으로 초기화할까? (Supabase 오염 제거)`)) return;
-  const fresh = getProjectTemplate(currentRepo);
-  const memInput=$('memory10');
-  if(memInput) memInput.value = fresh;
-  try{localStorage.setItem('memory_10_'+currentRepo, fresh);}catch{}
-  updateMemoryCount();
-  renderContext();
-  saveToSupabase(true);
-  log(`🧹 ${currentRepo} 기억 초기화 완료`,'ok');
-};
-if(forceResetBtn) forceResetBtn.onclick = async () => {
-  if(!confirm('로컬 draft 1371자 버리고 GitHub 최신 6만자로 강제 복구할까?')) return;
-  try{ localStorage.removeItem('draft_code_'+currentRepo); }catch{}
-  draftCode='';
-  log('🗑️ 로컬 draft 삭제, GitHub에서 재로딩','info');
-  await fetchCode();
-};
-
-  log('v5.6.1 초기화 - 안건 프롬프트 자동 생성','ok');
-  // v5.5.9 1클릭 저장 + 미리보기 확인 - 원클릭 카드 제거, 깔끔 워크플로우
-  function getRecentChatSummary(){
-    try{
-      const all = (typeof chats!=='undefined' && chats[currentTab]) ? chats[currentTab] : [];
-      const recent = all.slice(-5).map(m=>`${m.role}: ${m.content.slice(0,150)}`).join('\n');
-      return recent || '(채팅 없음)';
-    }catch{ return ''; }
-  }
-  window.pendingAutoSave = false;
-  const saveBtn = document.getElementById('saveDraftBtn');
-  if(saveBtn) saveBtn.onclick = ()=>{
-    const currentLen = (typeof draftCode!=='undefined' && draftCode) ? draftCode.length : 0;
-    const recent = getRecentChatSummary();
-    const mainF = (typeof mainFile!=='undefined'?mainFile:'index.html');
-    // 의견이 있으면 자동으로 전체 코드 요청해서 저장하는 로직
-    if(!recent || recent==='(채팅 없음)'){
-      // 채팅 없으면 그냥 현재 draft 저장
-      try{
-        localStorage.setItem('draft_'+currentRepo, draftCode);
-        const histKey = 'draft_hist_'+currentRepo;
-        const hist = JSON.parse(localStorage.getItem(histKey)||'[]');
-        hist.unshift({t:Date.now(), len:draftCode.length, code:draftCode.slice(0,5000)});
-        localStorage.setItem(histKey, JSON.stringify(hist.slice(0,20)));
-        log(`💾 draft 저장 ${currentLen}자 (채팅 없음, 현재 코드 저장)`,'ok');
-      }catch(e){ log('저장 실패 '+e.message,'err'); }
-      return;
-    }
-    // 의견 있으면 자동으로 전체 코드 요청
-    const prompt = `[자동 저장] 현재 draft ${currentLen}자. 아래 최근 대화 반영해서 전체 코드 ${mainF}로 줘. 스니펫 금지, 전체 파일 6만자.
-
-[최근 대화]
-${recent}
-
-요구: 기존 기능 유지 + 최근 대화 반영, 전체 코드만`;
-    const chatIn = document.getElementById('chatInput');
-    const sendBtn = document.getElementById('chatSendBtn');
-    if(chatIn && sendBtn){
-      chatIn.value = prompt;
-      window.pendingAutoSave = true;
-      sendBtn.click();
-      log('💾 자동 저장 - 전체 코드 요청 전송 (의견 반영)','info');
-    }
-  };
-  // AI가 코드 주면 자동 저장하는 훅 - extractCode 후에 실행
-  const origAfterCode = window.afterCodeExtracted || null;
-  window.afterCodeExtracted = function(code){
-    if(window.pendingAutoSave){
-      try{
-        const repo = currentRepo || 'default';
-        localStorage.setItem('draft_'+repo, code);
-        const histKey = 'draft_hist_'+repo;
-        let hist = [];
-        try{ hist = JSON.parse(localStorage.getItem(histKey)||'[]'); }catch{}
-        hist.unshift({t:Date.now(), len:code.length, preview:code.slice(0,200), code:code});
-        if(hist.length>30) hist = hist.slice(0,30);
-        localStorage.setItem(histKey, JSON.stringify(hist));
-        log(`✅ 자동 저장 완료 ${code.length}자 - 타임머신 백업됨`,'ok');
+function updateDraftStatus(){const l=draftCode.length;const el=$('draftStatus');if(el) el.textContent='draft: ' + (l) + '자 · ${l>0?\'3탭 공용\':\'없음\'}';const ed=$('codeEditor');if(ed) ed.value=draftCode;try{localStorage.setItem('draft_code_'+currentRepo,draftCode);}catch{}}
+function buildLinksText(){let t='[기억 10줄]\n' + ($('memory10')?$('memory10').value:'') + '\n\n[링크 N개]\n';t+='1. raw: https://raw.githubusercontent.com/' + (GITHUB_USER) + '/${currentRepo}/main/${mainFile}\n';connectedDocs.forEach((d,i)=>{t+='' + (i+2) + '. 메인: https://docs.google.com/document/d/${d.id}/edit ${d.title}\n';});customLinks.forEach((l,i)=>{t+='' + (connectedDocs.length+3+i) + '. ${l.title}: ${l.url}\n';});return t;}
+function buildSystemPrompt(tab){const links=buildLinksText();const draftInfo=draftCode?'\n\n[draft ' + (draftCode.length) + '자]\n${draftCode.slice(0,12000)}':'\n[draft 없음]';let base='너는 Builder-a4u ' + (tab) + '\n\n${links}${draftInfo}\n\n[원칙] 코드 \'\'\\' 블록\\';if(tab===\\\'meta\\\') return base+\\\'\n[메타 생성]\\\\';if(tab===\\\\\'gemini\\\\\') return base+\\\\\'\n[제미나이 검증]\\\\\\';if(tab===\\\\\\\'gpt\\\\\\\') return base+\\\\\\\'\n[GPT 검수]\\\\\\\\';return base;}\nfunction renderContext(){const el=$(\\\\\\\\\'contextText\\\\\\\\\');if(!el) return;const txt=buildSystemPrompt(currentTab);el.textContent=txt.slice(0,800)+(txt.length>800?\\\\\\\\\'\n...\\\\\\\\\':\\\\\\\\\'\\\\\\\\\');}\n// v5.7.4 PWA 최적화 - 프로젝트별 분리 + 가상 윈도우 + 자동 요약\n\n// v5.7.4: 증분 요약 + 자동 주입 - 키 있으면 매 10개마다 백그라운드 요약\nlet lastSummaryAt = 0;\nasync function incrementalSummarize(force=false){\n  const all = chats[currentTab]||[];\n  if(!force && all.length < 10) return;\n  if(!force && all.length - lastSummaryAt < 10) return; // 10개마다\n  if(all.length === lastSummaryAt && !force) return;\n  const toSummarize = all.slice(-20); // 최근 20개로 요약\n  const textToSum = toSummarize.map(m=>\\\\\\\\\'\\\\\\\\\' + (m.role) + \\\\\\\\\': \\\\\\\\' + (m.content.slice(0,300)) + \\\\\\\\'\\\\\\\\\').join(\\\\\\\\\'\n\\\\\\\\\');\n  let summaryText = \\\\\\\\\'\\\\\\\\\';\n  // Gemini API 있으면 진짜 요약\n  try{\n    const geminiKey = localStorage.getItem(\\\\\\\\\'gemini_api_key\\\\\\\\\') || localStorage.getItem(\\\\\\\\\'GEMINI_API_KEY\\\\\\\\\');\n    if(geminiKey){\n      log(\\\\\\\\\'🤖 증분 요약 중... (Gemini)\\\\\\\\\', \\\\\\\\\'info\\\\\\\\\');\n      const res = await fetch(\\\\\\\\'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=\\\\\\\' + (geminiKey) + \\\\\\\'\\\\\\\', {\n        method:\\\\\\\'POST\\\\\\\',\n        headers:{\\\\\\\'Content-Type\\\\\\\':\\\\\\\'application/json\\\\\\\'},\n        body: JSON.stringify({contents:[{parts:[{text:\\\\\\\'다음 대화를 10줄 기억팩으로 압축해줘. 형식: 1.프로젝트 2.목적 3.현재 4.다음 5.결정 6.제외 7.저장 8.버그 9.모드 10.상태\n\n\\\\\\\' + (textToSum) + \\\\\\\'\\\\\\\'}]}]})\n      });\n      const data = await res.json();\n      summaryText = data.candidates?.[0]?.content?.parts?.[0]?.text || \\\\\\\'\\\\\\\';\n    }\n  }catch(e){ console.log(\\\\\\\'gemini summary fail\\\\\\\', e); }\n  if(!summaryText){\n    // 로컬 fallback 요약\n    const keywords = [...new Set(toSummarize.flatMap(m=>m.content.split(/\s+/).filter(w=>w.length>2)).slice(-30))].slice(0,10).join(\\\\\\\', \\\\\\\');\n    summaryText = \\\\\\\'-요약: 최근 대화 \\\\\\\' + (toSummarize.length) + \\\\\\\'개, 키워드: \\\\\\' + (keywords) + \\\\\\'\\\\\\\';\n  }\n  if(summaryText){\n    lastSummaryAt = all.length;\n    // v5.6.1 Fix: "-요약:" 오염 방지 - memory10에 append 금지, 10줄 형식만 교체\n    const isClean10 = summaryText.includes(\\\\\\\'1.프로젝트:\\\\\\\') && summaryText.includes(\\\\\\\'2.목적:\\\\\\\');\n    const isPolluted = summaryText.trim().startsWith(\\\\\\\'-요약:\\\\\\\');\n    if(isClean10){\n      const memEl = document.getElementById(\\\\\\\'memory10\\\\\\\');\n      if(memEl){\n        memEl.value = summaryText.slice(0,2000);\n        try{\n          localStorage.setItem(\\\\\\\'memory10_\\\\\\\'+currentRepo, memEl.value);\n          localStorage.setItem(\\\\\\\'memory10\\\\\\\', memEl.value);\n          localStorage.setItem(\\\\\\\'connected_docs_\\\\\\\'+currentRepo, memEl.value);\n        }catch{}\n        if(typeof saveToSupabase === \\\\\\\'function\\\\\\\') saveToSupabase(false);\n        if(window.renderContextCopySettings) renderContextCopySettings();\n      }\n      log(\\\\\\'✨ 10줄 기억 갱신 완료\\\\\\', \\\\\\\'ok\\\\\\\');\n    } else if(isPolluted){\n      log(\\\\\\\'✨ 요약 생성됨 (memory10 오염 방지 - 저장 안 함)\\\\\\\\', \\\\\\\\\'info\\\\\\\\\');\n    } else {\n      log(\\\\\\\\\'✨ 증분 요약 완료 (\\\\\\\\\' + (all.length) + \\\\\\\\\'개 중 최근 20개)\\\\\\\\\', \\\\\\\\\'ok\\\\\\\\\');\n    }\n    // chatStore summary 갱신\n    try{\n      const storeKey = \\\\\\\\\'chatStore_\\\\\\\\\'+currentRepo;\n      let store = {};\n      try{ store = JSON.parse(localStorage.getItem(storeKey)||\\\\\\\\\'{}\\\\\\\\\'); }catch{}\n      if(!store[currentTab]) store[currentTab] = {memory10:\\\\\\\\\'\\\\\\\\\', summary:\\\\\\\\\'\\\\\\\\\', recent:[], archive:[]};\n      store[currentTab].summary = summaryText.slice(0,500);\n      store[currentTab].recent = all.slice(-20);\n      localStorage.setItem(storeKey, JSON.stringify(store));\n    }catch{}\n  }\n}\n\n// 자동 주입: 레포 선택 시 memory10 + summary + 최근 20개 + 링크 N개를 3탭 채팅에 자동 주입\nasync function triggerSummaryOnBuild(){ await incrementalSummarize(true); }\nfunction autoInjectOnRepoSelect(){\n  try{\n    const mem = document.getElementById(\\\\\\\\\'memory10\\\\\\\\\')?.value || \\\\\\\\\'\\\\\\\\\';\n    const linksBox = document.getElementById(\\\\\\\\\'contextBox\\\\\\\\\')?.innerText || \\\\\\\\\'\\\\\\\\\';\n    const storeKey = \\\\\\\\\'chatStore_\\\\\\\\\'+currentRepo;\n    let store = {};\n    try{ store = JSON.parse(localStorage.getItem(storeKey)||\\\\\\\\\'{}\\\\\\\\\'); }catch{}\n    const tabData = store[currentTab] || {};\n    const summary = tabData.summary || \\\\\\\\\'\\\\\\\\\';\n    const recent = tabData.recent || (chats[currentTab]||[]).slice(-5);\n    const injectText = \\\\\\\\\'[자동 주입]\n[기억 10줄]\n\\\\\\\\\' + (mem) + \\\\\\\\\'\n\n[요약]\n\\\\\\\\' + (summary) + \\\\\\\\'\n\n[링크 N개]\n\\\\\\\' + (linksBox) + \\\\\\\'\n\n[최근 대화 5개]\n\\\\\\' + (recent.map(m=>\\\\\\\\'\\\\\' + (m.role) + \\\\\': \\\\' + (m.content.slice(0,200)) + \\\\'\\\\\\\').join(\\\\\\\'\n\\\\\\\')) + \\\\'\\\\\\\';\n    // 채팅창에 시스템 메시지로 주입 (AI가 바로 읽을 수 있게)\n    if(chats[currentTab] && chats[currentTab].length === 0){\n      chats[currentTab].push({role:\\\\\\\'system\\\\\\\', content: injectText});\n      saveChats(); renderChats();\n      log(\\\\\\\'🔄 자동 주입 완료 - 10줄+링크N개+최근대화\\\\\\\', \\\\\\\'ok\\\\\\\');\n    }\n  }catch(e){ console.log(\\\\\\\'autoInject fail\\\\\\\', e); }\n}\n\n\n\n// v5.7.4: 빌드 업데이트가 30번 안 가고 10~15번이 많으므로 임계값 낮춤\n// - 아카이브: 30→20, 요약: 30→15, 증분: 10→5개마다\nconst ORIGINAL_WINDOW = 20;\n\nconst CHAT_WINDOW = 20; // 화면 20개 유지 // 화면엔 20개만\nconst CHAT_SUMMARY_THRESHOLD = 15; // v5.7.4: 30→15, 실제 빌드는 10~15번 대화가 많음\nlet chatArchive = {}; // {tab: [older messages]}\n\nfunction getChatArchiveKey(){return \\\\\\'chat_archive_\\\' + (currentRepo) + \\\'_\\' + (currentTab) + \\'\\\\\';}\nfunction loadArchive(){\n  try{\n    const raw = localStorage.getItem(getChatArchiveKey());\n    if(raw) chatArchive[currentTab] = JSON.parse(raw);\n  }catch{ chatArchive[currentTab] = []; }\n  if(!chatArchive[currentTab]) chatArchive[currentTab]=[];\n}\nfunction saveArchive(){\n  try{localStorage.setItem(getChatArchiveKey(), JSON.stringify(chatArchive[currentTab]||[]));}catch{}\n}\nfunction maybeSummarize(){\n  const arr = chats[currentTab]||[];\n  if(arr.length <= CHAT_SUMMARY_THRESHOLD) return;\n  // 오래된 것 아카이브로 이동, 최근 20개만 유지\n  loadArchive();\n  const toArchive = arr.splice(0, arr.length - CHAT_WINDOW);\n  chatArchive[currentTab] = (chatArchive[currentTab]||[]).concat(toArchive);\n  // 최대 200개까지만 보관\n  if(chatArchive[currentTab].length > 200) chatArchive[currentTab] = chatArchive[currentTab].slice(-200);\n  saveArchive();\n  chats[currentTab] = arr;\n  saveChats();\n  log(\\\\'[최적화] \' + (toArchive.length) + \'개 아카이브 이동 - 화면 ' + (CHAT_WINDOW) + '개 유지\\\',\\\'info\\\');\n  // 기억 10줄 자동 요약 트리거 (간단 요약)\n  try{\n    const memEl=$(\\\'memory10\\\');\n    if(memEl && toArchive.length>0){\n      const last = toArchive.slice(-5).map(m=>m.content.slice(0,80)).join(\\\' / \\\');\n      if(memEl.value.length < 2000){\n        memEl.value += \\'\n-요약: ${new Date().toLocaleDateString()} ${currentTab} ${toArchive.length}개 대화 압축\';\n        updateMemoryCount();\n      }\n    }\n  }catch{}\n}\n\n\n// v5.7.4 라이브 미리보기 + 롤백\nlet draftHistory = [];\nlet githubCommits = [];\nlet autoBackup = true;\ntry{const cr = typeof currentRepo!==\'undefined\'?currentRepo:\'builder-a4u\'; draftHistory = JSON.parse(localStorage.getItem(\'draft_history_\'+cr)||\'[]\');}catch{}\ntry{autoBackup = localStorage.getItem(\'auto_backup\')!==\'false\';}catch{}\n\nfunction saveDraftHistory(code, msg=\'자동 백업\'){\n  if(!code || code.length < 500) return;\n  const key = \'draft_history_\'+currentRepo;\n  try{\n    let hist = JSON.parse(localStorage.getItem(key)||\'[]\');\n    if(hist.length>0 && Math.abs(hist[hist.length-1].len - code.length) < 100) return;\n    hist.push({time: new Date().toISOString(), len: code.length, msg, code: code.slice(0,80000)});\n    if(hist.length > 20) hist = hist.slice(-20);\n    localStorage.setItem(key, JSON.stringify(hist));\n    draftHistory = hist;\n    updateVersionCount();\n  }catch{}\n}\nfunction updateVersionCount(){\n  const el = document.getElementById(\'versionCount\');\n  if(el) el.textContent = '${draftHistory.length}개 draft + ${githubCommits.length}개 커밋';\n}\nfunction renderDraftHistory(){\n  const box = document.getElementById(\'versionHistoryBox\');\n  if(!box) return;\n  box.innerHTML = \'\';\n  if(draftHistory.length===0){box.innerHTML=\'<div class="text-[11px] text-gray-400 p-4 text-center">로컬 기록 없음 - 빌드할 때마다 자동 저장돼</div>\'; return;}\n  [...draftHistory].reverse().forEach((v,i)=>{\n    const realIdx = draftHistory.length-1-i;\n    const div = document.createElement(\'div\');\n    div.className=\'version-item\';\n    const d = new Date(v.time);\n    div.innerHTML=\'<span class="version-badge" style="background:var(--meta)">\' + (v.len.toLocaleString()) + \'자</span><div class="flex-1"><div class="font-bold">' + (d.toLocaleString()) + ' - ${v.msg}</div><div class="opacity-60 text-[10px]">${v.time.slice(0,19)}</div></div><button class="btn btn-sm text-[9px] restore-btn" data-idx="${realIdx}">복원</button><button class="btn btn-sm text-[9px] preview-btn" data-idx="${realIdx}">미리보기</button>\';\n    box.appendChild(div);\n  });\n  box.querySelectorAll(\'.restore-btn\').forEach(b=>b.onclick=()=>restoreDraft(parseInt(b.dataset.idx)));\n  box.querySelectorAll(\'.preview-btn\').forEach(b=>b.onclick=()=>previewDraft(parseInt(b.dataset.idx)));\n}\nasync function fetchGithubCommits(){\n  const pat = (()=>{try{return localStorage.getItem(\'github_pat\')||\'\'}catch{return \'\'}})();\n  if(!pat){log(\'GitHub PAT 없음 - 설정탭에서 넣어줘\',\'err\'); return;}\n  try{\n    const url = 'https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?per_page=20';\n    const r = await fetch(url,{headers:{Authorization:\'Bearer \' + (pat) + \'\'}});\n    if(!r.ok) throw new Error(r.status);\n    githubCommits = await r.json();\n    renderGithubCommits();\n    log(\'🐙 GitHub 커밋 \' + (githubCommits.length) + \'개 로드\',\'ok\');\n  }catch(e){log(\'커밋 로드 실패 \'+e.message,\'err\')}\n}\nfunction renderGithubCommits(){\n  const box = document.getElementById(\'versionHistoryBox\');\n  if(!box) return;\n  box.innerHTML=\'\';\n  if(githubCommits.length===0){box.innerHTML=\'<div class="text-[11px] text-gray-400 p-4 text-center">커밋 없음</div>\'; return;}\n  githubCommits.forEach((c,i)=>{\n    const div = document.createElement(\'div\');\n    div.className=\'version-item\';\n    const d = new Date(c.commit.author.date);\n    div.innerHTML=\'<span class="version-badge" style="background:#111">\' + (c.sha.slice(0,7)) + \'</span><div class="flex-1"><div class="font-bold">' + (c.commit.message.slice(0,60)) + '</div><div class="opacity-60 text-[10px]">${c.commit.author.name} - ${d.toLocaleString()}</div></div><button class="btn btn-sm text-[9px] github-restore" data-sha="${c.sha}">롤백</button><a href="${c.html_url}" target="_blank" class="btn btn-sm text-[9px]">열기</a>\';\n    box.appendChild(div);\n  });\n  box.querySelectorAll(\'.github-restore\').forEach(b=>b.onclick=()=>rollbackToCommit(b.dataset.sha));\n}\nfunction restoreDraft(idx){\n  const v = draftHistory[idx];\n  if(!v) return;\n  if(!confirm('${new Date(v.time).toLocaleString()} 버전 ${v.len}자를 복원할까?\n현재 draft는 자동 백업돼')) return;\n  if(typeof draftCode !== \'undefined\' && draftCode) saveDraftHistory(draftCode, \'롤백 전 백업\');\n  draftCode = v.code;\n  try{localStorage.setItem(\'draft_code_\'+currentRepo, draftCode);}catch{}\n  if(typeof updateDraftStatus===\'function\') updateDraftStatus();\n  updateLivePreview();\n  log(\'⏰ \' + (v.len) + \'자 복원 완료 - 미리보기 확인 후 빌드해줘\',\'ok\');\n  if(typeof renderContext===\'function\') renderContext();\n}\nfunction previewDraft(idx){\n  const v = draftHistory[idx];\n  if(!v) return;\n  showLivePreview(v.code);\n  log(\'👁️ \' + (v.len) + \'자 미리보기\',\'info\');\n}\nasync function rollbackToCommit(sha){\n  if(!confirm(\'커밋 \' + (sha.slice(0,7)) + \'로 롤백할까?\nGitHub에 새 커밋으로 복원돼\')) return;\n  const pat = localStorage.getItem(\'github_pat\')||\'\';\n  try{\n    const fileUrl = \'https://api.github.com/repos/\' + (GITHUB_USER) + \'/' + (currentRepo) + '/contents/${mainFile}?ref=${sha}\';\n    const r = await fetch(fileUrl,{headers:{Authorization:'Bearer ${pat}'}});\n    if(!r.ok) throw new Error(\'파일 조회 실패 \'+r.status);\n    const data = await r.json();\n    const content = atob(data.content.replace(/\n/g,\'\'));\n    if(typeof draftCode !== \'undefined\') saveDraftHistory(draftCode, \'GitHub 롤백 전 백업\');\n    draftCode = content;\n    try{localStorage.setItem(\'draft_code_\'+currentRepo, draftCode);}catch{}\n    if(typeof updateDraftStatus===\'function\') updateDraftStatus();\n    updateLivePreview();\n    log(\'⏰ GitHub \' + (sha.slice(0,7)) + \' ' + (content.length) + '자 복원 - 미리보기 확인 후 [공용 빌드]로 배포\',\'ok\');\n    if(confirm(\'바로 GitHub에 Push해서 배포할까?\')){ if(typeof pushDual===\'function\') pushDual(); }\n  }catch(e){log(\'롤백 실패 \'+e.message,\'err\')}\n}\nfunction showLivePreview(code){\n  const box = document.getElementById(\'livePreviewBox\');\n  const frame = document.getElementById(\'livePreviewFrame\');\n  if(!box||!frame) return;\n  box.classList.add(\'active\');\n  try{ frame.srcdoc = code || (typeof draftCode!==\'undefined\'?draftCode:\'\'); }catch(e){}\n}\nfunction updateLivePreview(){\n  const box = document.getElementById(\'livePreviewBox\');\n  if(!box || !box.classList.contains(\'active\')) return;\n  const frame = document.getElementById(\'livePreviewFrame\');\n  if(frame) frame.srcdoc = (typeof draftCode!==\'undefined\'?draftCode:\'\');\n}\nfunction hideLivePreview(){\n  const box = document.getElementById(\'livePreviewBox\');\n  if(box) box.classList.remove(\'active\');\n}\nfunction renderChats(){\n\n  loadArchive();\n  const box=$(\'chatBox\');if(!box) return;\n  box.innerHTML=\'\';\n  const all = chats[currentTab]||[];\n  const archivedCount = (chatArchive[currentTab]||[]).length;\n  // 아카이브 배너\n  if(archivedCount>0){\n    const banner=document.createElement(\'div\');\n    banner.className=\'msg msg-system\';\n    banner.innerHTML='📦 아카이브 ${archivedCount}개 - <button onclick="loadMoreChats()" class="btn btn-sm" style="margin-left:6px">이전 ${CHAT_WINDOW}개 불러오기</button> <button onclick="clearArchive()" class="btn btn-sm">아카이브 비우기</button>';\n    box.appendChild(banner);\n  }\n  // 가상 윈도우: 최근 CHAT_WINDOW만 렌더\n  const toRender = all.slice(-CHAT_WINDOW);\n  const frag=document.createDocumentFragment();\n  toRender.forEach(m=>{\n    const d=document.createElement(\'div\');\n    d.className=\'msg \'+(m.role===\'user\'?\'msg-user\':\'msg-ai\');\n    d.textContent=m.content;\n    frag.appendChild(d);\n  });\n  box.appendChild(frag);\n  box.scrollTop=box.scrollHeight;\n  const badge=$(\'chatCountBadge\');\n  if(badge) badge.textContent=\'\' + (all.length) + \'개 (화면 ' + (toRender.length) + '/${all.length})${archivedCount?\' + 아카이브 ${archivedCount}':''}';\n  const lbl=$(\'currentTabLabel\');\n  if(lbl){lbl.textContent={meta:\'메타\',gemini:\'제미나이\',gpt:\'GPT\'}[currentTab];lbl.style.background={meta:\'var(--meta)\',gemini:\'var(--gemini)\',gpt:\'var(--gpt)\'}[currentTab];}\n  renderContext();\n}\nfunction loadMoreChats(){\n  loadArchive();\n  const archive = chatArchive[currentTab]||[];\n  if(archive.length===0) return;\n  const take = archive.splice(-CHAT_WINDOW);\n  chats[currentTab] = take.concat(chats[currentTab]||[]);\n  saveArchive(); saveChats(); renderChats();\n  log(\'이전 \' + (take.length) + \'개 복원\',\'ok\');\n}\nfunction clearArchive(){\n  if(!confirm(\'아카이브 전체 삭제?\')) return;\n  chatArchive[currentTab]=[];\n  saveArchive(); renderChats();\n  log(\'아카이브 비움\',\'ok\');\n}\n\nfunction switchTab(tab){currentTab=tab;loadArchive();document.querySelectorAll(\'[id^=tab]\').forEach(b=>b.classList.remove(\'tab-active\'));const el=$(\'tab\' + (tab.charAt(0).toUpperCase()+tab.slice(1)) + \'\');if(el) el.classList.add(\'tab-active\');try{localStorage.setItem(\'current_tab_\'+currentRepo,tab);}catch{}renderChats();}\nconst tabMeta=$(\'tabMeta\');if(tabMeta) tabMeta.onclick=()=>switchTab(\'meta\');\nconst tabGemini=$(\'tabGemini\');if(tabGemini) tabGemini.onclick=()=>switchTab(\'gemini\');\nconst tabGpt=$(\'tabGpt\');if(tabGpt) tabGpt.onclick=()=>switchTab(\'gpt\');\nfunction saveChats(){try{localStorage.setItem(\'chats_\'+currentRepo,JSON.stringify(chats));}catch{}\n// v5.7.4: 저장 후 증분 요약 트리거 (10개마다 백그라운드)\nif(chats[currentTab] && chats[currentTab].length >= 5 && chats[currentTab].length % 5 === 0){ incrementalSummarize(false); } // 5개마다 요약 시도\n}\nfunction extractCode(t){ if(!t || typeof t!==\'string\') return null; try{ const m=t.match(/\'\\'\\\'(?:html|jsx|tsx|js)?\n?([\s\S]*?)\\\\'\\\\\'\\\\\\'/i); return m?m[1].trim():null; }catch{ return null; } }\n\nlet pendingScreenshot=null;\nfunction compressImage(file){\n  return new Promise((resolve)=>{\n    const reader=new FileReader();\n    reader.onload=e=>{\n      const img=new Image();\n      img.onload=()=>{\n        const canvas=document.createElement(\\\\\\\'canvas\\\\\\\');\n        let w=img.width, h=img.height;\n        const max=1024;\n        if(w>max || h>max){\n          if(w>h){h=h*max/w; w=max;} else {w=w*max/h; h=max;}\n        }\n        canvas.width=w; canvas.height=h;\n        const ctx=canvas.getContext(\\\\\\\'2d\\\\\\\');\n        ctx.drawImage(img,0,0,w,h);\n        const dataUrl=canvas.toDataURL(\\\\\\\'image/jpeg\\\\\\\',0.75);\n        const base64=dataUrl.split(\\\\\\\',\\\\\\\')[1];\n        resolve({base64, mime:\\\\\\\'image/jpeg\\\\\\\', dataUrl});\n      };\n      img.src=e.target.result;\n    };\n    reader.readAsDataURL(file);\n  });\n}\nasync function handleImageFile(file){\n  if(!file || !file.type.startsWith(\\\\\\\'image/\\\\\\\')) return;\n  log(\\\\\\\'📸 이미지 처리중... \\\\\\\' + (Math.round(file.size/1024)) + \\\\\\\'KB\\\\\\\',\\\\\\\'info\\\\\\\');\n  const compressed=await compressImage(file);\n  pendingScreenshot=compressed;\n  const preview=document.getElementById(\\\\\\\'screenshotPreview\\\\\\\');\n  const imgEl=document.getElementById(\\\\\\\'screenshotImg\\\\\\\');\n  if(preview && imgEl){\n    imgEl.src=compressed.dataUrl;\n    preview.classList.remove(\\\\\\\'hidden\\\\\\\');\n    preview.style.display=\\\\\\\'flex\\\\\\\';\n  }\n  log(\\\\\\\'📸 스크린샷 첨부됨\\\\\\\\',\\\\\\\\\'ok\\\\\\\\\');\n}\nfunction clearScreenshot(){\n  pendingScreenshot=null;\n  const preview=document.getElementById(\\\\\\\\\'screenshotPreview\\\\\\\\\');\n  if(preview){preview.classList.add(\\\\\\\\\'hidden\\\\\\\\\'); preview.style.display=\\\\\\\\\'none\\\\\\\\\';}\n}\nasync function callGemini(p, imageBase64=null, imageMime=null){\n  const k=(()=>{try{return localStorage.getItem(\\\\\\\\\'gemini_key\\\\\\\\\')||$(\\\\\\\\\'geminiKeyInput\\\\\\\\\').value.trim();}catch{return $(\\\\\\\\\'geminiKeyInput\\\\\\\\\').value.trim();}})();\n  if(!k) throw new Error(\\\\\\\\\'Gemini Key 없음 - 설정탭에서 넣어줘\\\\\\\\\');\n  // v5.6.0 Fix: 2.5 + flash-latest 별칭으로 교체 - 1.5/2.0은 2026년 종료\n  const models=[\n    \\\\\\\\\'gemini-2.5-flash\\\\\\\\\',\n    \\\\\\\\\'gemini-flash-latest\\\\\\\\\',\n    \\\\\\\\\'gemini-2.5-flash-lite\\\\\\\\\',\n    \\\\\\\\\'gemini-2.5-pro\\\\\\\\\',\n    \\\\\\\\\'gemini-2.5-flash-image\\\\\\\\\'\n  ];\n  let lastErr=\\\\\\\\\'\\\\\\\\\';\n  // v5.6.0 Fix: live 목록 조회 + 2.5 우선\n  try{\n    const listRes = await fetch(\\\\\\\\\'https://generativelanguage.googleapis.com/v1/models?key=\\\\\\\\\' + (k) + \\\\\\\\\'\\\\\\\\\').then(r=>r.ok?r:fetch(\\\\\\\\\'https://generativelanguage.googleapis.com/v1beta/models?key=\\\\\\\\\' + (k) + \\\\\\\\\'\\\\\\\\\'));\n    if(listRes.ok){\n      const listData = await listRes.json();\n      const avail = (listData.models||[]).map(m=>m.name.replace(\\\\\\\\\'models/\\\\\\\\\',\\\\\\\\\'\\\\\\\\\')).slice(0,8).join(\\\\\\\\\', \\\\\\\\\');\n      log(\\\\\\\\\'📋 사용가능 모델: \\\\\\\\\' + (avail) + \\\\\\\\\'\\\\\\\\\',\\\\\\\\\'info\\\\\\\\\');\n      // 목록에 있는 2.5 / flash-latest 우선\n      const preferred = listData.models?.map(m=>m.name.replace(\\\\\\\\\'models/\\\\\\\\\',\\\\\\\\\'\\\\\\\\\')).filter(n=> n.includes(\\\\\\\\\'2.5\\\\\\\\\') || n.includes(\\\\\\\\\'flash-latest\\\\\\\\\') || n.includes(\\\\\\\\\'flash\\\\\\\\\'))||[];\n      if(preferred.length>0){\n        // 최신 모델을 앞에, 기존 fallback 뒤에\n        const uniq = [...new Set([...preferred, ...models])];\n        // 1.5/2.0 같은 구형은 제외\n        models.length = 0;\n        uniq.filter(m=> !m.includes(\\\\\\\\\'1.5\\\\\\\\\') && !m.includes(\\\\\\\\\'2.0-preview\\\\\\\\\')).slice(0,6).forEach(m=>models.push(m));\n      }\n    }\n  }catch(e){ log(\\\\\\\\\'모델 목록 조회 실패 - 기존 목록으로 진행\\\\\\\\\\',\\\\\\\\\\\'info\\\\\\\\\\\'); }\n\n  for(const model of models){\n    try{\n      log(\\\\\\\\\\\'Gemini \\\\\\\\\\\' + (model) + \\\\\\\\\\\' 시도...\\\\\\\\\\\',\\\\\\\\\\\'info\\\\\\\\\\\');\n      let body;\n      if(imageBase64){\n        body={contents:[{parts:[{text:p},{inline_data:{mime_type:imageMime||\\\\\\\\\\\'image/jpeg\\\\\\\\\\\',data:imageBase64}}]}]};\n      } else {\n        body={contents:[{parts:[{text:p}]}]};\n      }\n      const r=await fetch(\\\\\\\\\\\'https://generativelanguage.googleapis.com/v1beta/models/\\\\\\\\\\\' + (model) + \\\\\\\\\\\':generateContent?key=\\\\\\\\\\' + (k) + \\\\\\\\\\'\\\\\\\\\\\',{method:\\\\\\\\\\\'POST\\\\\\\\\\\',headers:{\\\\\\\\\\\'Content-Type\\\\\\\\\\\':\\\\\\\\\\\'application/json\\\\\\\\\\\'},body:JSON.stringify(body)});\n      if(!r.ok){\n        const txt=await r.text();\n        lastErr=txt.slice(0,500);\n        if(r.status===404 || txt.toLowerCase().includes(\\\\\\\\\\\'not found\\\\\\\\\\\') || txt.toLowerCase().includes(\\\\\\\\\\\'not supported\\\\\\\\\\\')){\n          log(\\\\\\\\\\'Gemini \\\\\\\\\' + (model) + \\\\\\\\\' 404 - 다음 모델 시도\\\\\\\\\',\\\\\\\\\'info\\\\\\\\\');\n          continue;\n        }\n        throw new Error(\\\\\\\\\'Gemini \\\\\\\\\' + (r.status) + \\\\\\\\\' \\\\\\\\' + (txt.slice(0,300)) + \\\\\\\\'\\\\\\\\\');\n      }\n      const d=await r.json();\n      const out=d.candidates?.[0]?.content?.parts?.[0]?.text||\\\\\\\\\'\\\\\\\\\';\n      if(out){log(\\\\\\\\'Gemini \\\\\\\' + (model) + \\\\\\\' 성공\\\\\\\',\\\\\\\'ok\\\\\\\'); return out;}\n    }catch(e){\n      lastErr=e.message;\n      continue;\n    }\n  }\n  log(\\\\\\\'⚠️ Gemini 전부 실패 - 빌드 계속 진행 (요약은 Groq/로컬로 대체)\\\\\\\\',\\\\\\\\\'info\\\\\\\\\'); lastErr=\\\\\\\\\'\\\\\\\\\'; // 블로킹 방지\n}\nasync function callGroq(p, imageBase64=null, imageMime=null){\n  const k=(()=>{try{return localStorage.getItem(\\\\\\\\\'groq_key\\\\\\\\\')||$(\\\\\\\\\'groqKeyInput\\\\\\\\\').value.trim();}catch{return $(\\\\\\\\\'groqKeyInput\\\\\\\\\').value.trim();}})();\n  if(!k) throw new Error(\\\\\\\\\'Groq Key 없음 - 설정탭에서 넣어줘\\\\\\\\\');\n  const selectedModel = (()=>{try{return localStorage.getItem(\\\\\\\\\'groq_model\\\\\\\\\')||\\\\\\\\\'auto\\\\\\\\\';}catch{return \\\\\\\\\'auto\\\\\\\\\';}})();\n  // v5.6.0 Fix: 2026년 9월 기준 현재 동작 모델 + live fetch\n  let models;\n  if(selectedModel!==\\\\\\\\\'auto\\\\\\\\\'){\n    models=[selectedModel];\n  } else {\n    // live fetch 먼저 시도\n    try{\n      const listRes=await fetch(\\\\\\\\\'https://api.groq.com/openai/v1/models\\\\\\\\\',{headers:{\\\\\\\\\'Authorization\\\\\\\\\':\\\\\\\\\'Bearer \\\\\\\\\' + (k) + \\\\\\\\\'\\\\\\\\\'}});\n      if(listRes.ok){\n        const listData=await listRes.json();\n        const liveIds=(listData.data||[]).map(m=>m.id);\n        const preferred=liveIds.filter(id=> id.includes(\\\\\\\\\'gpt-oss\\\\\\\\\') || id.includes(\\\\\\\\\'qwen\\\\\\\\\') || id.includes(\\\\\\\\\'llama-3.3\\\\\\\\\') || id.includes(\\\\\\\\\'llama-3.1\\\\\\\\\'));\n        if(preferred.length){\n          models=preferred.slice(0,6);\n          log(\\\\\\\\\'📋 Groq 사용가능 모델: \\\\\\\\\' + (models.slice(0,5).join(\\\\\\\\\', \\\\\\\\\')) + \\\\\\\\\'\\\\\\\\\',\\\\\\\\\'info\\\\\\\\\');\n        }\n      }\n    }catch(e){ log(\\\\\\\\\'Groq 모델 목록 조회 실패 - 기존 목록으로 진행\\\\\\\\\',\\\\\\\\\'info\\\\\\\\\'); }\n    if(!models){\n      models=[\n        \\\\\\\\\'openai/gpt-oss-20b\\\\\\\\\',\n        \\\\\\\\\'openai/gpt-oss-120b\\\\\\\\\',\n        \\\\\\\\\'qwen/qwen3-32b\\\\\\\\\',\n        \\\\\\\\\'qwen/qwen3.8-27b\\\\\\\\\',\n        \\\\\\\\\'llama-3.3-70b-versatile\\\\\\\\\',\n        \\\\\\\\\'llama-3.1-8b-instant\\\\\\\\\'\n      ];\n    }\n  }\n  let lastErr=\\\\\\\\\'\\\\\\\\\';\n  for(const model of models){\n    try{\n      log(\\\\\\\\\'Groq \\\\\\\\\' + (model) + \\\\\\\\\' 시도...\\\\\\\\\',\\\\\\\\\'info\\\\\\\\\');\n      let messages;\n      if(imageBase64 && model.includes(\\\\\\\\\'llama-4\\\\\\\\\')){\n        messages=[{role:\\\\\\\\\'user\\\\\\\\\',content:[{type:\\\\\\\\\'text\\\\\\\\\',text:p},{type:\\\\\\\\\'image_url\\\\\\\\\',image_url:{url:\\\\\\\\\'data:\\\\\\\\\' + (imageMime||\\\\\\\\\'image/jpeg\\\\\\\\\') + \\\\\\\\\';base64,\\\\\\\\' + (imageBase64) + \\\\\\\\'\\\\\\\\\'}}]}];\n      } else {\n        messages=[{role:\\\\\\\\\'user\\\\\\\\\',content:p}];\n      }\n      const r=await fetch(\\\\\\\\\'https://api.groq.com/openai/v1/chat/completions\\\\\\\\\',{method:\\\\\\\\\'POST\\\\\\\\\',headers:{\\\\\\\\\'Content-Type\\\\\\\\\':\\\\\\\\\'application/json\\\\\\\\\',\\\\\\\\\'Authorization\\\\\\\\\':\\\\\\\\'Bearer \\\\\\\' + (k) + \\\\\\\'\\\\\\\'},body:JSON.stringify({model,messages,temperature:0.7,max_tokens:8000})});\n      if(!r.ok){\n        const txt=await r.text();\n        lastErr=txt.slice(0,400);\n        if(r.status===404 || txt.toLowerCase().includes(\\\\\\\'model\\\\\\\') || txt.includes(\\\\\\\'decommissioned\\\\\\\') || txt.includes(\\\\\\\'does not exist\\\\\\\')){\n          log(\\\\\\\'Groq \\\\\\\' + (model) + \\\\\\\' 404/decommissioned - 다음 모델 시도\\\\\\\',\\\\\\\'info\\\\\\\');\n          continue;\n        }\n        throw new Error(\\\\\\\'Groq \\\\\\\' + (r.status) + \\\\\\\' \\\\\\' + (txt.slice(0,300)) + \\\\\\'\\\\\\\');\n      }\n      const d=await r.json();\n      const out=d.choices?.[0]?.message?.content||\\\\\\\'\\\\\\\';\n      if(out){log(\\\\\\'Groq \\\\\' + (model) + \\\\\' 성공\\\\\',\\\\\'ok\\\\\'); return out;}\n    }catch(e){\n      lastErr=e.message;\n      continue;\n    }\n  }\n  throw new Error(\\\\\'Groq 전부 실패. 마지막: \\\\\' + (lastErr.slice(0,400)) + \\\\\'\\\\\');\n}\nasync function callOpenAI(p){const k=(()=>{try{return localStorage.getItem(\\\\\'openai_key\\\\\')||$(\\\\\'openaiKeyInput\\\\\').value.trim();}catch{return $(\\\\\'openaiKeyInput\\\\\').value.trim();}})();if(!k) throw new Error(\\\\\'OpenAI Key 없음 - 설정탭에서 넣어줘\\\\\');const model=$(\\\\\'openaiModelInput\\\\\').value.trim()||\\\\\'gpt-4o-mini\\\\\';const r=await fetch(\\\\\'https://api.openai.com/v1/chat/completions\\\\\',{method:\\\\\'POST\\\\\',headers:{\\\\\'Content-Type\\\\\':\\\\\'application/json\\\\\',\\\\\'Authorization\\\\\':\\\\\'Bearer \\\\\' + (k) + \\\\\'\\\\\'},body:JSON.stringify({model,messages:[{role:\\\\\'user\\\\\',content:p}],temperature:0.5,max_tokens:2000})});if(!r.ok) throw new Error(\\\\\'OpenAI \\\\\'+r.status);const d=await r.json();return d.choices?.[0]?.message?.content||\\\\\'\\\\\';}\nfunction applySmartPatch(small, large){\n  if(!small || !large) return null;\n  let patched = large;\n  // 1.  단순 제거 - 가장 확실한 케이스\n  if(large.includes(\\\\\'\\\\\')){\n    // small이  없이 PWA 내부 3탭 채팅을 포함하면 전체에서  제거\n    if(small.includes(\\\\\'PWA 내부 3탭 채팅\\\\\') && !small.includes(\\\\\'\\\\\')){\n      return large.replaceAll(\\\\\'\\\\\', \\\\\'\\\\\').replaceAll(\\\\\'  \\\\\', \\\\\' \\\\\');\n    }\n    // small 자체가  제거 힌트만 있어도 전체 제거\n    if(small.length < 2000){\n      return large.replaceAll(\\\\\'\\\\\', \\\\\'\\\\\').replaceAll(\\\\\'  \\\\\', \\\\\' \\\\\');\n    }\n  }\n  return null;\n}\n\nasync function sendChat(){const input=$(\\\\\'chatInput\\\\\');if(!input) return;const text=input.value.trim();if(!text) return;const system=buildSystemPrompt(currentTab);const full=\\\\\'\\\\\' + (system) + \\\\\'\n\n[사용자]\n\\\\' + (text) + \\\\'\\\\\';chats[currentTab].push({role:\\\\\'user\\\\\',content:text});maybeSummarize();renderChats();input.value=\\\\\'\\\\\';if(text.includes(\\\\\'빌드해줘\\\\\')||text.includes(\\\\\'확정\\\\\')){log(\\\\\'빌드 트리거\\\\\',\\\\\'info\\\\\');setTimeout(()=>pushDual(),600);}try{log(\\\\'\\\' + (currentTab) + \\\' 호출중...\\\',\\\'info\\\');let reply=\\\'\\\';if(currentTab===\\\'meta\\\') reply=await callGroq(full);else if(currentTab===\\\'gemini\\\') reply=await callGemini(full);else reply=await callOpenAI(full);chats[currentTab].push({role:\\\'ai\\\',content:reply});maybeSummarize();saveChats();renderChats();const code=extractCode(reply);\n  if(code){\n    if(code.length < 10000 && draftCode && draftCode.length > 20000){\n      // v5.6.3 Fix: 스니펫이면 버리지 말고 패치해서 미리보기 가능하게 (B안 등)\n      log(\\\'[v5.6.3] 스니펫 감지 \\\' + (code.length) + \\\'자 - 전체 코드에 패치 시도\\\',\\\'info\\\');\n      const patched = applySmartPatch(code, draftCode);\n      if(patched && patched.length > 20000){\n        draftCode=patched;\n        if(typeof autoBackup!==\\\'undefined\\\' && autoBackup) saveDraftHistory(patched, \\\'스니펫 패치\\\');\n        if(typeof updateLivePreview===\\\'function\\\') updateLivePreview();\n        updateDraftStatus();\n        log(\\\'✅ 스니펫 패치 성공! \\\' + (patched.length) + \\\'자 - 미리보기 확인해줘\\\',\\\'ok\\\');\n        try{localStorage.setItem(\\\'draft_code_\\\'+currentRepo, patched);}catch{}\n      } else {\n        log(\\\'[v5.6.3] 스니펫 패치 실패 - 전체 코드 유지\\\\',\\\\\'info\\\\\');\n      }\n    } else {\n      draftCode=code; if(typeof autoBackup!==\\\\\'undefined\\\\\' && autoBackup) {saveDraftHistory(code, \\\\\'GitHub에서 로드\\\\\');} if(typeof updateLivePreview===\\\\\'function\\\\\') updateLivePreview();\n      updateDraftStatus();\n      log(\\\\\'코드 감지 \\\\\' + (code.length) + \\\\\'자\\\\\',\\\\\'ok\\\\\');\n    }\n  }log(\\\\\'\\\\\' + (currentTab) + \\\\\' 완료\\\\\',\\\\\'ok\\\\\');}catch(e){chats[currentTab].push({role:\\\\\'ai\\\\\',content:\\\\\'❌ \\\\\' + (e.message) + \\\\\'\n설정탭에서 API 키 확인해줘\\\\\'});saveChats();renderChats();log(e.message,\\\\\'err\\\\\');}}\nconst sendBtn=$(\\\\\'chatSendBtn\\\\\');if(sendBtn) sendBtn.onclick=sendChat;\nconst chatInput=$(\\\\\'chatInput\\\\\');if(chatInput) chatInput.addEventListener(\\\\\'keydown\\\\\',e=>{if(e.key===\\\\\'Enter\\\\\') sendChat();});\nconst clearChatBtn=$(\\\\\'clearChatBtn\\\\\');if(clearChatBtn) clearChatBtn.onclick=()=>{if(confirm(\\\\\'\\\\\' + (currentTab) + \\\\\' 초기화?\\\\\')){chats[currentTab]=[];saveChats();renderChats();}};\nconst saveDraftBtn=$(\\\\\'saveDraftBtn\\\\\');\nif(saveDraftBtn) saveDraftBtn.onclick=async()=>{\n  // v5.7.4: 사용자 요청 - 드래프트 버튼 누를 때 문서+코드 링크 읽어서 전체 코드로 저장\n  let finalCode = draftCode;\n  const editorVal = document.getElementById(\\\\\'codeEditor\\\\\')?.value || \\\\\'\\\\\';\n  const memory10 = document.getElementById(\\\\\'memory10\\\\\')?.value || \\\\\'\\\\\';\n  const linksText = buildLinksText();\n  \n  // 1. 현재 GitHub main 전체 코드를 기준으로 유지 (가장 안전)\n  try{\n    const url=\\\\\'https://raw.githubusercontent.com/\\\\\' + (GITHUB_USER) + \\\\\'/\\\\' + (currentRepo) + \\\\'/main/\\\' + (mainFile) + \\\'?t=\\' + (Date.now()) + \\'\\\\\';\n    const r=await fetch(url);\n    if(r.ok){\n      const fullMain = await r.text();\n      if(fullMain.length > 10000){\n        // 2. 만약 draftCode가 스니펫(1371자처럼 작으면) -> 전체 코드에 자동 병합하지 않고 전체 코드 유지\n        if(!finalCode || finalCode.length < 10000){\n          log(\\\\'[v5.6.0] draft가 스니펫(\' + (finalCode?finalCode.length:0) + \'자)이라 전체 main(' + (fullMain.length) + '자)으로 자동 복구 저장\\\',\\\'info\\\');\n          finalCode = fullMain;\n          draftCode = finalCode;\n        } else {\n          // 이미 전체 코드면 그대로\n          finalCode = draftCode;\n        }\n      }\n    }\n  }catch(e){ log(\\'GitHub full load 실패 ${e.message} - 로컬 draft 유지\',\'info\'); }\n\n  if(!finalCode){log(\'저장할 draft 없음 - GitHub 복구 먼저\',\'err\'); return;}\n  \n  // 3. 문서+링크 읽어서 기억에 반영은 하되, 코드는 전체 유지\n  if(finalCode.length < 500){log(\'draft 너무 짧음 - 전체 코드 유지 필요\',\'err\'); return;}\n  \n  try{localStorage.setItem(\'draft_code_\'+currentRepo, finalCode);}catch{}\n  draftCode = finalCode;\n  updateDraftStatus();\n  saveToSupabase(false);\n  \n  const promptText='💾 전체 코드 draft 저장 (${finalCode.length}자) - 문서+링크 기반 전체 보존';\n  chats[currentTab].push({role:\'user\',content:promptText});\n  chats[currentTab].push({role:\'ai\',content:\'✅ 전체 코드 draft 저장 완료! \' + (finalCode.length) + \'자\n- 문서/링크 읽어서 전체 코드 보존 (스니펫은 버리고 전체 유지)\n- localStorage: draft_code_' + (currentRepo) + '\n- memory10: ${memory10.length}자 포함\n- 링크: ${linksText.split(\\'\n\\').length}개\n- Supabase 백업 시도\n- GitHub 반영은 공용 빌드 버튼\'});\n  saveChats(); renderChats();\n  log('💾 전체 draft 저장 ${finalCode.length}자 - 문서+링크 기반',\'ok\');\n};\nconst chatBoxEl=$(\'chatBox\');\nconst dropOverlay=$(\'dropOverlay\');\nif(chatBoxEl){\n  chatBoxEl.addEventListener(\'dragover\',e=>{e.preventDefault(); if(dropOverlay){dropOverlay.classList.remove(\'hidden\'); dropOverlay.style.display=\'flex\';}});\n  chatBoxEl.addEventListener(\'dragleave\',e=>{if(dropOverlay){dropOverlay.classList.add(\'hidden\'); dropOverlay.style.display=\'none\';}});\n  chatBoxEl.addEventListener(\'drop\',async e=>{\n    e.preventDefault();\n    if(dropOverlay){dropOverlay.classList.add(\'hidden\'); dropOverlay.style.display=\'none\';}\n    const files=e.dataTransfer?.files;\n    if(files && files[0]) await handleImageFile(files[0]);\n  });\n}\ndocument.addEventListener(\'paste\',async e=>{\n  const items=e.clipboardData?.items;\n  if(!items) return;\n  for(const item of items){\n    if(item.type.startsWith(\'image/\')){\n      e.preventDefault();\n      const file=item.getAsFile();\n      if(file) await handleImageFile(file);\n      break;\n    }\n  }\n});\nconst removeBtn=$(\'removeScreenshotBtn\');\nif(removeBtn) removeBtn.onclick=()=>clearScreenshot();\n\nconst toggleBtn=$(\'toggleDraftBtn\');if(toggleBtn) toggleBtn.onclick=()=>{const ed=$(\'codeEditor\');if(ed){ed.classList.toggle(\'hidden\');toggleBtn.textContent=ed.classList.contains(\'hidden\')?\'draft 보기 ▼\':\'draft 숨기기 ▲\';}};\n\nasync function pushToBranch(branch,code){\n  let pat=\'\';\n  try{pat=localStorage.getItem(\'github_pat\')||$(\'githubPatInput\').value.trim();}catch{pat=$(\'githubPatInput\').value.trim();}\n  if(!pat) throw new Error(\'PAT 없음 - 설정탭\');\n  const url=\'https://api.github.com/repos/\' + (GITHUB_USER) + \'/' + (currentRepo) + '/contents/${mainFile}\';\n  let sha=null;\n  try{\n    const gr=await fetch('${url}?ref=${branch}',{headers:{Authorization:\'Bearer \' + (pat) + \'\'}});\n    if(gr.ok){const j=await gr.json(); sha=j.sha;}\n    else if(gr.status===404 && branch===\'gh-pages\'){\n      log(\'gh-pages 브랜치 없음 - main에서 생성 시도\\',\\\'info\\\');\n      // Try to get main sha and create gh-pages branch via ref API\n      try{\n        const mainRefRes=await fetch(\\\'https://api.github.com/repos/\\\' + (GITHUB_USER) + \\\'/\\' + (currentRepo) + \\'/git/refs/heads/main\\\',{headers:{Authorization:\\'Bearer \' + (pat) + \'\'}});\n        if(mainRefRes.ok){\n          const mainRef=await mainRefRes.json();\n          const createRes=await fetch(\'https://api.github.com/repos/\' + (GITHUB_USER) + \'/' + (currentRepo) + '/git/refs\',{method:\'POST\',headers:{Authorization:'Bearer ${pat}',\'Content-Type\':\'application/json\'},body:JSON.stringify({ref:\'refs/heads/\' + (branch) + \'\',sha:mainRef.object.sha})});\n          if(createRes.ok){log(\'gh-pages 브랜치 생성 성공\\',\\\'ok\\\');}\n          else{const t=await createRes.text(); log(\\\'gh-pages 생성 실패 \\\' + (createRes.status) + \\\' \\' + (t.slice(0,200)) + \\'\\\',\\\'info\\\');}\n        }\n      }catch(e){log(\\'gh-pages 생성 중 오류 \' + (e.message) + \'\',\'info\');}\n    }\n  }catch{}\n  const body={message:\'v5.3.7 \' + (branch) + \' ' + (new Date().toISOString()) + '\',content:btoa(unescape(encodeURIComponent(code))),branch};\n  if(sha) body.sha=sha;\n  const res=await fetch(url,{method:\'PUT\',headers:{Authorization:'Bearer ${pat}',\'Content-Type\':\'application/json\'},body:JSON.stringify(body)});\n  if(!res.ok){\n    const txt=await res.text();\n    if(branch===\'gh-pages\'){\n      // gh-pages 실패해도 main 성공이면 사이트는 main으로 배포 가능하므로 경고만\n      log(\'⚠️ gh-pages 실패 \' + (res.status) + \': ' + (txt.slice(0,200)) + ' - Settings > Pages > Source를 main으로 바꾸면 해결됨\',\'info\');\n      throw new Error('gh-pages 실패 ${res.status} (무시 가능): ${txt.slice(0,300)} | 해결: GitHub repo Settings > Pages > Build and deployment > Source를 'Deploy from a branch' + Branch: main / root 로 변경하면 main만으로 사이트 배포됨. 지금 main 1ed7b6e는 성공했으므로 빌드는 완료됨.');\n    }\n    throw new Error(txt);\n  }\n  return (await res.json()).commit.sha;\n}\n\nfunction getNextVersion(current){\n  const m = current.match(/v(\d+)\.(\d+)\.(\d+)/);\n  if(!m) return \'v5.7.4\';\n  let major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);\n  patch++;\n  return \'v\' + (major) + \'.' + (minor) + '.${patch}\';\n}\nfunction bumpVersionInCode(code, nextVer){\n  let newCode = code.replace(/v5\.3\.\d+/g, nextVer);\n  newCode = newCode.replace(/\?v=5\.3\.\d+/g, '?v=${nextVer.slice(1)}');\n  newCode = newCode.replace(/manifest\.json\?v=5\.3\.\d+/g, \'manifest.json?v=\' + (nextVer.slice(1)) + \'\');\n  return newCode;\n}\n\nasync function pushDual(){\n  let pat=\'\';try{pat=localStorage.getItem(\'github_pat\')||$(\'githubPatInput\').value.trim();}catch{pat=$(\'githubPatInput\').value.trim();}\n  if(!pat){log(\'PAT 없음 - 설정탭에서 넣어줘\',\'err\');return;}\n  if(!draftCode){log(\'draft 없음\',\'err\');return;}\n  if(draftCode.length < 10000){log(\'[가드] draft \' + (draftCode.length) + \'자 너무 짧음 - 푸시 차단\',\'err\');return;}\n  const btn=$(\'buildBtn\');if(btn){btn.disabled=true;btn.textContent=\'⏳ 빌드중...\';}\n  try{\n    const curMatch = (draftCode||\'\').match(/v5\.3\.(\d+)/);\n    const curVer = curMatch ? \'v5.3.\' + (curMatch[1]) + \'\' : \'v5.7.4\';\n    const nextVer = getNextVersion(curVer);\n    log(\'🔢 버전 자동 증가 \' + (curVer) + \' -> ' + (nextVer) + '\',\'info\');\n    draftCode = bumpVersionInCode(draftCode, nextVer);\n    updateDraftStatus();\n    await saveToSupabase(true);log(\'Supabase 저장\',\'ok\');\n    const s1=await pushToBranch(\'main\',draftCode);log('main ${s1.commit? s1.commit.sha.slice(0,7): 'ok'}',\'ok\');\n    try{const s2=await pushToBranch(\'gh-pages\',draftCode);log(\'gh-pages \' + (s2.commit? s2.commit.sha.slice(0,7): \'ok\') + \'\',\'ok\');}catch(e){log(\'gh-pages 무시 (main 배포)\\',\\\'info\\\');}\n    log(\\\'🚀 빌드 완료 ?v=\\\' + (nextVer.slice(1)) + \\\' - 90초 후 새로고침 가능\\\',\\\'ok\\\');\n    history.replaceState(null,\\\'\\\',\\\'?v=\\\' + (nextVer.slice(1)) + \\\'\\\');\n    setTimeout(()=>{ if(confirm(\\\'\\\' + (nextVer) + \\\' 배포 완료! 새로고침할까?\\\')) location.href=\\\'?v=\\\' + (nextVer.slice(1)) + \\\'&t=\\' + (Date.now()) + \\'\\\'; }, 90000);\n  }catch(e){log(\\'빌드 실패 \' + (e.message) + \'\',\'err\');}finally{if(btn){btn.disabled=false;btn.textContent=\'🚀 공용 빌드 + 요약\';}}\n}\nconst buildBtn=$(\'buildBtn\');if(buildBtn) buildBtn.onclick=pushDual;\nfunction updateMemoryCount(){const memEl=$(\'memory10\');if(!memEl) return;const v=memEl.value;const l=v.split(\'\n\').filter(x=>x.trim()).length;const mc=$(\'memoryCount\');if(mc) mc.textContent=\'\' + (l) + \'줄\';try{localStorage.setItem(\'memory_10_\'+currentRepo,v);}catch{}renderContext();}\nlet saveTimeout=null;const memEl=$(\'memory10\');if(memEl) memEl.addEventListener(\'input\',()=>{updateMemoryCount();clearTimeout(saveTimeout);saveTimeout=setTimeout(()=>saveToSupabase(true),1500);});\nconst tmplBtn=$(\'templateBtn\');if(tmplBtn) tmplBtn.onclick=()=>{const el=$(\'memory10\');if(el){el.value=getTemplate();updateMemoryCount();saveToSupabase(true);}};\nconst groqModelEl=$(\'groqModelInput\'); if(groqModelEl) groqModelEl.addEventListener(\'change\',e=>{ try{localStorage.setItem(\'groq_model\',e.target.value); log(\'Groq 모델: \' + (e.target.value) + \'\',\'ok\');}catch{} });\nconst sbInput=$(\'supabaseKeyInput\');if(sbInput) sbInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'supabase_anon_key\',e.target.value.trim());}catch{}updateStorageStatus();});\nconst ghInput=$(\'githubPatInput\');if(ghInput) ghInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'github_pat\',e.target.value.trim());}catch{}updateStorageStatus();});\nconst gemInput=$(\'geminiKeyInput\');if(gemInput) gemInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'gemini_key\',e.target.value.trim());}catch{}updateStorageStatus();});\nconst groqInput=$(\'groqKeyInput\');if(groqInput) groqInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'groq_key\',e.target.value.trim());}catch{}updateStorageStatus();});\nconst openInput=$(\'openaiKeyInput\');if(openInput) openInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'openai_key\',e.target.value.trim());}catch{}updateStorageStatus();});\nconst modelInput=$(\'openaiModelInput\');if(modelInput) modelInput.addEventListener(\'input\',e=>{try{localStorage.setItem(\'openai_model\',e.target.value.trim());}catch{}});\n\nasync function loadRepos(){\n  const s=$(\'repoSelect\');\n  if(!s) return;\n  const CACHE_KEY = \'repo_list_cache_\' + (GITHUB_USER) + \'\';\n  const CACHE_TTL = 1000*60*60*6;\n\n  function renderRepos(list){\n    if(!s || !list || list.length===0) return;\n    const currentVal=s.value||currentRepo;\n    s.innerHTML=\'\';\n    list.forEach(repo=>{\n      const name=typeof repo===\'string\'?repo:repo.name;\n      if(!name) return;\n      const o=document.createElement(\'option\');\n      o.value=name; o.textContent=name;\n      if(name===currentVal) o.selected=true;\n      s.appendChild(o);\n    });\n    // currentRepo가 목록에 없으면 추가\n    if(!Array.from(s.options).some(o=>o.value===currentRepo)){\n      const o=document.createElement(\'option\'); o.value=currentRepo; o.textContent=currentRepo; o.selected=true;\n      s.insertBefore(o, s.firstChild);\n    }\n  }\n\n  function getCached(){\n    try{\n      const raw=localStorage.getItem(CACHE_KEY);\n      if(!raw) return null;\n      const obj=JSON.parse(raw);\n      if(Date.now()-obj.ts > CACHE_TTL) return obj.list; // 만료돼도 일단 표시, 갱신은 뒤에서\n      return obj.list;\n    }catch{return null;}\n  }\n\n  // 1. 캐시 있으면 즉시 표시 - 미리보기에서도 바로 87개 뜸\n  const cached=getCached();\n  if(cached && cached.length>0){\n    renderRepos(cached);\n    log(\'캐시 \' + (cached.length) + \'개 즉시 표시 (실시간 갱신중...)\', \'info\');\n  } else {\n    // 캐시 없으면 일단 builder-a4u만\n    s.innerHTML=\'\';\n    const o=document.createElement(\'option\'); o.value=currentRepo; o.textContent=currentRepo; o.selected=true;\n    s.appendChild(o);\n  }\n\n  // 2. 실시간 GitHub API - 메인 + 미리보기 둘 다 갱신\n  try{\n    const headers={\'Accept\':\'application/vnd.github.v3+json\'};\n    let pat=\'\'; let hasPat=false;\n    try{ pat=(localStorage.getItem(\'github_pat\')||\'\').trim(); }catch{}\n    if(pat && pat.length>20){\n      headers.Authorization=\'Bearer \' + (pat) + \'\';\n      hasPat=true;\n    }\n    \n    const controller = new AbortController();\n    const timeout = setTimeout(()=>controller.abort(), 10000);\n    const r=await fetch(\'https://api.github.com/users/\' + (GITHUB_USER) + \'/repos?per_page=100&sort=updated\',{headers, signal: controller.signal});\n    clearTimeout(timeout);\n    \n    if(!r.ok){\n      const txt=await r.text();\n      if(r.status===403 || r.status===401){\n        const remaining=r.headers.get(\'X-RateLimit-Remaining\');\n        if(!cached) log(\'GitHub \' + (r.status) + \' - 캐시로 동작 (PAT ' + (hasPat?\'있음\':\'없음\') + ', 남은 ${remaining})\', \'err\');\n        return;\n      }\n      throw new Error('${r.status}');\n    }\n    \n    const d=await r.json();\n    if(!Array.isArray(d) || d.length===0) return;\n    \n    renderRepos(d);\n    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts: Date.now(), list: d})); }catch{}\n    if(!cached || cached.length!==d.length){\n      log(\'GitHub 실시간 \' + (d.length) + \'개 갱신 ' + (hasPat?\'PAT✓\':\'\') + '\', \'ok\');\n    }\n    \n  }catch(e){\n    if(e.name!==\'AbortError\' && !cached){\n      log('실시간 로드 실패 - ${e.message}', \'err\');\n    }\n  }\n}\n\nconst repoSel=$(\'repoSelect\');if(repoSel) repoSel.addEventListener(\'change\',async e=>{currentRepo=e.target.value;try{localStorage.setItem(\'current_repo\',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem(\'main_file_\'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$(\'mainFileInput\');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem(\'connected_docs_\'+currentRepo)||\'[]\');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem(\'customLinks_\'+currentRepo)||\'[]\');}catch{customLinks=[];}try{draftCode=localStorage.getItem(\'draft_code_\'+currentRepo)||\'\';}catch{draftCode=\'\';}try{const c=JSON.parse(localStorage.getItem(\'chats_\'+currentRepo)||\'{"meta":[],"gemini":[],"gpt":[]}\');if(c.meta) chats=c;}catch{}const memRaw=(()=>{try{return localStorage.getItem(\'memory_10_\'+currentRepo);}catch{return null;}})();const mem=memRaw?cleanMemory10(memRaw):null;const memInput=$(\'memory10\');if(memInput) memInput.value=mem||getTemplate();if(memRaw && mem!==memRaw){try{localStorage.setItem(\'memory_10_\'+currentRepo, mem||getTemplate());}catch{}}updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});\nconst mainFileInput=$(\'mainFileInput\');if(mainFileInput) mainFileInput.addEventListener(\'input\',e=>{mainFile=e.target.value.trim();try{localStorage.setItem(\'main_file_\'+currentRepo,mainFile);}catch{}});\nasync function fetchCode(){\n  try{\n    const url=\'https://raw.githubusercontent.com/\' + (GITHUB_USER) + \'/' + (currentRepo) + '/main/${mainFile}?t=${Date.now()}\';\n    const r=await fetch(url);\n    if(!r.ok) throw new Error(r.status);\n    const code=await r.text();\n    // v5.7.4 가짜 페이지 가드 - 디자인 유지, 로직만 추가\n    const isFake = code.length < 10000 || (code.includes(\'Supabase anon key\') && code.includes(\'GitHub PAT\') && code.length < 5000);\n    if(isFake){\n      log('[v5.7.4 가드] 가짜 페이지 감지 ${code.length}자 - draft 유지 (raw 오염 차단)',\'err\');\n      robotLog(\'[가드] raw \' + (code.length) + \'자 가짜 차단 - localStorage draft 유지\',\'err\');\n      // localStorage draft 우선 유지\n      try{\n        const localDraft = localStorage.getItem(\'draft_code_\'+currentRepo);\n        if(localDraft && localDraft.length > 10000){\n          log(\'로컬 draft 복원 \' + (localDraft.length) + \'자\',\'ok\');\n        }\n      }catch{}\n      return;\n    }\n    draftCode=code; if(typeof autoBackup!==\'undefined\' && autoBackup) {saveDraftHistory(code, \'GitHub에서 로드\');} if(typeof updateLivePreview===\'function\') updateLivePreview();\n    updateDraftStatus();\n    log(\'코드 로드 \' + (code.length) + \'자\',\'ok\'); if(typeof autoBackup!==\'undefined\' && autoBackup) saveDraftHistory(code, \'코드 로드\'); if(typeof updateLivePreview===\'function\') updateLivePreview(); if(typeof updateVersionCount===\'function\') updateVersionCount();\n    renderContext();\n  }catch(e){log(\'코드 로드 실패 \' + (e.message) + \'\',\'info\');}\n}\nfunction renderConnectedDocs(){const box=$(\'connectedDocs\');if(!box) return;box.innerHTML=\'\';connectedDocs.forEach((doc,i)=>{const div=document.createElement(\'div\');div.className=\'doc-card\';div.innerHTML=\'<input type="checkbox" checked disabled><div class="doc-info"><div class="font-bold text-[11px]">📄 \' + (doc.title.slice(0,40)) + \'</div></div><div class="flex gap-1"><button class="btn btn-sm open-doc" data-i="' + (i) + '">열기</button><button class="btn btn-sm preview-doc" data-i="${i}">불러오기</button><button class="btn btn-sm text-red-600 remove-doc" data-i="${i}">해제</button></div>\';box.appendChild(div);});box.querySelectorAll(\'.open-doc\').forEach(b=>b.onclick=()=>{window.open('https://docs.google.com/document/d/${connectedDocs[b.dataset.i].id}/edit',\'_blank\');});box.querySelectorAll(\'.preview-doc\').forEach(b=>b.onclick=async()=>{await previewDoc(connectedDocs[b.dataset.i].id);});box.querySelectorAll(\'.remove-doc\').forEach(b=>b.onclick=()=>{connectedDocs.splice(b.dataset.i,1);try{localStorage.setItem(\'connected_docs_\'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);renderConnectedDocs();renderContext();});try{localStorage.setItem(\'connected_docs_\'+currentRepo,JSON.stringify(connectedDocs));}catch{}}\nasync function previewDoc(id){if(!accessToken){log(\'로그인 필요 - 설정탭에서 구글 로그인\',\'err\');return;}try{const r=await fetch(\'https://docs.googleapis.com/v1/documents/\' + (id) + \'\',{headers:{Authorization:\'Bearer \' + (accessToken) + \'\'}});const d=await r.json();let txt=\'\';d.body?.content?.forEach(c=>{if(c.paragraph){c.paragraph.elements?.forEach(e=>{if(e.textRun) txt+=e.textRun.content;});}});const pv=$(\'docPreview\');if(pv){pv.textContent=\'[불러오기 \' + (txt.length) + \'자]\n\n' + (txt.slice(0,2000)) + '\';pv.classList.remove(\'hidden\');}log('불러오기 성공',\'ok\');}catch(e){log(\'불러오기 실패\',\'err\');}}\nasync function appendDoc(id,text){if(!accessToken) return false;try{const dr=await fetch(\'https://docs.googleapis.com/v1/documents/\' + (id) + \'\',{headers:{Authorization:\'Bearer \' + (accessToken) + \'\'}});const doc=await dr.json();let end=0;doc.body?.content?.forEach(c=>{if(c.endIndex) end=Math.max(end,c.endIndex);});const req={requests:[{insertText:{location:{index:end-1},text}}]};const r=await fetch(\'https://docs.googleapis.com/v1/documents/\' + (id) + \':batchUpdate\',{method:\'POST\',headers:{Authorization:\'Bearer \' + (accessToken) + \'\',\'Content-Type\':\'application/json\'},body:JSON.stringify(req)});return r.ok;}catch{return false;}}\nfunction renderSearchResults(files,target){\n  const isMain=target===\'driveResults\';const listId=isMain?\'driveResults\':\'linkSearchResults\';const boxId=isMain?\'driveResultsBox\':\'linkSearchResultsBox\';const list=$(listId);if(!list) return;list.innerHTML=\'\';const box=$(boxId);if(box) box.classList.remove(\'hidden\');if(isMain) tempMainResults=files;else tempLinkResults=files;\n  if(!files||files.length===0){list.innerHTML=\'<div class="text-[10px]">없음</div>\';return;}\n  files.forEach((f,idx)=>{const div=document.createElement(\'div\');div.className=\'doc-card\';div.setAttribute(\'draggable\',\'false\');div.innerHTML=\'<input type="checkbox" class="chk-doc" data-idx="\' + (idx) + \'" data-target="' + (target) + '"><div class="doc-info"><div class="font-bold text-[11px]">${f.name}</div><div class="text-[9px] opacity-60">${f.modifiedTime.slice(0,10)}</div></div><button class="btn btn-sm connect-one" data-idx="${idx}" data-target="${target}">연결</button>\';div.addEventListener(\'mousedown\',e=>{if(e.target.tagName!==\'INPUT\'&&e.target.tagName!==\'BUTTON\') e.preventDefault();});div.addEventListener(\'dragstart\',e=>e.preventDefault());div.addEventListener(\'click\',e=>{if(e.target.tagName===\'INPUT\'||e.target.tagName===\'BUTTON\') return;const chk=div.querySelector(\'input[type=checkbox]\');chk.checked=!chk.checked;});list.appendChild(div);});\n  list.querySelectorAll(\'.connect-one\').forEach(btn=>{btn.onclick=()=>{const idx=parseInt(btn.dataset.idx);const tgt=btn.dataset.target;const file=(tgt===\'driveResults\'?tempMainResults:tempLinkResults)[idx];if(tgt===\'driveResults\'){connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem(\'connected_docs_\'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log('메인 연결 ${file.name}',\'ok\');const box=$(\'driveResultsBox\');if(box) box.classList.add(\'hidden\');}else{const url=\'https://docs.google.com/document/d/\' + (file.id) + \'/edit\';if(customLinks.find(l=>l.url===url)){log(\'이미 추가됨\',\'info\');return;}customLinks.push({title:file.name,url});renderCustomLinks();renderContext();try{localStorage.setItem(\'customLinks_\'+currentRepo,JSON.stringify(customLinks));}catch{}log(\'추가 연결 \' + (file.name) + \'\',\'ok\');}};});\n}\nasync function searchDrive(query,target){if(!accessToken){log(\'로그인 필요 - 설정탭에서 구글 로그인\',\'err\');return;}const q=query?\'mimeType=\\'application/vnd.google-apps.document\\' and trashed=false and name contains \\'\' + (query.replace(/\'/g,"\\\'")) + \'\\'\':\'mimeType=\\'application/vnd.google-apps.document\\' and trashed=false\\';try{const url=\\\'https://www.googleapis.com/drive/v3/files?q=\\\' + (encodeURIComponent(q)) + \\\'&fields=files(id,name,modifiedTime)&orderBy=modifiedTime desc&pageSize=30\\\';const res=await fetch(url,{headers:{Authorization:\\\'Bearer \\\' + (accessToken) + \\\'\\\'}});const data=await res.json();renderSearchResults(data.files||[],target);}catch(e){log(\\\'검색 실패\\\',\\\'err\\\');}}\nconst searchExactBtn=$(\\\'searchExactBtn\\\');if(searchExactBtn) searchExactBtn.onclick=()=>{const q=$(\\\'docSearchInput\\\').value.trim();searchDrive(q,\\\'driveResults\\\');};\nconst linkSearchBtn=$(\\\'linkSearchBtn\\\');if(linkSearchBtn) linkSearchBtn.onclick=()=>{const q=$(\\\'linkSearchInput\\\').value.trim();searchDrive(q,\\\'linkSearchResults\\\');};\nconst connMainBtn=$(\\\'connectCheckedMainBtn\\\');if(connMainBtn) connMainBtn.onclick=()=>{const chks=document.querySelectorAll(\\\'#driveResults input.chk-doc:checked\\\');if(chks.length===0){log(\\\'체크 없음\\\',\\\'info\\\');return;}const idx=parseInt(chks[0].dataset.idx);const file=tempMainResults[idx];connectedDocs=[{id:file.id,title:file.name}];renderConnectedDocs();try{localStorage.setItem(\\\'connected_docs_\\\'+currentRepo,JSON.stringify(connectedDocs));}catch{}saveToSupabase(true);log(\\\'메인 연결 \\\' + (file.name) + \\\'\\\',\\\'ok\\\');const box=$(\\\'driveResultsBox\\\');if(box) box.classList.add(\\\'hidden\\\');};\nconst connLinksBtn=$(\\\'connectCheckedLinksBtn\\\');if(connLinksBtn) connLinksBtn.onclick=()=>{const chks=document.querySelectorAll(\\\'#linkSearchResults input.chk-doc:checked\\\');if(chks.length===0){log(\\\'체크 없음\\\',\\\'info\\\');return;}let added=0;chks.forEach(chk=>{const idx=parseInt(chk.dataset.idx);const file=tempLinkResults[idx];const url=\\\'https://docs.google.com/document/d/\\\' + (file.id) + \\\'/edit\\\';if(!customLinks.find(l=>l.url===url)){customLinks.push({title:file.name,url});added++;}});renderCustomLinks();renderContext();try{localStorage.setItem(\\\'customLinks_\\\'+currentRepo,JSON.stringify(customLinks));}catch{}const box=$(\\\'linkSearchResultsBox\\\');if(box) box.classList.add(\\\'hidden\\\');log(\\\'추가 \\\' + (added) + \\\'개 연결\\\',\\\'ok\\\');};\nfunction renderCustomLinks(){const box=$(\\\'customLinksList\\\');if(!box) return;box.innerHTML=\\\'\\\';const lc=$(\\\'linkCount\\\');if(lc) lc.textContent=\\\'\\\' + (customLinks.length) + \\\'개\\\';customLinks.forEach((l,i)=>{const div=document.createElement(\\\'div\\\');div.className=\\\'link-item\\\';div.innerHTML=\\\'<input type="checkbox" checked disabled><span class="text-[10px] font-bold flex-1">\\\' + (l.title.slice(0,28)) + \\\'</span><button class="btn text-[8px] preview-link" data-i="\\' + (i) + \\'">불러오기</button><a href="\' + (l.url) + \'" target="_blank" class="text-[8px] text-blue-600">열기</a><button class="btn text-[8px] py-1" data-i="' + (i) + '">삭제</button>\\\';box.appendChild(div);});box.querySelectorAll(\\\'.preview-link\\\').forEach(b=>b.onclick=async()=>{const l=customLinks[b.dataset.i];const id=l.url.match(/\/d\/([a-zA-Z0-9-_]+)/)?.[1];if(id) await previewDoc(id);});box.querySelectorAll(\\\'button:last-child\\\').forEach(b=>b.onclick=()=>{customLinks.splice(b.dataset.i,1);try{localStorage.setItem(\\\'customLinks_\\\'+currentRepo,JSON.stringify(customLinks));}catch{}renderCustomLinks();renderContext();});try{localStorage.setItem(\\\'customLinks_\\\'+currentRepo,JSON.stringify(customLinks));}catch{}}\nasync function saveToSupabase(silent){let key=\\\'\\\';try{key=localStorage.getItem(\\\'supabase_anon_key\\\')||$(\\\'supabaseKeyInput\\\').value.trim();}catch{key=$(\\\'supabaseKeyInput\\\').value.trim();}if(!key){if(!silent) log(\\\'Supabase key 없음\\\',\\\'err\\\');return false;}try{const payload={project_name:currentRepo,repo:\\'${GITHUB_USER}/${currentRepo}\',main_file:mainFile,memory_10:$(\'memory10\').value,doc_id:connectedDocs[0]?.id||null,doc_title:connectedDocs[0]?.title||null,draft_code:draftCode.slice(0,8000),updated_at:new Date().toISOString()};const res=await fetch('${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}',{method:\'POST\',headers:{apikey:key,Authorization:\'Bearer \' + (key) + \'\',\'Content-Type\':\'application/json\',\'Prefer\':\'resolution=merge-duplicates\'},body:JSON.stringify(payload)});if(!res.ok) throw new Error(await res.text());if(!silent) log(\'Supabase 저장\',\'ok\');return true;}catch(e){if(!silent) log(\'Supabase 실패\',\'err\');return false;}}\nasync function autoLoadSupabase(){let key=\'\';try{key=localStorage.getItem(\'supabase_anon_key\')||$(\'supabaseKeyInput\').value.trim();}catch{key=$(\'supabaseKeyInput\').value.trim();}if(!key) return;try{const res=await fetch(\'\' + (SUPABASE_URL) + \'/rest/v1/' + (SUPABASE_TABLE) + '?project_name=eq.${currentRepo}&select=*\',{headers:{apikey:key,Authorization:'Bearer ${key}'}});const data=await res.json();if(data&&data[0]){const row=data[0];\n  if(row.memory_10){\n    const cleaned = cleanMemory10(row.memory_10);\n    const memInput=$(\'memory10\');\n    if(memInput){\n      const isBuilderMemory = cleaned.includes(\'Builder-a4u\') || cleaned.includes(\'builder-a4u\');\n      const isForThisProject = cleaned.toLowerCase().includes(currentRepo.toLowerCase().split(\'/\').pop().toLowerCase()) || row.project_name === currentRepo;\n      if(currentRepo !== \'builder-a4u\' && !currentRepo.includes(\'builder-a4u\') && isBuilderMemory && !isForThisProject){\n        log(\'⚠️ Supabase \' + (currentRepo) + \'에 builder 기억 오염 발견 - 무시하고 템플릿 사용\',\'info\');\n        const fresh = getProjectTemplate(currentRepo);\n        memInput.value = fresh;\n        try{localStorage.setItem(\'memory_10_\'+currentRepo, fresh);}catch{}\n        updateMemoryCount();\n        renderContext();\n      } else {\n        if(memInput.value !== cleaned){\n          memInput.value=cleaned;\n          try{localStorage.setItem(\'memory_10_\'+currentRepo, cleaned);}catch{}\n          updateMemoryCount();\n          log(\'📥 기억10줄 복구 \' + (currentRepo) + \': ' + (cleaned.slice(0,30)) + '...\',\'ok\');\n          renderContext();\n        }\n      }\n    }\n  }\n  if(row.main_file){  if(row.main_file){mainFile=row.main_file;const mf=$(\'mainFileInput\');if(mf) mf.value=mainFile;}\n  if(row.draft_code&&!draftCode){draftCode=row.draft_code;updateDraftStatus();}\n  if(row.doc_id){\n    // 문서도 항상 복구\n    if(connectedDocs.length===0 || connectedDocs[0].id !== row.doc_id){\n      connectedDocs=[{id:row.doc_id,title:row.doc_title||\'복구\'}];\n      try{localStorage.setItem(\'connected_docs_\'+currentRepo,JSON.stringify(connectedDocs));}catch{}\n      renderConnectedDocs();\n      log('문서 복구 ${row.doc_title}',\'ok\');\n    }\n  }\n  log(\'Supabase 복구\',\'ok\');\n}}catch(e){log(\'Supabase 복구 실패 \'+e.message,\'info\');}}\nfunction initGIS(){const s=$(\'googleStatus\');if(!s) return;if(!window.google||!google.accounts){s.textContent=\'GIS 로딩 실패\';return;}try{const c=google.accounts.oauth2.initTokenClient({client_id:GOOGLE_CLIENT_ID,scope:\'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents\',callback:(r)=>{if(r.access_token){accessToken=r.access_token;try{localStorage.setItem(\'google_access_token\',accessToken);}catch{}s.textContent=\'✅ Drive 연결됨\';log(\'Google 로그인 성공\',\'ok\');}}});const btn=$(\'googleLoginBtn\');if(btn) btn.onclick=()=>c.requestAccessToken();if(accessToken){s.textContent=\'✅ Drive 연결됨 (캐시)\';}else s.textContent=\'GIS 준비됨 - 설정탭에서 로그인\';}catch(e){s.textContent=\'GIS 실패\';}}\nwindow.addEventListener(\'load\',()=>{\n  initTheme();\n  try{const tv=localStorage.getItem(\'top_view\');if(tv) switchTopView(tv);}catch{}\n  try{$(\'supabaseKeyInput\').value=localStorage.getItem(\'supabase_anon_key\')||\'\';}catch{}\n  try{$(\'githubPatInput\').value=localStorage.getItem(\'github_pat\')||\'\';}catch{}\n  try{$(\'geminiKeyInput\').value=localStorage.getItem(\'gemini_key\')||\'\';}catch{}\n  try{$(\'groqKeyInput\').value=localStorage.getItem(\'groq_key\')||\'\';}catch{}\n  try{const gm=localStorage.getItem(\'groq_model\')||\'auto\'; const el=$(\'groqModelInput\'); if(el) el.value=gm;}catch{}\n  try{$(\'openaiKeyInput\').value=localStorage.getItem(\'openai_key\')||\'\';}catch{}\n  try{$(\'openaiModelInput\').value=localStorage.getItem(\'openai_model\')||\'gpt-4o-mini\';}catch{}\n  const mem=(()=>{\n    try{return localStorage.getItem(\'memory_10_\'+currentRepo);}catch{return null;}\n  })();\n  const memInput=$(\'memory10\');\n  if(memInput){ \n    const template = getProjectTemplate(currentRepo);\n    if(mem){\n      // 로컬에 있으면 로컬 사용하되, builder 오염 체크\n      if(currentRepo !== \'builder-a4u\' && !currentRepo.includes(\'builder-a4u\') && mem.includes(\'Builder-a4u\') && !mem.toLowerCase().includes(currentRepo.toLowerCase())){\n        log(\'⚠️ 로컬 \' + (currentRepo) + \' 기억이 builder로 오염 - 템플릿으로 초기화\',\'info\');\n        memInput.value = template;\n        try{localStorage.setItem(\'memory_10_\'+currentRepo, template);}catch{}\n      } else {\n        memInput.value = mem;\n      }\n    } else {\n      memInput.value = template;\n      try{localStorage.setItem(\'memory_10_\'+currentRepo, template);}catch{}\n    }\n    updateMemoryCount(); \n    renderContext(); \n  }\n  const mf=$(\'mainFileInput\');if(mf) mf.value=mainFile;\n  updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();\n  loadRepos();setTimeout(initGIS,600);setTimeout(()=>{fetchCode();autoLoadSupabase();},1000);\n  \nconst fetchMainBtn = document.getElementById(\'fetchMainBtn\');\nif(fetchMainBtn) fetchMainBtn.onclick = async () => { log(\'📥 GitHub main 수동 복구 시작\',\'info\'); await fetchCode(); log(\'✅ 복구 완료 - draft가 6만자로 복원됐는지 확인\',\'ok\'); };\nconst forceResetBtn = document.getElementById(\'forceDraftResetBtn\');\nconst resetMemBtn = document.getElementById(\'resetMemoryBtn\');\nif(resetMemBtn) resetMemBtn.onclick = () => {\n  if(!confirm(\'\' + (currentRepo) + \' 기억10줄을 템플릿으로 초기화할까? (Supabase 오염 제거)\')) return;\n  const fresh = getProjectTemplate(currentRepo);\n  const memInput=$(\'memory10\');\n  if(memInput) memInput.value = fresh;\n  try{localStorage.setItem(\'memory_10_\'+currentRepo, fresh);}catch{}\n  updateMemoryCount();\n  renderContext();\n  saveToSupabase(true);\n  log(\'🧹 \' + (currentRepo) + \' 기억 초기화 완료\',\'ok\');\n};\nif(forceResetBtn) forceResetBtn.onclick = async () => {\n  if(!confirm(\'로컬 draft 1371자 버리고 GitHub 최신 6만자로 강제 복구할까?\')) return;\n  try{ localStorage.removeItem(\'draft_code_\'+currentRepo); }catch{}\n  draftCode=\'\';\n  log(\'🗑️ 로컬 draft 삭제, GitHub에서 재로딩\',\'info\');\n  await fetchCode();\n};\n\n  log(\'v5.6.1 초기화 - 안건 프롬프트 자동 생성\',\'ok\');\n  // v5.7.4 1클릭 저장 + 미리보기 확인 - 원클릭 카드 제거, 깔끔 워크플로우\n  function getRecentChatSummary(){\n    try{\n      const all = (typeof chats!==\'undefined\' && chats[currentTab]) ? chats[currentTab] : [];\n      const recent = all.slice(-5).map(m=>\'\' + (m.role) + \': ' + (m.content.slice(0,150)) + '\').join(\'\n\');\n      return recent || \'(채팅 없음)\';\n    }catch{ return \'\'; }\n  }\n  window.pendingAutoSave = false;\n  const saveBtn = document.getElementById(\'saveDraftBtn\');\n  if(saveBtn) saveBtn.onclick = ()=>{\n    const currentLen = (typeof draftCode!==\'undefined\' && draftCode) ? draftCode.length : 0;\n    const recent = getRecentChatSummary();\n    const mainF = (typeof mainFile!==\'undefined\'?mainFile:\'index.html\');\n    // 의견이 있으면 자동으로 전체 코드 요청해서 저장하는 로직\n    if(!recent || recent===\'(채팅 없음)\'){\n      // 채팅 없으면 그냥 현재 draft 저장\n      try{\n        localStorage.setItem(\'draft_\'+currentRepo, draftCode);\n        const histKey = \'draft_hist_\'+currentRepo;\n        const hist = JSON.parse(localStorage.getItem(histKey)||\'[]\');\n        hist.unshift({t:Date.now(), len:draftCode.length, code:draftCode.slice(0,5000)});\n        localStorage.setItem(histKey, JSON.stringify(hist.slice(0,20)));\n        log('💾 draft 저장 ${currentLen}자 (채팅 없음, 현재 코드 저장)',\'ok\');\n      }catch(e){ log(\'저장 실패 \'+e.message,\'err\'); }\n      return;\n    }\n    // 의견 있으면 자동으로 전체 코드 요청\n    const prompt = \'[자동 저장] 현재 draft \' + (currentLen) + \'자. 아래 최근 대화 반영해서 전체 코드 ' + (mainF) + '로 줘. 스니펫 금지, 전체 파일 6만자.\n\n[최근 대화]\n${recent}\n\n요구: 기존 기능 유지 + 최근 대화 반영, 전체 코드만\';\n    const chatIn = document.getElementById(\'chatInput\');\n    const sendBtn = document.getElementById(\'chatSendBtn\');\n    if(chatIn && sendBtn){\n      chatIn.value = prompt;\n      window.pendingAutoSave = true;\n      sendBtn.click();\n      log(\'💾 자동 저장 - 전체 코드 요청 전송 (의견 반영)\',\'info\');\n    }\n  };\n  // AI가 코드 주면 자동 저장하는 훅 - extractCode 후에 실행\n  const origAfterCode = window.afterCodeExtracted || null;\n  window.afterCodeExtracted = function(code){\n    if(window.pendingAutoSave){\n      try{\n        const repo = currentRepo || \'default\';\n        localStorage.setItem(\'draft_\'+repo, code);\n        const histKey = \'draft_hist_\'+repo;\n        let hist = [];\n        try{ hist = JSON.parse(localStorage.getItem(histKey)||\'[]\'); }catch{}\n        hist.unshift({t:Date.now(), len:code.length, preview:code.slice(0,200), code:code});\n        if(hist.length>30) hist = hist.slice(0,30);\n        localStorage.setItem(histKey, JSON.stringify(hist));\n        log('✅ 자동 저장 완료 ' + code.length + '자 - 타임머신 백업됨','ok');
         // 미리보기 자동 갱신
         if(typeof updatePreview==='function'){ try{ updatePreview(); }catch{} }
       }catch(e){ log('자동 저장 실패 '+e.message,'err'); }
@@ -1398,7 +629,7 @@ ${recent}
 const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
 </script>
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();
-// v5.5.9: 링크 N개 무제한 - 접힘/펼침
+// v5.7.4: 링크 N개 무제한 - 접힘/펼침
 let linksCollapsed = localStorage.getItem('linksCollapsed') === 'true';
 function toggleLinksBox(){
   linksCollapsed = !linksCollapsed;
@@ -1423,7 +654,7 @@ function toggleLinksBox(){
   <button class="pc-zoom-btn" id="pcZoomIn" title="글씨 크게">A+</button>
 </div>
 <script>
-// v5.5.9 PC 글씨 크기 조절
+// v5.7.4 PC 글씨 크기 조절
 (function(){
   let pcScale = parseFloat(localStorage.getItem('pc_font_scale')||'1');
   function applyPcScale(){
@@ -1507,27 +738,116 @@ function toggleLinksBox(){
   </div>
 </div>
 <script>
-// v5.5.9 - 다중 파일 접근 + 전체맥락복사 A안 + 커스텀 Drive (403 없음)
+// v5.7.4 - 다중 파일 접근 + 전체맥락복사 A안 + 커스텀 Drive (403 없음)
 (function(){
   let currentFolderId='root';
   let folderStack=[{id:'root',name:'내 드라이브'}];
   let isMainMode=true;
-  function getToken(){ try{ return localStorage.getItem('google_access_token')||accessToken||''; }catch{return accessToken||'';} }
+  function getToken(){ try{ return localStorage.getItem('google_access_token')||accessToken||''; }c
+
+function getGitHubPat(){
+  try{
+    const keys=['github_pat','github_token','GITHUB_PAT','GITHUB_TOKEN','gh_pat','pat'];
+    for(const k of keys){
+      const v=localStorage.getItem(k);
+      if(v && v.trim().length>10) return v.trim();
+    }
+    // Also check direct inputs
+    const input=document.getElementById('githubPatInput');
+    if(input && input.value && input.value.trim().length>10) return input.value.trim();
+    return '';
+  }catch(e){ return ''; }
+}
+
+atch{return accessToken||'';} }
   async function fetchDriveFiles(folderId, query){
     const token=getToken();
     if(!token){ alert('설정탭 Google 로그인 먼저'); return []; }
     let q="trashed=false";
-    if(query){ q+=` and name contains '${query.replace(/'/g,"\\'")}'`; }
-    else { if(folderId && folderId!=='root') q+=` and '${folderId}' in parents`; }
-    q+=` and (mimeType='application/vnd.google-apps.document' or mimeType='application/vnd.google-apps.folder')`;
-    const url=`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,modifiedTime,parents)&orderBy=folder desc, modifiedTime desc&pageSize=100`;
+    
+
+function openDriveModal(){
+  const modal=document.getElementById('driveModal');
+  const list=document.getElementById('driveFileList');
+  if(!modal) return;
+  modal.style.display='flex';
+  if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>';
+  currentDriveFolder='root';
+  driveFolderStack=[];
+  fetchDriveFiles('root','').then(files=>{ renderDriveFiles(files, 'root'); });
+}
+function closeDriveModal(){
+  const modal=document.getElementById('driveModal');
+  if(modal) modal.style.display='none';
+}
+let currentDriveFolder='root';
+let driveFolderStack=[];
+function renderDriveFiles(files, folderId){
+  const list=document.getElementById('driveFileList');
+  const pathEl=document.getElementById('driveModalPath');
+  const bread=document.getElementById('driveBreadcrumb');
+  if(!list) return;
+  if(pathEl) pathEl.textContent = folderId==='root' ? ' / 내 드라이브' : ' / '+folderId;
+  if(bread){
+    let html='<span style="cursor:pointer;" onclick="fetchDriveFiles('root','').then(f=>renderDriveFiles(f,'root'))">🏠 내 드라이브</span>';
+    driveFolderStack.forEach((f,i)=>{
+      html+=' / <span style="cursor:pointer;" onclick="openFolder(\''+f.id+'\')">'+f.name+'</span>';
+    });
+    bread.innerHTML=html;
+  }
+  if(!files || files.length===0){
+    list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">파일 없음</div>';
+    return;
+  }
+  let html='';
+  files.forEach(file=>{
+    const isFolder=file.mimeType==='application/vnd.google-apps.folder';
+    const isDoc=file.mimeType==='application/vnd.google-apps.document' || file.mimeType.includes('document') || file.mimeType.includes('spreadsheet') || file.mimeType.includes('presentation');
+    const icon=isFolder?'📁':'📄';
+    const safeName=file.name.replace(/'/g, "\'").replace(/"/g, '&quot;');
+    if(isFolder){
+      html+='<div class="drive-file-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee;cursor:pointer;" onclick="openFolder(\''+file.id+'\',\''+safeName+'\')"><span>'+icon+' '+file.name+'</span><span style="opacity:0.5;font-size:10px;">폴더</span></div>';
+    } else {
+      html+='<div class="drive-file-item" style="display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee;cursor:pointer;" onclick="selectDriveFile(\''+file.id+'\',\''+safeName+'\',\''+file.mimeType+'\')"><span>'+icon+' '+file.name+'</span><span style="opacity:0.5;font-size:10px;">'+file.mimeType.split('.').pop()+'</span></div>';
+    }
+  });
+  list.innerHTML=html;
+}
+function openFolder(folderId, folderName){
+  if(folderName){
+    driveFolderStack.push({id:folderId, name:folderName});
+  }
+  currentDriveFolder=folderId;
+  const list=document.getElementById('driveFileList');
+  if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>';
+  fetchDriveFiles(folderId,'').then(files=>{ renderDriveFiles(files, folderId); });
+}
+function selectDriveFile(fileId, fileName, mimeType){
+  // 문서 연결
+  closeDriveModal();
+  if(typeof connectDoc==='function'){
+    connectDoc({id:fileId, name:fileName, mimeType:mimeType});
+  } else if(typeof addCustomLink==='function'){
+    addCustomLink(fileId, fileName);
+  }
+  log('✅ Drive 선택: '+fileName, 'ok');
+}
+
+if(query){
+      const safe=query.replace(/'/g, "\'");
+      q+=" and name contains '"+safe+"'";
+    } else {
+      if(folderId && folderId!=='root'){
+        q+=" and '"+folderId+"' in parents";
+      }
+    }
+    const url="https://www.googleapis.com/drive/v3/files?q="+encodeURIComponent(q)+"&fields=files(id,name,mimeType,modifiedTime,parents)&orderBy=modifiedTime desc&pageSize=100";
     try{
-      const res=await fetch(url,{headers:{Authorization:`Bearer ${token}`}});
-      if(res.status===401){ alert('토큰 만료 - 설정탭에서 다시 로그인'); return []; }
+      const res=await fetch(url, {headers:{Authorization:"Bearer "+token}});
       const data=await res.json();
-      if(data.error){ alert('Drive 오류: '+data.error.message); return []; }
+      if(data.error){ log('Drive 오류: '+(data.error.message||JSON.stringify(data.error)), 'err'); return []; }
       return data.files||[];
-    }catch(e){ alert('Drive 로드 실패: '+e.message); return []; }
+    }catch(e){ log('Drive 로드 실패: '+e.message, 'err'); return []; }
   }
   function renderBreadcrumb(){
     const bc=document.getElementById('driveBreadcrumb');
@@ -1544,7 +864,7 @@ function toggleLinksBox(){
     const listEl=document.getElementById('driveFileList');
     const pathEl=document.getElementById('driveModalPath');
     if(listEl) listEl.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>';
-    if(pathEl) pathEl.textContent=query?`검색: ${query}`:'';
+    if(pathEl) pathEl.textContent=query?'검색: ${query}':'';
     const files=await fetchDriveFiles(folderId, query);
     renderBreadcrumb();
     if(!listEl) return; listEl.innerHTML='';
@@ -1553,7 +873,7 @@ function toggleLinksBox(){
       const isFolder=file.mimeType==='application/vnd.google-apps.folder';
       const div=document.createElement('div');
       div.className='drive-file '+(isFolder?'folder':'doc');
-      div.innerHTML=`<span style="font-size:16px;">${isFolder?'📁':'📄'}</span><div style="flex:1;"><div style="font-size:12px;">${file.name}</div><div style="font-size:10px;opacity:0.5;">${file.modifiedTime?file.modifiedTime.slice(0,10):''} ${isFolder?'· 폴더':''}</div></div>${isFolder?'<span>→</span>':'<span style="font-size:10px;color:#1a73e8;">선택</span>'}`;
+      div.innerHTML='<span style="font-size:16px;">${isFolder?'📁':'📄'}</span><div style="flex:1;"><div style="font-size:12px;">${file.name}</div><div style="font-size:10px;opacity:0.5;">${file.modifiedTime?file.modifiedTime.slice(0,10):''} ${isFolder?'· 폴더':''}</div></div>${isFolder?'<span>→</span>':'<span style="font-size:10px;color:#1a73e8;">선택</span>'}';
       div.onclick=()=>{
         if(isFolder){ folderStack.push({id:file.id,name:file.name}); currentFolderId=file.id; loadFolder(currentFolderId); }
         else {
@@ -1584,12 +904,12 @@ function toggleLinksBox(){
   // 전체맥락복사 A안
   window.buildLinksTextForCopy=function(){
     try{
-      const base=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}
+      const base='1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}
 2. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.6.4`;
-      const extra=(customLinks&&customLinks.length)?'\n'+customLinks.map((l,i)=>`${i+4}. ${l.url}`).join('\n'):'';
+3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.7.4';
+      const extra=(customLinks&&customLinks.length)?'\n'+customLinks.map((l,i)=>'${i+4}. ${l.url}').join('\n'):'';
       const mainDoc=(connectedDocs&&connectedDocs.length)?'\n메인문서: '+connectedDocs.map(d=>d.title).join(', '):'';
-      const patStatus=(()=>{try{return localStorage.getItem('github_pat')?'PAT: 설정탭 localStorage에 저장됨 (새 창에서 설정탭에 붙여넣으면 자동 접근)':'PAT: 없음 (퍼블릭이면 raw로 접근 가능)'}catch{return 'PAT: 확인불가'}})();
+      const patStatus=(()=>{try{return getGitHubPat()?'PAT: 설정탭 localStorage에 저장됨 (새 창에서 설정탭에 붙여넣으면 자동 접근)':'PAT: 없음 (퍼블릭이면 raw로 접근 가능)'}catch{return 'PAT: 확인불가'}})();
       return base+extra+mainDoc+'\n'+patStatus;
     }catch(e){return '';}
   };
@@ -1597,7 +917,7 @@ function toggleLinksBox(){
     try{
       const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
       const links=buildLinksTextForCopy();
-      return `[Builder-a4u v5.6.4 이어가기용 - 커스텀 Drive + 전체맥락복사]
+      return '[Builder-a4u v5.7.4 이어가기용 - 커스텀 Drive + 전체맥락복사]
 [기억 10줄]
 ${mem}
 
@@ -1608,7 +928,7 @@ ${links}
 - 10줄로 맥락 파악 → 1번 raw 코드 링크 읽기 (퍼블릭이면 PAT 없이 가능) → 2번 구글문서 읽기
 - Drive 열어서 선택 1개 버튼 (Picker 403 없이 커스텀 Drive API)
 - 다중 파일 접근: 추가 문서 N개는 customLinks로 무제한
-- 이 복사본만 붙여넣으면 새 AI방에서 디자인/기능 100% 유지`;
+- 이 복사본만 붙여넣으면 새 AI방에서 디자인/기능 100% 유지';
     }catch(e){return '';}
   };
   window.renderContextCopySettings=function(){
@@ -1653,5 +973,44 @@ ${links}
   });
 })();
 </script>
+
+
+<script>
+// v5.7.4 정식 - 설정 터치 정식 복구 + 실시간 레포 + 로봇 자동화 유지
+(function(){
+  const $ = id => document.getElementById(id);
+  function switchView(view){
+    const ws=$('workspaceView');
+    const st=$('settingsView');
+    const btnW=$('topTabWorkspace');
+    const btnS=$('topTabSettings');
+    if(!ws||!st) return;
+    if(view==='workspace'){
+      ws.classList.remove('view-hidden');
+      st.classList.add('view-hidden');
+      if(btnW) btnW.classList.add('active');
+      if(btnS) btnS.classList.remove('active');
+    }else{
+      ws.classList.add('view-hidden');
+      st.classList.remove('view-hidden');
+      if(btnW) btnW.classList.remove('active');
+      if(btnS) btnS.classList.add('active');
+    }
+    try{localStorage.setItem('top_view',view);}catch{}
+  }
+  window.switchTopView = switchView;
+  window.addEventListener('DOMContentLoaded', function(){
+    const w=$('topTabWorkspace');
+    const s=$('topTabSettings');
+    const t=$('themeToggle');
+    const st=$('settingsThemeToggle');
+    if(w) w.onclick=()=>switchView('workspace');
+    if(s) s.onclick=()=>switchView('settings');
+    if(t) t.onclick=()=>{ const isDark=document.documentElement.classList.contains('dark'); const th=isDark?'light':'dark'; document.documentElement.classList.toggle('dark', th==='dark'); try{localStorage.setItem('theme',th);}catch{} };
+    if(st) st.onclick=()=>{ const isDark=document.documentElement.classList.contains('dark'); const th=isDark?'light':'dark'; document.documentElement.classList.toggle('dark', th==='dark'); try{localStorage.setItem('theme',th);}catch{} };
+  });
+})();
+</script>
+
 </body>
 </html>
