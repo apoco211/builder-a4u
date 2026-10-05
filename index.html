@@ -47,10 +47,10 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<link rel="manifest" href="./manifest.json?v=5.6.0">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.6.0">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.6.0">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.6.0">
+<link rel="manifest" href="./manifest.json?v=5.6.1">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.6.1">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.6.1">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.6.1">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -200,7 +200,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.6.0</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.6.1</h1><p class="text-[10px] opacity-60">PWA 최적화 + 주야간 아이콘 토글 + 실전 빌드 + draft 분리</p></div>
 <div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.5.9</span></div>
 </div>
 
@@ -353,7 +353,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<div class="text-[8px] text-center opacity-60 mt-4">v5.6.0 · 복구 버튼 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.6.0</div>
+<div class="text-[8px] text-center opacity-60 mt-4">v5.6.1 · 기억10줄 오염 제거 + Gemini 2.5 + Groq OSS Fix 추가 + 자동 로딩 + 가짜 페이지 가드 · ?v=5.6.1</div>
 
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';const SUPABASE_TABLE='dev_projects';const GITHUB_USER='apoco211';const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -373,6 +373,25 @@ $('exportSettingsBtn').onclick=()=>{try{const data={};for(let i=0;i<localStorage
 $('importSettingsBtn').onclick=()=>{const input=document.createElement('input');input.type='file';input.accept='.json';input.onchange=e=>{const file=e.target.files[0];if(!file) return;const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);Object.entries(data).forEach(([k,v])=>{try{localStorage.setItem(k,v);}catch{}});log('설정 가져오기 완료 - 새로고침','ok');setTimeout(()=>location.reload(),1000);}catch{log('가져오기 실패','err');}};reader.readAsText(file);};input.click();};
 
 function inferMainFile(r){const s=r.toLowerCase();if(s.includes('daily-todo')||s.includes('todo')) return 'src/App.jsx';return 'index.html';}
+function cleanMemory10(text){
+  if(!text) return text;
+  // v5.6.1 Fix: -요약: 라인 제거 + 10줄만 유지
+  const lines = text.split('\n');
+  const clean = lines.filter(l=>{
+    const t=l.trim();
+    if(!t) return false;
+    if(t.startsWith('-요약:')) return false;
+    if(t.startsWith('요약:')) return false;
+    return true;
+  });
+  // 10줄 형식만 남기고, 10줄 넘어가면 앞 10줄만
+  const ten = clean.filter(l=> /^\d+\.프로젝트:|^\d+\.목적:|^\d+\.현재:|^\d+\.다음:|^\d+\.결정:|^\d+\.제외:|^\d+\.저장:|^\d+\.버그:|^\d+\.모드:|^\d+\.상태:/.test(l.trim()) );
+  if(ten.length>=8){
+    return ten.slice(0,10).join('\n');
+  }
+  // 10줄 형식 없으면 그대로 clean 반환 (최대 15줄)
+  return clean.slice(0,15).join('\n');
+}
 function getProjectTemplate(repo){
   const d=new Date().toLocaleDateString();
   const name = repo || currentRepo || 'builder-a4u';
@@ -419,18 +438,27 @@ async function incrementalSummarize(force=false){
   }
   if(summaryText){
     lastSummaryAt = all.length;
-    // memory10에 추가
-    const memEl = document.getElementById('memory10');
-    if(memEl && summaryText.length > 20){
-      // 기존 memory10에 요약 줄 추가 (중복 방지)
-      if(!memEl.value.includes(summaryText.slice(0,20))){
-        memEl.value = memEl.value + '\n' + summaryText.slice(0,500);
-        try{localStorage.setItem('memory10_'+currentRepo, memEl.value);}catch{}
-        // Supabase 자동 저장 시도
+    // v5.6.1 Fix: "-요약:" 오염 방지 - memory10에 append 금지, 10줄 형식만 교체
+    const isClean10 = summaryText.includes('1.프로젝트:') && summaryText.includes('2.목적:');
+    const isPolluted = summaryText.trim().startsWith('-요약:');
+    if(isClean10){
+      const memEl = document.getElementById('memory10');
+      if(memEl){
+        memEl.value = summaryText.slice(0,2000);
+        try{
+          localStorage.setItem('memory10_'+currentRepo, memEl.value);
+          localStorage.setItem('memory10', memEl.value);
+          localStorage.setItem('connected_docs_'+currentRepo, memEl.value);
+        }catch{}
         if(typeof saveToSupabase === 'function') saveToSupabase(false);
+        if(window.renderContextCopySettings) renderContextCopySettings();
       }
+      log(`✨ 10줄 기억 갱신 완료`, 'ok');
+    } else if(isPolluted){
+      log(`✨ 요약 생성됨 (memory10 오염 방지 - 저장 안 함)`, 'info');
+    } else {
+      log(`✨ 증분 요약 완료 (${all.length}개 중 최근 20개)`, 'ok');
     }
-    log(`✨ 증분 요약 완료 (${all.length}개 중 최근 20개)`, 'ok');
     // chatStore summary 갱신
     try{
       const storeKey = 'chatStore_'+currentRepo;
@@ -1052,7 +1080,7 @@ async function loadRepos(){
     ['builder-a4u','sudataxi-k','taxi-dj','greenlight-a25','daily-todo'].forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;if(name===currentRepo) o.selected=true;s.appendChild(o);});
   }
 }
-const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const mem=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
+const repoSel=$('repoSelect');if(repoSel) repoSel.addEventListener('change',async e=>{currentRepo=e.target.value;try{localStorage.setItem('current_repo',currentRepo);}catch{}mainFile=(function(){try{return localStorage.getItem('main_file_'+currentRepo)||inferMainFile(currentRepo);}catch{return inferMainFile(currentRepo);}})();const mf=$('mainFileInput');if(mf) mf.value=mainFile;try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{connectedDocs=[];}try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{customLinks=[];}try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{draftCode='';}try{const c=JSON.parse(localStorage.getItem('chats_'+currentRepo)||'{"meta":[],"gemini":[],"gpt":[]}');if(c.meta) chats=c;}catch{}const memRaw=(()=>{try{return localStorage.getItem('memory_10_'+currentRepo);}catch{return null;}})();const mem=memRaw?cleanMemory10(memRaw):null;const memInput=$('memory10');if(memInput) memInput.value=mem||getTemplate();if(memRaw && mem!==memRaw){try{localStorage.setItem('memory_10_'+currentRepo, mem||getTemplate());}catch{}}updateMemoryCount();updateDraftStatus();renderConnectedDocs();renderCustomLinks();renderChats();await fetchCode();await autoLoadSupabase();});
 const mainFileInput=$('mainFileInput');if(mainFileInput) mainFileInput.addEventListener('input',e=>{mainFile=e.target.value.trim();try{localStorage.setItem('main_file_'+currentRepo,mainFile);}catch{}});
 async function fetchCode(){
   try{
@@ -1098,32 +1126,30 @@ function renderCustomLinks(){const box=$('customLinksList');if(!box) return;box.
 async function saveToSupabase(silent){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key){if(!silent) log('Supabase key 없음','err');return false;}try{const payload={project_name:currentRepo,repo:`${GITHUB_USER}/${currentRepo}`,main_file:mainFile,memory_10:$('memory10').value,doc_id:connectedDocs[0]?.id||null,doc_title:connectedDocs[0]?.title||null,draft_code:draftCode.slice(0,8000),updated_at:new Date().toISOString()};const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}`,{method:'POST',headers:{apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},body:JSON.stringify(payload)});if(!res.ok) throw new Error(await res.text());if(!silent) log('Supabase 저장','ok');return true;}catch(e){if(!silent) log('Supabase 실패','err');return false;}}
 async function autoLoadSupabase(){let key='';try{key=localStorage.getItem('supabase_anon_key')||$('supabaseKeyInput').value.trim();}catch{key=$('supabaseKeyInput').value.trim();}if(!key) return;try{const res=await fetch(`${SUPABASE_URL}/rest/v1/${SUPABASE_TABLE}?project_name=eq.${currentRepo}&select=*`,{headers:{apikey:key,Authorization:`Bearer ${key}`}});const data=await res.json();if(data&&data[0]){const row=data[0];
   if(row.memory_10){
+    const cleaned = cleanMemory10(row.memory_10);
     const memInput=$('memory10');
     if(memInput){
-      // v5.5.9: 다른 프로젝트 기억이 builder로 덮인 오염 체크
-      const isBuilderMemory = row.memory_10.includes('Builder-a4u') || row.memory_10.includes('builder-a4u');
-      const isForThisProject = row.memory_10.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
-      // 만약 현재가 builder-a4u가 아닌데 Supabase에 builder 기억이 들어있으면 오염된 것으로 보고 무시
+      const isBuilderMemory = cleaned.includes('Builder-a4u') || cleaned.includes('builder-a4u');
+      const isForThisProject = cleaned.toLowerCase().includes(currentRepo.toLowerCase().split('/').pop().toLowerCase()) || row.project_name === currentRepo;
       if(currentRepo !== 'builder-a4u' && !currentRepo.includes('builder-a4u') && isBuilderMemory && !isForThisProject){
         log(`⚠️ Supabase ${currentRepo}에 builder 기억 오염 발견 - 무시하고 템플릿 사용`,'info');
-        // 오염된 경우 로컬 템플릿으로 강제 교체
         const fresh = getProjectTemplate(currentRepo);
         memInput.value = fresh;
         try{localStorage.setItem('memory_10_'+currentRepo, fresh);}catch{}
         updateMemoryCount();
         renderContext();
       } else {
-        if(memInput.value !== row.memory_10){
-          memInput.value=row.memory_10;
-          try{localStorage.setItem('memory_10_'+currentRepo, row.memory_10);}catch{}
+        if(memInput.value !== cleaned){
+          memInput.value=cleaned;
+          try{localStorage.setItem('memory_10_'+currentRepo, cleaned);}catch{}
           updateMemoryCount();
-          log(`📥 기억10줄 복구 ${currentRepo}: ${row.memory_10.slice(0,30)}...`,'ok');
+          log(`📥 기억10줄 복구 ${currentRepo}: ${cleaned.slice(0,30)}...`,'ok');
           renderContext();
         }
       }
     }
   }
-  if(row.main_file){mainFile=row.main_file;const mf=$('mainFileInput');if(mf) mf.value=mainFile;}
+  if(row.main_file){  if(row.main_file){mainFile=row.main_file;const mf=$('mainFileInput');if(mf) mf.value=mainFile;}
   if(row.draft_code&&!draftCode){draftCode=row.draft_code;updateDraftStatus();}
   if(row.doc_id){
     // 문서도 항상 복구
@@ -1196,7 +1222,7 @@ if(forceResetBtn) forceResetBtn.onclick = async () => {
   await fetchCode();
 };
 
-  log('v5.6.0 초기화 - 안건 프롬프트 자동 생성','ok');
+  log('v5.6.1 초기화 - 안건 프롬프트 자동 생성','ok');
   // v5.5.9 1클릭 저장 + 미리보기 확인 - 원클릭 카드 제거, 깔끔 워크플로우
   function getRecentChatSummary(){
     try{
@@ -1287,7 +1313,7 @@ ${recent}
       log('👁️ 미리보기 토글','info');
     }
   };
-  log('v5.6.0 초기화 - 미리보기 + 타임머신 롤백','ok');
+  log('v5.6.1 초기화 - 미리보기 + 타임머신 롤백','ok');
   if(typeof updateVersionCount==='function') updateVersionCount();
   const previewToggle = document.getElementById('previewToggleBtn');
   if(previewToggle) previewToggle.onclick = ()=>{
@@ -1305,7 +1331,7 @@ ${recent}
   if(showGithubBtn) showGithubBtn.onclick = ()=> { if(typeof fetchGithubCommits==='function') fetchGithubCommits(); };
   const autoBackupBtn = document.getElementById('autoBackupToggle');
   if(autoBackupBtn){ autoBackupBtn.textContent = autoBackup ? '🔒 자동 백업 ON' : '🔓 자동 백업 OFF'; autoBackupBtn.onclick = ()=>{ autoBackup=!autoBackup; try{localStorage.setItem('auto_backup', autoBackup);}catch{}; autoBackupBtn.textContent = autoBackup ? '🔒 자동 백업 ON' : '🔓 자동 백업 OFF'; log(autoBackup?'자동 백업 ON':'자동 백업 OFF','info'); };}
-  log('v5.6.0 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
+  log('v5.6.1 초기화 - gh-pages 자동생성 + Groq 최신모델','ok');
   setTimeout(initTheme,200);
 });
 const clearLogBtn=$('clearLogBtn');if(clearLogBtn) clearLogBtn.onclick=()=>{const la=$('logArea');if(la) la.innerHTML='';const rl=$('robotLog');if(rl){rl.innerHTML='';rl.classList.add('hidden');}};
@@ -1499,7 +1525,7 @@ function toggleLinksBox(){
     try{
       const base=`1. raw: https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${mainFile}
 2. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.6.0`;
+3. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.6.1`;
       const extra=(customLinks&&customLinks.length)?'\n'+customLinks.map((l,i)=>`${i+4}. ${l.url}`).join('\n'):'';
       const mainDoc=(connectedDocs&&connectedDocs.length)?'\n메인문서: '+connectedDocs.map(d=>d.title).join(', '):'';
       const patStatus=(()=>{try{return localStorage.getItem('github_pat')?'PAT: 설정탭 localStorage에 저장됨 (새 창에서 설정탭에 붙여넣으면 자동 접근)':'PAT: 없음 (퍼블릭이면 raw로 접근 가능)'}catch{return 'PAT: 확인불가'}})();
@@ -1510,7 +1536,7 @@ function toggleLinksBox(){
     try{
       const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
       const links=buildLinksTextForCopy();
-      return `[Builder-a4u v5.6.0 이어가기용 - 커스텀 Drive + 전체맥락복사]
+      return `[Builder-a4u v5.6.1 이어가기용 - 커스텀 Drive + 전체맥락복사]
 [기억 10줄]
 ${mem}
 
