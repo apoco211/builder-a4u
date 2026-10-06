@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.12 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.13 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.12 - AI 스마트 자동 파일 탐색 패치</title>
+<title>Builder-a4u v5.8.13 - 수다택시 맥락 자동주입 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.12">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.12">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.12">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.12">
+<link rel="manifest" href="./manifest.json?v=5.8.13">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.13">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.13">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.13">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -120,8 +120,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.12</h1><p class="text-[10px] opacity-60">AI 스마트 자동 파일 탐색 및 오토 라우팅 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.12 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.13</h1><p class="text-[10px] opacity-60">프로젝트별 맥락/링크 자동 주입 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.13 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -137,7 +137,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 <select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
 
-<!-- 📁 레포 내부 파일 선택 (GitHub Tree API 연동 + AI 자동 감지) -->
+<!-- 📁 레포 내부 파일 선택 -->
 <div class="flex flex-col gap-1.5 mt-2">
   <div class="flex justify-between items-center">
     <label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 필요시 자동 감지하여 수정 후 드래프트에 교체합니다)</label>
@@ -181,9 +181,9 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
-<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (AI 오토파일 타겟팅 연동)</h2><span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span></div>
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (프로젝트 맥락 자동주입)</h2><span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
-<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[100px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
 
@@ -355,7 +355,6 @@ async function loadRepos(){
   const cached=getCached();
   if(cached && cached.length>0){
     renderRepos(cached);
-    log('📦 캐시 레포 '+cached.length+'개 표시', 'info');
   }
 
   try{
@@ -374,8 +373,6 @@ async function loadRepos(){
     const r=await fetch(url, {headers, signal:controller.signal});
     clearTimeout(timeout);
     if(!r.ok){
-      const txt=await r.text();
-      log('GitHub API ('+r.status+'): '+(hasPat?'PAT 인식됨':'PAT 없음')+' '+txt.slice(0,60), 'info');
       if(cached) renderRepos(cached);
       return;
     }
@@ -383,12 +380,10 @@ async function loadRepos(){
     if(!Array.isArray(d) || d.length===0) return;
     renderRepos(d);
     try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
-    log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
+    log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 ('+currentRepo+' 선택됨)', 'ok');
     
-    // 레포 로드 직후 파일 트리 스캔
     loadRepoFileTree();
   }catch(e){
-    if(e.name!=='AbortError') log('레포 로드 정보: '+e.message, 'info');
     const cached2=getCached();
     if(cached2) renderRepos(cached2);
   }
@@ -422,11 +417,10 @@ async function loadRepoFileTree(){
   if(!treeData || !treeData.tree || treeData.tree.length === 0){
     fileSelect.innerHTML = '<option value="index.html">index.html (기본)</option>';
     repoFileListCache = ['index.html'];
-    log('⚠️ 레포 트리 스캔 완료 (기본 index.html 설정)', 'info');
     return;
   }
   
-  const files = treeData.tree.filter(item => item.type === 'blob'); // 폴더 제외, 실제 파일만 필터
+  const files = treeData.tree.filter(item => item.type === 'blob');
   repoFileListCache = files.map(f => f.path);
   log(`🌳 [${currentRepo}] 전체 파일 ${files.length}개 탐색 완료`, 'ok');
   
@@ -442,6 +436,8 @@ async function loadRepoFileTree(){
   const mainInput = $('mainFileInput');
   if(mainInput) mainInput.value = currentSelected;
   mainFile = currentSelected;
+  
+  updateContextBox();
 }
 
 function initGis(){
@@ -473,14 +469,12 @@ function initGis(){
           log('✅ Google 로그인 성공', 'ok');
         } else if(resp && resp.error){
           updateGisStatus('❌ 로그인 실패: '+resp.error);
-          log('Google 로그인 실패: '+JSON.stringify(resp), 'err');
         }
       }
     });
     
     gisInited = true;
     updateGisStatus('🔓 로그인 준비 완료 - [Google 로그인 실행] 버튼을 누르세요');
-    log('GIS 초기화 성공', 'ok');
   }catch(e){
     updateGisStatus('❌ GIS 대기: '+e.message);
     setTimeout(initGis, 2000);
@@ -489,22 +483,17 @@ function initGis(){
 
 function handleGoogleLogin(){
   if(!tokenClient){
-    updateGisStatus('GIS 재초기화 시도 중...');
     initGis();
     setTimeout(()=>{
       if(tokenClient){
-        try{ tokenClient.requestAccessToken({prompt:''}); }catch(e){ updateGisStatus('❌ 팝업 확인: '+e.message); }
-      } else {
-        updateGisStatus('구글 로그인 객체 준비 중입니다. 잠시 후 시도해주세요.');
+        try{ tokenClient.requestAccessToken({prompt:''}); }catch(e){}
       }
     }, 1000);
     return;
   }
   try{
     tokenClient.requestAccessToken({prompt:'', hint:''});
-  }catch(e){
-    updateGisStatus('❌ 요청 오류: '+e.message);
-  }
+  }catch(e){}
 }
 
 // 📋 클립보드 캡처 이미지(Ctrl+V) 붙여넣기 감지
@@ -544,18 +533,16 @@ function clearPastedImage(){
 
 function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
-  const repoName = repo || currentRepo || 'builder-a4u';
+  const repoName = repo || currentRepo || '수다택시';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.12 (${targetFile})
-2.목적: AI 스마트 자동 파일 탐색 및 멀티파일 드래프트 연동
-3.현재: ${d} - 전체 파일 목록 분석 및 자동 타겟 파일 감지
-4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
-5.결정: 소문자 index.html, manifest.json, 스마트 오토 라우팅
-6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
-7.저장: Supabase+Docs+GitHub+localStorage
-8.버그: 멀티파일 연동 및 타임머신 자동 스캔 완료
-9.모드: 빌드모드
-10.상태: 진행중`;
+  return `1.프로젝트: ${repoName} (${targetFile})
+2.목적: ${repoName} 앱 기능 구현 및 개발
+3.현재: ${d} - 기능 개발 및 UI/UX 개선
+4.다음: 요구사항 기능 수정 및 빌드 배포
+5.결정: 소문자 파일명, 반응형 웹, 최신 모듈 연동
+6.제외: 불필요한 레거시 라이브러리 사용 지양
+7.저장: GitHub+Drive+localStorage
+8.상태: 진행중`;
 }
 
 function loadMemory10(){
@@ -585,22 +572,71 @@ function updateMemoryCount(){
   updateContextBox();
 }
 
+// 🔗 구글 문서 및 레포지토리 주소를 포함한 완전체 자동주입 프롬프트 생성
+function buildAutoInjectPrompt(){
+  const mem = $('memory10') ? $('memory10').value : '';
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
+  const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : targetFile;
+  
+  let mainDocsText = '';
+  if (connectedDocs && connectedDocs.length > 0) {
+    mainDocsText = connectedDocs.map(d => `- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || d.name || '문서'})`).join('\n');
+  } else {
+    mainDocsText = '- 메인문서: 연결없음';
+  }
+  
+  let customDocsText = '';
+  if (customLinks && customLinks.length > 0) {
+    customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
+  } else {
+    customDocsText = '- 추가문서: 연결없음';
+  }
+
+  return `[현재 작업 맥락]
+1. 프로젝트: ${currentRepo}
+2. 대상 파일: ${targetFile}
+3. GitHub Repo: https://github.com/${GITHUB_USER}/${currentRepo}
+4. 전체 파일 구조: [${fileTreeStr}]
+
+[연결된 구글 문서]
+${mainDocsText}
+${customDocsText}
+
+[기억 10줄]
+${mem}`;
+}
+
 function updateContextBox(){
   const ctxText = $('contextText');
-  const memEl = $('memory10');
-  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  if(ctxText && memEl){
-    ctxText.textContent = `[자동주입 프롬프트] 레포: ${currentRepo} (현재파일: ${targetFile})\n${memEl.value.slice(0,150)}...`;
+  if(ctxText){
+    ctxText.textContent = buildAutoInjectPrompt();
   }
 }
 
 let activeChatTab = 'meta';
-let chatHistories = { meta: [], gemini: [], gpt: [] };
+let chatHistories = {};
 const tabConfigs = {
   meta: { name: '메타 (Llama-3.1-8B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.1-8b-instant', type: 'groq' },
   gemini: { name: '제미나이 (Gemini-3.8)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3.8-flash', type: 'gemini' },
   gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
 };
+
+function getRepoChatHistoryKey(){
+  return `chat_history_${currentRepo}_${activeChatTab}`;
+}
+
+function loadChatHistory(){
+  try{
+    const saved = localStorage.getItem(getRepoChatHistoryKey());
+    return saved ? JSON.parse(saved) : [];
+  }catch{ return []; }
+}
+
+function saveChatHistory(msgs){
+  try{
+    localStorage.setItem(getRepoChatHistoryKey(), JSON.stringify(msgs));
+  }catch{}
+}
 
 function switchChatTab(tab){
   activeChatTab = tab;
@@ -621,10 +657,10 @@ function renderChatBox(){
   const box = $('chatBox');
   const badge = $('chatCountBadge');
   if(!box) return;
-  const msgs = chatHistories[activeChatTab] || [];
+  const msgs = loadChatHistory();
   if(badge) badge.textContent = msgs.length + '개';
   if(msgs.length === 0){
-    box.innerHTML = `<div class="msg msg-system text-center opacity-70">🤖 [${tabConfigs[activeChatTab].name}] 대화 준비 완료. 질문 및 캡처 이미지(Ctrl+V)를 전송하세요.</div>`;
+    box.innerHTML = `<div class="msg msg-system text-center opacity-70">🤖 [${currentRepo}] - [${tabConfigs[activeChatTab].name}] 준비 완료. 질문을 전송하세요.</div>`;
     return;
   }
   let html = '';
@@ -690,26 +726,24 @@ async function sendChatMessage(){
   const currentImage = activePastedImageBase64;
   input.value = '';
   clearPastedImage();
-  chatHistories[activeChatTab].push({ role: 'user', text: userText, image: currentImage });
+  
+  const currentMsgs = loadChatHistory();
+  currentMsgs.push({ role: 'user', text: userText, image: currentImage });
+  saveChatHistory(currentMsgs);
   renderChatBox();
+  
   const cfg = tabConfigs[activeChatTab];
-  const memoryContext = $('memory10') ? $('memory10').value : '';
-  const currentTargetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : 'index.html';
+  const autoInjectPrompt = buildAutoInjectPrompt();
 
-  const fullSystemPrompt = `당신은 유능한 코딩 도우미입니다.
-현재 프로젝트: [${currentRepo}]
-현재 선택된 파일: [${currentTargetFile}]
-프로젝트 전체 파일 목록: [${fileTreeStr}]
-
-기억 10줄:
-${memoryContext}
+  const fullSystemPrompt = `당신은 유능한 소프트웨어 개발 도우미입니다.
+${autoInjectPrompt}
 
 [중요 지침]:
-1. 사용자 요청을 분석하여 수정해야 할 파일이 있다면, 답변 시작 부분에 반드시 '[TARGET_FILE: 파일경로]' 태그를 적어주세요. (예: [TARGET_FILE: todo.js] 또는 [TARGET_FILE: index.html])
-2. 수정되거나 새로 작성된 완성 코드는 코드 블록(\`\`\`html ... \`\`\` 또는 \`\`\`javascript ... \`\`\`)으로 출력해주세요.`;
+1. 프로젝트 [${currentRepo}]의 요구사항에 맞춰 최적의 코드를 작성하세요.
+2. 수정해야 할 파일이 있다면 답변 시작 부분에 반드시 '[TARGET_FILE: 파일경로]' 태그를 적어주세요. (예: [TARGET_FILE: index.html] 또는 [TARGET_FILE: src/App.js])
+3. 완성 코드는 코드 블록(\`\`\`html 또는 \`\`\`javascript 등)으로 전체를 출력하세요.`;
 
-  log(`🤖 [${cfg.name}] 스마트 분석 및 API 요청 중...`, 'info');
+  log(`🤖 [${currentRepo}] - [${cfg.name}] 맥락 자동주입 및 전송 중...`, 'info');
   try {
     let aiResponse = '';
     if(cfg.type === 'gemini'){
@@ -719,19 +753,21 @@ ${memoryContext}
     } else {
       const groqKey = localStorage.getItem('groq_key') || $('groqKeyInput')?.value || '';
       if(!groqKey){ log('⚠️ [Groq Key]를 설정 탭에서 입력해주세요.', 'err'); return; }
-      if(currentImage) log('💡 Groq(Meta/GPT)는 텍스트 위주이므로 이미지 요청은 Gemini 탭 권장', 'info');
       aiResponse = await callGroqApi(fullSystemPrompt, userText, cfg.model, groqKey);
     }
-    chatHistories[activeChatTab].push({ role: 'ai', text: aiResponse });
+    
+    const updatedMsgs = loadChatHistory();
+    updatedMsgs.push({ role: 'ai', text: aiResponse });
+    saveChatHistory(updatedMsgs);
     renderChatBox();
     
-    // AI 응답에서 대상 파일 자동 감지 및 저장 연동
     processAiFileAutoRouting(aiResponse);
-    
     log(`✅ [${cfg.name}] 응답 수신 완료`, 'ok');
   } catch(e) {
     log(`❌ [${cfg.name}] 응답 실패: ` + e.message, 'err');
-    chatHistories[activeChatTab].push({ role: 'ai', text: '⚠️ 오류 발생: ' + e.message });
+    const updatedMsgs = loadChatHistory();
+    updatedMsgs.push({ role: 'ai', text: '⚠️ 오류 발생: ' + e.message });
+    saveChatHistory(updatedMsgs);
     renderChatBox();
   }
 }
@@ -837,7 +873,6 @@ async function loadGitHubCommitHistory(){
     const res = await fetch(url, { headers });
     if(!res.ok){
       box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ GitHub 커밋 로드 실패 (${res.status})</div>`;
-      log(`GitHub 커밋 불러오기 실패 (${res.status})`, 'err');
       return;
     }
     const commits = await res.json();
@@ -871,10 +906,8 @@ async function loadGitHubCommitHistory(){
       </div>`;
     });
     box.innerHTML = html;
-    log(`🐙 [${file}] 커밋 기록 ${commits.length}개 로드 완료`, 'ok');
   } catch(e) {
     box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ 오류 발생: ${e.message}</div>`;
-    log('GitHub 커밋 연동 오류: ' + e.message, 'err');
   }
 }
 
@@ -907,7 +940,6 @@ async function fetchGitHubCommitContent(sha){
 }
 
 window.previewGitHubCommit = async function(sha, shortSha, msg){
-  log(`🐙 GitHub 커밋 [#${shortSha}] 코드 다운로드 중...`, 'info');
   try {
     const code = await fetchGitHubCommitContent(sha);
     const frame = $('livePreviewFrame');
@@ -918,7 +950,6 @@ window.previewGitHubCommit = async function(sha, shortSha, msg){
       frame.srcdoc = code;
       box.classList.add('active');
       box.scrollIntoView({ behavior: 'smooth' });
-      log(`👁 GitHub 커밋 [#${shortSha}] 미리보기 실행 성공`, 'ok');
     }
   } catch(e) {
     log('미리보기 실패: ' + e.message, 'err');
@@ -927,7 +958,6 @@ window.previewGitHubCommit = async function(sha, shortSha, msg){
 
 window.rollbackGitHubCommit = async function(sha, shortSha, msg){
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  log(`↺ GitHub 커밋 [#${shortSha}] 복구 중...`, 'info');
   try {
     const code = await fetchGitHubCommitContent(sha);
     localStorage.setItem(getDraftCodeKey(), code);
@@ -968,7 +998,6 @@ function loadDraftHistory(){
     </div>`;
   });
   box.innerHTML = html;
-  log(`⏰ 로컬 draft 기록 ${history.length}개 로드 완료`, 'info');
 }
 
 window.previewVersionHistory = function(id){
@@ -984,7 +1013,6 @@ window.previewVersionHistory = function(id){
     frame.srcdoc = item.code;
     box.classList.add('active');
     box.scrollIntoView({ behavior: 'smooth' });
-    log(`👁️ 로컬 draft 미리보기 실행 (${item.time})`, 'info');
   }
 };
 
@@ -1018,7 +1046,6 @@ function showLivePreviewCurrent(){
     frame.srcdoc = code;
     box.classList.add('active');
     box.scrollIntoView({ behavior: 'smooth' });
-    log('👁 실시간 미리보기 실행', 'info');
   }
 }
 
@@ -1032,6 +1059,7 @@ function loadRepoDocuments(){
   try{ customLinks = JSON.parse(localStorage.getItem('customLinks_' + currentRepo) || '[]'); }catch{ customLinks = []; }
   renderConnectedDocs();
   renderCustomLinks();
+  updateContextBox();
 }
 
 function renderConnectedDocs(){
@@ -1065,15 +1093,14 @@ function removeConnectedDoc(idx){
   try{ localStorage.setItem('connected_docs_' + currentRepo, JSON.stringify(connectedDocs)); }catch{}
   renderConnectedDocs();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('docPreview');
   if(previewEl) previewEl.classList.add('hidden');
-  log('📄 메인 문서 해제됨', 'info');
 }
 
 async function fetchDocContent(docId, docTitle, isMain = true){
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){ log('⚠️ 설정 탭에서 Google 로그인을 진행해주세요.', 'err'); return; }
-  log(`📄 [${docTitle || '문서'}] 내용 불러오는 중...`, 'info');
   try{
     const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -1141,9 +1168,9 @@ function removeCustomLink(idx){
   try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
   renderCustomLinks();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('linkDocPreview');
   if(previewEl && customLinks.length === 0) previewEl.classList.add('hidden');
-  log('🔗 추가 문서 삭제됨', 'info');
 }
 
 function removeAllCustomLinks(){
@@ -1151,9 +1178,9 @@ function removeAllCustomLinks(){
   try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
   renderCustomLinks();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('linkDocPreview');
   if(previewEl) previewEl.classList.add('hidden');
-  log('🔗 추가 문서 전체 삭제됨', 'info');
 }
 
 function setTheme(th){
@@ -1185,7 +1212,7 @@ function switchTopView(view){
 
 async function fetchDriveFiles(folderId){
   const token=accessToken || localStorage.getItem('google_access_token');
-  if(!token){ log('⚠️️ 설정 탭에서 Google 로그인을 먼저 해주세요.', 'err'); return []; }
+  if(!token){ log('⚠ 설정 탭에서 Google 로그인을 먼저 해주세요.', 'err'); return []; }
   let q="trashed=false";
   if(folderId && folderId!=='root') q+=" and '"+folderId+"' in parents";
   const url="https://www.googleapis.com/drive/v3/files?q="+encodeURIComponent(q)+"&fields=files(id,name,mimeType,modifiedTime)&orderBy=modifiedTime desc&pageSize=100";
@@ -1193,7 +1220,7 @@ async function fetchDriveFiles(folderId){
     const res=await fetch(url,{headers:{Authorization:"Bearer "+token}});
     const data=await res.json();
     return data.files||[];
-  }catch(e){ log('Drive 로드 실패: '+e.message,'err'); return []; }
+  }catch(e){ return []; }
 }
 
 function openDriveModal(isMain){
@@ -1238,6 +1265,7 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
     log('🔗 추가 문서 연결: '+fileName,'ok');
   }
   renderContextCopySettings();
+  updateContextBox();
 };
 
 function buildContextCopyV86(){
@@ -1255,7 +1283,8 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.12 이어가기용]
+  return `[Builder-a4u v5.8.13 이어가기용]
+[프로젝트]: ${currentRepo}
 [작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
@@ -1264,7 +1293,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.12
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.13
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -1319,6 +1348,7 @@ function setupEventListeners(){
     mainFile = val;
     const mainInput = $('mainFileInput');
     if(mainInput) mainInput.value = val;
+    updateContextBox();
     log(`📁 작업 대상 파일 변경: ${val}`, 'info');
   });
 
@@ -1372,19 +1402,21 @@ function setupEventListeners(){
     loadRepoDocuments();
     loadRepoFileTree();
     loadGitHubCommitHistory();
-    log('📌 레포 변경됨: '+currentRepo, 'ok');
+    renderChatBox();
+    log('📌 프로젝트 변경됨: '+currentRepo, 'ok');
   });
 
   $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
 }
 
 function startApp(){
-  try { setupEventListeners(); } catch(e){ console.error(e); }
-  try { initSettingsInputs(); } catch(e){ console.error(e); }
-  try { loadRepos(); } catch(e){ console.error(e); }
-  try { loadMemory10(); } catch(e){ console.error(e); }
-  try { loadRepoDocuments(); } catch(e){ console.error(e); }
-  try { loadGitHubCommitHistory(); } catch(e){ console.error(e); }
+  try { setupEventListeners(); } catch(e){}
+  try { initSettingsInputs(); } catch(e){}
+  try { loadRepos(); } catch(e){}
+  try { loadMemory10(); } catch(e){}
+  try { loadRepoDocuments(); } catch(e){}
+  try { loadGitHubCommitHistory(); } catch(e){}
+  try { renderChatBox(); } catch(e){}
   if (window._gisLoaded) { try{ initGis(); }catch(e){} }
   setTimeout(() => { try{ initGis(); }catch(e){} }, 800);
 }
