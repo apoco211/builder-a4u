@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.12 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.14 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.12 - AI 스마트 자동 파일 탐색 패치</title>
+<title>Builder-a4u v5.8.14 - 드라이브 공유문서함 & 전체 검색 강화 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.12">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.12">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.12">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.12">
+<link rel="manifest" href="./manifest.json?v=5.8.14">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.14">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.14">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.14">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -86,7 +86,6 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .tab-active{border:2px solid #111 !important;box-shadow:0 0 0 2px var(--accent)}
 .view-hidden{display:none !important}
 
-/* 모바일 뷰 전용 긴급 패치: 버튼 글자 2줄 깨짐 방지 */
 @media (max-width: 768px){
   body{padding:10px 10px 100px 10px;font-size:14px}
   .card{padding:12px;border-radius:14px}
@@ -111,7 +110,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .version-history{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px;background:var(--bg)}
 .version-item{display:flex;gap:6px;align-items:center;padding:6px 8px;border-radius:8px;border:1px solid var(--line);cursor:pointer;margin-bottom:5px;background:var(--card);font-size:11px}
 .drive-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;}
-.drive-modal-content{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
+.drive-modal-content{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:85vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
 .dark .drive-modal-content{background:#1e222f;color:#fff;}
 .drive-modal-header{padding:16px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center;}
 .dark .drive-modal-header{border-color:#333;}
@@ -123,8 +122,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.12</h1><p class="text-[10px] opacity-60">AI 스마트 자동 파일 탐색 및 오토 라우팅 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.12 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.14</h1><p class="text-[10px] opacity-60">드라이브 공유문서함 & 전체 검색 강화 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.14 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -177,12 +176,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="flex justify-between mt-2"><span class="text-[8px] opacity-60">입력 즉시 자동 저장 + 3탭 자동 주입</span><button id="templateBtn" class="btn text-[8px]">📝 템플릿</button></div>
 </div>
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
-<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (AI 오토파일 타겟팅 연동)</h2><span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span></div>
+<div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (자동 링크 & 독립 히스토리)</h2><span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
-<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[110px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
-<!-- 🖼️ 붙여넣은 캡처 이미지 미리보기 영역 -->
+<!-- 🖼️️ 붙여넣은 캡처 이미지 미리보기 영역 -->
 <div id="pastedImagePreviewBox" class="hidden mb-2 p-2 rounded-[12px] border flex items-center gap-3 bg-[var(--card)]" style="border-color:var(--line)">
   <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border" style="border-color:var(--line)">
   <div class="flex-1 overflow-hidden">
@@ -246,18 +245,32 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 </div>
-<!-- 드라이브 모달 팝업 -->
+
+<!-- 개선된 구글 드라이브 모달 팝업 -->
 <div id="driveModal" class="drive-modal" style="display:none;">
   <div class="drive-modal-content">
     <div class="drive-modal-header">
-      <div><b>📁 구글 드라이브 탐색</b> <span id="driveModalPath" style="font-size:11px;opacity:0.6;"></span></div>
+      <div><b>📁 구글 드라이브 탐색 및 검색</b></div>
       <button id="driveModalClose" class="btn text-[12px]">✕ 닫기</button>
+    </div>
+    <!-- 🔍 v5.8.14 검색 및 필터 탭 추가 -->
+    <div class="p-3 border-b flex flex-col gap-2" style="border-color:var(--line)">
+      <div class="flex gap-2">
+        <button id="driveTabMy" class="btn btn-sm btn-primary flex-1">📁 내 드라이브</button>
+        <button id="driveTabShared" class="btn btn-sm flex-1">👥 공유문서함</button>
+        <button id="driveTabRecent" class="btn btn-sm flex-1">🕒 최근 문서</button>
+      </div>
+      <div class="flex gap-2">
+        <input id="driveSearchInput" class="input text-[11px] py-1 h-[36px]" placeholder="구글 문서 이름 검색 (예: 빌더, 아이디어...)">
+        <button id="driveSearchBtn" class="btn btn-sm btn-yellow py-1 px-3">🔍 검색</button>
+      </div>
     </div>
     <div id="driveFileList" class="drive-modal-body">
       <div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
     </div>
   </div>
 </div>
+
 <script>
 const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';
 const GITHUB_USER='apoco211';
@@ -275,6 +288,10 @@ try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}
 let mainFile='index.html';
 let connectedDocs=[];
 let customLinks=[];
+
+// v5.8.14 드라이브 검색 관련 변수
+let currentDriveModalIsMain = true;
+let currentDriveMode = 'my'; // 'my', 'shared', 'recent', 'search'
 
 function updateGisStatus(msg){
   const el=$('googleStatus');
@@ -302,7 +319,6 @@ function getGitHubPat(){
   }catch(e){ return ''; }
 }
 
-/* 방어 로직: "레포 불러오는 중..."에 절대 멈추지 않도록 기본값 즉시 주입 */
 function renderFallbackRepoList(){
   const s=$('repoSelect');
   if(!s) return;
@@ -349,7 +365,6 @@ async function loadRepos(){
     }catch{return null;}
   }
 
-  // 1. 선제조치: 멈춤 방지를 위해 캐시가 있든 없든 기본 레포 렌더링
   const cached=getCached();
   if(cached && cached.length>0){
     renderRepos(cached);
@@ -358,7 +373,6 @@ async function loadRepos(){
     renderFallbackRepoList();
   }
 
-  // 2. 실시간 GitHub 레포 로드 (타임아웃 6초 적용)
   try{
     const pat=getGitHubPat();
     const headers={'Accept':'application/vnd.github.v3+json'};
@@ -449,6 +463,7 @@ async function loadRepoFileTree(){
   const mainInput = $('mainFileInput');
   if(mainInput) mainInput.value = currentSelected;
   mainFile = currentSelected;
+  updateContextBox();
 }
 
 function initGis(){
@@ -551,14 +566,14 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.12 (${targetFile})
-2.목적: AI 스마트 자동 파일 탐색 및 멀티파일 드래프트 연동
-3.현재: ${d} - 전체 파일 목록 분석 및 자동 타겟 파일 감지
+  return `1.프로젝트: ${repoName} v5.8.14 (${targetFile})
+2.목적: ${repoName} 기능 구현 및 개발 맥락 유지
+3.현재: ${d} - 레포 연동 및 파일 라우팅 설정 완료
 4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
-5.결정: 소문자 index.html, manifest.json, 스마트 오토 라우팅
+5.결정: 소문자 파일명 유지, 구글문서 & GitHub API 실시간 주입
 6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
 7.저장: Supabase+Docs+GitHub+localStorage
-8.버그: 멀티파일 연동 및 타임머신 자동 스캔 완료
+8.버그: 없음 (정상 동작 중)
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -594,8 +609,27 @@ function updateContextBox(){
   const ctxText = $('contextText');
   const memEl = $('memory10');
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  if(ctxText && memEl){
-    ctxText.textContent = `[자동주입 프롬프트] 레포: ${currentRepo} (현재파일: ${targetFile})\n${memEl.value.slice(0,150)}...`;
+  
+  let docsInfo = '';
+  if (connectedDocs && connectedDocs.length > 0) {
+    docsInfo += connectedDocs.map(d => `📄 메인: https://docs.google.com/document/d/${d.id}/edit (${d.title||d.name||'문서'})`).join('\n');
+  } else {
+    docsInfo += '📄 메인: 연결된 구글 문서 없음';
+  }
+  if (customLinks && customLinks.length > 0) {
+    docsInfo += '\n' + customLinks.map((l, i) => `🔗 추가${i+1}: ${l.url || ('https://docs.google.com/document/d/'+l.id+'/edit')} (${l.title||'문서'})`).join('\n');
+  }
+  
+  const repoUrl = `🐙 Repo: https://github.com/${GITHUB_USER}/${currentRepo}`;
+  const memorySnippet = memEl ? memEl.value.slice(0, 120) : '';
+
+  if (ctxText) {
+    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.14]
+📌 레포: ${currentRepo} | 대상파일: ${targetFile}
+${repoUrl}
+${docsInfo}
+🧠 기억 10줄 요약:
+${memorySnippet}...`;
   }
 }
 
@@ -606,6 +640,28 @@ const tabConfigs = {
   gemini: { name: '제미나이 (Gemini-3.8)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3.8-flash', type: 'gemini' },
   gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
 };
+
+function getChatHistoryKey(repo, tab){
+  return 'chat_history_' + repo + '_' + tab;
+}
+
+function loadChatHistories(){
+  ['meta', 'gemini', 'gpt'].forEach(tab => {
+    try {
+      const saved = localStorage.getItem(getChatHistoryKey(currentRepo, tab));
+      chatHistories[tab] = saved ? JSON.parse(saved) : [];
+    } catch {
+      chatHistories[tab] = [];
+    }
+  });
+  renderChatBox();
+}
+
+function saveChatHistory(tab){
+  try {
+    localStorage.setItem(getChatHistoryKey(currentRepo, tab), JSON.stringify(chatHistories[tab] || []));
+  } catch {}
+}
 
 function switchChatTab(tab){
   activeChatTab = tab;
@@ -629,7 +685,7 @@ function renderChatBox(){
   const msgs = chatHistories[activeChatTab] || [];
   if(badge) badge.textContent = msgs.length + '개';
   if(msgs.length === 0){
-    box.innerHTML = `<div class="msg msg-system text-center opacity-70">🤖 [${tabConfigs[activeChatTab].name}] 대화 준비 완료. 질문 및 캡처 이미지(Ctrl+V)를 전송하세요.</div>`;
+    box.innerHTML = `<div class="msg msg-system text-center opacity-70">🤖 [${currentRepo}] ${tabConfigs[activeChatTab].name} 전용 대화창입니다. 질문을 입력하세요.</div>`;
     return;
   }
   let html = '';
@@ -682,6 +738,7 @@ function processAiFileAutoRouting(aiText){
     log(`🎯 AI가 대상 파일 [${targetPath}]을 감지하여 코드를 드래프트에 자동 저장했습니다!`, 'ok');
     const status = $('draftStatus');
     if(status) status.textContent = `🎯 ${targetPath} 자동 저장됨 (${new Date().toLocaleTimeString()})`;
+    updateContextBox();
   }
 }
 
@@ -692,21 +749,39 @@ async function sendChatMessage(){
   const currentImage = activePastedImageBase64;
   input.value = '';
   clearPastedImage();
+  
   chatHistories[activeChatTab].push({ role: 'user', text: userText, image: currentImage });
+  saveChatHistory(activeChatTab);
   renderChatBox();
+  
   const cfg = tabConfigs[activeChatTab];
   const memoryContext = $('memory10') ? $('memory10').value : '';
   const currentTargetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : 'index.html';
+  
+  let docsListStr = '';
+  if (connectedDocs && connectedDocs.length > 0) {
+    docsListStr += connectedDocs.map(d => `- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title||d.name||'문서'})`).join('\n');
+  }
+  if (customLinks && customLinks.length > 0) {
+    docsListStr += '\n' + customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url || ('https://docs.google.com/document/d/'+l.id+'/edit')} (${l.title||'문서'})`).join('\n');
+  }
+
   const fullSystemPrompt = `당신은 유능한 코딩 도우미입니다.
-현재 프로젝트: [${currentRepo}]
+현재 프로젝트: [${currentRepo}] (https://github.com/${GITHUB_USER}/${currentRepo})
 현재 선택된 파일: [${currentTargetFile}]
 프로젝트 전체 파일 목록: [${fileTreeStr}]
-기억 10줄:
+
+[연결된 구글 문서 링크]:
+${docsListStr || '없음'}
+
+[기억 10줄]:
 ${memoryContext}
+
 [중요 지침]:
 1. 사용자 요청을 분석하여 수정해야 할 파일이 있다면, 답변 시작 부분에 반드시 '[TARGET_FILE: 파일경로]' 태그를 적어주세요. (예: [TARGET_FILE: todo.js] 또는 [TARGET_FILE: index.html])
 2. 수정되거나 새로 작성된 완성 코드는 코드 블록(\`\`\`html ... \`\`\` 또는 \`\`\`javascript ... \`\`\`)으로 출력해주세요.`;
+
   log(`🤖 [${cfg.name}] 스마트 분석 및 API 요청 중...`, 'info');
   try {
     let aiResponse = '';
@@ -721,6 +796,7 @@ ${memoryContext}
       aiResponse = await callGroqApi(fullSystemPrompt, userText, cfg.model, groqKey);
     }
     chatHistories[activeChatTab].push({ role: 'ai', text: aiResponse });
+    saveChatHistory(activeChatTab);
     renderChatBox();
     
     processAiFileAutoRouting(aiResponse);
@@ -729,6 +805,7 @@ ${memoryContext}
   } catch(e) {
     log(`❌ [${cfg.name}] 응답 실패: ` + e.message, 'err');
     chatHistories[activeChatTab].push({ role: 'ai', text: '⚠️ 오류 발생: ' + e.message });
+    saveChatHistory(activeChatTab);
     renderChatBox();
   }
 }
@@ -1028,6 +1105,7 @@ function loadRepoDocuments(){
   try{ customLinks = JSON.parse(localStorage.getItem('customLinks_' + currentRepo) || '[]'); }catch{ customLinks = []; }
   renderConnectedDocs();
   renderCustomLinks();
+  updateContextBox();
 }
 
 function renderConnectedDocs(){
@@ -1061,6 +1139,7 @@ function removeConnectedDoc(idx){
   try{ localStorage.setItem('connected_docs_' + currentRepo, JSON.stringify(connectedDocs)); }catch{}
   renderConnectedDocs();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('docPreview');
   if(previewEl) previewEl.classList.add('hidden');
   log('📄 메인 문서 해제됨', 'info');
@@ -1137,6 +1216,7 @@ function removeCustomLink(idx){
   try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
   renderCustomLinks();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('linkDocPreview');
   if(previewEl && customLinks.length === 0) previewEl.classList.add('hidden');
   log('🔗 추가 문서 삭제됨', 'info');
@@ -1147,6 +1227,7 @@ function removeAllCustomLinks(){
   try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
   renderCustomLinks();
   renderContextCopySettings();
+  updateContextBox();
   const previewEl = $('linkDocPreview');
   if(previewEl) previewEl.classList.add('hidden');
   log('🔗 추가 문서 전체 삭제됨', 'info');
@@ -1178,19 +1259,36 @@ function switchTopView(view){
   }
 }
 
-async function fetchDriveFiles(folderId){
+/* v5.8.14 핵심 개선: 내 드라이브, 공유문서함, 검색 모드 및 팀드라이브 지원 */
+async function fetchDriveFiles(folderId, mode = 'my', keyword = ''){
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){
     log('⚠️ [구글 드라이브] 로그인 토큰이 없습니다. [⚙️ 설정] 탭에서 Google 로그인을 먼저 해주세요.', 'err');
     return [];
   }
+  
   let q = "trashed=false";
-  if(folderId === 'root' || !folderId){
-    q += " and 'root' in parents";
+  if(mode === 'search' && keyword.trim() !== ''){
+    const safeK = keyword.replace(/'/g, "\\'");
+    q += ` and name contains '${safeK}'`;
+  } else if(mode === 'shared'){
+    q += " and sharedWithMe=true";
+  } else if(mode === 'recent'){
+    // 최근 사용 문서 (전체 대상)
   } else {
-    q += " and '" + folderId + "' in parents";
+    // 내 드라이브 탐색
+    if(folderId === 'root' || !folderId){
+      q += " and 'root' in parents";
+    } else {
+      q += " and '" + folderId + "' in parents";
+    }
   }
-  const url = "https://www.googleapis.com/drive/v3/files?q=" + encodeURIComponent(q) + "&fields=files(id,name,mimeType,modifiedTime)&orderBy=modifiedTime desc&pageSize=100";
+  
+  const url = "https://www.googleapis.com/drive/v3/files?q=" + encodeURIComponent(q) + 
+              "&fields=files(id,name,mimeType,modifiedTime,webViewLink)" +
+              "&orderBy=modifiedTime desc&pageSize=100" +
+              "&supportsAllDrives=true&includeItemsFromAllDrives=true";
+              
   try{
     const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
     if(!res.ok){
@@ -1208,6 +1306,7 @@ async function fetchDriveFiles(folderId){
 }
 
 function openDriveModal(isMain){
+  currentDriveModalIsMain = isMain;
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){
     switchTopView('settings');
@@ -1216,27 +1315,48 @@ function openDriveModal(isMain){
   const modal=$('driveModal');
   if(!modal) return;
   modal.style.display='flex';
-  loadDriveFolder('root', isMain);
+  switchDriveTab('my');
 }
 
-async function loadDriveFolder(folderId, isMain){
+function switchDriveTab(mode){
+  currentDriveMode = mode;
+  $('driveTabMy')?.classList.toggle('btn-primary', mode === 'my');
+  $('driveTabShared')?.classList.toggle('btn-primary', mode === 'shared');
+  $('driveTabRecent')?.classList.toggle('btn-primary', mode === 'recent');
+  loadDriveFolder('root', currentDriveModalIsMain, mode);
+}
+
+async function loadDriveFolder(folderId, isMain, mode = 'my', keyword = ''){
   const list=$('driveFileList');
-  if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>';
-  const files=await fetchDriveFiles(folderId);
+  if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">🔍 구글 드라이브 문서 불러오는 중...</div>';
+  const files = await fetchDriveFiles(folderId, mode, keyword);
   if(!list) return;
-  if(files.length===0){ list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">파일이 없거나 불러올 수 없습니다. (하단 📡로그 참조)</div>'; return; }
+  if(files.length===0){ 
+    list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">조건에 맞는 파일이 없습니다. (상단 검색창에서 문서 이름으로 직접 검색 가능)</div>'; 
+    return; 
+  }
   let html='';
   files.forEach(file=>{
     const isFolder=file.mimeType==='application/vnd.google-apps.folder';
-    const icon=isFolder?'📁':'📄';
+    const icon=isFolder?'📁':(file.mimeType.includes('document')?'📄':'📎');
     const safeName=file.name.replace(/'/g, "\\'");
-    html+='<div class="drive-file" onclick="'+(isFolder?'openSubFolder(\''+file.id+'\','+isMain+')':'selectDriveFile(\''+file.id+'\',\''+safeName+'\','+isMain)+')"><span>'+icon+'</span><span>'+file.name+'</span></div>';
+    const dateStr = file.modifiedTime ? new Date(file.modifiedTime).toLocaleDateString() : '';
+    
+    html+=`
+    <div class="drive-file" onclick="${isFolder? `openSubFolder('${file.id}',${isMain})` : `selectDriveFile('${file.id}','${safeName}',${isMain})`}">
+      <span class="text-[16px]">${icon}</span>
+      <div class="flex-1 overflow-hidden">
+        <div class="font-bold text-[12px] truncate">${file.name}</div>
+        <div class="text-[9px] opacity-60">${dateStr ? dateStr + ' 수정됨' : '구글 문서'}</div>
+      </div>
+      <button class="btn btn-sm text-[9px] py-0.5 px-2">선택</button>
+    </div>`;
   });
   list.innerHTML=html;
 }
 
 window.openSubFolder=(folderId, isMain)=>{
-  loadDriveFolder(folderId, isMain);
+  loadDriveFolder(folderId, isMain, currentDriveMode);
 };
 
 window.selectDriveFile=(fileId, fileName, isMain)=>{
@@ -1254,6 +1374,7 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
     log('🔗 추가 문서 연결: '+fileName,'ok');
   }
   renderContextCopySettings();
+  updateContextBox();
 };
 
 function buildContextCopyV86(){
@@ -1271,7 +1392,7 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.12 이어가기용]
+  return `[Builder-a4u v5.8.14 이어가기용]
 [작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
@@ -1280,7 +1401,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.12
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.14
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -1334,6 +1455,7 @@ function setupEventListeners(){
     mainFile = val;
     const mainInput = $('mainFileInput');
     if(mainInput) mainInput.value = val;
+    updateContextBox();
     log(`📁 작업 대상 파일 변경: ${val}`, 'info');
   });
   $('scanRepoFilesBtn')?.addEventListener('click', () => loadRepoFileTree());
@@ -1365,6 +1487,22 @@ function setupEventListeners(){
   $('driveModalClose')?.addEventListener('click', ()=>{ const m=$('driveModal'); if(m) m.style.display='none'; });
   $('searchExactBtn')?.addEventListener('click', ()=>openDriveModal(true));
   $('linkSearchBtn')?.addEventListener('click', ()=>openDriveModal(false));
+  
+  // v5.8.14 드라이브 검색 필터 이벤트
+  $('driveTabMy')?.addEventListener('click', () => switchDriveTab('my'));
+  $('driveTabShared')?.addEventListener('click', () => switchDriveTab('shared'));
+  $('driveTabRecent')?.addEventListener('click', () => switchDriveTab('recent'));
+  $('driveSearchBtn')?.addEventListener('click', () => {
+    const kw = $('driveSearchInput')?.value || '';
+    loadDriveFolder('root', currentDriveModalIsMain, 'search', kw);
+  });
+  $('driveSearchInput')?.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){
+      const kw = $('driveSearchInput')?.value || '';
+      loadDriveFolder('root', currentDriveModalIsMain, 'search', kw);
+    }
+  });
+
   $('btn-copy-context-settings')?.addEventListener('click', async()=>{
     try{
       await navigator.clipboard.writeText(buildContextCopyV86());
@@ -1379,6 +1517,8 @@ function setupEventListeners(){
     loadRepoDocuments();
     loadRepoFileTree();
     loadGitHubCommitHistory();
+    loadChatHistories();
+    updateContextBox();
     log('📌 레포 변경됨: '+currentRepo, 'ok');
   });
   $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
@@ -1391,6 +1531,7 @@ function startApp(){
   try { loadMemory10(); } catch(e){ console.error(e); }
   try { loadRepoDocuments(); } catch(e){ console.error(e); }
   try { loadGitHubCommitHistory(); } catch(e){ console.error(e); }
+  try { loadChatHistories(); } catch(e){ console.error(e); }
   if (window._gisLoaded) { try{ initGis(); }catch(e){} }
   setTimeout(() => { try{ initGis(); }catch(e){} }, 800);
 }
