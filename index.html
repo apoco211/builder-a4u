@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.7 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.8 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.7 - Groq & Gemini API 최신 모델 업데이트완료</title>
+<title>Builder-a4u v5.8.8 - 타임머신 롤백 및 미리보기 완벽 구현</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.7">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.7">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.7">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.7">
+<link rel="manifest" href="./manifest.json?v=5.8.8">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.8">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.8">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.8">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -120,8 +120,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.7</h1><p class="text-[10px] opacity-60">Groq & Gemini API 최신 모델 업데이트완료</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.7 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.8</h1><p class="text-[10px] opacity-60">타임머신 롤백 및 실시간 미리보기 기능 탑재</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.8 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
@@ -194,7 +194,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div id="livePreviewBox" class="live-preview-box mt-3">
   <div class="live-preview-header">
-    <span>👁️ 실시간 미리보기 - 빌드 전 확인</span>
+    <span id="previewTitle">👁️ 실시간 미리보기 - 빌드 전 확인</span>
     <button id="previewCloseBtn" class="btn text-[9px]">✕ 닫기</button>
   </div>
   <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -203,7 +203,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="card mt-3">
   <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 이전 버전으로 롤백</h2>
   <div class="flex gap-1 mb-2">
-    <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px]">📦 로컬 draft 기록</button>
+    <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px]">📦 로컬 draft 기록 불러오기</button>
   </div>
   <div id="versionHistoryBox" class="version-history"><div class="text-[11px] text-gray-400 p-4 text-center">버튼을 눌러 기록을 불러와주세요</div></div>
 </div>
@@ -225,7 +225,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 
 <div class="card" style="border-color:var(--accent)">
-<h2 class="font-black text-[13px] mb-3">⚙️ 설정</h2>
+<h2 class="font-black text-[13px] mb-3">⚙️️ 설정</h2>
 <div class="mb-4">
 <h3 class="font-bold text-[11px] mb-2">🔑 GOOGLE 로그인 (문서 검색용)</h3>
 <button id="googleLoginBtn" class="btn btn-primary w-full text-[11px]">🔑 Google 로그인 실행</button>
@@ -289,7 +289,6 @@ async function loadRepos(){
   const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
   function renderRepos(list){
     if(!s || !list || list.length===0) return;
-    const currentVal=s.value||currentRepo;
     s.innerHTML='';
     list.forEach(repo=>{
       const name=typeof repo==='string'?repo:(repo.full_name||repo.name||'');
@@ -466,18 +465,18 @@ function clearPastedImage(){
 
 $('removePastedImageBtn')?.addEventListener('click', clearPastedImage);
 
-// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.7)
+// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.8)
 function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
-  return `1.프로젝트: ${repoName} v5.8.7
+  return `1.프로젝트: ${repoName} v5.8.8
 2.목적: 단일 공방으로 N개 앱 맥락 유지
-3.현재: ${d} - Gemini API gemini-3.8-flash 업그레이드 대응
+3.현재: ${d} - 타임머신 롤백 및 실시간 미리보기 기능 탑재
 4.다음: 기능 구현 및 빌드 배포
 5.결정: 소문자 index.html, manifest.json, 3탭 채팅 연동
 6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
 7.저장: Supabase+Docs+GitHub+localStorage
-8.버그: Gemini 모델 퇴출로 인한 오류 해결 완료
+8.버그: 타임머신 버전 롤백 및 미리보기 바인딩 완료
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -517,7 +516,8 @@ function updateContextBox(){
   }
 }
 
-$('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateBtn')?.addEventListener('click', () => {
+$('memory10')?.addEventListener('input', () => updateMemoryCount());
+$('templateBtn')?.addEventListener('click', () => {
   const memEl = $('memory10');
   if(memEl){
     memEl.value = getProjectTemplate(currentRepo);
@@ -526,7 +526,7 @@ $('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateB
   }
 });
 
-// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.7 최신 API 모델 적용)
+// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.8 최신 API 모델 적용)
 let activeChatTab = 'meta';
 let chatHistories = { meta: [], gemini: [], gpt: [] };
 const tabConfigs = {
@@ -540,7 +540,8 @@ function switchChatTab(tab){
   const cfg = tabConfigs[tab];
   
   $('tabMeta').classList.toggle('tab-active', tab === 'meta');
-  $('tabGemini').classList.toggle('tab-active', tab === 'gemini');$('tabGpt').classList.toggle('tab-active', tab === 'gpt');
+  $('tabGemini').classList.toggle('tab-active', tab === 'gemini');
+  $('tabGpt').classList.toggle('tab-active', tab === 'gpt');
   const badge = $('currentTabLabel');
   if(badge){
     badge.textContent = cfg.name;
@@ -579,7 +580,7 @@ async function sendChatMessage(){
   chatHistories[activeChatTab].push({ role: 'user', text: userText, image: currentImage });
   renderChatBox();
   const cfg = tabConfigs[activeChatTab];
-  const memoryContext = $('memory10') ?$('memory10').value : '';
+  const memoryContext = $('memory10') ? $('memory10').value : '';
   const fullSystemPrompt = `당신은 유능한 코딩 및 프로젝트 도우미입니다. 아래는 현재 프로젝트 [${currentRepo}]의 최신 기억 10줄 내용입니다:\n\n${memoryContext}\n\n위 맥락을 참고하여 답변해주세요.`;
   log(`🤖 [${cfg.name}] API 요청 전송 중...`, 'info');
   try {
@@ -629,7 +630,7 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelN
   return data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.[0]?.text || '응답을 받지 못했습니다.';
 }
 
-// v5.8.7 Groq API 순회(Fallback) 모델 호환 처리
+// v5.8.8 Groq API 순회(Fallback) 모델 호환 처리
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
   const url = 'https://api.groq.com/openai/v1/chat/completions';
   const modelsToTry = [preferredModel, 'llama-3.1-8b-instant', 'openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
@@ -666,9 +667,139 @@ async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
 }
 
 $('tabMeta')?.addEventListener('click', () => switchChatTab('meta'));
-$('tabGemini')?.addEventListener('click', () => switchChatTab('gemini'));$('tabGpt')?.addEventListener('click', () => switchChatTab('gpt'));
+$('tabGemini')?.addEventListener('click', () => switchChatTab('gemini'));
+$('tabGpt')?.addEventListener('click', () => switchChatTab('gpt'));
 
-$('chatSendBtn')?.addEventListener('click', sendChatMessage);$('chatInput')?.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
+$('chatSendBtn')?.addEventListener('click', sendChatMessage);
+$('chatInput')?.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
+
+// ⏰ 타임머신 & 실시간 미리보기 모듈 (v5.8.8)
+function getDraftHistoryKey(){ return 'draft_history_' + currentRepo; }
+function getDraftCodeKey(){ return 'draft_code_' + currentRepo; }
+
+function saveDraftCustom(codeToSave, note = '수동 저장'){
+  const editor = $('codeEditor');
+  const code = codeToSave || (editor && editor.value ? editor.value : document.documentElement.outerHTML);
+  try {
+    localStorage.setItem(getDraftCodeKey(), code);
+    let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
+    const newEntry = {
+      id: Date.now(),
+      time: new Date().toLocaleString(),
+      note: note,
+      code: code
+    };
+    history.unshift(newEntry);
+    if(history.length > 20) history = history.slice(0, 20);
+    localStorage.setItem(getDraftHistoryKey(), JSON.stringify(history));
+    log(`💾 드래프트 저장 완료 (${newEntry.time})`, 'ok');
+    const status = $('draftStatus');
+    if(status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
+    loadDraftHistory();
+    alert('현재 드래프트가 성공적으로 저장되었습니다!');
+  } catch(e) {
+    log('드래프트 저장 실패: ' + e.message, 'err');
+  }
+}
+
+function loadDraftHistory(){
+  const box = $('versionHistoryBox');
+  if(!box) return;
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
+  
+  if(!history || history.length === 0){
+    box.innerHTML = '<div class="text-[11px] text-gray-400 p-4 text-center">저장된 로컬 기록이 없습니다. [💾 현재 드래프트 저장] 버튼을 누르면 기록이 저장됩니다.</div>';
+    return;
+  }
+  
+  let html = '';
+  history.forEach((item, idx) => {
+    const sizeKb = Math.round((item.code || '').length / 1024);
+    html += `
+    <div class="version-item flex justify-between items-center p-2.5 mb-2 rounded-[10px] border" style="border-color:var(--line);background:var(--card)">
+      <div class="flex flex-col overflow-hidden">
+        <span class="font-bold text-[11px] truncate">${item.note || '버전 ' + (history.length - idx)}</span>
+        <span class="text-[9px] opacity-60">${item.time} (${sizeKb} KB)</span>
+      </div>
+      <div class="flex gap-1.5 shrink-0">
+        <button onclick="previewVersionHistory(${item.id})" class="btn btn-sm text-[9.5px] py-1 px-2.5" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">👁️ 미리보기</button>
+        <button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9.5px] py-1 px-2.5" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button>
+      </div>
+    </div>`;
+  });
+  box.innerHTML = html;
+  log(`⏰ 타임머신 기록 ${history.length}개 로드 완료`, 'info');
+}
+
+window.previewVersionHistory = function(id){
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
+  const item = history.find(h => h.id === id);
+  if(!item) return;
+  const frame = $('livePreviewFrame');
+  const box = $('livePreviewBox');
+  const title = $('previewTitle');
+  if(frame && box){
+    if(title) title.textContent = `👁️ [타임머신 미리보기] ${item.time}`;
+    frame.srcdoc = item.code;
+    box.classList.add('active');
+    box.scrollIntoView({ behavior: 'smooth' });
+    log(`👁️ 타임머신 미리보기 실행 (${item.time})`, 'info');
+  }
+};
+
+window.rollbackToVersionHistory = function(id){
+  let history = [];
+  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
+  const item = history.find(h => h.id === id);
+  if(!item) return;
+  if(!confirm(`[${item.time}] 시점의 코드로 현재 드래프트를 롤백(복원)하시겠습니까?`)) return;
+  
+  try {
+    localStorage.setItem(getDraftCodeKey(), item.code);
+    const editor = $('codeEditor');
+    if(editor) editor.value = item.code;
+    const status = $('draftStatus');
+    if(status) status.textContent = `롤백됨 (${item.time})`;
+    log(`↺ [${item.time}] 버전으로 롤백 복원 성공!`, 'ok');
+    alert(`성공적으로 [${item.time}] 시점의 코드로 롤백되었습니다.`);
+  } catch(e) {
+    log('롤백 실패: ' + e.message, 'err');
+  }
+};
+
+function showLivePreviewCurrent(){
+  const editor = $('codeEditor');
+  let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
+  if(!code || code.trim() === '') code = document.documentElement.outerHTML;
+  
+  const frame = $('livePreviewFrame');
+  const box = $('livePreviewBox');
+  const title = $('previewTitle');
+  if(frame && box){
+    if(title) title.textContent = '👁️ 실시간 미리보기 - 빌드 전 확인';
+    frame.srcdoc = code;
+    box.classList.add('active');
+    box.scrollIntoView({ behavior: 'smooth' });
+    log('👁️ 실시간 미리보기 실행', 'info');
+  }
+}
+
+function hideLivePreviewBox(){
+  const box = $('livePreviewBox');
+  if(box) box.classList.remove('active');
+}
+
+// 버튼 이벤트 바인딩
+$('saveDraftBtn')?.addEventListener('click', () => saveDraftCustom());
+$('previewCheckBtn')?.addEventListener('click', () => showLivePreviewCurrent());
+$('previewCloseBtn')?.addEventListener('click', () => hideLivePreviewBox());
+$('showDraftHistoryBtn')?.addEventListener('click', () => loadDraftHistory());
+$('buildBtn')?.addEventListener('click', () => {
+  saveDraftCustom(null, '공용 빌드 실행 전 자동 저장');
+  alert('드래프트가 저장되었으며 빌드 요약 준비가 완료되었습니다.');
+});
 
 // 문서 및 공통 설정
 function loadRepoDocuments(){
@@ -737,7 +868,7 @@ async function fetchDocContent(docId, docTitle, isMain = true){
         }
       });
     }
-    const previewEl = isMain ? $('docPreview') :$('linkDocPreview');
+    const previewEl = isMain ? $('docPreview') : $('linkDocPreview');
     if(previewEl){
       previewEl.classList.remove('hidden');
       previewEl.textContent = `[${docTitle || '문서'}]\n` + text.slice(0, 3000) + (text.length > 3000 ? '\n...(이하 생략)' : '');
@@ -770,7 +901,7 @@ function renderCustomLinks(){
       <div class="flex gap-1.5 justify-end w-full pt-1 border-t" style="border-color:var(--line)">
         <a href="${l.url || ('https://docs.google.com/document/d/' + l.id + '/edit')}" target="_blank" class="btn btn-sm py-1 px-2.5 text-[10px] flex items-center">🔗 열기</a>
         ${docId ? `<button onclick="fetchDocContent('${docId}', '${titleText.replace(/'/g, "\\'")}', false)" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📥 내용 불러오기</button>` : ''}
-        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑️ 삭제</button>
+        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑️️ 삭제</button>
       </div>
     </div>`;
   });
@@ -835,7 +966,8 @@ function switchTopView(view){
   }
 }
 
-$('topTabWorkspace').onclick=()=>switchTopView('workspace');$('topTabSettings').onclick=()=>switchTopView('settings');
+$('topTabWorkspace').onclick=()=>switchTopView('workspace');
+$('topTabSettings').onclick=()=>switchTopView('settings');
 
 const gBtn=$('googleLoginBtn');
 if(gBtn) gBtn.onclick=handleGoogleLogin;
@@ -896,10 +1028,11 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
   renderContextCopySettings();
 };
 
-$('driveModalClose').onclick=()=>{$('driveModal').style.display='none'; };
-$('searchExactBtn').onclick=()=>openDriveModal(true);$('linkSearchBtn').onclick=()=>openDriveModal(false);
+$('driveModalClose').onclick=()=>{ $('driveModal').style.display='none'; };
+$('searchExactBtn').onclick=()=>openDriveModal(true);
+$('linkSearchBtn').onclick=()=>openDriveModal(false);
 
-// 📋 구글 문서 링크까지 합성되는 전체맥락복사 생성기 (v5.8.7)
+// 📋 구글 문서 링크까지 합성되는 전체맥락복사 생성기 (v5.8.8)
 function buildContextCopyV86(){
   const mem = document.getElementById('memory10') ? document.getElementById('memory10').value : '';
   let mainDocsText = '';
@@ -914,7 +1047,7 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.7 이어가기용]
+  return `[Builder-a4u v5.8.8 이어가기용]
 [기억 10줄]
 ${mem}
 [구글 문서 링크]
@@ -922,7 +1055,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.7
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.8
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -975,6 +1108,7 @@ $('repoSelect')?.addEventListener('change', e=>{
   try{ localStorage.setItem('current_repo', currentRepo); }catch{}
   loadMemory10();
   loadRepoDocuments();
+  loadDraftHistory();
   log('📌 레포 변경됨: '+currentRepo, 'ok');
 });
 
@@ -985,6 +1119,7 @@ window.addEventListener('load', () => {
   loadRepos();
   loadMemory10();
   loadRepoDocuments();
+  loadDraftHistory();
   if (window._gisLoaded) initGis();
   setTimeout(initGis, 800);
 });
