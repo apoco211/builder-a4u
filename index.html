@@ -57,7 +57,7 @@ html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
 body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:.2s;font-size:15px;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;transition:.2s}
 .doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--card);display:flex;gap:10px;align-items:center}
-.btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px}
+.btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px;white-space:nowrap}
 .btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
 .btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
 .btn-meta{background:var(--meta) !important;color:#fff !important;border-color:var(--meta) !important}
@@ -67,7 +67,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .btn:active{transform:scale(.97)}
 .input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);color:var(--txt);font-size:16px;outline:none;min-height:46px}
 .textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--txt);font-size:14px;line-height:1.6;outline:none;resize:vertical}
-.badge{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid var(--line)}
+.badge{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid var(--line);white-space:nowrap}
 .log{font-family:monospace;font-size:12px;line-height:1.6;max-height:220px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
 .chat-box{border:1px solid var(--line);border-radius:14px;background:var(--bg);height:420px;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
 .msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
@@ -89,7 +89,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 body{padding:10px 10px 100px 10px;font-size:14px}
 .card{padding:12px;border-radius:14px}
 .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
-.btn{font-size:12.5px;padding:10px 12px;min-height:40px}
+.btn{font-size:12px;padding:8px 10px;min-height:38px}
 .input{font-size:15px !important;padding:12px;min-height:44px}
 .textarea{font-size:13.5px !important}
 .chat-box{height:48vh;min-height:360px}
@@ -121,32 +121,32 @@ h2{font-size:12.5px !important}
 <body>
 <div class="flex justify-between items-center mb-3">
 <div><h1 class="text-[18px] font-black">Builder-a4u v5.8.12</h1><p class="text-[10px] opacity-60">AI 스마트 자동 파일 탐색 및 오토 라우팅 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.12 정식</span></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.12 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
-<button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙️ 설정</button>
+<button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙️️ 설정</button>
 </div>
 <!-- 작업 뷰 -->
 <div id="workspaceView">
 <div class="card">
 <div class="flex justify-between items-center mb-2">
 <h2 class="font-bold text-[11px]">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-<button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
+<button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
 </div>
-<select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
+<select id="repoSelect" class="input mb-2 text-[12px]"><option value="builder-a4u">builder-a4u</option></select>
 <!-- 📁 레포 내부 파일 선택 (GitHub Tree API 연동 + AI 자동 감지) -->
 <div class="flex flex-col gap-1.5 mt-2">
 <div class="flex justify-between items-center">
-<label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 필요시 자동 감지하여 수정 후 드래프트에 교체합니다)</label>
-<button id="scanRepoFilesBtn" class="btn btn-sm text-[8px] py-0.5 px-2">🔍 파일목록 스캔</button>
+<label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 필요시 자동 감지하여 교체)</label>
+<button id="scanRepoFilesBtn" class="btn btn-sm text-[8px] py-0.5 px-2 shrink-0">🔍 파일목록 스캔</button>
 </div>
-<div class="flex gap-1">
+<div class="flex gap-1 items-center">
 <select id="repoFilesSelect" class="input text-[11px] flex-1">
 <option value="index.html">index.html (기본)</option>
 </select>
 <input id="mainFileInput" class="input text-[10px] w-[110px]" placeholder="직접입력" value="index.html">
-<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 복구</button>
+<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap shrink-0">📥 복구</button>
 </div>
 </div>
 <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
@@ -155,15 +155,15 @@ h2{font-size:12.5px !important}
 <div class="card">
 <div class="flex justify-between items-center mb-2">
 <h2 class="font-bold text-[11px]">📄 메인 문서 - 계속 업데이트 1개</h2>
-<button id="searchExactBtn" class="btn btn-sm text-[10px] py-1 px-3">📁 Drive 선택</button>
+<button id="searchExactBtn" class="btn btn-sm text-[10px] py-1 px-3 whitespace-nowrap shrink-0">📁 Drive 선택</button>
 </div>
 <div id="connectedDocs" class="mt-2"></div>
 <div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
 </div>
 <div class="card" style="border-color:var(--gemini)">
 <div class="flex justify-between items-center mb-2">
-<h2 class="font-bold text-[11px]">🔗 추가 문서 N개 - Drive 체크박스 <span id="linkCount" class="badge ml-2">0개</span></h2>
-<button id="linkSearchBtn" class="btn btn-sm text-[10px] py-1 px-3">📁 Drive 선택</button>
+<h2 class="font-bold text-[11px] flex items-center gap-1">🔗 추가 문서 N개 <span id="linkCount" class="badge ml-1">0개</span></h2>
+<button id="linkSearchBtn" class="btn btn-sm text-[10px] py-1 px-3 whitespace-nowrap shrink-0">📁 Drive 선택</button>
 </div>
 <div id="customLinksList" class="mt-2"></div>
 <div id="linkDocPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
@@ -292,17 +292,30 @@ for(const k of keys){
 ￼
 ￼
 }
-const input=('githubPatInput');
+￼('githubPatInput');
 if(input && input.value && input.value.trim().length>10) return input.value.trim();
 return '';
 }catch(e){ return ''; }
 }
+function renderFallbackRepoList(){
+const s=￼
+￼
+￼
+￼
+￼
+￼
+￼
+￼
+}
 async function loadRepos(){
-const s=$('repoSelect');
+￼('repoSelect');
 if(!s) return;
 const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
 function renderRepos(list){
-if(!s || !list || list.length=0) return;
+if(!s || !list || list.length=0){
+renderFallbackRepoList();
+return;
+}
 s.innerHTML='';
 list.forEach(repo=>{
 const name=typeof repo='string'?repo:(repo.full_name||repo.name||'');
@@ -331,6 +344,8 @@ const cached=getCached();
 if(cached && cached.length>0){
 renderRepos(cached);
 log('📦 캐시 레포 '+cached.length+'개 표시', 'info');
+} else {
+renderFallbackRepoList();
 }
 try{
 const pat=getGitHubPat();
@@ -344,25 +359,28 @@ const url=hasPat
 ? 'https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'
 : 'https://api.github.com/users/'+GITHUB_USER+'/repos?per_page=100&sort=updated';
 const controller=new AbortController();
-const timeout=setTimeout(()=>controller.abort(), 10000);
+const timeout=setTimeout(()=>controller.abort(), 6000);
 const r=await fetch(url, {headers, signal:controller.signal});
 clearTimeout(timeout);
 if(!r.ok){
-const txt=await r.text();
-log('GitHub API ('+r.status+'): '+(hasPat?'PAT 인식됨':'PAT 없음')+' '+txt.slice(0,60), 'info');
-if(cached) renderRepos(cached);
+log('GitHub API ('+r.status+'): 레포 로드 안됨 '+(hasPat?'(PAT 확인필요)':'(Public API 제한 가능성)'), 'info');
+if(cached) renderRepos(cached); else renderFallbackRepoList();
+loadRepoFileTree();
 return;
 }
 const d=await r.json();
-if(!Array.isArray(d) || d.length=0) return;
+if(!Array.isArray(d) || d.length=0){
+if(!cached) renderFallbackRepoList();
+return;
+}
 renderRepos(d);
 try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
 log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
 loadRepoFileTree();
 }catch(e){
 if(e.name!=='AbortError') log('레포 로드 정보: '+e.message, 'info');
-const cached2=getCached();
-if(cached2) renderRepos(cached2);
+if(!cached) renderFallbackRepoList();
+loadRepoFileTree();
 }
 }
 async function loadRepoFileTree(){
