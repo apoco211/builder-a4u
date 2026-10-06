@@ -22,7 +22,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><style>
-/* v5.8.1 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.3 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -39,15 +39,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.1 - 추가 문서에도 내용 불러오기 동일 적용</title>
+<title>Builder-a4u v5.8.3 - 통합 공방 완벽 구현</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.1">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.1">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.1">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.1">
+<link rel="manifest" href="./manifest.json?v=5.8.3">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.3">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.3">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.3">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -121,8 +121,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.1</h1><p class="text-[10px] opacity-60">추가 문서에도 내용 불러오기 동일 적용</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.1 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.3</h1><p class="text-[10px] opacity-60">통합 공방 자동 연동 및 제어 복원 완료</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.3 정식</span></div>
 </div>
 
 <div class="flex gap-2 mb-3">
@@ -425,6 +425,59 @@ try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{}
 const $=id=>document.getElementById(id);
 function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML='<span style="opacity:.6">'+time+'</span> '+(t==='ok'?'✅':t==='err'?'❌':'ℹ️')+' '+m;a.appendChild(d);a.scrollTop=a.scrollHeight;}
 
+// 🧠 기억 10줄 템플릿 양식 생성
+function getProjectTemplate(repo){
+  const d = new Date().toLocaleDateString();
+  const repoName = repo || currentRepo || 'builder-a4u';
+  return `1.프로젝트: ${repoName} v5.8.3
+2.목적: 단일 공방으로 N개 앱 맥락 유지
+3.현재: ${d} - ${repoName} 로드 완료
+4.다음: 기능 구현 및 빌드 배포
+5.결정: 소문자 index.html, manifest.json, 3탭 채팅 연동
+6.제외: 없음
+7.저장: Supabase+Docs+GitHub+localStorage
+8.버그: 기억 10줄 + 문서 제어 전체 연동 완벽 복원
+9.모드: 빌드모드
+10.상태: 진행중`;
+}
+
+// 기억 10줄 로드 & 카운트 업데이트
+function loadMemory10(){
+  const memEl = $('memory10');
+  if(!memEl) return;
+  let saved = '';
+  try{ saved = localStorage.getItem('memory_10_' + currentRepo) || localStorage.getItem('memory10_' + currentRepo) || ''; }catch{}
+  if(!saved || saved.trim() === ''){
+    saved = getProjectTemplate(currentRepo);
+  }
+  memEl.value = saved;
+  updateMemoryCount();
+}
+
+function updateMemoryCount(){
+  const memEl = $('memory10');
+  const countBadge = $('memoryCount');
+  if(!memEl) return;
+  const text = memEl.value;
+  const lines = text.split('\n').filter(l => l.trim().length > 0).length;
+  if(countBadge) countBadge.textContent = lines + '줄';
+  try{
+    localStorage.setItem('memory_10_' + currentRepo, text);
+    localStorage.setItem('memory10_' + currentRepo, text);
+  }catch{}
+  renderContextCopySettings();
+}
+
+// 기억 10줄 이벤트 바인딩
+$('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateBtn')?.addEventListener('click', () => {
+  const memEl = $('memory10');
+  if(memEl){
+    memEl.value = getProjectTemplate(currentRepo);
+    updateMemoryCount();
+    log('📝 템플릿 양식이 생성되었습니다.', 'ok');
+  }
+});
+
 // 레포별 저장된 문서 로드
 function loadRepoDocuments(){
   try{ connectedDocs = JSON.parse(localStorage.getItem('connected_docs_' + currentRepo) || '[]'); }catch{ connectedDocs = []; }
@@ -504,7 +557,7 @@ async function fetchDocContent(docId, docTitle, isMain = true){
   }
 }
 
-// 🔗 추가 문서 N개 렌더링 및 컨트롤 (메인과 동일한 [🔗 열기], [📥 내용 불러오기], [🗑️ 삭제] 적용)
+// 🔗 추가 문서 N개 렌더링 및 컨트롤
 function renderCustomLinks(){
   const el = $('customLinksList');
   const badge = $('linkCount');
@@ -654,24 +707,25 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
 $('driveModalClose').onclick=()=>{$('driveModal').style.display='none';};
 $('searchExactBtn').onclick=()=>openDriveModal(true);$('linkSearchBtn').onclick=()=>openDriveModal(false);
 
-function buildContextCopyV81(){
+function buildContextCopyV83(){
   const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
-  return `[Builder-a4u v5.8.1 이어가기용]
+  return `[Builder-a4u v5.8.3 이어가기용]
 [기억 10줄]
 ${mem}
+
 [링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.1`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.3`;
 }
 
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
-  if(ta) ta.value=buildContextCopyV81();
+  if(ta) ta.value=buildContextCopyV83();
 }
 
 $('btn-copy-context-settings')?.addEventListener('click', async()=>{
   try{
-    await navigator.clipboard.writeText(buildContextCopyV81());
+    await navigator.clipboard.writeText(buildContextCopyV83());
     alert('전체맥락복사 완료!');
   }catch(e){alert('복사 실패');}
 });
@@ -687,9 +741,11 @@ function initSettingsInputs(){
   }
 }
 
+// 레포 변경 시 기억 10줄 + 문서 동시 자동 변경
 $('repoSelect')?.addEventListener('change', e=>{
   currentRepo=e.target.value;
   try{ localStorage.setItem('current_repo', currentRepo); }catch{}
+  loadMemory10();
   loadRepoDocuments();
   log('📌 레포 변경됨: '+currentRepo, 'ok');
 });
@@ -699,6 +755,7 @@ $('refreshRepoBtn')?.addEventListener('click', ()=>loadRepos());
 window.addEventListener('load', ()=>{
   initSettingsInputs();
   loadRepos();
+  loadMemory10();
   loadRepoDocuments();
   setTimeout(initGis, 800);
 });
