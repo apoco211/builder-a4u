@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.16 - 프로젝트 변경 시 전체맥락복사 실시간 동기화 패치 */
+/* v5.8.17 - API 키 일괄 복사/붙여넣기 및 클라우드 원클릭 복원 패치 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.16 - 전체맥락복사 실시간 동기화</title>
+<title>Builder-a4u v5.8.17 - API키 원클릭 자동복원</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.16">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.16">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.16">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.16">
+<link rel="manifest" href="./manifest.json?v=5.8.17">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.17">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.17">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.17">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -122,8 +122,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.16</h1><p class="text-[10px] opacity-60">프로젝트 변경 시 전체맥락복사 즉시 동기화 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.16 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.17</h1><p class="text-[10px] opacity-60">API 키 일괄 복사/붙여넣기 및 원클릭 자동복원 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.17 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -236,15 +236,43 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <button id="btn-copy-context-settings" class="btn" style="background:#FFC800 !important;color:#111 !important;font-weight:900;flex:1">📋 전체맥락복사</button>
 </div>
 </div>
+
+<!-- 🔑 API 키 매번 입력 방지 - 통째로 붙여넣기 및 클라우드 원클릭 복원 카드 -->
+<div class="card" style="border:2px solid #10b981;background:rgba(16,185,129,0.03)">
+  <div class="flex justify-between items-center mb-2">
+    <h2 class="font-black text-[13px] text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+      ⚡ API 키 통째로 붙여넣기 / 원클릭 복원
+    </h2>
+    <span class="badge" style="background:#10b981;color:#fff">v5.8.17 패치</span>
+  </div>
+  <p class="text-[10px] opacity-75 mb-3 leading-relaxed">
+    메모장의 <code>.env</code> 파일 내용이나 전체 키 텍스트를 상자에 통째로 붙여넣으세요. 자동으로 4개의 키를 인식하여 적용해 줍니다.
+  </p>
+  
+  <textarea id="bulkKeysInput" class="textarea h-[85px] text-[10.5px] font-mono mb-2" placeholder="예시)&#10;GITHUB_PAT=ghp_...&#10;GEMINI_KEY=AIzaSy...&#10;GROQ_KEY=gsk_...&#10;SUPABASE_KEY=eyJ..."></textarea>
+  
+  <div class="flex gap-2 mb-3">
+    <button id="applyBulkKeysBtn" class="btn btn-sm btn-gpt flex-1 py-2 font-bold text-[11px]">⚡ 일괄 적용 및 자동 저장</button>
+  </div>
+
+  <div class="border-t pt-3 flex flex-wrap gap-2" style="border-color:var(--line)">
+    <button id="exportKeysJsonBtn" class="btn btn-sm text-[10px] flex-1 py-1.5" title="API 키를 json 파일로 저장">💾 키 JSON 다운로드</button>
+    <label class="btn btn-sm text-[10px] flex-1 py-1.5 text-center cursor-pointer" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">
+      📥 JSON 키 파일 선택
+      <input type="file" id="importKeysJsonInput" accept=".json" class="hidden">
+    </label>
+  </div>
+</div>
+
 <div class="card" style="border-color:var(--accent)">
-<h2 class="font-black text-[13px] mb-3">⚙️ 설정</h2>
+<h2 class="font-black text-[13px] mb-3">⚙️ 상세 API 보관소</h2>
 <div class="mb-4">
 <h3 class="font-bold text-[11px] mb-2">🔑 GOOGLE 로그인 (문서 검색용)</h3>
 <button id="googleLoginBtn" class="btn btn-primary w-full text-[11px]">🔑 Google 로그인 실행</button>
 <div id="googleStatus" class="text-[10px] mt-2 opacity-60">GIS 로딩 대기 중...</div>
 </div>
 <div class="border-t pt-4" style="border-color:var(--line)">
-<h3 class="font-bold text-[11px] mb-2">🔑 API 보관소</h3>
+<h3 class="font-bold text-[11px] mb-2">🔑 개별 API 입력</h3>
 <div class="grid gap-2 mb-3">
 <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ..."></div>
 <div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
@@ -583,7 +611,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.16 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.17 (${targetFile})
 2.목적: ${repoName} 기능 구현 및 개발 맥락 유지
 3.현재: ${d} - 레포 연동 및 파일 라우팅 설정 완료
 4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
@@ -642,7 +670,7 @@ function updateContextBox(){
   const memorySnippet = memEl ? memEl.value.slice(0, 120) : '';
 
   if (ctxText) {
-    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.16]
+    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.17]
 📌 레포: ${currentRepo} | 대상파일: ${targetFile}
 ${repoUrl}
 ${docsInfo}
@@ -1294,7 +1322,7 @@ function switchTopView(view){
 async function fetchDriveFiles(folderId, mode = 'my', keyword = ''){
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){
-    log('⚠️ [구글 드라이브] 로그인 토큰이 없습니다. [⚙️ 설정] 탭에서 Google 로그인을 먼저 해주세요.', 'err');
+    log('⚠️ [구글 드라이브] 로그인 토큰이 없습니다. [⚙️️ 설정] 탭에서 Google 로그인을 먼저 해주세요.', 'err');
     return [];
   }
   
@@ -1407,7 +1435,7 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
   updateContextBox();
 };
 
-function buildContextCopyV86(){
+function buildContextCopyV87(){
   const mem = document.getElementById('memory10') ? document.getElementById('memory10').value : '';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   let mainDocsText = '';
@@ -1422,7 +1450,7 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.16 이어가기용]
+  return `[Builder-a4u v5.8.17 이어가기용]
 [작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
@@ -1431,13 +1459,129 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.16
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.17
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
-  if(ta) ta.value=buildContextCopyV86();
+  if(ta) ta.value=buildContextCopyV87();
+}
+
+/* API 키 일괄 파싱 및 저장 로직 (Smart Bulk Parser) */
+function parseAndSaveBulkKeys(rawText){
+  if(!rawText || !rawText.trim()){
+    log('⚠️ 일괄 처리할 키 텍스트가 없습니다.', 'err');
+    return;
+  }
+  
+  let count = 0;
+  
+  // JSON 형태 처리
+  if(rawText.trim().startsWith('{')){
+    try{
+      const json = JSON.parse(rawText.trim());
+      if(json.github_pat || json.GITHUB_PAT){
+        const val = (json.github_pat || json.GITHUB_PAT).trim();
+        localStorage.setItem('github_pat', val);
+        if($('githubPatInput')) $('githubPatInput').value = val;
+        count++;
+      }
+      if(json.gemini_key || json.GEMINI_KEY){
+        const val = (json.gemini_key || json.GEMINI_KEY).trim();
+        localStorage.setItem('gemini_key', val);
+        if($('geminiKeyInput')) $('geminiKeyInput').value = val;
+        count++;
+      }
+      if(json.groq_key || json.GROQ_KEY){
+        const val = (json.groq_key || json.GROQ_KEY).trim();
+        localStorage.setItem('groq_key', val);
+        if($('groqKeyInput')) $('groqKeyInput').value = val;
+        count++;
+      }
+      if(json.supabase_key || json.SUPABASE_KEY){
+        const val = (json.supabase_key || json.SUPABASE_KEY).trim();
+        localStorage.setItem('supabase_key', val);
+        if($('supabaseKeyInput')) $('supabaseKeyInput').value = val;
+        count++;
+      }
+      if(count > 0){
+        log(`⚡ JSON으로 API 키 ${count}개 일괄 복원 완료!`, 'ok');
+        loadRepos();
+        return;
+      }
+    }catch(e){}
+  }
+
+  // 텍스트/줄바꿈/.env 형태 처리
+  const lines = rawText.split('\n');
+  lines.forEach(line => {
+    const cleanLine = line.trim();
+    if(!cleanLine || cleanLine.startsWith('#')) return;
+
+    // GitHub PAT
+    if(/github|pat|ghp_|github_pat/i.test(cleanLine)){
+      const match = cleanLine.match(/(?:ghp_[a-zA-Z0-9]{36}|github_pat_[a-zA-Z0-9_]{20,})/);
+      const val = match ? match[0] : (cleanLine.includes('=') ? cleanLine.split('=')[1].trim() : cleanLine);
+      if(val && val.length > 10){
+        localStorage.setItem('github_pat', val);
+        if($('githubPatInput')) $('githubPatInput').value = val;
+        count++;
+      }
+    }
+    // Gemini Key
+    else if(/gemini|aiza/i.test(cleanLine)){
+      const match = cleanLine.match(/AIzaSy[a-zA-Z0-9_\-]{33}/);
+      const val = match ? match[0] : (cleanLine.includes('=') ? cleanLine.split('=')[1].trim() : cleanLine);
+      if(val && val.length > 10){
+        localStorage.setItem('gemini_key', val);
+        if($('geminiKeyInput')) $('geminiKeyInput').value = val;
+        count++;
+      }
+    }
+    // Groq Key
+    else if(/groq|gsk_/i.test(cleanLine)){
+      const match = cleanLine.match(/gsk_[a-zA-Z0-9]{40,}/);
+      const val = match ? match[0] : (cleanLine.includes('=') ? cleanLine.split('=')[1].trim() : cleanLine);
+      if(val && val.length > 10){
+        localStorage.setItem('groq_key', val);
+        if($('groqKeyInput')) $('groqKeyInput').value = val;
+        count++;
+      }
+    }
+    // Supabase Anon Key
+    else if(/supabase|eyj/i.test(cleanLine)){
+      const match = cleanLine.match(/eyJ[a-zA-Z0-9_\-\.]+/);
+      const val = match ? match[0] : (cleanLine.includes('=') ? cleanLine.split('=')[1].trim() : cleanLine);
+      if(val && val.length > 10){
+        localStorage.setItem('supabase_key', val);
+        if($('supabaseKeyInput')) $('supabaseKeyInput').value = val;
+        count++;
+      }
+    }
+  });
+
+  if(count > 0){
+    log(`⚡ API 키 ${count}개 인식 및 일괄 저장 완료!`, 'ok');
+    loadRepos();
+  } else {
+    log('⚠️ 올바른 API 키 형태를 감지하지 못했습니다. 키 값을 직접 확인해주세요.', 'err');
+  }
+}
+
+function exportKeysToJson(){
+  const keys = {
+    GITHUB_PAT: localStorage.getItem('github_pat') || '',
+    GEMINI_KEY: localStorage.getItem('gemini_key') || '',
+    GROQ_KEY: localStorage.getItem('groq_key') || '',
+    SUPABASE_KEY: localStorage.getItem('supabase_key') || ''
+  };
+  const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(keys, null, 2));
+  const dlAnchorElem = document.createElement('a');
+  dlAnchorElem.setAttribute("href", str);
+  dlAnchorElem.setAttribute("download", `builder_api_keys.json`);
+  dlAnchorElem.click();
+  log('💾 API 키 JSON 백업 파일 다운로드 완료', 'ok');
 }
 
 function initSettingsInputs(){
@@ -1509,6 +1653,22 @@ function setupEventListeners(){
     if(file) processSelectedImageFile(file);
   });
 
+  /* API 키 일괄 적용 및 백업 이벤트 */
+  $('applyBulkKeysBtn')?.addEventListener('click', () => {
+    const text = $('bulkKeysInput')?.value || '';
+    parseAndSaveBulkKeys(text);
+  });
+  $('exportKeysJsonBtn')?.addEventListener('click', exportKeysToJson);
+  $('importKeysJsonInput')?.addEventListener('change', e => {
+    const file = e.target.files?.[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = evt => {
+      parseAndSaveBulkKeys(evt.target.result);
+    };
+    reader.readAsText(file);
+  });
+
   $('memory10')?.addEventListener('input', () => updateMemoryCount());
   
   $('templateBtn')?.addEventListener('click', () => {
@@ -1553,7 +1713,7 @@ function setupEventListeners(){
 
   $('btn-copy-context-settings')?.addEventListener('click', async()=>{
     try{
-      await navigator.clipboard.writeText(buildContextCopyV86());
+      await navigator.clipboard.writeText(buildContextCopyV87());
       log('📋 전체맥락복사 완료!', 'ok');
     }catch(e){ log('복사 실패', 'err'); }
   });
