@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.18 - 전체맥락 동기화 패치</title>
+<title>Builder-a4u v5.8.19 - 전체맥락 동기화 완전 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.18">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.18">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.18">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.18">
+<link rel="manifest" href="./manifest.json?v=5.8.19">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.19">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.19">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.19">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -122,8 +122,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.18</h1><p class="text-[10px] opacity-60">프로젝트 변경 시 전체맥락복사 즉시 동기화 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.18 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.19</h1><p class="text-[10px] opacity-60">프로젝트 변경 시 전체맥락 동기화 오류 완전 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.19 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -619,7 +619,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.18 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.19 (${targetFile})
 2.목적: ${repoName} 기능 구현 및 개발 맥락 유지
 3.현재: ${d} - 레포 연동 및 파일 라우팅 설정 완료
 4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
@@ -1458,8 +1458,9 @@ function buildContextCopyV87(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.18 이어가기용]
-[작업 대상 파일]: ${targetFile}
+  return `[${currentRepo} v5.8.19 이어가기용]
+📌 프로젝트(Repo): ${currentRepo}
+📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
 ${mem}
 [구글 문서 링크]
@@ -1467,7 +1468,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.18
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.19
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -1480,7 +1481,7 @@ async function copyFullContextToClipboard(){
   try{
     const content = buildContextCopyV87();
     await navigator.clipboard.writeText(content);
-    log(`📋 [${currentRepo}] 전체맥락이 클립보드에 복사되었습니다!`, 'ok');
+    log(`📋 [${currentRepo}] 프로젝트 전체맥락이 클립보드에 복사되었습니다!`, 'ok');
   }catch(e){
     log('복사 실패: ' + e.message, 'err');
   }
