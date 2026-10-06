@@ -22,7 +22,28 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><style>
-/* v5.8.7 - 디자인 유지 및 다크모드 가시성 */
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><style>
+/* v5.8.8 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -39,15 +60,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.7 - Groq API 모델 업데이트 및 맥락복사 완성</title>
+<title>Builder-a4u v5.8.8 - Groq API 모델 업데이트 및 맥락복사 완성</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.7">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.7">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.7">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.7">
+<link rel="manifest" href="./manifest.json?v=5.8.8">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.8">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.8">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.8">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -118,8 +139,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.7</h1><p class="text-[10px] opacity-60">Groq API 모델 업데이트 및 맥락복사 완성</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.7 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.8</h1><p class="text-[10px] opacity-60">Groq API 모델 업데이트 및 맥락복사 완성</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.8 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
@@ -435,11 +456,11 @@ function clearPastedImage(){
   if(box) box.classList.add('hidden');
 }
 $('removePastedImageBtn')?.addEventListener('click', clearPastedImage);
-// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.7)
+// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.8)
 function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
-  return `1.프로젝트: ${repoName} v5.8.7
+  return `1.프로젝트: ${repoName} v5.8.8
 2.목적: 단일 공방으로 N개 앱 맥락 유지
 3.현재: ${d} - Groq API 모델 퇴출 대응 (gpt-oss-20b/120b 전환)
 4.다음: 기능 구현 및 빌드 배포
@@ -490,7 +511,7 @@ $('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateB
     log('📝 템플릿 양식이 생성되었습니다.', 'ok');
   }
 });
-// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.7 Groq 최신 모델 적용)
+// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.8 Groq 최신 모델 적용)
 let activeChatTab = 'meta';
 let chatHistories = { meta: [], gemini: [], gpt: [] };
 const tabConfigs = {
@@ -587,7 +608,7 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey){
   const data = await res.json();
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '응답을 받지 못했습니다.';
 }
-// v5.8.7 Groq API 자동 순회(Fallback) 모델 호환 처리
+// v5.8.8 Groq API 자동 순회(Fallback) 모델 호환 처리
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
   const url = 'https://api.groq.com/openai/v1/chat/completions';
   const modelsToTry = [preferredModel, 'openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
@@ -833,22 +854,24 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
 };
 $('driveModalClose').onclick=()=>{$('driveModal').style.display='none'; };
 $('searchExactBtn').onclick=()=>openDriveModal(true);$('linkSearchBtn').onclick=()=>openDriveModal(false);
-// 📋 구글 문서 링크까지 합성되는 전체맥락복사 생성기 (v5.8.7)
+// 📋 구글 문서 링크까지 합성되는 전체맥락복사 생성기 (v5.8.8)
 function buildContextCopyV86(){
   const mem = document.getElementById('memory10') ? document.getElementById('memory10').value : '';
   let mainDocsText = '';
   if (connectedDocs && connectedDocs.length > 0) {
-    mainDocsText = connectedDocs.map(d => `- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || d.name || '문서'})`).join('\n');
+    mainDocsText = connectedDocs.map(d => `- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || d.name || '문서'})`).join('
+');
   } else {
     mainDocsText = '- 메인문서: 없음';
   }
   let customDocsText = '';
   if (customLinks && customLinks.length > 0) {
-    customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
+    customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('
+');
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.7 이어가기용]
+  return `[Builder-a4u v5.8.8 이어가기용]
 [기억 10줄]
 ${mem}
 [구글 문서 링크]
@@ -856,7 +879,12 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.7`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.8
+[작업 원칙 - 특별한 요청이 있기 전까지 필수 준수]
+- 디자인 절대 변경 금지: 색상, 폰트, 레이아웃, CSS 변수(--bg,--card,--line,--txt), 카드/버튼/탭 스타일 유지
+- 구글 문서는 구글 드라이브 커넥터에 연결되어 있음 (Drive 연결됨 - 링크만으로 Meta AI가 자동 읽기 가능, gdrive connector)
+- 기능/로직만 수정, UI는 기존 그대로
+- 소문자 index.html, manifest.json, 3탭 채팅 연동 유지`;
 }
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
@@ -916,5 +944,179 @@ window.addEventListener('load', ()=>{
   setTimeout(initGis, 800);
 });
 </script>
-</body>
+
+<script>
+// === v5.8.8 Rollback & Draft 기능 활성화 (디자인 변경 없음) ===
+(function(){
+  const getHistoryKey = () => 'draft_history_' + (typeof currentRepo !== 'undefined' ? currentRepo : 'builder-a4u');
+  const getDraftCodeKey = () => 'draft_code_' + (typeof currentRepo !== 'undefined' ? currentRepo : 'builder-a4u');
+  
+  function saveCurrentDraft(){
+    try{
+      const mem = document.getElementById('memory10')?.value || '';
+      const code = document.getElementById('codeEditor')?.value || '';
+      const ts = new Date().toISOString();
+      const entry = {
+        ts,
+        dateStr: new Date().toLocaleString('ko-KR'),
+        memory10: mem,
+        code,
+        connectedDocs: typeof connectedDocs !== 'undefined' ? connectedDocs : [],
+        customLinks: typeof customLinks !== 'undefined' ? customLinks : [],
+        chatCount: (typeof chatHistories !== 'undefined' ? Object.values(chatHistories).flat().length : 0)
+      };
+      // save current code
+      localStorage.setItem(getDraftCodeKey(), code);
+      // save to history
+      let hist = [];
+      try{ hist = JSON.parse(localStorage.getItem(getHistoryKey()) || '[]'); }catch{}
+      hist.unshift(entry);
+      if(hist.length > 20) hist = hist.slice(0,20);
+      localStorage.setItem(getHistoryKey(), JSON.stringify(hist));
+      const status = document.getElementById('draftStatus');
+      if(status){ status.textContent = '저장됨 ' + new Date().toLocaleTimeString(); status.style.color = '#10b981'; }
+      if(typeof log === 'function') log('💾 드래프트 저장 완료 (' + hist.length + '개)', 'ok');
+      if(typeof renderContextCopySettings === 'function') renderContextCopySettings();
+      renderVersionHistory();
+    }catch(e){
+      if(typeof log === 'function') log('드래프트 저장 실패: ' + e.message, 'err');
+    }
+  }
+
+  function renderVersionHistory(){
+    const box = document.getElementById('versionHistoryBox');
+    if(!box) return;
+    let hist = [];
+    try{ hist = JSON.parse(localStorage.getItem(getHistoryKey()) || '[]'); }catch{}
+    if(hist.length === 0){
+      box.innerHTML = '<div class="text-[11px] text-gray-400 p-4 text-center">저장된 draft 없음 - [💾 현재 드래프트 저장]을 눌러보세요</div>';
+      return;
+    }
+    let html = '';
+    hist.forEach((h,i)=>{
+      html += `<div class="version-item">
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:800">📦 ${h.dateStr}</div>
+          <div style="opacity:.6;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${(h.memory10||'').slice(0,60).replace(/</g,'&lt;')}...</div>
+        </div>
+        <button onclick="window.rollbackToDraft(${i})" class="btn btn-sm" style="background:#111;color:#fff">⏪ 롤백</button>
+        <button onclick="window.previewDraft(${i})" class="btn btn-sm">👁️ 보기</button>
+      </div>`;
+    });
+    box.innerHTML = html;
+  }
+
+  window.rollbackToDraft = function(idx){
+    try{
+      let hist = [];
+      try{ hist = JSON.parse(localStorage.getItem(getHistoryKey()) || '[]'); }catch{}
+      const entry = hist[idx];
+      if(!entry) return;
+      if(!confirm(entry.dateStr + ' 버전으로 롤백할까요? 현재 내용은 덮어쓰기 전에 자동 저장됩니다.')) return;
+      // auto save current before rollback
+      saveCurrentDraft();
+      // restore
+      const memEl = document.getElementById('memory10');
+      if(memEl && entry.memory10){ memEl.value = entry.memory10; }
+      const codeEl = document.getElementById('codeEditor');
+      if(codeEl && entry.code){ codeEl.value = entry.code; }
+      if(typeof connectedDocs !== 'undefined' && entry.connectedDocs){ connectedDocs = entry.connectedDocs; localStorage.setItem('connected_docs_' + currentRepo, JSON.stringify(connectedDocs)); if(typeof renderConnectedDocs === 'function') renderConnectedDocs(); }
+      if(typeof customLinks !== 'undefined' && entry.customLinks){ customLinks = entry.customLinks; localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); if(typeof renderCustomLinks === 'function') renderCustomLinks(); }
+      if(typeof updateMemoryCount === 'function') updateMemoryCount();
+      if(typeof log === 'function') log('⏪ 롤백 완료: ' + entry.dateStr, 'ok');
+    }catch(e){
+      if(typeof log === 'function') log('롤백 실패: ' + e.message, 'err');
+    }
+  };
+
+  window.previewDraft = function(idx){
+    try{
+      let hist = [];
+      try{ hist = JSON.parse(localStorage.getItem(getHistoryKey()) || '[]'); }catch{}
+      const entry = hist[idx];
+      if(!entry) return;
+      const previewBox = document.getElementById('livePreviewBox');
+      const frame = document.getElementById('livePreviewFrame');
+      if(previewBox && frame){
+        const content = entry.code || '<div>코드 없음</div><pre>' + (entry.memory10||'').slice(0,2000) + '</pre>';
+        const blob = new Blob([content], {type: 'text/html'});
+        frame.src = URL.createObjectURL(blob);
+        previewBox.classList.add('active');
+      }
+    }catch(e){ if(typeof log === 'function') log('미리보기 실패: ' + e.message, 'err'); }
+  };
+
+  function toggleDraftEditor(){
+    const editor = document.getElementById('codeEditor');
+    const btn = document.getElementById('toggleDraftBtn');
+    if(!editor || !btn) return;
+    const isHidden = editor.classList.contains('hidden');
+    if(isHidden){
+      editor.classList.remove('hidden');
+      btn.textContent = 'draft 숨기기 ▲';
+      // load current draft code
+      try{ editor.value = localStorage.getItem(getDraftCodeKey()) || ''; }catch{}
+    }else{
+      editor.classList.add('hidden');
+      btn.textContent = 'draft 보기 ▼';
+    }
+  }
+
+  function previewCurrentDraft(){
+    const previewBox = document.getElementById('livePreviewBox');
+    const frame = document.getElementById('livePreviewFrame');
+    const mem = document.getElementById('memory10')?.value || '';
+    const code = document.getElementById('codeEditor')?.value || '';
+    if(!previewBox || !frame) return;
+    let content = code;
+    if(!content || content.trim().length < 20){
+      content = `<html><body style="font-family:sans-serif;padding:20px"><h2>미리보기</h2><pre style="white-space:pre-wrap;font-size:12px">${mem.replace(/</g,'&lt;').slice(0,3000)}</pre><hr><div style="opacity:.6">코드에디터에 HTML을 넣고 미리보기를 실행하세요</div></body></html>`;
+    }
+    try{
+      const blob = new Blob([content], {type: 'text/html'});
+      frame.src = URL.createObjectURL(blob);
+      previewBox.classList.add('active');
+      previewBox.scrollIntoView({behavior:'smooth'});
+      if(typeof log === 'function') log('👁️ 미리보기 렌더링', 'ok');
+    }catch(e){ if(typeof log === 'function') log('미리보기 오류: ' + e.message, 'err'); }
+  }
+
+  // Event bindings
+  document.getElementById('saveDraftBtn')?.addEventListener('click', saveCurrentDraft);
+  document.getElementById('toggleDraftBtn')?.addEventListener('click', toggleDraftEditor);
+  document.getElementById('showDraftHistoryBtn')?.addEventListener('click', renderVersionHistory);
+  document.getElementById('previewCheckBtn')?.addEventListener('click', previewCurrentDraft);
+  document.getElementById('previewCloseBtn')?.addEventListener('click', ()=>{
+    const box = document.getElementById('livePreviewBox');
+    if(box) box.classList.remove('active');
+  });
+  document.getElementById('clearLogBtn')?.addEventListener('click', ()=>{
+    const a = document.getElementById('logArea');
+    if(a) a.innerHTML='';
+  });
+
+  // Build button - keep existing behavior + add draft save
+  document.getElementById('buildBtn')?.addEventListener('click', ()=>{
+    saveCurrentDraft();
+    if(typeof log === 'function') log('🚀 빌드 요청 - Supabase/Docs/GitHub 연동은 기존 로직 유지', 'info');
+    // Trigger existing build logic if any custom event? For now just alert
+    // The original build logic should be implemented via PAT - we keep placeholder
+  });
+
+  // Auto-save memory10 on input already does, but also auto-save draft every 60s
+  setInterval(()=>{
+    try{
+      const mem = document.getElementById('memory10')?.value || '';
+      if(mem && mem.trim().length > 10){
+        localStorage.setItem('memory_10_' + currentRepo, mem);
+      }
+    }catch{}
+  }, 5000);
+
+  // Initial render
+  setTimeout(()=>{ renderVersionHistory(); }, 800);
+})();
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
+
