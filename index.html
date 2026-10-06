@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.17 - API 키 일괄 복사/붙여넣기 및 클라우드 원클릭 복원 패치 */
+/* v5.8.18 - 레포 변경 시 전체맥락복사 즉시 동기화 패치 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.17 - API키 원클릭 자동복원</title>
+<title>Builder-a4u v5.8.18 - 전체맥락 동기화 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.17">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.17">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.17">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.17">
+<link rel="manifest" href="./manifest.json?v=5.8.18">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.18">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.18">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.18">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -122,8 +122,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.17</h1><p class="text-[10px] opacity-60">API 키 일괄 복사/붙여넣기 및 원클릭 자동복원 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.17 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.18</h1><p class="text-[10px] opacity-60">프로젝트 변경 시 전체맥락복사 즉시 동기화 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.18 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -178,7 +178,15 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
 <div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (자동 링크 & 독립 히스토리)</h2><span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
-<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[110px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+
+<!-- 맥락 박스 및 바로 복사 버튼 -->
+<div class="flex flex-col gap-1.5 mb-2">
+  <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] max-h-[110px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+  <button id="btnCopyContextWorkspace" class="btn btn-yellow text-[10px] py-1.5 w-full flex items-center justify-center gap-1">
+    📋 현재 프로젝트 전체맥락 복사하기
+  </button>
+</div>
+
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
 
@@ -243,7 +251,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     <h2 class="font-black text-[13px] text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
       ⚡ API 키 통째로 붙여넣기 / 원클릭 복원
     </h2>
-    <span class="badge" style="background:#10b981;color:#fff">v5.8.17 패치</span>
+    <span class="badge" style="background:#10b981;color:#fff">v5.8.18 패치</span>
   </div>
   <p class="text-[10px] opacity-75 mb-3 leading-relaxed">
     메모장의 <code>.env</code> 파일 내용이나 전체 키 텍스트를 상자에 통째로 붙여넣으세요. 자동으로 4개의 키를 인식하여 적용해 줍니다.
@@ -611,7 +619,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.17 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.18 (${targetFile})
 2.목적: ${repoName} 기능 구현 및 개발 맥락 유지
 3.현재: ${d} - 레포 연동 및 파일 라우팅 설정 완료
 4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
@@ -670,7 +678,7 @@ function updateContextBox(){
   const memorySnippet = memEl ? memEl.value.slice(0, 120) : '';
 
   if (ctxText) {
-    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.17]
+    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.18]
 📌 레포: ${currentRepo} | 대상파일: ${targetFile}
 ${repoUrl}
 ${docsInfo}
@@ -1322,7 +1330,7 @@ function switchTopView(view){
 async function fetchDriveFiles(folderId, mode = 'my', keyword = ''){
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){
-    log('⚠️ [구글 드라이브] 로그인 토큰이 없습니다. [⚙️️ 설정] 탭에서 Google 로그인을 먼저 해주세요.', 'err');
+    log('⚠️ [구글 드라이브] 로그인 토큰이 없습니다. [⚙ 설정] 탭에서 Google 로그인을 먼저 해주세요.', 'err');
     return [];
   }
   
@@ -1450,7 +1458,7 @@ function buildContextCopyV87(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.17 이어가기용]
+  return `[Builder-a4u v5.8.18 이어가기용]
 [작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
@@ -1459,13 +1467,23 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.17
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.18
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
   if(ta) ta.value=buildContextCopyV87();
+}
+
+async function copyFullContextToClipboard(){
+  try{
+    const content = buildContextCopyV87();
+    await navigator.clipboard.writeText(content);
+    log(`📋 [${currentRepo}] 전체맥락이 클립보드에 복사되었습니다!`, 'ok');
+  }catch(e){
+    log('복사 실패: ' + e.message, 'err');
+  }
 }
 
 /* API 키 일괄 파싱 및 저장 로직 (Smart Bulk Parser) */
@@ -1565,7 +1583,7 @@ function parseAndSaveBulkKeys(rawText){
     log(`⚡ API 키 ${count}개 인식 및 일괄 저장 완료!`, 'ok');
     loadRepos();
   } else {
-    log('⚠️ 올바른 API 키 형태를 감지하지 못했습니다. 키 값을 직접 확인해주세요.', 'err');
+    log('⚠️️ 올바른 API 키 형태를 감지하지 못했습니다. 키 값을 직접 확인해주세요.', 'err');
   }
 }
 
@@ -1711,17 +1729,18 @@ function setupEventListeners(){
     }
   });
 
-  $('btn-copy-context-settings')?.addEventListener('click', async()=>{
-    try{
-      await navigator.clipboard.writeText(buildContextCopyV87());
-      log('📋 전체맥락복사 완료!', 'ok');
-    }catch(e){ log('복사 실패', 'err'); }
-  });
+  $('btn-copy-context-settings')?.addEventListener('click', copyFullContextToClipboard);
+  $('btnCopyContextWorkspace')?.addEventListener('click', copyFullContextToClipboard);
+
   $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
   
   /* 레포지토리 변경 이벤트 */
   $('repoSelect')?.addEventListener('change', e=>{
-    currentRepo=e.target.value;
+    currentRepo = e.target.value;
+    mainFile = 'index.html';
+    const mainInput = $('mainFileInput');
+    if(mainInput) mainInput.value = 'index.html';
+
     try{ localStorage.setItem('current_repo', currentRepo); }catch{}
     loadMemory10();
     loadRepoDocuments();
@@ -1730,7 +1749,7 @@ function setupEventListeners(){
     loadChatHistories();
     updateContextBox();
     renderContextCopySettings();
-    log('📌 레포 변경됨: '+currentRepo, 'ok');
+    log('📌 프로젝트 변경 완료: '+currentRepo, 'ok');
   });
   $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
 }
