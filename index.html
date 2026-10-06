@@ -99,7 +99,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.9.0</h1><p class="text-[10px] opacity-60">풀버전 1300줄 복구 + 롤백 미리보기 + 【entity-GitHub¦canonical_name=GitHub】 리스트</p></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.9.0</h1><p class="text-[10px] opacity-60">풀버전 1300줄 복구 + 롤백 미리보기 + GitHub 리스트</p></div>
 <div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.9.0 풀버전</span></div>
 </div>
 <div class="flex gap-2 mb-3">
@@ -111,17 +111,17 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="card">
 <div class="flex justify-between items-center mb-2">
   <h2 class="font-bold text-[11px]">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-  <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="【entity-GitHub¦canonical_name=GitHub】 레포 목록 새로고침">🔄 레포 새로고침</button>
+  <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
 </div>
 <select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
 <div class="flex gap-1 mt-1">
 <input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동" value="index.html">
-<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 【entity-GitHub¦canonical_name=GitHub】 복구</button>
+<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 GitHub 복구</button>
 <button id="listFilesBtn" class="btn btn-sm text-[9px]">📂 파일목록</button>
 </div>
 <div id="repoFilesBox" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] max-h-[200px] overflow-auto" style="border-color:var(--line)"></div>
 <textarea id="codeEditor" class="textarea h-[220px] mt-2"></textarea>
-<div class="flex justify-between mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button><span class="text-[8px] opacity-60">자동 저장 + 【entity-GitHub¦canonical_name=GitHub】 PAT Push 지원</span></div>
+<div class="flex justify-between mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button><span class="text-[8px] opacity-60">자동 저장 + GitHub PAT Push 지원</span></div>
 </div>
 <div class="card">
 <h2 class="font-bold text-[11px] mb-2">📄 메인 문서 - 계속 업데이트 1개</h2>
@@ -161,13 +161,13 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 공용 빌드 + 요약</button>
 </div>
 <div class="flex gap-2 mt-2">
-  <button id="pushGithubBtn" class="btn flex-1 text-[10px]" style="background:#24292f;color:#fff">⬆️ 【entity-GitHub¦canonical_name=GitHub】 Push (PAT)</button>
+  <button id="pushGithubBtn" class="btn flex-1 text-[10px]" style="background:#24292f;color:#fff">⬆️ GitHub Push (PAT)</button>
   <button id="supabaseSaveBtn" class="btn flex-1 text-[10px]" style="background:#3ecf8e;color:#111">💾 Supabase 저장</button>
 </div>
 </div>
 <div id="livePreviewBox" class="live-preview-box mt-3">
   <div class="live-preview-header">
-    <span>👁️ 실시간 미리보기 - 빌드 전 확인 + 【entity-GitHub¦canonical_name=GitHub】 & 타임머신 미리보기</span>
+    <span>👁️ 실시간 미리보기 - 빌드 전 확인 + GitHub & 타임머신 미리보기</span>
     <div class="flex gap-1"><button id="previewRefreshBtn" class="btn text-[9px]">🔄</button><button id="previewCloseBtn" class="btn text-[9px]">✕ 닫기</button></div>
   </div>
   <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -206,7 +206,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="grid gap-2 mb-3">
 <div><label class="text-[10px] font-bold">Supabase URL</label><input id="supabaseUrlInput" class="input text-[9px] font-mono mt-1" placeholder="https://...supabase.co"></div>
 <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ..."></div>
-<div><label class="text-[10px] font-bold">【entity-GitHub¦canonical_name=GitHub】 PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
+<div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
 <div><label class="text-[10px] font-bold">Gemini Key (이미지 시각분석 지원)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
 <div><label class="text-[10px] font-bold">Groq Key (Meta & GPT 전용)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="gsk_..."></div>
 </div>
@@ -251,7 +251,8 @@ function getGitHubPat(){
     if(input && input.value && input.value.trim().length>10) return input.value.trim();
     return '';
   }catch(e){ return ''; }
-}async function loadRepos(){
+}
+async function loadRepos(){
   const s=document.getElementById('repoSelect');
   if(!s) return;
   const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
@@ -289,7 +290,7 @@ function getGitHubPat(){
   }
   try{
     const pat=getGitHubPat();
-    const headers={'Accept':'application/vnd.【entity-github¦canonical_name=GitHub】.v3+json'};
+    const headers={'Accept':'application/vnd.github.v3+json'};
     let hasPat=false;
     if(pat && pat.length>10){
       headers.Authorization='Bearer '+pat;
@@ -304,7 +305,7 @@ function getGitHubPat(){
     clearTimeout(timeout);
     if(!r.ok){
       const txt=await r.text();
-      log('【entity-GitHub¦canonical_name=GitHub】 API 오류 ('+r.status+'): '+(hasPat?'PAT 인식됨':'PAT 없음')+' '+txt.slice(0,80), 'err');
+      log('GitHub API 오류 ('+r.status+'): '+(hasPat?'PAT 인식됨':'PAT 없음')+' '+txt.slice(0,80), 'err');
       if(cached) renderRepos(cached);
       return;
     }
@@ -312,7 +313,7 @@ function getGitHubPat(){
     if(!Array.isArray(d) || d.length===0) return;
     renderRepos(d);
     try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
-    log('✅ 【entity-GitHub¦canonical_name=GitHub】 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
+    log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
   }catch(e){
     if(e.name!=='AbortError') log('레포 로드 실패: '+e.message, 'err');
     const cached2=getCached();
@@ -566,7 +567,7 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey){
     const base64Data = imageBase64.split(',')[1];
     parts.push({ inline_data: { mime_type: mimeType, data: base64Data } });
   }
-  const res = await fetch(url, {
+    const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ contents: [{ role: 'user', parts: parts }] })
@@ -899,7 +900,6 @@ $('repoSelect')?.addEventListener('change', e=>{
   log('📌 레포 변경됨: '+currentRepo, 'ok');
 });
 $('refreshRepoBtn')?.addEventListener('click', ()=>loadRepos());
-// GitHub 파일 리스트 + 미리보기 (v5.9.0 신규 풀버전)
 async function listRepoFiles(){
   const repo=currentRepo;
   if(!repo) return alert('레포를 먼저 선택하세요');
@@ -990,7 +990,6 @@ async function fetchMainFile(){
   const path=$('mainFileInput').value||'index.html';
   await previewGitHubFile(path);
 }
-// ⏰ 드래프트 스냅샷 및 타임머신(롤백) 로직 - v5.9.0 완전 수정
 function getDraftHistoryKey(){
   return 'draft_history_' + currentRepo;
 }
@@ -1106,228 +1105,4 @@ window.rollbackToVersion = function(id){
     editor.classList.remove('hidden');
   }
   draftCode = item.code;
-  if(item.mainFile) $('mainFileInput').value = item.mainFile;
-  try{ localStorage.setItem('draft_code_' + currentRepo, item.code); }catch{}
-  try{ localStorage.setItem('main_file_' + currentRepo, item.mainFile||'index.html'); }catch{}
-  updateLivePreview(item.code);
-  setTimeout(()=>{ saveCurrentDraft(true); }, 100);
-  log('🔄 롤백 완료 → ' + item.timestamp + ' (' + item.length + '자) - 자동 스냅샷 생성됨', 'ok');
-  alert('✅ 롤백 완료: ' + item.timestamp + '\n에디터와 미리보기가 복구되었습니다.');
-};
-window.deleteDraftVersion = function(id){
-  if(!confirm('이 버전('+id+')을 삭제하시겠습니까?')) return;
-  let history = getDraftHistory();
-  const beforeLen = history.length;
-  history = history.filter(h => h.id!== id);
-  try{ localStorage.setItem(getDraftHistoryKey(), JSON.stringify(history)); }catch{}
-  renderDraftHistory();
-  log('🗑️ 버전 삭제됨 ('+beforeLen+'→'+history.length+')', 'info');
-};
-function clearDraftHistory(){
-  if(!confirm('현재 레포 ['+currentRepo+']의 모든 draft 기록('+getDraftHistory().length+'개)을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')) return;
-  try{ localStorage.removeItem(getDraftHistoryKey()); }catch{}
-  renderDraftHistory();
-  log('🗑️ 전체 draft 기록 삭제됨 - 레포: '+currentRepo, 'ok');
-}
-function updateLivePreview(code){
-  const box=$('livePreviewBox');
-  const frame=$('livePreviewFrame');
-  if(!box||!frame) return;
-  box.classList.add('active');
-  try{
-    const blob=new Blob([code],{type:'text/html'});
-    const url=URL.createObjectURL(blob);
-    frame.src=url;
-    setTimeout(()=>URL.revokeObjectURL(url), 8000);
-  }catch(e){
-    log('미리보기 생성 실패: '+e.message, 'err');
-  }
-}
-async function saveToSupabase(){
-  const url=getSupabaseUrl();
-  const key=getSupabaseKey();
-  if(!url ||!key){ alert('Supabase URL과 Key를 설정 탭에서 입력하세요'); return; }
-  const memory=$('memory10')?.value||'';
-  const mainFileVal=$('mainFileInput')?.value||'index.html';
-  const docTitle=currentRepo;
-  log('💾 Supabase 저장 시도: '+currentRepo, 'info');
-  try{
-    const res=await fetch(url+'/rest/v1/dev_projects?on_conflict=project_name', {
-      method:'POST',
-      headers:{
-        'apikey':key,
-        'Authorization':'Bearer '+key,
-        'Content-Type':'application/json',
-        'Prefer':'resolution=merge-duplicates'
-      },
-      body:JSON.stringify({
-        project_name:currentRepo,
-        memory_10:memory,
-        main_file:mainFileVal,
-        doc_title:docTitle,
-        updated_at:new Date().toISOString()
-      })
-    });
-    if(!res.ok){
-      const txt=await res.text();
-      throw new Error(txt.slice(0,200));
-    }
-    log('✅ Supabase 저장 성공: '+currentRepo, 'ok');
-    alert('Supabase 저장 성공');
-  }catch(e){
-    log('Supabase 저장 실패: '+e.message, 'err');
-    alert('Supabase 실패: '+e.message);
-  }
-}
-async function testSupabase(){
-  const url=getSupabaseUrl();
-  const key=getSupabaseKey();
-  if(!url||!key){ alert('URL/Key 필요'); return; }
-  log('🔍 Supabase 연결 테스트...', 'info');
-  try{
-    const res=await fetch(url+'/rest/v1/dev_projects?select=project_name&limit=5', {
-      headers:{'apikey':key,'Authorization':'Bearer '+key}
-    });
-    const data=await res.json();
-    log('✅ Supabase 연결 성공: '+JSON.stringify(data).slice(0,150), 'ok');
-    alert('연결 성공: '+JSON.stringify(data).slice(0,200));
-  }catch(e){ log('Supabase 테스트 실패: '+e.message,'err'); }
-}
-async function pushToGithub(){
-  const pat=getGitHubPat();
-  if(!pat){ alert('GitHub PAT가 필요합니다. 설정 탭에서 입력하세요.'); return; }
-  const repo=currentRepo;
-  const path=$('mainFileInput')?.value||'index.html';
-  const code=$('codeEditor')?.value||'';
-  if(!code || code.length<20){ alert('Push할 코드가 너무 짧습니다'); return; }
-  const message=prompt('커밋 메시지 입력', `Update ${path} via Builder-a4u v5.9.0 - ${new Date().toLocaleString()}`);
-  if(message===null) return;
-  log('⬆️ GitHub Push 시도: '+repo+'/'+path, 'info');
-  async function pushToBranch(branch){
-    try{
-      const getUrl=`https://api.github.com/repos/${GITHUB_USER}/${repo}/contents/${path}?ref=${branch}`;
-      const getRes=await fetch(getUrl, {headers:{Authorization:`Bearer ${pat}`, Accept:'application/vnd.github.v3+json'}});
-      let sha=null;
-      if(getRes.ok){
-        const getData=await getRes.json();
-        sha=getData.sha;
-      }
-      const putUrl=`https://api.github.com/repos/${GITHUB_USER}/${repo}/contents/${path}`;
-      const putRes=await fetch(putUrl, {
-        method:'PUT',
-        headers:{Authorization:`Bearer ${pat}`, Accept:'application/vnd.github.v3+json', 'Content-Type':'application/json'},
-        body:JSON.stringify({
-          message:message,
-          content:btoa(unescape(encodeURIComponent(code))),
-          sha:sha||undefined,
-          branch:branch
-        })
-      });
-      if(!putRes.ok){
-        const txt=await putRes.text();
-        throw new Error(branch+' Push 실패 '+putRes.status+' '+txt.slice(0,150));
-      }
-      log(`✅ ${branch} 브랜치 Push 성공: ${path}`, 'ok');
-      return true;
-    }catch(e){
-      log(`❌ ${branch} Push 실패: ${e.message}`, 'err');
-      return false;
-    }
-  }
-  const mainOk=await pushToBranch('main');
-  const ghPagesOk=await pushToBranch('gh-pages');
-  if(mainOk || ghPagesOk){
-    alert(`GitHub Push 완료\nmain: ${mainOk?'성공':'실패'}\ngh-pages: ${ghPagesOk?'성공':'실패'}\n1분 후 Pages 반영됨`);
-  } else {
-    alert('Push 실패 - 로그 확인');
-  }
-}
-document.addEventListener('DOMContentLoaded',()=>{
-  loadMemory10();
-  loadRepoDocuments();
-  initSettingsInputs();
-  loadRepos();
-  renderDraftHistory();
-  const ed=$('codeEditor');
-  try{
-    const c=localStorage.getItem('draft_code_'+currentRepo);
-    if(c && ed){ ed.value=c; draftCode=c; }
-    const mf=localStorage.getItem('main_file_'+currentRepo);
-    if(mf && $('mainFileInput')) $('mainFileInput').value=mf;
-  }catch{}
-  if(ed && ed.value) updateLivePreview(ed.value);
-  $('repoSelect')?.addEventListener('change', e=>{
-    currentRepo=e.target.value;
-    try{ localStorage.setItem('current_repo', currentRepo); }catch{}
-    loadMemory10();
-    loadRepoDocuments();
-    renderDraftHistory();
-    const ed2=$('codeEditor');
-    try{
-      const c=localStorage.getItem('draft_code_'+currentRepo)||'';
-      const mf=localStorage.getItem('main_file_'+currentRepo)||'index.html';
-      if(ed2){ ed2.value=c; draftCode=c; if(c) updateLivePreview(c); }
-      if($('mainFileInput')) $('mainFileInput').value=mf;
-    }catch{}
-    log('📌 레포 변경됨: '+currentRepo, 'ok');
-  });
-  $('refreshRepoBtn')?.addEventListener('click', ()=>loadRepos());
-  $('fetchMainBtn')?.addEventListener('click', ()=>fetchMainFile());
-  $('listFilesBtn')?.addEventListener('click', ()=>listRepoFiles());
-  $('saveDraftBtn')?.addEventListener('click', ()=>saveCurrentDraft(false));
-  $('showDraftHistoryBtn')?.addEventListener('click', ()=>renderDraftHistory());
-  $('clearDraftHistoryBtn')?.addEventListener('click', ()=>clearDraftHistory());
-  $('previewCheckBtn')?.addEventListener('click', ()=>{const ed=$('codeEditor'); if(ed) updateLivePreview(ed.value);});
-  $('previewCloseBtn')?.addEventListener('click', ()=>{$('livePreviewBox').classList.remove('active');});
-  $('previewRefreshBtn')?.addEventListener('click', ()=>{const ed=$('codeEditor'); if(ed) updateLivePreview(ed.value);});
-  $('toggleDraftBtn')?.addEventListener('click', ()=>{
-    const ed=$('codeEditor'); if(!ed) return;
-    if(ed.classList.contains('view-hidden') || ed.style.display==='none' || ed.classList.contains('hidden')){
-      ed.classList.remove('hidden','view-hidden'); ed.style.display=''; $('toggleDraftBtn').textContent='draft 접기 ▲';
-    } else {
-      ed.classList.add('hidden'); $('toggleDraftBtn').textContent='draft 보기 ▼';
-    }
-  });
-  $('codeEditor')?.addEventListener('input', e=>{
-    draftCode=e.target.value;
-    try{ localStorage.setItem('draft_code_'+currentRepo, draftCode); }catch{}
-    const statusEl=$('draftStatus');
-    if(statusEl) statusEl.textContent='draft 편집중...';
-  });
-  $('clearLogBtn')?.addEventListener('click', ()=>{const a=$('logArea'); if(a) a.innerHTML='';});
-  $('searchExactBtn')?.addEventListener('click', ()=>openDriveModal(true));
-  $('linkSearchBtn')?.addEventListener('click', ()=>openDriveModal(false));
-  $('driveModalClose')?.addEventListener('click', ()=>{$('driveModal').style.display='none';});
-  $('googleLoginBtn')?.addEventListener('click', ()=>handleGoogleLogin());
-  $('buildBtn')?.addEventListener('click', ()=>{
-    saveCurrentDraft(false);
-    const code=$('codeEditor').value;
-    updateLivePreview(code);
-    log('🚀 빌드 준비 완료 - GitHub Push는 PAT로 진행', 'ok');
-  });
-  $('pushGithubBtn')?.addEventListener('click', ()=>pushToGithub());
-  $('supabaseSaveBtn')?.addEventListener('click', ()=>saveToSupabase());
-  $('saveApiBtn')?.addEventListener('click', ()=>{
-    const url=$('supabaseUrlInput')?.value||'';
-    const key=$('supabaseKeyInput')?.value||'';
-    const pat=$('githubPatInput')?.value||'';
-    const gem=$('geminiKeyInput')?.value||'';
-    const groq=$('groqKeyInput')?.value||'';
-    try{
-      if(url) localStorage.setItem('supabase_url', url.trim());
-      if(key) localStorage.setItem('supabase_key', key.trim());
-      if(pat) localStorage.setItem('github_pat', pat.trim());
-      if(gem) localStorage.setItem('gemini_key', gem.trim());
-      if(groq) localStorage.setItem('groq_key', groq.trim());
-      log('💾 API 키 저장 완료', 'ok');
-      alert('API 키 저장 완료');
-      loadRepos();
-    }catch(e){ log('저장 실패: '+e.message,'err'); }
-  });
-  $('testSupabaseBtn')?.addEventListener('click', ()=>testSupabase());
-  initGis();
-  setTimeout(()=>{if(window._gisLoaded) initGis();}, 1200);
-});
-</script>
-</body>
-</html>
+  if
