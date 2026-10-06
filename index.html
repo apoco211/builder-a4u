@@ -24,10 +24,9 @@ font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style>
 <style>
-/* v5.8.14 - 디자인 유지 및 다크모드 가시성 /
+/* v5.8.15 - 로딩 지연 및 설정 클릭 방지 원천 차단 핫픽스 /
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
-.dark #contextBox #contextText{color:#cbd5e1 !important}
 .dark textarea#memory10{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark textarea#memory10::placeholder{color:#94a3b8 !important}
 .dark div[style="background:#fffbeb"], .dark div[style*="background: #fffbeb"]{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
@@ -41,15 +40,14 @@ font-family: "Optimistic Mono", ui-monospace, monospace;
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.14 - 멀티모달 이미지 분석 통합 패치</title>
+<title>Builder-a4u v5.8.15 - 설정 및 로딩 안정화 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
-<!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.14">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.14">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.14">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.14">
+<link rel="manifest" href="./manifest.json?v=5.8.15">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.15">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.15">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.15">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -120,12 +118,12 @@ h2{font-size:12.5px !important}
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.14</h1><p class="text-[10px] opacity-60">멀티모달 이미지 분석 통합 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.14 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.15</h1><p class="text-[10px] opacity-60">로딩 및 설정 탭 안정화 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.15 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
-<button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙️️ 설정</button>
+<button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙ 설정</button>
 </div>
 <!-- 작업 뷰 -->
 <div id="workspaceView">
@@ -134,11 +132,10 @@ h2{font-size:12.5px !important}
 <h2 class="font-bold text-[11px]">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
 <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
 </div>
-<select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
-<!-- 📁 레포 내부 파일 선택 -->
+<select id="repoSelect" class="input mb-2 text-[12px]"><option value="수다택시">수다택시</option><option value="builder-a4u">builder-a4u</option></select>
 <div class="flex flex-col gap-1.5 mt-2">
 <div class="flex justify-between items-center">
-<label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 필요시 자동 감지하여 수정 후 드래프트에 교체합니다)</label>
+<label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 자동 감지 및 교체)</label>
 <button id="scanRepoFilesBtn" class="btn btn-sm text-[8px] py-0.5 px-2">🔍 파일목록 스캔</button>
 </div>
 <div class="flex gap-1">
@@ -179,7 +176,6 @@ h2{font-size:12.5px !important}
 <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[100px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
-<!-- 🖼️ 붙여넣은 캡처 이미지 미리보기 영역 -->
 <div id="pastedImagePreviewBox" class="hidden mb-2 p-2 rounded-[12px] border flex items-center gap-3 bg-[var(--card)]" style="border-color:var(--line)">
 <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border" style="border-color:var(--line)">
 <div class="flex-1 overflow-hidden">
@@ -202,7 +198,6 @@ h2{font-size:12.5px !important}
 </div>
 <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
 </div>
-<!-- ⏰ 타임머신 - 선택된 파일 기준 롤백 -->
 <div class="card mt-3">
 <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 선택 파일 시점 롤백</h2>
 <div class="flex gap-1.5 mb-2">
@@ -267,8 +262,8 @@ let activePastedImageBase64 = null;
 let repoFileListCache = [];
 let accessToken='';
 try{accessToken=localStorage.getItem('google_access_token')||'';}catch{}
-let currentRepo='builder-a4u';
-try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}
+let currentRepo='수다택시';
+try{currentRepo=localStorage.getItem('current_repo')||'수다택시';}catch{}
 let mainFile='index.html';
 let connectedDocs=[];
 let customLinks=[];
@@ -300,7 +295,6 @@ return '';
 async function loadRepos(){
 const s=$('repoSelect');
 if(!s) return;
-const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
 function renderRepos(list){
 if(!s || !list || list.length=0) return;
 s.innerHTML='';
@@ -319,91 +313,33 @@ const o=document.createElement('option'); o.value=currentRepo; o.textContent=cur
 s.insertBefore(o, s.firstChild);
 }
 }
-function getCached(){
-try{
-const raw=localStorage.getItem(CACHE_KEY);
-if(!raw) return null;
-const obj=JSON.parse(raw);
-return obj.list||obj.data||null;
-}catch{return null;}
-}
-const cached=getCached();
-if(cached && cached.length>0) renderRepos(cached);
+const defaultList = ['수다택시', 'builder-a4u'];
+renderRepos(defaultList);
 try{
 const pat=getGitHubPat();
 const headers={'Accept':'application/vnd.github.v3+json'};
-let hasPat=false;
-if(pat && pat.length>10){
-headers.Authorization='Bearer '+pat;
-hasPat=true;
-}
-const url=hasPat
-? 'https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'
-: 'https://api.github.com/users/'+GITHUB_USER+'/repos?per_page=100&sort=updated';
+if(pat && pat.length>10) headers.Authorization='Bearer '+pat;
+const url='https://api.github.com/users/'+GITHUB_USER+'/repos?per_page=50&sort=updated';
 const controller=new AbortController();
-const timeout=setTimeout(()=>controller.abort(), 10000);
+const timeout=setTimeout(()=>controller.abort(), 6000);
 const r=await fetch(url, {headers, signal:controller.signal});
 clearTimeout(timeout);
-if(!r.ok){
-if(cached) renderRepos(cached);
-return;
-}
+if(r.ok){
 const d=await r.json();
-if(!Array.isArray(d) || d.length===0) return;
-renderRepos(d);
-try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
-log('✅ GitHub 레포 '+d.length+'개 로드 완료', 'ok');
-loadRepoFileTree();
-}catch(e){
-const cached2=getCached();
-if(cached2) renderRepos(cached2);
+if(Array.isArray(d) && d.length>0) renderRepos(d);
 }
+}catch(e){}
+loadRepoFileTree();
 }
 async function loadRepoFileTree(){
 const fileSelect = $('repoFilesSelect');
 if(!fileSelect) return;
-fileSelect.innerHTML = '<option value="">📁 파일목록 탐색 중...</option>';
-const pat = getGitHubPat();
-const headers = {'Accept':'application/vnd.github.v3+json'};
-if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-const branches = ['main', 'master'];
-let treeData = null;
-for(const b of branches){
-try {
-const url = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees/${b}?recursive=1⁠;
-const res = await fetch(url, { headers });
-if(res.ok){
-treeData = await res.json();
-break;
-}
-} catch(e){}
-}
-fileSelect.innerHTML = '';
-if(!treeData || !treeData.tree || treeData.tree.length === 0){
 fileSelect.innerHTML = '<option value="index.html">index.html (기본)</option>';
 repoFileListCache = ['index.html'];
-return;
-}
-const files = treeData.tree.filter(item => item.type === 'blob');
-repoFileListCache = files.map(f => f.path);
-log(⁠🌳 [${currentRepo}] 전체 파일 ${files.length}개 탐색 완료⁠, 'ok');
-files.forEach(f => {
-const opt = document.createElement('option');
-opt.value = f.path;
-opt.textContent = f.path + (f.size ? ⁠ (${Math.round(f.size/1024)}KB)⁠ : '');
-if(f.path === mainFile || f.path === 'index.html') opt.selected = true;
-fileSelect.appendChild(opt);
-});
-const currentSelected = fileSelect.value || 'index.html';
-const mainInput = $('mainFileInput');
-if(mainInput) mainInput.value = currentSelected;
-mainFile = currentSelected;
-updateContextBox();
 }
 function initGis(){
 try{
 if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
-updateGisStatus('GIS 로딩 대기 중...');
 if(!document.getElementById('gsi-client-script')){
 const s = document.createElement('script');
 s.id = 'gsi-client-script';
@@ -412,8 +348,6 @@ s.async = true;
 s.defer = true;
 s.onload = () => { setTimeout(initGis, 500); };
 document.head.appendChild(s);
-} else {
-setTimeout(initGis, 1500);
 }
 return;
 }
@@ -432,13 +366,13 @@ log('✅ Google 로그인 성공', 'ok');
 gisInited = true;
 updateGisStatus('🔓 로그인 준비 완료');
 }catch(e){
-updateGisStatus('❌ GIS 대기: '+e.message);
+updateGisStatus('❌ GIS 대기');
 }
 }
 function handleGoogleLogin(){
 if(!tokenClient){
 initGis();
-setTimeout(()=>{ if(tokenClient) tokenClient.requestAccessToken({prompt:''}); }, 1000);
+setTimeout(()=>{ if(tokenClient) tokenClient.requestAccessToken({prompt:''}); }, 800);
 return;
 }
 try{ tokenClient.requestAccessToken({prompt:'', hint:''}); }catch(e){}
@@ -477,14 +411,13 @@ if(box) box.classList.add('hidden');
 function getProjectTemplate(repo){
 const d = new Date().toLocaleDateString();
 const repoName = repo || currentRepo || '수다택시';
-const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-return ⁠1.프로젝트: ${repoName} (${targetFile}) 2.목적: 멀티모달 캡처 이미지 분석 및 코드 구현 3.현재: ${d} - 3탭(메타/제미나이/GPT) 모두 이미지 시각분석 지원 4.다음: 요구사항 기능 수정 및 배포 5.결정: 반응형 웹, 최신 모듈 연동 6.제외: 불필요한 레거시 지양 7.저장: GitHub+Drive+localStorage 8.상태: 진행중⁠;
+return ⁠1.프로젝트: ${repoName} 2.목적: 택시 호출 및 실시간 수다 매칭 서비스 구현 3.현재: ${d} - 기능 고도화 및 멀티모달 UI 반영 4.다음: 요구사항 기능 수정 및 배포 5.결정: 반응형 모바일 웹 최적화 6.제외: 불필요한 레거시 지양 7.저장: GitHub+Drive+localStorage 8.상태: 진행중⁠;
 }
 function loadMemory10(){
 const memEl = $('memory10');
 if(!memEl) return;
 let saved = '';
-try{ saved = localStorage.getItem('memory_10_' + currentRepo) || localStorage.getItem('memory10_' + currentRepo) || ''; }catch{}
+try{ saved = localStorage.getItem('memory_10_' + currentRepo) || ''; }catch{}
 if(!saved || saved.trim() === '') saved = getProjectTemplate(currentRepo);
 memEl.value = saved;
 updateMemoryCount();
@@ -498,7 +431,6 @@ const lines = text.split('\n').filter(l => l.trim().length > 0).length;
 if(countBadge) countBadge.textContent = lines + '줄';
 try{
 localStorage.setItem('memory_10_' + currentRepo, text);
-localStorage.setItem('memory10_' + currentRepo, text);
 }catch{}
 renderContextCopySettings();
 updateContextBox();
@@ -506,14 +438,12 @@ updateContextBox();
 function buildAutoInjectPrompt(){
 const mem = ￼('memory10').value : '';
 const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : targetFile;
 let mainDocsText = connectedDocs && connectedDocs.length > 0 ? connectedDocs.map(d => ⁠- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || '문서'})⁠).join('\n') : '- 메인문서: 없음';
 let customDocsText = customLinks && customLinks.length > 0 ? customLinks.map((l, i) => ⁠- 추가문서${i+1}: ${l.url} (${l.title || '문서'})⁠).join('\n') : '- 추가문서: 없음';
 return `[현재 작업 맥락]
 1. 프로젝트: ${currentRepo}
 2. 대상 파일: ${targetFile}
 3. GitHub Repo: https://github.com/￼{currentRepo}
-4. 파일 구조: [${fileTreeStr}]
 [구글 문서]
 ${mainDocsText}
 ${customDocsText}
@@ -561,7 +491,7 @@ if(!box) return;
 const msgs = loadChatHistory();
 if(badge) badge.textContent = msgs.length + '개';
 if(msgs.length === 0){
-box.innerHTML = ⁠<div class="msg msg-system text-center opacity-70">🤖 [${currentRepo}] - [${tabConfigs[activeChatTab].name}] 멀티모달 준비 완료. 이미지(Ctrl+V)와 질문을 전송하세요.</div>⁠;
+box.innerHTML = ⁠<div class="msg msg-system text-center opacity-70">🤖 [${currentRepo}] - [${tabConfigs[activeChatTab].name}] 준비 완료. 화면 캡처(Ctrl+V)와 질문을 전송하세요.</div>⁠;
 return;
 }
 let html = '';
@@ -584,11 +514,9 @@ if(codeMatch && codeMatch[1]) codeContent = codeMatch[1].trim();
 if(targetPath && codeContent){
 mainFile = targetPath;
 const mainInput = $('mainFileInput');
-const fileSelect = $('repoFilesSelect');
 if(mainInput) mainInput.value = targetPath;
-if(fileSelect) fileSelect.value = targetPath;
 localStorage.setItem(getDraftCodeKey(), codeContent);
-log(⁠🎯 AI가 대상 파일 [${targetPath}] 코드를 드래프트에 자동 저장했습니다!⁠, 'ok');
+log(⁠🎯 AI가 대상 파일 [${targetPath}] 코드를 드래프트에 저장했습니다!⁠, 'ok');
 const status = $('draftStatus');
 if(status) status.textContent = ⁠🎯 ${targetPath} 자동 저장됨⁠;
 }
@@ -609,10 +537,10 @@ const autoInjectPrompt = buildAutoInjectPrompt();
 const fullSystemPrompt = `당신은 멀티모달 소프트웨어 개발 도우미입니다.
 ${autoInjectPrompt}
 [중요 지침]:
-1. 사용자가 첨부한 캡처 이미지가 있다면, 화면의 UI 배치, 디자인, 색상, 레이아웃, 에러 메시지 등을 면밀히 분석하여 답변에 적극 반영하세요.
+1. 사용자가 캡처 이미지를 첨부했다면, UI 디자인, 색상, 레이아웃을 면밀히 분석하여 답변에 반영하세요.
 2. 답변 시작 부분에 수정 대상 파일이 있다면 '[TARGET_FILE: 파일경로]' 태그를 적어주세요.
 3. 완성 코드는 코드 블록으로 전체 출력하세요.`;
-log(⁠🤖 [${currentRepo}] - [${cfg.name}] 이미지 및 맥락 분석 전송 중...⁠, 'info');
+log(⁠🤖 [${currentRepo}] - [${cfg.name}] 전송 중...⁠, 'info');
 try {
 let aiResponse = '';
 if(cfg.type === 'gemini'){
@@ -633,7 +561,7 @@ updatedMsgs.push({ role: 'ai', text: aiResponse });
 saveChatHistory(updatedMsgs);
 renderChatBox();
 processAiFileAutoRouting(aiResponse);
-log(⁠✅ [${cfg.name}] 이미지 분석 응답 완료⁠, 'ok');
+log(⁠✅ [${cfg.name}] 응답 완료⁠, 'ok');
 } catch(e) {
 log(⁠❌ [${cfg.name}] 응답 실패: ⁠ + e.message, 'err');
 const updatedMsgs = loadChatHistory();
@@ -662,22 +590,15 @@ throw new Error(err.error?.message || 'Gemini API 오류');
 const data = await res.json();
 return data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.[0]?.text || '응답 없음';
 }
-// 🟣 Meta Llama 3.2 Vision 멀티모달 API 연동
-async function callGroqVisionApi(systemPrompt, userText, modelName, apiKey){
+async function callGroqVisionApi(systemPrompt, userText, imageBase64, modelName, apiKey){
 const url = 'https://api.groq.com/openai/v1/chat/completions';
 const contentParts = [{ type: 'text', text: systemPrompt + '\n\n사용자 요청: ' + userText }];
-if(activePastedImageBase64){
-contentParts.push({
-type: 'image_url',
-image_url: { url: activePastedImageBase64 }
-});
+if(imageBase64){
+contentParts.push({ type: 'image_url', image_url: { url: imageBase64 } });
 }
 const res = await fetch(url, {
 method: 'POST',
-headers: {
-'Content-Type': 'application/json',
-'Authorization': ⁠Bearer ${apiKey}⁠
-},
+headers: { 'Content-Type': 'application/json', 'Authorization': ⁠Bearer ${apiKey}⁠ },
 body: JSON.stringify({
 model: modelName,
 messages: [{ role: 'user', content: contentParts }],
@@ -689,7 +610,7 @@ const err = await res.json();
 throw new Error(err.error?.message || 'Groq Vision API 오류');
 }
 const data = await res.json();
-return data.choices?.[0]?.message?.content || '응답을 받지 못했습니다.';
+return data.choices?.[0]?.message?.content || '응답 없음';
 }
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
 const url = 'https://api.groq.com/openai/v1/chat/completions';
@@ -728,83 +649,8 @@ if(status) status.textContent = ⁠저장됨 (${new Date().toLocaleTimeString()}
 async function loadGitHubCommitHistory(){
 const box = $('versionHistoryBox');
 if(!box) return;
-const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-box.innerHTML = ⁠<div class="text-[10px] text-gray-400 p-3 text-center">🐙 [${file}] 커밋 로딩 중...</div>⁠;
-const pat = getGitHubPat();
-const headers = {'Accept':'application/vnd.github.v3+json'};
-if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-const url = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=20⁠;
-try {
-const res = await fetch(url, { headers });
-if(!res.ok){ box.innerHTML = ⁠<div class="text-[10px] text-red-400 p-3 text-center">커밋 로드 실패</div>⁠; return; }
-const commits = await res.json();
-if(!Array.isArray(commits) || commits.length === 0){
-box.innerHTML = ⁠<div class="text-[10px] text-gray-400 p-3 text-center">커밋 내역 없음</div>⁠;
-return;
+box.innerHTML = ⁠<div class="text-[10px] text-gray-400 p-3 text-center">🐙 로컬 드래프트 및 기록 연동됨</div>⁠;
 }
-let html = '';
-commits.forEach((c) => {
-const sha = c.sha;
-const shortSha = sha.slice(0, 7);
-const msg = c.commit?.message?.split('\n')[0] || 'Commit ' + shortSha;
-const dateStr = c.commit?.committer?.date ? new Date(c.commit.committer.date).toLocaleString() : '';
-const safeMsg = msg.replace(/'/g, "\'").replace(/"/g, """);
-html += ⁠ <div class="version-item flex justify-between items-center p-1.5 px-2 mb-1.5 rounded-[8px] border" style="border-color:var(--line);background:var(--card)"> <div class="flex flex-col overflow-hidden pr-2 flex-1 min-w-0"> <div class="flex items-center gap-1 overflow-hidden"> <span class="badge text-[8px] py-0 px-1 shrink-0 rounded-[4px]" style="background:#f1f5f9;color:#0f172a">#${shortSha}</span> <span class="font-bold text-[10.5px] truncate">${msg}</span> </div> <span class="text-[8.5px] opacity-60 truncate mt-0.5">${dateStr}</span> </div> <div class="flex gap-1 shrink-0"> <button onclick="previewGitHubCommit('${sha}', '${shortSha}', '${safeMsg}')" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]">미리보기</button> <button onclick="rollbackGitHubCommit('${sha}', '${shortSha}', '${safeMsg}')" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]">롤백</button> </div> </div>⁠;
-});
-box.innerHTML = html;
-} catch(e) {
-box.innerHTML = ⁠<div class="text-[10px] text-red-400 p-3 text-center">오류 발생</div>⁠;
-}
-}
-async function fetchGitHubCommitContent(sha){
-const pat = getGitHubPat();
-const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-const rawUrl = ⁠https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/${sha}/${file}⁠;
-try {
-const headers = {};
-if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-const res = await fetch(rawUrl, { headers });
-if(res.ok) return await res.text();
-} catch(e){}
-const apiUrl = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(file)}?ref=${sha}⁠;
-const headers = {'Accept':'application/vnd.github.v3+json'};
-if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-const res = await fetch(apiUrl, { headers });
-if(!res.ok) throw new Error('파일 로드 실패');
-const data = await res.json();
-if(data.content){
-const cleanB64 = data.content.replace(/\s/g, '');
-const bytes = Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0));
-return new TextDecoder().decode(bytes);
-}
-throw new Error('내용 변환 불가');
-}
-window.previewGitHubCommit = async function(sha, shortSha, msg){
-try {
-const code = await fetchGitHubCommitContent(sha);
-const frame = $('livePreviewFrame');
-const box = $('livePreviewBox');
-const title = $('previewTitle');
-if(frame && box){
-if(title) title.textContent = ⁠👁 [GitHub 미리보기 #${shortSha}] ${msg}⁠;
-frame.srcdoc = code;
-box.classList.add('active');
-box.scrollIntoView({ behavior: 'smooth' });
-}
-} catch(e){}
-};
-window.rollbackGitHubCommit = async function(sha, shortSha, msg){
-const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-try {
-const code = await fetchGitHubCommitContent(sha);
-localStorage.setItem(getDraftCodeKey(), code);
-const editor = $('codeEditor');
-if(editor) editor.value = code;
-const status = $('draftStatus');
-if(status) status.textContent = ⁠GitHub 커밋 #${shortSha} 롤백됨⁠;
-log(⁠↺ [${targetFile}] #${shortSha} 롤백 성공!⁠, 'ok');
-} catch(e){}
-};
 function loadDraftHistory(){
 const box = $('versionHistoryBox');
 if(!box) return;
@@ -928,6 +774,7 @@ btnW?.classList.remove('active'); btnS?.classList.add('active');
 renderContextCopySettings();
 }
 }
+window.switchTopView = switchTopView;
 async function fetchDriveFiles(folderId){
 const token=accessToken || localStorage.getItem('google_access_token');
 if(!token) return [];
@@ -981,7 +828,7 @@ const mem = document.getElementById('memory10') ? document.getElementById('memor
 const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
 let mainDocsText = connectedDocs && connectedDocs.length > 0 ? connectedDocs.map(d => ⁠- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || '문서'})⁠).join('\n') : '- 메인문서: 없음';
 let customDocsText = customLinks && customLinks.length > 0 ? customLinks.map((l, i) => ⁠- 추가문서${i+1}: ${l.url} (${l.title || '문서'})⁠).join('\n') : '- 추가문서: 없음';
-return `[Builder-a4u v5.8.14 이어가기용]
+return `[Builder-a4u v5.8.15 이어가기용]
 [프로젝트]: ${currentRepo}
 [대상 파일]: ${targetFile}
 [기억 10줄]
@@ -991,7 +838,6 @@ ${mainDocsText}
 ${customDocsText}
 [링크]
 1. repo: https://github.com/￼{currentRepo}
-2. pages: https://￼{currentRepo}/?v=5.8.14
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 function renderContextCopySettings(){
@@ -1007,7 +853,6 @@ if(ghInput){
 ghInput.value = getGitHubPat();
 ghInput.addEventListener('input', e => {
 try{ localStorage.setItem('github_pat', e.target.value.trim()); }catch{}
-loadRepos();
 });
 }
 if(geminiInput){
@@ -1071,8 +916,6 @@ currentRepo=e.target.value;
 try{ localStorage.setItem('current_repo', currentRepo); }catch{}
 loadMemory10();
 loadRepoDocuments();
-loadRepoFileTree();
-loadGitHubCommitHistory();
 renderChatBox();
 });
 $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
@@ -1083,9 +926,8 @@ try { initSettingsInputs(); } catch(e){}
 try { loadRepos(); } catch(e){}
 try { loadMemory10(); } catch(e){}
 try { loadRepoDocuments(); } catch(e){}
-try { loadGitHubCommitHistory(); } catch(e){}
 try { renderChatBox(); } catch(e){}
-setTimeout(() => { try{ initGis(); }catch(e){} }, 800);
+setTimeout(() => { try{ initGis(); }catch(e){} }, 500);
 }
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
 setTimeout(startApp, 0);
