@@ -171,7 +171,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
 <div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
-<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[#90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
 
@@ -530,7 +530,7 @@ $('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateB
 let activeChatTab = 'meta';
 let chatHistories = { meta: [], gemini: [], gpt: [] };
 const tabConfigs = {
-  meta: { name: '메타 (GPT-OSS-20B)', color: 'var(--meta)', bg: '#7c3aed', model: 'openai/gpt-oss-20b', type: 'groq' },
+  meta: { name: '메타 (Llama-3.1-8B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.1-8b-instant', type: 'groq' },
   gemini: { name: '제미나이 (Gemini-2.0)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-2.0-flash', type: 'gemini' },
   gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
 };
@@ -625,13 +625,13 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey){
     throw new Error(err.error?.message || 'Gemini API 호출 오류');
   }
   const data = await res.json();
-  return data.candidates?.[0]?.content?.parts?.[0]?.text || '응답을 받지 못했습니다.';
+  return data.candidates?.[0]?.content?.[0]?.text || data.candidates?.[0]?.content?.parts?.[0]?.text || '응답을 받지 못했습니다.';
 }
 
-// v5.8.7 Groq API 자동 순회(Fallback) 모델 호환 처리
+// v5.8.7 Groq API 자동 순회(Fallback) 모델 호환 처리 (Meta Llama 3.1 우선 순회)
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
   const url = 'https://api.groq.com/openai/v1/chat/completions';
-  const modelsToTry = [preferredModel, 'openai/gpt-oss-20b', 'openai/gpt-oss-120b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
+  const modelsToTry = [preferredModel, 'llama-3.1-8b-instant', 'openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
   let lastErr = null;
   for (const m of modelsToTry) {
     try {
