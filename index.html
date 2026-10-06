@@ -22,7 +22,7 @@
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
 </style><style>
-/* v5.7.9 - 디자인 유지 및 다크모드 가시성 수정 */
+/* v5.8.1 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -39,29 +39,29 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.7.9 - GitHub 레포 실시간 로드 복원 + Google GIS 패치</title>
+<title>Builder-a4u v5.8.1 - 추가 문서에도 내용 불러오기 동일 적용</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
-<!-- Google Identity Services 라이브러리 및 동적 폴백 설정 -->
+<!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.7.9">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.7.9">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.7.9">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.7.9">
+<link rel="manifest" href="./manifest.json?v=5.8.1">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.1">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.1">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.1">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
 html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%} 
 body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;transition:.2s;font-size:15px;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;transition:.2s}
-.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--bg);display:flex;gap:10px;align-items:center}
+.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--card);display:flex;gap:10px;align-items:center}
 .btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px}
 .btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
 .btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
 .btn-meta{background:var(--meta) !important;color:#fff !important;border-color:var(--meta) !important}
 .btn-gemini{background:var(--gemini) !important;color:#fff !important;border-color:var(--gemini) !important}
 .btn-gpt{background:var(--gpt) !important;color:#fff !important;border-color:var(--gpt) !important}
-.btn-sm{padding:8px 12px;font-size:12px;min-height:34px}
+.btn-sm{padding:6px 10px;font-size:11px;min-height:30px;border-radius:8px}
 .btn:active{transform:scale(.97)}
 .input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);color:var(--txt);font-size:16px;outline:none;min-height:46px}
 .textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--txt);font-size:14px;line-height:1.6;outline:none;resize:vertical}
@@ -71,26 +71,17 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 .msg{max-width:85%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
 .msg-user{align-self:flex-end;background:#111;color:#fff;border-bottom-right-radius:6px}
 .msg-ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
-.msg-system{align-self:center;background:#fffbeb;border:1px dashed #f59e0b;font-size:12px;max-width:95%;padding:10px 12px}
-.dark .msg-system{background:#2a2410 !important;color:#fef3c7 !important}
 .dark .btn{background:#252a36 !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark .btn-primary{background:#e2e8f0 !important;color:#0f1115 !important;border-color:#e2e8f0 !important}
 .dark .btn-yellow{background:#FFC800 !important;color:#111 !important;border-color:#FFC800 !important}
-.dark .input{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
-.dark .input::placeholder{color:#94a3b8 !important;opacity:0.8}
-.dark .textarea{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
+.dark .input, .dark .textarea{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark .card{border-color:#2a2f3a !important}
 .dark .chat-box{background:#0f1115 !important;border-color:#2a2f3a !important}
 .dark .msg-ai{background:#1a1d24 !important;color:#e2e8f0 !important;border-color:#2a2f3a !important}
 .dark .log{background:#0f1115 !important;color:#cbd5e1 !important;border-color:#2a2f3a !important}
-.dark button[style*="background:#fff"], .dark button[style*="background: #fff"], .dark #saveDraftBtn{background:#252a36 !important;color:#e2e8f0 !important;border:2px solid #3a4152 !important}
-.dark #saveDraftBtn span, .dark #saveDraftBtn{color:#e2e8f0 !important}
-.dark .top-tab{background:#1a1d24 !important;color:#e2e8f0 !important;border-color:#2a2f3a !important}
-.dark #chatInput{background:#1e222e !important;color:#e2e8f0 !important}
 .top-tab{flex:1;padding:14px 10px;border-radius:14px;font-weight:900;font-size:15px;border:2px solid var(--line);background:var(--card);color:var(--txt);min-height:48px}
 .top-tab.active{background:#111 !important;color:#fff !important;border-color:#111 !important;box-shadow:0 0 0 2px var(--accent)}
 .tab-active{border:2px solid #111 !important;box-shadow:0 0 0 2px var(--accent)}
-.link-item{display:flex;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
 .view-hidden{display:none !important}
 
 @media (max-width: 768px){
@@ -98,37 +89,14 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   .card{padding:12px;border-radius:14px}
   .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
   .btn{font-size:12.5px;padding:10px 12px;min-height:40px}
-  .btn-sm{font-size:11.5px;padding:8px 10px;min-height:34px}
   .input{font-size:15px !important;padding:12px;min-height:44px}
   .textarea{font-size:13.5px !important}
   .chat-box{height:48vh;min-height:360px}
   .msg{font-size:13.5px !important;line-height:1.5;padding:10px 12px}
-  .msg-system{font-size:11.5px}
-  .msg-user{font-size:13.5px !important}
-  .msg-ai{font-size:13.5px !important}
   h1{font-size:17px !important}
   h2{font-size:12.5px !important}
   .log{font-size:10.5px}
   .badge{font-size:9px}
-  .doc-card{font-size:12px}
-}
-
-@media (min-width:1024px){
-  body{max-width:1280px !important;padding:28px 32px 120px 32px !important;font-size:17px !important;line-height:1.6 !important}
-  .card{padding:24px !important;border-radius:20px !important;margin-bottom:18px !important}
-  .chat-box{height:68vh !important;min-height:580px !important;max-height:780px !important;padding:20px !important;gap:16px !important}
-  .msg{font-size:16px !important;line-height:1.7 !important;padding:14px 18px !important;max-width:80% !important}
-  .msg-system{font-size:14px !important;padding:14px 16px !important}
-  .input{font-size:16.5px !important;padding:14px 16px !important;min-height:52px !important;border-radius:14px !important}
-  .textarea{font-size:15.5px !important;line-height:1.7 !important;padding:14px !important}
-  .btn{font-size:15px !important;padding:12px 18px !important;min-height:48px !important;border-radius:14px !important}
-  .btn-sm{font-size:14px !important;padding:10px 16px !important;min-height:42px !important}
-  .top-tab{font-size:16px !important;padding:16px 12px !important;min-height:56px !important;border-radius:16px !important}
-  h1{font-size:26px !important}
-  h2{font-size:15px !important;letter-spacing:0.05em !important}
-  .log{font-size:13px !important;line-height:1.7 !important;max-height:300px !important;padding:16px !important}
-  .badge{font-size:12px !important;padding:6px 12px !important}
-  .doc-card{padding:16px !important;font-size:14px !important}
 }
 
 .live-preview-box{border:2px solid var(--meta);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
@@ -139,11 +107,6 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 @media (min-width:1024px){.live-preview-iframe{height:560px}}
 .version-history{max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:8px;background:var(--bg)}
 .version-item{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;border:1px solid transparent;cursor:pointer;margin-bottom:6px;background:var(--card);font-size:11px}
-.version-item:hover{border-color:var(--meta);background:#f5f3ff}
-.version-item.active{border-color:var(--meta);background:#ede9fe}
-.dark .version-item:hover{background:#252a36 !important}
-.dark .version-item.active{background:#2a1f4a !important}
-.version-badge{padding:3px 8px;border-radius:999px;font-size:10px;font-weight:800;color:#fff}
 
 .drive-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;}
 .drive-modal-content{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
@@ -158,8 +121,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.7.9</h1><p class="text-[10px] opacity-60">GitHub 레포 실시간 로드 복원 + Google GIS 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.7.9 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.1</h1><p class="text-[10px] opacity-60">추가 문서에도 내용 불러오기 동일 적용</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.1 정식</span></div>
 </div>
 
 <div class="flex gap-2 mb-3">
@@ -187,12 +150,14 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <h2 class="font-bold text-[11px] mb-2">📄 메인 문서 - 계속 업데이트 1개</h2>
 <div class="flex gap-2 mb-2"><button id="searchExactBtn" class="btn text-[10px] w-full">📂 Drive 열어서 선택</button></div>
 <div id="connectedDocs" class="mt-2"></div>
+<div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
 </div>
 
 <div class="card" style="border-color:var(--gemini)">
 <h2 class="font-bold text-[11px] mb-2">🔗 추가 문서 N개 - Drive 체크박스 <span id="linkCount" class="badge ml-2">0개</span></h2>
 <div class="flex gap-2 mb-2"><button id="linkSearchBtn" class="btn btn-gemini text-[10px] w-full">📂 Drive 열어서 선택</button></div>
 <div id="customLinksList" class="mt-2"></div>
+<div id="linkDocPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[180px] overflow-auto" style="border-color:var(--line)"></div>
 </div>
 
 <div class="card">
@@ -293,7 +258,6 @@ function updateGisStatus(msg){
   if(el) el.innerHTML=msg;
 }
 
-// 1. GitHub PAT 가져오기
 function getGitHubPat(){
   try{
     const keys=['github_pat','github_token','GITHUB_PAT','GITHUB_TOKEN','gh_pat','pat'];
@@ -307,7 +271,6 @@ function getGitHubPat(){
   }catch(e){ return ''; }
 }
 
-// 2. GitHub 레포지토리 실시간 로드
 async function loadRepos(){
   const s=document.getElementById('repoSelect');
   if(!s) return;
@@ -385,7 +348,6 @@ async function loadRepos(){
   }
 }
 
-// 3. GIS 로그인 초기화 및 동적 재주입
 function initGis(){
   try{
     if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
@@ -456,14 +418,145 @@ let currentRepo='builder-a4u';
 try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}
 let mainFile='index.html';
 let connectedDocs=[];
-try{connectedDocs=JSON.parse(localStorage.getItem('connected_docs_'+currentRepo)||'[]');}catch{}
 let customLinks=[];
-try{customLinks=JSON.parse(localStorage.getItem('customLinks_'+currentRepo)||'[]');}catch{}
 let draftCode='';
 try{draftCode=localStorage.getItem('draft_code_'+currentRepo)||'';}catch{}
 
 const $=id=>document.getElementById(id);
 function log(m,t='info'){const a=$('logArea');if(!a) return;const time=new Date().toLocaleTimeString();const d=document.createElement('div');d.innerHTML='<span style="opacity:.6">'+time+'</span> '+(t==='ok'?'✅':t==='err'?'❌':'ℹ️')+' '+m;a.appendChild(d);a.scrollTop=a.scrollHeight;}
+
+// 레포별 저장된 문서 로드
+function loadRepoDocuments(){
+  try{ connectedDocs = JSON.parse(localStorage.getItem('connected_docs_' + currentRepo) || '[]'); }catch{ connectedDocs = []; }
+  try{ customLinks = JSON.parse(localStorage.getItem('customLinks_' + currentRepo) || '[]'); }catch{ customLinks = []; }
+  renderConnectedDocs();
+  renderCustomLinks();
+}
+
+// 📄 메인 문서 렌더링 및 컨트롤
+function renderConnectedDocs(){
+  const el = $('connectedDocs');
+  if(!el) return;
+  if(!connectedDocs || connectedDocs.length === 0){
+    el.innerHTML = '<div class="text-[11px] opacity-60 p-2 text-center border rounded-[12px]" style="border-color:var(--line)">연결된 메인 문서 없음</div>';
+    return;
+  }
+  let html = '';
+  connectedDocs.forEach((d, i) => {
+    html += `
+    <div class="doc-card flex justify-between items-center p-2 rounded-[12px] border text-[11px] mb-1" style="border-color:var(--line)">
+      <div class="flex items-center gap-2 overflow-hidden flex-1 mr-2">
+        <span>📄</span>
+        <span class="font-bold truncate">${d.title || d.name || '문서'}</span>
+      </div>
+      <div class="flex gap-1 flex-shrink-0">
+        <a href="https://docs.google.com/document/d/${d.id}/edit" target="_blank" class="btn btn-sm py-1 px-2 text-[10px] flex items-center">🔗 열기</a>
+        <button onclick="fetchDocContent('${d.id}', '${d.title || d.name || '메인문서'}', true)" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📥 내용 불러오기</button>
+        <button onclick="removeConnectedDoc(${i})" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑️ 삭제</button>
+      </div>
+    </div>`;
+  });
+  el.innerHTML = html;
+}
+
+function removeConnectedDoc(idx){
+  connectedDocs.splice(idx, 1);
+  try{ localStorage.setItem('connected_docs_' + currentRepo, JSON.stringify(connectedDocs)); }catch{}
+  renderConnectedDocs();
+  renderContextCopySettings();
+  const previewEl = $('docPreview');
+  if(previewEl) previewEl.classList.add('hidden');
+  log('📄 메인 문서 해제됨', 'info');
+}
+
+// 구글 문서 본문 실시간 불러오기 (메인 & 추가 문서 공용)
+async function fetchDocContent(docId, docTitle, isMain = true){
+  const token = accessToken || localStorage.getItem('google_access_token');
+  if(!token){ alert('설정탭에서 Google 로그인을 먼저 진행해주세요.'); return; }
+  log(`📄 [${docTitle || '문서'}] 내용 불러오는 중...`, 'info');
+  try{
+    const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if(!res.ok){
+      const err = await res.json();
+      throw new Error(err.error?.message || 'Docs API 오류');
+    }
+    const data = await res.json();
+    let text = '';
+    if(data.body && data.body.content){
+      data.body.content.forEach(c => {
+        if(c.paragraph && c.paragraph.elements){
+          c.paragraph.elements.forEach(e => {
+            if(e.textRun && e.textRun.content) text += e.textRun.content;
+          });
+        }
+      });
+    }
+    const previewEl = isMain ? $('docPreview') :$('linkDocPreview');
+    if(previewEl){
+      previewEl.classList.remove('hidden');
+      previewEl.textContent = `[${docTitle || '문서'}]\n` + text.slice(0, 3000) + (text.length > 3000 ? '\n...(이하 생략)' : '');
+    }
+    log(`✅ 문서 내용 불러오기 성공 (${text.length}자)`, 'ok');
+  }catch(e){
+    log('문서 불러오기 실패: ' + e.message, 'err');
+  }
+}
+
+// 🔗 추가 문서 N개 렌더링 및 컨트롤 (메인과 동일한 [🔗 열기], [📥 내용 불러오기], [🗑️ 삭제] 적용)
+function renderCustomLinks(){
+  const el = $('customLinksList');
+  const badge = $('linkCount');
+  if(badge) badge.textContent = (customLinks ? customLinks.length : 0) + '개';
+  if(!el) return;
+  if(!customLinks || customLinks.length === 0){
+    el.innerHTML = '<div class="text-[11px] opacity-60 p-2 text-center border rounded-[12px]" style="border-color:var(--line)">추가된 문서/링크 없음</div>';
+    return;
+  }
+  let html = '';
+  customLinks.forEach((l, i) => {
+    const docId = l.id || (l.url ? l.url.match(/\/d\/([^\/]+)/)?.[1] : '');
+    const title = l.title || l.url;
+    html += `
+    <div class="doc-card flex justify-between items-center p-2 rounded-[12px] border text-[11px] mb-1" style="border-color:var(--line)">
+      <div class="flex items-center gap-2 overflow-hidden flex-1 mr-2">
+        <span>🔗</span>
+        <span class="font-bold truncate">${title}</span>
+      </div>
+      <div class="flex gap-1 flex-shrink-0">
+        <a href="${l.url}" target="_blank" class="btn btn-sm py-1 px-2 text-[10px] flex items-center">🔗 열기</a>
+        ${docId ? `<button onclick="fetchDocContent('${docId}', '${title.replace(/'/g, "\\'")}', false)" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📥 내용 불러오기</button>` : ''}
+        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑️ 삭제</button>
+      </div>
+    </div>`;
+  });
+  if(customLinks.length > 1){
+    html += `<div class="mt-2 flex justify-end"><button onclick="removeAllCustomLinks()" class="btn btn-sm text-[9px] text-red-500">🗑️ 전체 삭제</button></div>`;
+  }
+  el.innerHTML = html;
+}
+
+function removeCustomLink(idx){
+  customLinks.splice(idx, 1);
+  try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
+  renderCustomLinks();
+  renderContextCopySettings();
+  const previewEl = $('linkDocPreview');
+  if(previewEl && customLinks.length === 0) previewEl.classList.add('hidden');
+  log('🔗 추가 문서 삭제됨', 'info');
+}
+
+function removeAllCustomLinks(){
+  if(!confirm('추가 문서 링크를 모두 삭제하시겠습니까?')) return;
+  customLinks = [];
+  try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
+  renderCustomLinks();
+  renderContextCopySettings();
+  const previewEl = $('linkDocPreview');
+  if(previewEl) previewEl.classList.add('hidden');
+  log('🔗 추가 문서 전체 삭제됨', 'info');
+}
 
 function setTheme(th){
   const html=document.documentElement;
@@ -547,10 +640,12 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
   if(isMain){
     connectedDocs=[{id:fileId, title:fileName}];
     try{localStorage.setItem('connected_docs_'+currentRepo, JSON.stringify(connectedDocs));}catch{}
+    renderConnectedDocs();
     log('📄 메인 문서 연결: '+fileName,'ok');
   } else {
-    customLinks.push({title:fileName, url:'https://docs.google.com/document/d/'+fileId+'/edit'});
+    customLinks.push({id:fileId, title:fileName, url:'https://docs.google.com/document/d/'+fileId+'/edit'});
     try{localStorage.setItem('customLinks_'+currentRepo, JSON.stringify(customLinks));}catch{}
+    renderCustomLinks();
     log('🔗 추가 문서 연결: '+fileName,'ok');
   }
   renderContextCopySettings();
@@ -559,44 +654,43 @@ window.selectDriveFile=(fileId, fileName, isMain)=>{
 $('driveModalClose').onclick=()=>{$('driveModal').style.display='none';};
 $('searchExactBtn').onclick=()=>openDriveModal(true);$('linkSearchBtn').onclick=()=>openDriveModal(false);
 
-function buildContextCopyV59(){
+function buildContextCopyV81(){
   const mem=document.getElementById('memory10')?document.getElementById('memory10').value:'';
-  return `[Builder-a4u v5.7.9 이어가기용]
+  return `[Builder-a4u v5.8.1 이어가기용]
 [기억 10줄]
 ${mem}
 [링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.7.9`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.1`;
 }
 
 function renderContextCopySettings(){
   const ta=$('contextCopyPreviewSettings');
-  if(ta) ta.value=buildContextCopyV59();
+  if(ta) ta.value=buildContextCopyV81();
 }
 
 $('btn-copy-context-settings')?.addEventListener('click', async()=>{
   try{
-    await navigator.clipboard.writeText(buildContextCopyV59());
+    await navigator.clipboard.writeText(buildContextCopyV81());
     alert('전체맥락복사 완료!');
   }catch(e){alert('복사 실패');}
 });
 
-// 설정 값 불러오기 및 이벤트 바인딩
 function initSettingsInputs(){
   const ghInput=$('githubPatInput');
   if(ghInput){
     ghInput.value=getGitHubPat();
     ghInput.addEventListener('input', e=>{
       try{ localStorage.setItem('github_pat', e.target.value.trim()); }catch{}
-      loadRepos(); // PAT 수정 시 즉시 레포 갱신
+      loadRepos();
     });
   }
 }
 
-// 레포 변경 이벤트
 $('repoSelect')?.addEventListener('change', e=>{
   currentRepo=e.target.value;
   try{ localStorage.setItem('current_repo', currentRepo); }catch{}
+  loadRepoDocuments();
   log('📌 레포 변경됨: '+currentRepo, 'ok');
 });
 
@@ -604,7 +698,8 @@ $('refreshRepoBtn')?.addEventListener('click', ()=>loadRepos());
 
 window.addEventListener('load', ()=>{
   initSettingsInputs();
-  loadRepos(); // GitHub 레포 자동 로드
+  loadRepos();
+  loadRepoDocuments();
   setTimeout(initGis, 800);
 });
 </script>
