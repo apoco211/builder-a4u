@@ -41,7 +41,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.7 - Groq API 모델 업데이트 및 맥락복사 완성</title>
+<title>Builder-a4u v5.8.7 - Groq & Gemini API 최신 모델 적용</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
@@ -120,7 +120,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.7</h1><p class="text-[10px] opacity-60">Groq API 모델 업데이트 및 맥락복사 완성</p></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.7</h1><p class="text-[10px] opacity-60">Groq & Gemini API 최신 모델 업데이트완료</p></div>
 <div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.7 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
@@ -171,7 +171,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
 <div class="flex justify-between items-center mb-2"><h2 class="font-black text-[12px]">PWA 내부 3탭 채팅</h2><span class="badge" style="background:#111;color:#fff">자동 주입</span></div>
 <div class="grid grid-cols-3 gap-2 mb-2"><button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button><button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button><button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button></div>
-<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[#90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
+<div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
 
@@ -472,12 +472,12 @@ function getProjectTemplate(repo){
   const repoName = repo || currentRepo || 'builder-a4u';
   return `1.프로젝트: ${repoName} v5.8.7
 2.목적: 단일 공방으로 N개 앱 맥락 유지
-3.현재: ${d} - Groq API 모델 퇴출 대응 (gpt-oss-20b/120b 전환)
+3.현재: ${d} - Gemini API gemini-3.8-flash 업그레이드 대응
 4.다음: 기능 구현 및 빌드 배포
 5.결정: 소문자 index.html, manifest.json, 3탭 채팅 연동
-6.제외: 퇴출된 llama-3.3-70b-versatile
+6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
 7.저장: Supabase+Docs+GitHub+localStorage
-8.버그: Groq 모델 퇴출로 인한 404 오류 해결 완료
+8.버그: Gemini 모델 퇴출로 인한 오류 해결 완료
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -526,12 +526,12 @@ $('memory10')?.addEventListener('input', () => updateMemoryCount());$('templateB
   }
 });
 
-// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.7 Groq 최신 모델 적용)
+// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.7 최신 API 모델 적용)
 let activeChatTab = 'meta';
 let chatHistories = { meta: [], gemini: [], gpt: [] };
 const tabConfigs = {
   meta: { name: '메타 (Llama-3.1-8B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.1-8b-instant', type: 'groq' },
-  gemini: { name: '제미나이 (Gemini-2.0)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-2.0-flash', type: 'gemini' },
+  gemini: { name: '제미나이 (Gemini-3.8)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3.8-flash', type: 'gemini' },
   gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
 };
 
@@ -587,7 +587,7 @@ async function sendChatMessage(){
     if(cfg.type === 'gemini'){
       const geminiKey = localStorage.getItem('gemini_key') || $('geminiKeyInput')?.value || '';
       if(!geminiKey){ alert('설정 탭에서 [Gemini Key]를 먼저 입력해주세요.'); return; }
-      aiResponse = await callGeminiApi(fullSystemPrompt, userText, currentImage, geminiKey);
+      aiResponse = await callGeminiApi(fullSystemPrompt, userText, currentImage, geminiKey, cfg.model);
     } else {
       const groqKey = localStorage.getItem('groq_key') || $('groqKeyInput')?.value || '';
       if(!groqKey){ alert('설정 탭에서 [Groq Key]를 먼저 입력해 주세요.'); return; }
@@ -604,8 +604,9 @@ async function sendChatMessage(){
   }
 }
 
-async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey){
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+// Gemini 3.8 Flash 모델 대응 callGeminiApi 함수
+async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelName = 'gemini-3.8-flash'){
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
   const parts = [{ text: systemPrompt + '\n\n사용자 요청: ' + userText }];
   
   if(imageBase64){
@@ -625,10 +626,10 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey){
     throw new Error(err.error?.message || 'Gemini API 호출 오류');
   }
   const data = await res.json();
-  return data.candidates?.[0]?.content?.[0]?.text || data.candidates?.[0]?.content?.parts?.[0]?.text || '응답을 받지 못했습니다.';
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.[0]?.text || '응답을 받지 못했습니다.';
 }
 
-// v5.8.7 Groq API 자동 순회(Fallback) 모델 호환 처리 (Meta Llama 3.1 우선 순회)
+// v5.8.7 Groq API 순회(Fallback) 모델 호환 처리
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
   const url = 'https://api.groq.com/openai/v1/chat/completions';
   const modelsToTry = [preferredModel, 'llama-3.1-8b-instant', 'openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
