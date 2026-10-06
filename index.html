@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.10 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.11 - 디자인 유지 및 다크모드 가시성 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.10 - 타임머신 슬림 UI 최적화</title>
+<title>Builder-a4u v5.8.11 - 멀티파일 탐색기 패치</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.10">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.10">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.10">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.10">
+<link rel="manifest" href="./manifest.json?v=5.8.11">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.11">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.11">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.11">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -120,8 +120,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.10</h1><p class="text-[10px] opacity-60">타임머신 컴팩트 슬림 UI 최적화 적용</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.10 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.11</h1><p class="text-[10px] opacity-60">GitHub 레포 전체 파일 트리 탐색기 지원</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full" title="주야간 전환">🌙</button><span class="badge" style="background:#111;color:#fff">v5.8.11 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" class="top-tab active">🛠️ 작업</button>
@@ -136,10 +136,22 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
 </div>
 <select id="repoSelect" class="input mb-2 text-[12px]"><option>레포 불러오는 중...</option></select>
-<div class="flex gap-1 mt-1">
-<input id="mainFileInput" class="input text-[10px] flex-1" placeholder="mainFile 자동" value="index.html">
-<button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 GitHub 복구</button>
+
+<!-- 📁 레포 내부 파일 선택 (GitHub Tree API 연동) -->
+<div class="flex flex-col gap-1.5 mt-2">
+  <div class="flex justify-between items-center">
+    <label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 선택 (레포 전체 탐색)</label>
+    <button id="scanRepoFilesBtn" class="btn btn-sm text-[8px] py-0.5 px-2">🔍 파일목록 스캔</button>
+  </div>
+  <div class="flex gap-1">
+    <select id="repoFilesSelect" class="input text-[11px] flex-1">
+      <option value="index.html">index.html (기본)</option>
+    </select>
+    <input id="mainFileInput" class="input text-[10px] w-[110px]" placeholder="직접입력" value="index.html">
+    <button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap">📥 복구</button>
+  </div>
 </div>
+
 <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
 <div class="flex justify-end mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button></div>
 </div>
@@ -200,14 +212,14 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
 </div>
 
-<!-- ⏰ 타임머신 - 이전 버전으로 롤백 (슬림 컴팩트 UI 패치) -->
+<!-- ⏰ 타임머신 - 선택된 파일 기준 롤백 -->
 <div class="card mt-3">
-  <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 이전 버전으로 롤백</h2>
+  <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 선택 파일 시점 롤백</h2>
   <div class="flex gap-1.5 mb-2">
-    <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[32px] leading-tight">🐙 GitHub 커밋 기록</button>
+    <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[32px] leading-tight">🐙 선택 파일 커밋 기록</button>
     <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[32px] leading-tight">📦 로컬 draft 기록</button>
   </div>
-  <div id="versionHistoryBox" class="version-history max-h-[260px]"><div class="text-[10px] text-gray-400 p-3 text-center">위 버튼을 눌러 GitHub 커밋 기록 또는 로컬 기록을 불러와주세요</div></div>
+  <div id="versionHistoryBox" class="version-history max-h-[260px]"><div class="text-[10px] text-gray-400 p-3 text-center">위 버튼을 눌러 선택된 파일의 기록을 불러와주세요</div></div>
 </div>
 
 <div class="card">
@@ -346,12 +358,75 @@ async function loadRepos(){
     renderRepos(d);
     try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
     log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료 '+(hasPat?'(PAT 적용됨)':'(Public)'), 'ok');
+    
+    // 레포 로드 직후 레포 내 파일 트리 자동 탐색
+    loadRepoFileTree();
   }catch(e){
     if(e.name!=='AbortError') log('레포 로드 실패: '+e.message, 'err');
     const cached2=getCached();
     if(cached2) renderRepos(cached2);
   }
 }
+
+// 🐙 GitHub Tree API로 레포 내부 전체 파일 구조 탐색
+async function loadRepoFileTree(){
+  const fileSelect = $('repoFilesSelect');
+  if(!fileSelect) return;
+  fileSelect.innerHTML = '<option value="">📁 파일목록 탐색 중...</option>';
+  
+  const pat = getGitHubPat();
+  const headers = {'Accept':'application/vnd.github.v3+json'};
+  if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
+  
+  const branches = ['main', 'master'];
+  let treeData = null;
+  
+  for(const b of branches){
+    try {
+      const url = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees/${b}?recursive=1`;
+      const res = await fetch(url, { headers });
+      if(res.ok){
+        treeData = await res.json();
+        break;
+      }
+    } catch(e){}
+  }
+  
+  fileSelect.innerHTML = '';
+  if(!treeData || !treeData.tree || treeData.tree.length === 0){
+    fileSelect.innerHTML = '<option value="index.html">index.html (기본)</option>';
+    log('⚠️ 파일 트리를 가져올 수 없거나 빈 레포지토리입니다.', 'info');
+    return;
+  }
+  
+  const files = treeData.tree.filter(item => item.type === 'blob'); // 폴더 제외, 실제 파일만 필터
+  log(`🌳 [${currentRepo}] 파일 트리 ${files.length}개 탐색 완료`, 'ok');
+  
+  files.forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f.path;
+    opt.textContent = f.path + (f.size ? ` (${Math.round(f.size/1024)}KB)` : '');
+    if(f.path === mainFile || f.path === 'index.html') opt.selected = true;
+    fileSelect.appendChild(opt);
+  });
+  
+  // 현재 선택된 값 인풋에 반영
+  const currentSelected = fileSelect.value || 'index.html';
+  const mainInput = $('mainFileInput');
+  if(mainInput) mainInput.value = currentSelected;
+  mainFile = currentSelected;
+}
+
+$('repoFilesSelect')?.addEventListener('change', e => {
+  const val = e.target.value;
+  if(!val) return;
+  mainFile = val;
+  const mainInput = $('mainFileInput');
+  if(mainInput) mainInput.value = val;
+  log(`📁 작업 대상 파일 변경: ${val}`, 'info');
+});
+
+$('scanRepoFilesBtn')?.addEventListener('click', () => loadRepoFileTree());
 
 function initGis(){
   try{
@@ -467,18 +542,19 @@ function clearPastedImage(){
 
 $('removePastedImageBtn')?.addEventListener('click', clearPastedImage);
 
-// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.10)
+// 🧠 기억 10줄 템플릿 양식 생성 (v5.8.11)
 function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
-  return `1.프로젝트: ${repoName} v5.8.10
-2.목적: 단일 공방으로 N개 앱 맥락 유지
-3.현재: ${d} - 타임머신 컴팩트 슬림 UI 최적화 완료
-4.다음: 기능 구현 및 빌드 배포
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
+  return `1.프로젝트: ${repoName} v5.8.11 (${targetFile})
+2.목적: 단일 공방으로 N개 앱 맥락 및 멀티파일 조율
+3.현재: ${d} - GitHub 전체 파일 탐색기 연동 완료
+4.다음: 대상 파일 기능 구현 및 빌드 배포
 5.결정: 소문자 index.html, manifest.json, 3탭 채팅 연동
 6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
 7.저장: Supabase+Docs+GitHub+localStorage
-8.버그: GitHub 타임머신 슬림 레이아웃 적용 완료
+8.버그: 멀티 파일 접근 및 타임머신 연동 완료
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -513,8 +589,9 @@ function updateMemoryCount(){
 function updateContextBox(){
   const ctxText = $('contextText');
   const memEl = $('memory10');
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   if(ctxText && memEl){
-    ctxText.textContent = `[자동주입 프롬프트] 레포: ${currentRepo}\n${memEl.value.slice(0,150)}...`;
+    ctxText.textContent = `[자동주입 프롬프트] 레포: ${currentRepo} (${targetFile})\n${memEl.value.slice(0,150)}...`;
   }
 }
 
@@ -528,7 +605,7 @@ $('templateBtn')?.addEventListener('click', () => {
   }
 });
 
-// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.10)
+// 🤖 3탭 PWA 내부 AI 채팅 엔진 (v5.8.11)
 let activeChatTab = 'meta';
 let chatHistories = { meta: [], gemini: [], gpt: [] };
 const tabConfigs = {
@@ -583,7 +660,8 @@ async function sendChatMessage(){
   renderChatBox();
   const cfg = tabConfigs[activeChatTab];
   const memoryContext = $('memory10') ? $('memory10').value : '';
-  const fullSystemPrompt = `당신은 유능한 코딩 및 프로젝트 도우미입니다. 아래는 현재 프로젝트 [${currentRepo}]의 최신 기억 10줄 내용입니다:\n\n${memoryContext}\n\n위 맥락을 참고하여 답변해주세요.`;
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
+  const fullSystemPrompt = `당신은 유능한 코딩 및 프로젝트 도우미입니다. 현재 작업 대상 파일: [${targetFile}]\n아래는 프로젝트 [${currentRepo}]의 최신 기억 10줄 내용입니다:\n\n${memoryContext}\n\n위 맥락 및 지정된 작업 대상을 참고하여 답변해주세요.`;
   log(`🤖 [${cfg.name}] API 요청 전송 중...`, 'info');
   try {
     let aiResponse = '';
@@ -673,9 +751,9 @@ $('tabGpt')?.addEventListener('click', () => switchChatTab('gpt'));
 $('chatSendBtn')?.addEventListener('click', sendChatMessage);
 $('chatInput')?.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
 
-// ⏰ GitHub 커밋 연동 타임머신 모듈 (v5.8.10 컴팩트 초슬림 스타일 적용)
-function getDraftHistoryKey(){ return 'draft_history_' + currentRepo; }
-function getDraftCodeKey(){ return 'draft_code_' + currentRepo; }
+// ⏰ GitHub 커밋 연동 타임머신 모듈 (선택 파일 경로 연동)
+function getDraftHistoryKey(){ return 'draft_history_' + currentRepo + '_' + (mainFile || 'index.html'); }
+function getDraftCodeKey(){ return 'draft_code_' + currentRepo + '_' + (mainFile || 'index.html'); }
 
 function saveDraftCustom(codeToSave, note = '수동 저장'){
   const editor = $('codeEditor');
@@ -701,13 +779,13 @@ function saveDraftCustom(codeToSave, note = '수동 저장'){
   }
 }
 
-// 🐙 GitHub API 커밋 히스토리 로드 (슬림 레이아웃 패치)
+// 🐙 GitHub API 커밋 히스토리 로드 (선택된 파일 경로 기준)
 async function loadGitHubCommitHistory(){
   const box = $('versionHistoryBox');
   if(!box) return;
-  box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">🐙 GitHub 실시간 커밋 기록 불러오는 중...</div>';
-  const pat = getGitHubPat();
   const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+  box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">🐙 [${file}] GitHub 커밋 기록 불러오는 중...</div>`;
+  const pat = getGitHubPat();
   const headers = {'Accept':'application/vnd.github.v3+json'};
   if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
   
@@ -716,14 +794,13 @@ async function loadGitHubCommitHistory(){
   try {
     const res = await fetch(url, { headers });
     if(!res.ok){
-      const errTxt = await res.text();
       box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ GitHub 커밋 로드 실패 (${res.status})</div>`;
       log(`GitHub 커밋 불러오기 실패 (${res.status})`, 'err');
       return;
     }
     const commits = await res.json();
     if(!Array.isArray(commits) || commits.length === 0){
-      box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">GitHub에 기록된 커밋 내역이 없습니다.</div>';
+      box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">[${file}] 파일에 기록된 커밋 내역이 없습니다.</div>`;
       return;
     }
     
@@ -752,7 +829,7 @@ async function loadGitHubCommitHistory(){
       </div>`;
     });
     box.innerHTML = html;
-    log(`🐙 GitHub 커밋 기록 ${commits.length}개 로드 완료`, 'ok');
+    log(`🐙 [${file}] 커밋 기록 ${commits.length}개 로드 완료`, 'ok');
   } catch(e) {
     box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ 오류 발생: ${e.message}</div>`;
     log('GitHub 커밋 연동 오류: ' + e.message, 'err');
@@ -795,11 +872,11 @@ window.previewGitHubCommit = async function(sha, shortSha, msg){
     const box = $('livePreviewBox');
     const title = $('previewTitle');
     if(frame && box){
-      if(title) title.textContent = `👁️️ [GitHub 커밋 미리보기 #${shortSha}] ${msg}`;
+      if(title) title.textContent = `👁 [GitHub 커밋 미리보기 #${shortSha}] ${msg}`;
       frame.srcdoc = code;
       box.classList.add('active');
       box.scrollIntoView({ behavior: 'smooth' });
-      log(`👁️ GitHub 커밋 [#${shortSha}] 미리보기 실행 성공`, 'ok');
+      log(`👁️️ GitHub 커밋 [#${shortSha}] 미리보기 실행 성공`, 'ok');
     }
   } catch(e) {
     alert('미리보기 불러오기 실패: ' + e.message);
@@ -808,7 +885,8 @@ window.previewGitHubCommit = async function(sha, shortSha, msg){
 };
 
 window.rollbackGitHubCommit = async function(sha, shortSha, msg){
-  if(!confirm(`GitHub 커밋 [#${shortSha}]\n"${msg}"\n\n이 시점의 코드로 현재 드래프트를 롤백하시겠습니까?`)) return;
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
+  if(!confirm(`[${targetFile}] 파일의 GitHub 커밋 [#${shortSha}]\n"${msg}"\n\n이 시점의 코드로 현재 드래프트를 롤백하시겠습니까?`)) return;
   log(`↺ GitHub 커밋 [#${shortSha}] 복구 다운로드 중...`, 'info');
   try {
     const code = await fetchGitHubCommitContent(sha);
@@ -817,8 +895,8 @@ window.rollbackGitHubCommit = async function(sha, shortSha, msg){
     if(editor) editor.value = code;
     const status = $('draftStatus');
     if(status) status.textContent = `GitHub 커밋 #${shortSha} 롤백됨`;
-    log(`↺ GitHub 커밋 [#${shortSha}] 버전으로 롤백 복원 성공!`, 'ok');
-    alert(`성공적으로 GitHub 커밋 [#${shortSha}] 시점의 코드로 롤백되었습니다.`);
+    log(`↺ [${targetFile}] #${shortSha} 버전으로 롤백 복원 성공!`, 'ok');
+    alert(`성공적으로 [${targetFile}] 파일의 커밋 [#${shortSha}] 시점 코드로 롤백되었습니다.`);
   } catch(e) {
     alert('롤백 실패: ' + e.message);
     log('롤백 실패: ' + e.message, 'err');
@@ -864,7 +942,7 @@ window.previewVersionHistory = function(id){
   const box = $('livePreviewBox');
   const title = $('previewTitle');
   if(frame && box){
-    if(title) title.textContent = `👁️ [로컬 draft 미리보기] ${item.time}`;
+    if(title) title.textContent = `👁️️ [로컬 draft 미리보기] ${item.time}`;
     frame.srcdoc = item.code;
     box.classList.add('active');
     box.scrollIntoView({ behavior: 'smooth' });
@@ -1025,7 +1103,7 @@ function renderCustomLinks(){
       <div class="flex gap-1.5 justify-end w-full pt-1 border-t" style="border-color:var(--line)">
         <a href="${l.url || ('https://docs.google.com/document/d/' + l.id + '/edit')}" target="_blank" class="btn btn-sm py-1 px-2.5 text-[10px] flex items-center">🔗 열기</a>
         ${docId ? `<button onclick="fetchDocContent('${docId}', '${titleText.replace(/'/g, "\\'")}', false)" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📥 내용 불러오기</button>` : ''}
-        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑️️ 삭제</button>
+        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">🗑 삭제</button>
       </div>
     </div>`;
   });
@@ -1158,6 +1236,7 @@ $('linkSearchBtn').onclick=()=>openDriveModal(false);
 
 function buildContextCopyV86(){
   const mem = document.getElementById('memory10') ? document.getElementById('memory10').value : '';
+  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   let mainDocsText = '';
   if (connectedDocs && connectedDocs.length > 0) {
     mainDocsText = connectedDocs.map(d => `- 메인문서: https://docs.google.com/document/d/${d.id}/edit (${d.title || d.name || '문서'})`).join('\n');
@@ -1170,7 +1249,8 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.10 이어가기용]
+  return `[Builder-a4u v5.8.11 이어가기용]
+[작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
 [구글 문서 링크]
@@ -1178,7 +1258,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.10
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.11
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -1231,6 +1311,7 @@ $('repoSelect')?.addEventListener('change', e=>{
   try{ localStorage.setItem('current_repo', currentRepo); }catch{}
   loadMemory10();
   loadRepoDocuments();
+  loadRepoFileTree();
   loadGitHubCommitHistory();
   log('📌 레포 변경됨: '+currentRepo, 'ok');
 });
