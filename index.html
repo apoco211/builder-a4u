@@ -24,7 +24,7 @@
 }
 </style>
 <style>
-/* v5.8.14 - 디자인 유지 및 다크모드 가시성 */
+/* v5.8.16 - 프로젝트 변경 시 전체맥락복사 실시간 동기화 패치 */
 .dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
 .dark #contextText{color:#e2e8f0 !important}
 .dark #contextBox #contextText{color:#cbd5e1 !important}
@@ -41,15 +41,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.14 - 드라이브 공유문서함 & 전체 검색 강화 패치</title>
+<title>Builder-a4u v5.8.16 - 전체맥락복사 실시간 동기화</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.14">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.14">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.14">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.14">
+<link rel="manifest" href="./manifest.json?v=5.8.16">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.16">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.16">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.16">
 <style>
 :root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
@@ -122,8 +122,8 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </head>
 <body>
 <div class="flex justify-between items-center mb-3">
-<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.14</h1><p class="text-[10px] opacity-60">드라이브 공유문서함 & 전체 검색 강화 패치</p></div>
-<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.14 정식</span></div>
+<div><h1 class="text-[18px] font-black">Builder-a4u v5.8.16</h1><p class="text-[10px] opacity-60">프로젝트 변경 시 전체맥락복사 즉시 동기화 패치</p></div>
+<div class="flex gap-2 items-center"><button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button><span class="badge shrink-0" style="background:#111;color:#fff">v5.8.16 정식</span></div>
 </div>
 <div class="flex gap-2 mb-3">
 <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️ 작업</button>
@@ -137,7 +137,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
   <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
 </div>
 <select id="repoSelect" class="input mb-2 text-[12px]"><option value="builder-a4u">builder-a4u</option></select>
-<!-- 📁 레포 내부 파일 선택 (GitHub Tree API 연동 + AI 자동 감지) -->
+<!-- 📁 레포 내부 파일 선택 -->
 <div class="flex flex-col gap-1.5 mt-2">
   <div class="flex justify-between items-center">
     <label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI가 필요시 자동 감지하여 교체)</label>
@@ -181,16 +181,25 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[110px] overflow-auto"><div id="contextText" class="whitespace-pre-wrap">대기...</div></div>
 <div class="flex gap-2 mb-2"><span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span><span id="chatCountBadge" class="badge">0개</span></div>
 <div id="chatBox" class="chat-box mb-2"></div>
-<!-- 🖼️️ 붙여넣은 캡처 이미지 미리보기 영역 -->
+
+<!-- 🖼 스마트폰 갤러리/붙여넣기 캡처 이미지 미리보기 영역 -->
 <div id="pastedImagePreviewBox" class="hidden mb-2 p-2 rounded-[12px] border flex items-center gap-3 bg-[var(--card)]" style="border-color:var(--line)">
-  <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border" style="border-color:var(--line)">
+  <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border shrink-0" style="border-color:var(--line)">
   <div class="flex-1 overflow-hidden">
-    <div class="font-bold text-[11px] text-emerald-600">🖼️ 캡처 이미지 첨부됨</div>
-    <div class="text-[9px] opacity-60">Ctrl+V로 붙여넣은 이미지가 질문과 함께 전송됩니다.</div>
+    <div class="font-bold text-[11px] text-emerald-600">🖼️ 이미지 파일 첨부됨</div>
+    <div class="text-[9px] opacity-60 truncate">스마트폰 앨범/붙여넣기 이미지가 AI에게 전송됩니다.</div>
   </div>
-  <button id="removePastedImageBtn" class="btn btn-sm text-[10px] text-red-500">✕ 취소</button>
+  <button id="removePastedImageBtn" class="btn btn-sm text-[10px] text-red-500 shrink-0">✕ 취소</button>
 </div>
-<div class="flex gap-2"><input id="chatInput" class="input flex-1 text-[12px]" placeholder="기능 요청... (예: 투두 삭제 기능 구현해줘)"><button id="chatSendBtn" class="btn btn-primary text-[11px]">전송</button></div>
+
+<!-- 사진 파일 선택 input 및 첨부 버튼 -->
+<input type="file" id="imageFileInput" accept="image/*" class="hidden">
+<div class="flex gap-1.5 items-center">
+  <button id="uploadImageBtn" class="btn btn-sm text-[13px] px-2.5 h-[46px] shrink-0" title="스마트폰 앨범/사진 첨부">🖼</button>
+  <input id="chatInput" class="input flex-1 text-[12px]" placeholder="기능 요청... (🖼️ 버튼으로 폰 앨범 사진 첨부 가능)">
+  <button id="chatSendBtn" class="btn btn-primary text-[11px] h-[46px]">전송</button>
+</div>
+
 <div class="flex gap-2 mt-2">
   <button id="saveDraftBtn" class="btn flex-1 py-3 text-[11px] font-bold">💾 현재 드래프트 저장</button>
   <button id="previewCheckBtn" class="btn flex-1 py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확인</button>
@@ -246,14 +255,13 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 </div>
 
-<!-- 개선된 구글 드라이브 모달 팝업 -->
+<!-- 구글 드라이브 모달 팝업 -->
 <div id="driveModal" class="drive-modal" style="display:none;">
   <div class="drive-modal-content">
     <div class="drive-modal-header">
       <div><b>📁 구글 드라이브 탐색 및 검색</b></div>
       <button id="driveModalClose" class="btn text-[12px]">✕ 닫기</button>
     </div>
-    <!-- 🔍 v5.8.14 검색 및 필터 탭 추가 -->
     <div class="p-3 border-b flex flex-col gap-2" style="border-color:var(--line)">
       <div class="flex gap-2">
         <button id="driveTabMy" class="btn btn-sm btn-primary flex-1">📁 내 드라이브</button>
@@ -289,9 +297,8 @@ let mainFile='index.html';
 let connectedDocs=[];
 let customLinks=[];
 
-// v5.8.14 드라이브 검색 관련 변수
 let currentDriveModalIsMain = true;
-let currentDriveMode = 'my'; // 'my', 'shared', 'recent', 'search'
+let currentDriveMode = 'my';
 
 function updateGisStatus(msg){
   const el=$('googleStatus');
@@ -443,7 +450,7 @@ async function loadRepoFileTree(){
   if(!treeData || !treeData.tree || treeData.tree.length === 0){
     fileSelect.innerHTML = '<option value="index.html">index.html (기본)</option>';
     repoFileListCache = ['index.html'];
-    log('⚠️ 레포 트리 스캔 완료 (기본 index.html 설정)', 'info');
+    log('⚠ 레포 트리 스캔 완료 (기본 index.html 설정)', 'info');
     return;
   }
   
@@ -464,6 +471,7 @@ async function loadRepoFileTree(){
   if(mainInput) mainInput.value = currentSelected;
   mainFile = currentSelected;
   updateContextBox();
+  renderContextCopySettings();
 }
 
 function initGis(){
@@ -529,6 +537,7 @@ function handleGoogleLogin(){
   }
 }
 
+/* 클립보드 붙여넣기 이벤트 */
 window.addEventListener('paste', e => {
   const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
   if(!items) return;
@@ -536,17 +545,23 @@ window.addEventListener('paste', e => {
     if(item.type.indexOf('image') !== -1){
       e.preventDefault();
       const file = item.getAsFile();
-      const reader = new FileReader();
-      reader.onload = evt => {
-        activePastedImageBase64 = evt.target.result;
-        showPastedImagePreview(activePastedImageBase64);
-        log('🖼️ 클립보드 캡처 이미지 붙여넣기 감지됨', 'ok');
-      };
-      reader.readAsDataURL(file);
+      processSelectedImageFile(file);
       break;
     }
   }
 });
+
+/* 이미지 파일 인코딩 및 미리보기 공통 처리 */
+function processSelectedImageFile(file){
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = evt => {
+    activePastedImageBase64 = evt.target.result;
+    showPastedImagePreview(activePastedImageBase64);
+    log(`🖼️ [${file.name || '이미지'}] 선택/붙여넣기 첨부 완료 (${Math.round(file.size/1024)}KB)`, 'ok');
+  };
+  reader.readAsDataURL(file);
+}
 
 function showPastedImagePreview(base64){
   const box = $('pastedImagePreviewBox');
@@ -558,6 +573,8 @@ function showPastedImagePreview(base64){
 }
 function clearPastedImage(){
   activePastedImageBase64 = null;
+  const input = $('imageFileInput');
+  if(input) input.value = '';
   const box = $('pastedImagePreviewBox');
   if(box) box.classList.add('hidden');
 }
@@ -566,7 +583,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.14 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.16 (${targetFile})
 2.목적: ${repoName} 기능 구현 및 개발 맥락 유지
 3.현재: ${d} - 레포 연동 및 파일 라우팅 설정 완료
 4.다음: AI 지정 대상 파일 코드 수정 및 빌드 배포
@@ -588,6 +605,7 @@ function loadMemory10(){
   }
   memEl.value = saved;
   updateMemoryCount();
+  renderContextCopySettings();
 }
 
 function updateMemoryCount(){
@@ -624,7 +642,7 @@ function updateContextBox(){
   const memorySnippet = memEl ? memEl.value.slice(0, 120) : '';
 
   if (ctxText) {
-    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.14]
+    ctxText.textContent = `[자동주입 종합 프롬프트 v5.8.16]
 📌 레포: ${currentRepo} | 대상파일: ${targetFile}
 ${repoUrl}
 ${docsInfo}
@@ -739,6 +757,7 @@ function processAiFileAutoRouting(aiText){
     const status = $('draftStatus');
     if(status) status.textContent = `🎯 ${targetPath} 자동 저장됨 (${new Date().toLocaleTimeString()})`;
     updateContextBox();
+    renderContextCopySettings();
   }
 }
 
@@ -754,7 +773,20 @@ async function sendChatMessage(){
   saveChatHistory(activeChatTab);
   renderChatBox();
   
-  const cfg = tabConfigs[activeChatTab];
+  let targetTab = activeChatTab;
+  let cfg = tabConfigs[targetTab];
+  
+  if(currentImage && cfg.type !== 'gemini'){
+    const geminiKey = localStorage.getItem('gemini_key') || $('geminiKeyInput')?.value || '';
+    if(geminiKey){
+      log('🖼️ 이미지가 첨부되어 시각 분석 전용 [🔵 제미나이(Gemini 3.8)] 모델로 질문을 자동 연동합니다.', 'info');
+      targetTab = 'gemini';
+      cfg = tabConfigs['gemini'];
+    } else {
+      log('💡 이미지가 첨부되었습니다. 더 정확한 이미지 분석을 위해 [⚙ 설정]에서 Gemini Key 입력을 추천합니다.', 'info');
+    }
+  }
+
   const memoryContext = $('memory10') ? $('memory10').value : '';
   const currentTargetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : 'index.html';
@@ -792,7 +824,6 @@ ${memoryContext}
     } else {
       const groqKey = localStorage.getItem('groq_key') || $('groqKeyInput')?.value || '';
       if(!groqKey){ log('⚠️ [Groq Key]를 설정 탭에서 입력해주세요.', 'err'); return; }
-      if(currentImage) log('💡 Groq(Meta/GPT)는 텍스트 위주이므로 이미지 요청은 Gemini 탭 권장', 'info');
       aiResponse = await callGroqApi(fullSystemPrompt, userText, cfg.model, groqKey);
     }
     chatHistories[activeChatTab].push({ role: 'ai', text: aiResponse });
@@ -1106,6 +1137,7 @@ function loadRepoDocuments(){
   renderConnectedDocs();
   renderCustomLinks();
   updateContextBox();
+  renderContextCopySettings();
 }
 
 function renderConnectedDocs(){
@@ -1259,7 +1291,6 @@ function switchTopView(view){
   }
 }
 
-/* v5.8.14 핵심 개선: 내 드라이브, 공유문서함, 검색 모드 및 팀드라이브 지원 */
 async function fetchDriveFiles(folderId, mode = 'my', keyword = ''){
   const token = accessToken || localStorage.getItem('google_access_token');
   if(!token){
@@ -1274,9 +1305,8 @@ async function fetchDriveFiles(folderId, mode = 'my', keyword = ''){
   } else if(mode === 'shared'){
     q += " and sharedWithMe=true";
   } else if(mode === 'recent'){
-    // 최근 사용 문서 (전체 대상)
+    // 최근 문서
   } else {
-    // 내 드라이브 탐색
     if(folderId === 'root' || !folderId){
       q += " and 'root' in parents";
     } else {
@@ -1392,7 +1422,7 @@ function buildContextCopyV86(){
   } else {
     customDocsText = '- 추가문서: 없음';
   }
-  return `[Builder-a4u v5.8.14 이어가기용]
+  return `[Builder-a4u v5.8.16 이어가기용]
 [작업 대상 파일]: ${targetFile}
 [기억 10줄]
 ${mem}
@@ -1401,7 +1431,7 @@ ${mainDocsText}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.14
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.16
 구글문서에서 코드도 체크하고 기존의 디자인과 기능은 절대로 금지`;
 }
 
@@ -1449,6 +1479,7 @@ function setupEventListeners(){
     const isDark=document.documentElement.classList.contains('dark');
     setTheme(isDark?'light':'dark');
   });
+  
   $('repoFilesSelect')?.addEventListener('change', e => {
     const val = e.target.value;
     if(!val) return;
@@ -1456,10 +1487,28 @@ function setupEventListeners(){
     const mainInput = $('mainFileInput');
     if(mainInput) mainInput.value = val;
     updateContextBox();
+    renderContextCopySettings();
     log(`📁 작업 대상 파일 변경: ${val}`, 'info');
   });
+
+  $('mainFileInput')?.addEventListener('input', e => {
+    mainFile = e.target.value.trim() || 'index.html';
+    updateContextBox();
+    renderContextCopySettings();
+  });
+
   $('scanRepoFilesBtn')?.addEventListener('click', () => loadRepoFileTree());
   $('removePastedImageBtn')?.addEventListener('click', clearPastedImage);
+  
+  /* 사진 파일 선택 이벤트 */
+  $('uploadImageBtn')?.addEventListener('click', () => {
+    $('imageFileInput')?.click();
+  });
+  $('imageFileInput')?.addEventListener('change', e => {
+    const file = e.target.files?.[0];
+    if(file) processSelectedImageFile(file);
+  });
+
   $('memory10')?.addEventListener('input', () => updateMemoryCount());
   
   $('templateBtn')?.addEventListener('click', () => {
@@ -1488,7 +1537,6 @@ function setupEventListeners(){
   $('searchExactBtn')?.addEventListener('click', ()=>openDriveModal(true));
   $('linkSearchBtn')?.addEventListener('click', ()=>openDriveModal(false));
   
-  // v5.8.14 드라이브 검색 필터 이벤트
   $('driveTabMy')?.addEventListener('click', () => switchDriveTab('my'));
   $('driveTabShared')?.addEventListener('click', () => switchDriveTab('shared'));
   $('driveTabRecent')?.addEventListener('click', () => switchDriveTab('recent'));
@@ -1510,6 +1558,8 @@ function setupEventListeners(){
     }catch(e){ log('복사 실패', 'err'); }
   });
   $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
+  
+  /* 레포지토리 변경 이벤트 */
   $('repoSelect')?.addEventListener('change', e=>{
     currentRepo=e.target.value;
     try{ localStorage.setItem('current_repo', currentRepo); }catch{}
@@ -1519,6 +1569,7 @@ function setupEventListeners(){
     loadGitHubCommitHistory();
     loadChatHistories();
     updateContextBox();
+    renderContextCopySettings();
     log('📌 레포 변경됨: '+currentRepo, 'ok');
   });
   $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
