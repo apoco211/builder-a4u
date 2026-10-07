@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.38 - 메인 문서 이중 백업 빌더</title>
+<title>Builder-a4u v5.8.39 - 메인 문서 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.38">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.38">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.38">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.38">
+<link rel="manifest" href="./manifest.json?v=5.8.39">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.39">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.39">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.39">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -119,12 +119,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.38</h1>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.39</h1>
     <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.38 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.39 정식</span>
   </div>
 </div>
 
@@ -213,7 +213,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     </div>
     <div class="grid grid-cols-3 gap-2 mb-2">
       <button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button>
-      <button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이</button>
+      <button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이 (권장)</button>
       <button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button>
     </div>
     <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto">
@@ -323,7 +323,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
         <div><label class="text-[10px] font-bold">Google Client ID (OAuth 2.0)</label><input id="googleClientIdInput" class="input text-[9px] font-mono mt-1" placeholder="1097203672052-...apps.googleusercontent.com"></div>
         <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="sb_..."></div>
         <div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
-        <div><label class="text-[10px] font-bold">Gemini Key (시각분석 지원)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
+        <div><label class="text-[10px] font-bold">Gemini Key (시각분석 및 100만 토큰 대용량 지원)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
         <div><label class="text-[10px] font-bold">Groq Key (Meta & GPT 전용)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="gsk_..."></div>
       </div>
     </div>
@@ -771,14 +771,14 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.38 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.39 (${targetFile})
 2.목적: AI 스마트 원본 동기화 및 원본 디자인/기능 100% 완벽 보존
 3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
 4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
 5.결정: 소문자 index.html, manifest.json, 스마트 오토 라우팅
-6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
+6.제외: 구형 gemini-1.5-flash / llama-3.3-70b-deprecated
 7.저장: Supabase+GoogleDocs(Write)+GitHub+localStorage
-8.버그: GitHub 실시간 소스코드 완전 동기화 및 8K 토큰 대용량 완전 출력 패치
+8.버그: Groq 토큰 한도 초과 자동 예방 & 제미나이 100만 대용량 토큰 연동
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -851,9 +851,9 @@ function saveChatHistoriesForRepo(tab){
 }
 
 const tabConfigs = {
-  meta: { name: '메타 (Llama-3.1-8B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.1-8b-instant', type: 'groq' },
+  meta: { name: '메타 (Llama-3.3-70B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.3-70b-versatile', type: 'groq' },
   gemini: { name: '제미나이 (Gemini-3-Flash)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3-flash-preview', type: 'gemini' },
-  gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
+  gpt: { name: 'GPT (Mixtral-8x7B)', color: 'var(--gpt)', bg: '#10b981', model: 'mixtral-8x7b-32768', type: 'groq' }
 };
 
 function switchChatTab(tab){
@@ -972,7 +972,7 @@ async function getDocsTextForPrompt(){
           });
         }
         if(text.trim()){
-          docsTextArr.push(`--- [${doc.title||doc.name||'문서'}] 본문 내용 ---\n` + text.slice(0, 3000));
+          docsTextArr.push(`--- [${doc.title||doc.name||'문서'}] 본문 내용 ---\n` + text.slice(0, 2000));
         }
       }
     } catch(e){}
@@ -1062,7 +1062,6 @@ async function sendChatMessage(){
   const currentTargetFile = $('mainFileInput')?.value || mainFile || 'index.html';
   const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : 'index.html';
   
-  // 💡 [핵심 보완] GitHub 최신 원본 소스코드 실시간 강제 동기화 후 가져오기
   let currentFileContent = await syncLatestSourceFromGithub();
   if(!currentFileContent || currentFileContent.trim() === ''){
     currentFileContent = $('codeEditor')?.value?.trim() || localStorage.getItem(getDraftCodeKey()) || '';
@@ -1076,7 +1075,10 @@ async function sendChatMessage(){
   }
 
   let autoFetchedDocsContent = '';
-  try { autoFetchedDocsContent = await getDocsTextForPrompt(); } catch(e) {}
+  // Groq API (메타/GPT)일 경우 토큰 과다 초과를 막기 위해 구글 문서 수신 조절
+  if(cfg.type === 'gemini') {
+    try { autoFetchedDocsContent = await getDocsTextForPrompt(); } catch(e) {}
+  }
 
   const fullSystemPrompt = `당신은 유능한 최고 레벨 시니어 프론트엔드 소프트웨어 엔지니어입니다.
 현재 프로젝트: [${currentRepo}] (https://github.com/${GITHUB_USER}/${currentRepo})
@@ -1103,7 +1105,7 @@ ${memoryContext}
 4. 사용자가 요청한 수정/추가 내용만 정확하게 반영하여, <!DOCTYPE html>부터 </html>까지 **단 한 줄도 생략되지 않은 100% 완전한 전체 소스코드**를 코드 블록(\`\`\`html ... \`\`\`)으로 출력하십시오.
 5. 수정 대상 파일이 지정되어 있다면, 답변 최상단에 반드시 '[TARGET_FILE: ${currentTargetFile}]' 태그를 작성해주십시오.`;
 
-  log(`🤖 [${cfg.name}] 8K 대용량 토큰 가동 - 원본 100% 전체 소스코드 분석 요청 중...`, 'info');
+  log(`🤖 [${cfg.name}] 수정 요청 및 원본 소스 분석 중...`, 'info');
   try {
     let aiResponse = '';
     if(cfg.type === 'gemini'){
@@ -1211,8 +1213,15 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelN
 
 async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
   const url = 'https://api.groq.com/openai/v1/chat/completions';
-  const modelsToTry = [preferredModel, 'llama-3.1-8b-instant', 'openai/gpt-oss-120b', 'openai/gpt-oss-20b', 'qwen/qwen3.8-27b'].filter((v, i, a) => a.indexOf(v) === i);
+  const modelsToTry = [preferredModel, 'llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'].filter((v, i, a) => a.indexOf(v) === i);
   let lastErr = null;
+
+  // Groq API의 7000 토큰 초과 방지를 위한 스마트 프롬프트 세이프티 경량화
+  let safeSystemPrompt = systemPrompt;
+  if(safeSystemPrompt.length > 15000){
+    safeSystemPrompt = safeSystemPrompt.slice(0, 15000) + '\n...(Groq 토큰 제한 방지를 위해 일부 배경 데이터 생략됨)';
+  }
+
   for (const m of modelsToTry) {
     try {
       const res = await fetch(url, {
@@ -1220,7 +1229,7 @@ async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
         body: JSON.stringify({
           model: m,
-          messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: userText }],
+          messages: [{ role: 'system', content: safeSystemPrompt }, { role: 'user', content: userText }],
           temperature: 0.2,
           max_tokens: 8192
         })
@@ -1318,7 +1327,7 @@ ${$('memory10')?.value || '없음'}
     }
 
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.38 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v5.8.39 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -1888,7 +1897,7 @@ function buildContextCopyV87(){
     customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
   } else customDocsText = '- 추가문서: 없음';
 
-  return `[${currentRepo} v5.8.38 이어가기용]
+  return `[${currentRepo} v5.8.39 이어가기용]
 📌 프로젝트(Repo): ${currentRepo}
 📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
@@ -1899,7 +1908,7 @@ ${mem}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.38`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.39`;
 }
 
 function renderContextCopySettings(){
@@ -2097,7 +2106,7 @@ function setupEventListeners(){
   $('buildBtn')?.addEventListener('click', async () => {
     saveDraftCustom(null, '통합 빌드 실행전 저장');
     log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.38 커밋');
+    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.39 커밋');
     await syncToSupabaseCloud();
   });
 
