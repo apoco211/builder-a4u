@@ -763,13 +763,22 @@ ${codeToPush}`;
 
 async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
   const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token || !docId) return false;
+  if(!token || !docId) {
+    log('⚠️ 구글 문서 연동 정보 또는 인증 토큰이 없습니다.', 'err');
+    return false;
+  }
   
   try {
+    // Google Docs API 불허용 제어문자(\r 등) 정제 (400 에러 차단)
+    const cleanText = newText.replace(/\r\n/g, '\n').replace(/\r/g, '\n').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
+
     const getRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    if(!getRes.ok) return false;
+    if(!getRes.ok) {
+      log(`⚠️ 구글 문서 [${docId.slice(0,6)}...] 조회 실패 (HTTP ${getRes.status})`, 'err');
+      return false;
+    }
 
     const docData = await getRes.json();
     const endIndex = docData.body?.content?.[docData.body.content.length - 1]?.endIndex || 1;
@@ -779,10 +788,10 @@ async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
       if(endIndex > 2){
         requests.push({ deleteContent: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
       }
-      requests.push({ insertText: { location: { index: 1 }, text: newText } });
+      requests.push({ insertText: { location: { index: 1 }, text: cleanText } });
     } else {
       const insertIdx = Math.max(1, endIndex - 1);
-      requests.push({ insertText: { location: { index: insertIdx }, text: '\n' + newText } });
+      requests.push({ insertText: { location: { index: insertIdx }, text: '\n' + cleanText } });
     }
 
     const updateRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
@@ -794,8 +803,14 @@ async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
     if(updateRes.ok){
       log(`✅ 구글 문서 [${docId.slice(0,6)}...] ${mode==='overwrite'?'전체 갱신':'내용 추가'} 완료!`, 'ok');
       return true;
+    } else {
+      const errJson = await updateRes.json().catch(()=>({}));
+      const errMsg = errJson.error?.message || `HTTP ${updateRes.status}`;
+      log(`❌ 구글 문서 [${docId.slice(0,6)}...] 동기화 실패: ${errMsg}`, 'err');
     }
-  } catch(e) {}
+  } catch(e) {
+    log(`❌ 구글 문서 동기화 오류: ${e.message}`, 'err');
+  }
   return false;
 }
 
