@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.31 - 메인 문서 연결 해제 및 이중 백업 빌더</title>
+<title>Builder-a4u v5.8.32 - 메인 문서 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.31">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.31">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.31">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.31">
+<link rel="manifest" href="./manifest.json?v=5.8.32">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.32">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.32">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.32">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -119,12 +119,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.31</h1>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.32</h1>
     <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.31 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.32 정식</span>
   </div>
 </div>
 
@@ -233,7 +233,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
       <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border" style="border-color:var(--line)">
       <div class="flex-1 overflow-hidden">
         <div class="font-bold text-[11px] text-emerald-600">🖼️ 이미지 첨부됨</div>
-        <div id="pastedImagePreviewNotice" class="text-[9px] opacity-60">이미지 질문 시 제미나이(Gemini 3.8) 모델로 시각 분석됩니다.</div>
+        <div id="pastedImagePreviewNotice" class="text-[9px] opacity-60">이미지 질문 시 제미나이 모델로 시각 분석됩니다.</div>
       </div>
       <button id="removePastedImageBtn" class="btn btn-sm text-[10px] text-red-500">✕ 취소</button>
     </div>
@@ -298,7 +298,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     
     <div class="mb-4">
       <h3 class="font-bold text-[11px] mb-2">⚡ 스마트 API 일괄 파싱 (.env 통째로 붙여넣기)</h3>
-      <textarea id="bulkKeysInput" class="textarea h-[70px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGEMINI_KEY=AIzaSy...\nGROQ_KEY=gsk_...\nSUPABASE_KEY=eyJ..."></textarea>
+      <textarea id="bulkKeysInput" class="textarea h-[70px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGEMINI_KEY=AQ.Ab8...\nGROQ_KEY=gsk_...\nSUPABASE_KEY=sb_..."></textarea>
       <button id="parseBulkKeysBtn" class="btn btn-sm w-full mt-1 text-[10px]" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">⚡ 일괄 적용 및 저장</button>
     </div>
 
@@ -320,7 +320,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     <div class="border-t pt-4" style="border-color:var(--line)">
       <h3 class="font-bold text-[11px] mb-2">🔑 개별 API 키 보관소</h3>
       <div class="grid gap-2 mb-3">
-        <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="eyJ..."></div>
+        <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="sb_..."></div>
         <div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
         <div><label class="text-[10px] font-bold">Gemini Key (시각분석 지원)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
         <div><label class="text-[10px] font-bold">Groq Key (Meta & GPT 전용)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="gsk_..."></div>
@@ -356,6 +356,82 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 
 <script>
+// 🛠️ 기본 전역 변수 및 유틸리티 함수 선언
+const $ = id => document.getElementById(id);
+
+const GITHUB_USER = 'apoco211';
+const GOOGLE_CLIENT_ID = '1097203672052-9k471g60v60s07bbf99pt75d5e2365eb.apps.googleusercontent.com';
+const SUPABASE_URL = 'https://ayfvdmlfksrqwutixvwe.supabase.co';
+
+let currentRepo = localStorage.getItem('current_repo') || 'builder-a4u';
+let mainFile = 'index.html';
+let connectedDoc1 = null;
+let connectedDoc2 = null;
+let customLinks = [];
+let repoFileListCache = [];
+let activePastedImageBase64 = null;
+let tokenClient = null;
+let accessToken = localStorage.getItem('google_access_token') || '';
+let gisInited = false;
+let driveTabMode = 'my';
+let activeDriveTargetSlot = 'main1';
+
+function log(msg, type = 'info') {
+  const logArea = $('logArea');
+  if (!logArea) return;
+  const time = new Date().toLocaleTimeString();
+  let color = 'text-gray-600 dark:text-gray-400';
+  if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
+  if (type === 'err') color = 'text-red-500 font-bold';
+  if (type === 'info') color = 'text-blue-500';
+  logArea.innerHTML += `<div class="${color}">[${time}] ${msg}</div>`;
+  logArea.scrollTop = logArea.scrollHeight;
+}
+
+function getGitHubPat() {
+  return localStorage.getItem('github_pat') || $('githubPatInput')?.value || '';
+}
+
+function updateGisStatus(msg) {
+  const el = $('googleStatus');
+  if (el) el.textContent = msg;
+}
+
+// 🐙 GitHub 레포지토리 목록 로드
+async function loadRepos() {
+  const select = $('repoSelect');
+  if (!select) return;
+  const pat = getGitHubPat();
+  if (!pat) {
+    select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
+    return;
+  }
+  try {
+    const res = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
+      headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (res.ok) {
+      const repos = await res.json();
+      if (Array.isArray(repos) && repos.length > 0) {
+        select.innerHTML = '';
+        repos.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r.name;
+          opt.textContent = r.name + (r.private ? ' 🔒' : '');
+          if (r.name === currentRepo) opt.selected = true;
+          select.appendChild(opt);
+        });
+        if (!repos.some(r => r.name === currentRepo)) {
+          currentRepo = repos[0].name;
+          select.value = currentRepo;
+        }
+      }
+    }
+  } catch(e) {
+    log('레포 목록 로드 실패: ' + e.message, 'err');
+  }
+}
+
 // 드라이브 내 동일한 이름의 구글 문서가 이미 존재하는지 탐색
 async function findExistingDocByName(title){
   const token = accessToken || localStorage.getItem('google_access_token');
@@ -632,7 +708,7 @@ function showPastedImagePreview(base64){
         notice.textContent = '⚠️ 이미지 시각 분석은 [🔵 제미나이] 탭 전용 기능입니다. [🔵 제미나이] 탭으로 이동해 주세요.';
         notice.className = 'text-[9px] text-amber-600 font-bold';
       } else {
-        notice.textContent = '✨ 제미나이(Gemini 3.8) 모델로 시각 분석이 진행됩니다.';
+        notice.textContent = '✨ 제미나이 모델로 시각 분석이 진행됩니다.';
         notice.className = 'text-[9px] opacity-60';
       }
     }
@@ -649,7 +725,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.31 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.32 (${targetFile})
 2.목적: AI 스마트 자동 파일 탐색 및 이중 구글문서 연동 백업
 3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
 4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
@@ -1034,7 +1110,7 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelN
     } catch(e) {}
   }
 
-  const modelsToTry = [modelName, 'gemini-3-flash-preview', 'gemini-2.5-flash-preview', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter((v, i, a) => a.indexOf(v) === i);
+  const modelsToTry = [modelName, 'gemini-3-flash-preview', 'gemini-2.5-flash-preview', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
   let lastErrorMsg = '';
 
   for (const model of modelsToTry) {
@@ -1182,7 +1258,7 @@ ${$('memory10')?.value || '없음'}
 
     // 📦 메인 문서 2: 최신 소스코드 전체 백업 (Overwrite)
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.31 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v5.8.32 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -1736,7 +1812,7 @@ function buildContextCopyV87(){
     customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
   } else customDocsText = '- 추가문서: 없음';
 
-  return `[${currentRepo} v5.8.31 이어가기용]
+  return `[${currentRepo} v5.8.32 이어가기용]
 📌 프로젝트(Repo): ${currentRepo}
 📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
@@ -1747,7 +1823,7 @@ ${mem}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.31`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.32`;
 }
 
 function renderContextCopySettings(){
@@ -1800,7 +1876,6 @@ function parseBulkKeys(){
     let val = l;
     let keyPart = l.toLowerCase();
     
-    // '=' 문자가 있는 경우 키 이름과 값 분리
     if(l.includes('=')){
       const parts = l.split('=');
       keyPart = parts[0].toLowerCase().trim();
@@ -1809,25 +1884,21 @@ function parseBulkKeys(){
 
     if(!val) return;
 
-    // 1. GitHub PAT 감지 (ghp_ 또는 github_pat_ 접두사, 또는 키 명칭에 github/pat 포함)
     if(val.startsWith('ghp_') || val.startsWith('github_pat_') || keyPart.includes('github') || keyPart.includes('pat')){
       localStorage.setItem('github_pat', val);
       if($('githubPatInput')) $('githubPatInput').value = val;
       count++;
     }
-    // 2. Gemini Key 감지 (AIza 또는 AQ. 접두사, 또는 키 명칭에 gemini 포함)
     else if(val.toLowerCase().startsWith('aiza') || val.toLowerCase().startsWith('aq.') || keyPart.includes('gemini')){
       localStorage.setItem('gemini_key', val);
       if($('geminiKeyInput')) $('geminiKeyInput').value = val;
       count++;
     }
-    // 3. Groq Key 감지 (gsk_ 접두사, 또는 키 명칭에 groq 포함)
     else if(val.startsWith('gsk_') || keyPart.includes('groq')){
       localStorage.setItem('groq_key', val);
       if($('groqKeyInput')) $('groqKeyInput').value = val;
       count++;
     }
-    // 4. Supabase Key 감지 (sb_ 또는 eyJ 접두사, 또는 키 명칭에 supabase 포함)
     else if(val.startsWith('sb_') || val.toLowerCase().startsWith('eyj') || keyPart.includes('supabase')){
       localStorage.setItem('supabase_key', val);
       if($('supabaseKeyInput')) $('supabaseKeyInput').value = val;
@@ -1922,10 +1993,15 @@ function setupEventListeners(){
   $('showGithubCommitHistoryBtn')?.addEventListener('click', () => loadGitHubCommitHistory());
   $('showDraftHistoryBtn')?.addEventListener('click', () => loadDraftHistory());
   
+  $('clearLogBtn')?.addEventListener('click', () => {
+    const logEl = $('logArea');
+    if (logEl) logEl.innerHTML = '';
+  });
+
   $('buildBtn')?.addEventListener('click', async () => {
     saveDraftCustom(null, '통합 빌드 실행전 저장');
     log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.31 커밋');
+    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.32 커밋');
     await syncToSupabaseCloud();
   });
 
