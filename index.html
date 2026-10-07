@@ -785,8 +785,9 @@ async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
     
     const requests = [];
     if(mode === 'overwrite'){
+      // Google Docs API: 본문 삭제 시 deleteContentRange 필드명 필수 사용
       if(endIndex > 2){
-        requests.push({ deleteContent: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
+        requests.push({ deleteContentRange: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
       }
       requests.push({ insertText: { location: { index: 1 }, text: cleanText } });
     } else {
