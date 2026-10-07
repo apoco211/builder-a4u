@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.36 - 메인 문서 이중 백업 빌더</title>
+<title>Builder-a4u v5.8.37 - 메인 문서 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.36">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.36">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.36">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.36">
+<link rel="manifest" href="./manifest.json?v=5.8.37">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.37">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.37">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.37">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -119,12 +119,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.36</h1>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.37</h1>
     <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.36 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.37 정식</span>
   </div>
 </div>
 
@@ -171,7 +171,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     <!-- 메인 문서 1 -->
     <div class="p-2.5 rounded-[12px] border mb-2 bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-1">
-        <span class="font-bold text-[10.5px]">📝 메인1: 업데이트 히스토리 문서</span>
+        <span class="font-bold text-[10.5px]">📝 메인1: 업데이트 히스토리 기록</span>
         <button onclick="openDriveModal('main1')" class="btn btn-sm text-[9px] py-0.5 px-2">📁 Drive 선택</button>
       </div>
       <div id="mainDoc1Container" class="text-[10px] opacity-80">연결된 문서 없음</div>
@@ -771,7 +771,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.36 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.37 (${targetFile})
 2.목적: AI 스마트 원본 동기화 및 원본 디자인/기능 100% 완벽 보존
 3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
 4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
@@ -1078,7 +1078,7 @@ async function sendChatMessage(){
   let autoFetchedDocsContent = '';
   try { autoFetchedDocsContent = await getDocsTextForPrompt(); } catch(e) {}
 
-  const fullSystemPrompt = `당신은 유능한 전문 시니어 프론트엔드 소프트웨어 엔지니어입니다.
+  const fullSystemPrompt = `당신은 유능한 최고 레벨 시니어 프론트엔드 소프트웨어 엔지니어입니다.
 현재 프로젝트: [${currentRepo}] (https://github.com/${GITHUB_USER}/${currentRepo})
 현재 선택된 작업 대상 파일: [${currentTargetFile}]
 프로젝트 전체 파일 목록: [${fileTreeStr}]
@@ -1096,12 +1096,12 @@ ${autoFetchedDocsContent ? '[연결된 구글 문서 본문 실시간 내용]:\n
 [기억 10줄]:
 ${memoryContext}
 
-🚨 [엄격 지침 - 원본 디자인 및 기존 기능 100% 보존 룰]:
-1. 위 [현재 선택된 작업 대상 파일의 GitHub 최신 실시간 원본 소스코드]는 완성된 원본입니다.
-2. 절대 기존 코드를 처음부터 새로 만들거나 단순화하지 마십시오!
-3. 기존 소스코드에 작성되어 있는 모든 Tailwind CSS 클래스, 디자인 스타일, UI 구조, 자바스크립트 로직, 외부 스크립트 라이브러리를 **100% 그대로 완벽하게 보존**해야 합니다.
-4. 요청된 기능이나 수정사항만 기존 소스코드에 정교하게 수정/추가하여, 생략 없이 완전히 작동하는 전체 소스코드를 코드 블록(\`\`\`html ... \`\`\`)으로 출력해 주세요.
-5. 수정 대상 파일이 지정되어 있다면, 답변 시작 부분에 반드시 '[TARGET_FILE: ${currentTargetFile}]' 태그를 적어주세요.`;
+🚨 [초엄격 원본 100% 동일성 유지 및 정밀 수정 원칙]:
+1. 위 [GitHub 최신 실시간 원본 소스코드]는 완벽히 작동하는 원본 어플리케이션 소스코드입니다.
+2. 절대 기존 코드를 처음부터 새로 작성하거나 일부 태그/스타일을 임의로 축약, 생략, 요약하지 마십시오!
+3. 기존 소스코드에 포함된 모든 Tailwind CSS 클래스명, 색상값, SVG 아이콘, HTML DOM 구조, 자바스크립트 변수 및 함수, 외부 CDN 스크립트 링크를 **단 1문자도 빠짐없이 100% 동일하게 유지**하십시오.
+4. 사용자가 요청한 수정/추가 기능만 정확하고 완벽하게 반영하여, 생략 없이 완전히 실행 가능한 전체 소스코드를 코드 블록(\`\`\`html ... \`\`\`)으로 출력해 주세요.
+5. 수정 대상 파일이 지정되어 있다면, 답변 최상단에 반드시 '[TARGET_FILE: ${currentTargetFile}]' 태그를 적어주세요.`;
 
   log(`🤖 [${cfg.name}] GitHub 실시간 원본 소스 기반 정밀 수정 분석 요청 중...`, 'info');
   try {
@@ -1168,7 +1168,8 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelN
     } catch(e) {}
   }
 
-  const modelsToTry = [modelName, 'gemini-3-flash-preview', 'gemini-2.5-flash-preview', 'gemini-1.5-flash'].filter((v, i, a) => a.indexOf(v) === i);
+  // 💡 [핵심 패치] 퇴출되거나 404를 일으키는 구형 모델 대신 최신 유효 모델 순서로 지정
+  const modelsToTry = [modelName, 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest'].filter((v, i, a) => a.indexOf(v) === i);
   let lastErrorMsg = '';
 
   for (const model of modelsToTry) {
@@ -1311,7 +1312,7 @@ ${$('memory10')?.value || '없음'}
     }
 
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.36 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v5.8.37 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -1881,7 +1882,7 @@ function buildContextCopyV87(){
     customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
   } else customDocsText = '- 추가문서: 없음';
 
-  return `[${currentRepo} v5.8.36 이어가기용]
+  return `[${currentRepo} v5.8.37 이어가기용]
 📌 프로젝트(Repo): ${currentRepo}
 📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
@@ -1892,7 +1893,7 @@ ${mem}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.36`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.37`;
 }
 
 function renderContextCopySettings(){
@@ -2090,7 +2091,7 @@ function setupEventListeners(){
   $('buildBtn')?.addEventListener('click', async () => {
     saveDraftCustom(null, '통합 빌드 실행전 저장');
     log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.36 커밋');
+    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.37 커밋');
     await syncToSupabaseCloud();
   });
 
