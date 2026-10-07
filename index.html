@@ -119,12 +119,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.27</h1>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.28</h1>
     <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 메인 백업 통합 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.27 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.28 정식</span>
   </div>
 </div>
 
@@ -153,11 +153,9 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
           <option value="index.html">index.html (기본)</option>
         </select>
         <input id="mainFileInput" class="input text-[10px] w-[110px] shrink-0" placeholder="직접입력" value="index.html">
-        <button id="fetchMainBtn" class="btn text-[9px] whitespace-nowrap shrink-0">📥 복구</button>
       </div>
     </div>
     <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
-    <div class="flex justify-end mt-1"><button id="toggleDraftBtn" class="btn text-[8px]">draft 보기 ▼</button></div>
   </div>
 
   <!-- 📄 이중 메인 문서 등록 카드 (메인1: 히스토리/업데이트, 메인2: 최신코드 백업) -->
@@ -814,7 +812,7 @@ function saveChatHistoriesForRepo(tab){
 
 const tabConfigs = {
   meta: { name: '메타 (Llama-3.1-8B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.1-8b-instant', type: 'groq' },
-  gemini: { name: '제미나이 (Gemini-3.8)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3.8-flash', type: 'gemini' },
+  gemini: { name: '제미나이 (Gemini-3-Flash)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3-flash-preview', type: 'gemini' },
   gpt: { name: 'GPT (GPT-OSS-120B)', color: 'var(--gpt)', bg: '#10b981', model: 'openai/gpt-oss-120b', type: 'groq' }
 };
 
@@ -1110,7 +1108,7 @@ function compressImageBase64(base64Data, maxDimension = 1280, quality = 0.8) {
   });
 }
 
-async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelName = 'gemini-3.8-flash'){
+async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelName = 'gemini-3-flash-preview'){
   let processedImage = imageBase64;
   if(imageBase64) {
     try {
@@ -1118,7 +1116,7 @@ async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelN
     } catch(e) {}
   }
 
-  const modelsToTry = [modelName, 'gemini-2.5-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter((v, i, a) => a.indexOf(v) === i);
+  const modelsToTry = [modelName, 'gemini-3-flash-preview', 'gemini-2.5-flash-preview', 'gemini-1.5-flash', 'gemini-2.0-flash'].filter((v, i, a) => a.indexOf(v) === i);
   let lastErrorMsg = '';
 
   for (const model of modelsToTry) {
