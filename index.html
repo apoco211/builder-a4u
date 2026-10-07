@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v6.0 - 미리보기 캡처 & 이중 백업 빌더</title>
+<title>Builder-a4u v6.1 - 미리보기 캡처 & 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
 <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<link rel="manifest" href="./manifest.json?v=6.0.0">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.0.0">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.0.0">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.0.0">
+<link rel="manifest" href="./manifest.json?v=6.1.0">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.1.0">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.1.0">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.1.0">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -108,12 +108,12 @@ body{background:var(--bg);color:var(--txt);max-width:920px;margin:0 auto;padding
 <!-- 헤더 영역 -->
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[19px] font-black tracking-tight">Builder-a4u v6.0</h1>
-    <p class="text-[10.5px] opacity-60">미리보기 실시간 캡처 & 깃허브 배포 · 구글 문서 이중 백업 빌더</p>
+    <h1 class="text-[19px] font-black tracking-tight">Builder-a4u v6.1</h1>
+    <p class="text-[10.5px] opacity-60">미리보기 실시간 클립보드 캡처 & 깃허브 배포 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v6.0 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v6.1 정식</span>
   </div>
 </div>
 
@@ -179,7 +179,7 @@ body{background:var(--bg);color:var(--txt);max-width:920px;margin:0 auto;padding
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 상단 상자: 업데이트 내용 & 빌드 요약 메모</h2>
       <span class="text-[9.5px] opacity-60">빌드 시 메인1(히스토리) 문서에 함께 기록됩니다</span>
     </div>
-    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: 미리보기 캡처 기능 추가, 디자인 UI 보완 등)"></textarea>
+    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: v6.1 미리보기 클립보드 복사 전용 캡처 기능 추가 등)"></textarea>
   </div>
 
   <!-- 💻 하단 상자: 소스코드 붙여넣기 & 미리보기 -->
@@ -202,7 +202,7 @@ body{background:var(--bg);color:var(--txt);max-width:920px;margin:0 auto;padding
     <!-- 동작 버튼군 -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
       <button id="previewCheckBtn" class="btn py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확정</button>
-      <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px]">📸 미리보기 화면 캡처</button>
+      <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px]">📸 미리보기 클립보드 캡처</button>
       <button id="buildBtn" class="btn btn-yellow py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
     </div>
   </div>
@@ -215,7 +215,7 @@ body{background:var(--bg);color:var(--txt);max-width:920px;margin:0 auto;padding
         👁 실시간 미리보기 화면
       </span>
       <div class="flex gap-1.5">
-        <button onclick="capturePreviewScreen()" class="btn btn-sm text-[9px] py-0.5 px-2 bg-emerald-50 text-emerald-700 border-emerald-300">📸 이미지 저장</button>
+        <button onclick="capturePreviewScreen()" class="btn btn-sm text-[9px] py-0.5 px-2 bg-emerald-50 text-emerald-700 border-emerald-300">📸 클립보드 복사</button>
         <button id="previewCloseBtn" class="btn text-[9px] py-0.5 px-2">✕ 숨기기</button>
       </div>
     </div>
@@ -397,7 +397,7 @@ function getFullContextText() {
   const doc2Title = connectedDoc2 ? (connectedDoc2.title || connectedDoc2.name) : '연결된 문서 없음';
   const doc2Url = connectedDoc2 ? `https://docs.google.com/document/d/${connectedDoc2.id}/edit` : '없음';
 
-  return `[builder-a4u v6.0 작업 맥락]
+  return `[builder-a4u v6.1 작업 맥락]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -683,7 +683,7 @@ async function pushToGitHubRepository(){
   
   const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
   const editor = $('codeEditor');
-  const userNote = $('updateNoteInput')?.value?.trim() || '🚀 Builder-a4u v6.0 빌드 및 업데이트';
+  const userNote = $('updateNoteInput')?.value?.trim() || '🚀 Builder-a4u v6.1 빌드 및 업데이트';
 
   let codeToPush = editor && editor.value && editor.value.trim().length > 0 
     ? editor.value 
@@ -728,7 +728,7 @@ async function pushToGitHubRepository(){
 
     if(connectedDoc1 && connectedDoc1.id){
       const logText = `==================================================
-📌 [Builder-a4u v6.0 빌드 완료 백업]
+📌 [Builder-a4u v6.1 빌드 완료 백업]
 ⏰ 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
 📂 파일: ${targetFile}
@@ -739,7 +739,7 @@ ${userNote}
     }
 
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v6.0 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v6.1 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -815,7 +815,7 @@ function showLivePreviewCurrent(){
   }
 }
 
-// 📸 미리보기 화면 실시간 이미지 캡처
+// 📸 미리보기 화면 실시간 이미지 캡처 (클립보드 전용 복사 - 파일 저장 안 함)
 async function capturePreviewScreen(){
   const frame = $('livePreviewFrame');
   if (!frame || !frame.contentDocument || !frame.contentDocument.body) {
@@ -823,7 +823,7 @@ async function capturePreviewScreen(){
     return;
   }
   
-  log('📸 미리보기 화면 실시간 캡처 생성 중...', 'info');
+  log('📸 미리보기 화면 클립보드 복사 중...', 'info');
   try {
     const doc = frame.contentDocument;
     const canvas = await html2canvas(doc.body, {
@@ -833,12 +833,24 @@ async function capturePreviewScreen(){
       backgroundColor: '#ffffff'
     });
 
-    const imgData = canvas.toDataURL('image/png');
-    const a = document.createElement('a');
-    a.href = imgData;
-    a.download = `${currentRepo}_preview_${Date.now()}.png`;
-    a.click();
-    log('✅ 미리보기 화면 캡처 이미지가 다운로드되었습니다!', 'ok');
+    // 클립보드에 이미지 복사만 전담 (파일 자동 다운로드 제거)
+    canvas.toBlob(async (blob) => {
+      if (blob && navigator.clipboard && window.ClipboardItem) {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          log('📋 캡처 이미지가 클립보드에 복사되었습니다! (Ctrl+V로 바로 붙여넣기 가능)', 'ok');
+          alert('📸 미리보기 화면 캡처 완료!\n\n클립보드에 이미지가 복사되었습니다.\n대화창에 바로 Ctrl+V 붙여넣기하시면 됩니다.');
+        } catch (clipErr) {
+          log('❌ 클립보드 복사 실패: ' + clipErr.message, 'err');
+          alert('클립보드 복사에 실패했습니다. 브라우저 복사 권한을 확인해 주세요.');
+        }
+      } else {
+        alert('현재 브라우저에서는 클립보드 이미지 직접 복사를 지원하지 않습니다.');
+      }
+    }, 'image/png');
+
   } catch(e) {
     log(`❌ 미리보기 캡처 실패: ${e.message}`, 'err');
     alert('화면 캡처 도중 오류가 발생했습니다: ' + e.message);
