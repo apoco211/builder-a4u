@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.27 - 원클릭 구글문서 자동 생성 & 이중 백업 빌더</title>
+<title>Builder-a4u v5.8.31 - 메인 문서 연결 해제 및 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.27">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.27">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.27">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.27">
+<link rel="manifest" href="./manifest.json?v=5.8.31">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.31">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.31">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.31">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -119,17 +119,17 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.28</h1>
-    <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 메인 백업 통합 빌더</p>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.31</h1>
+    <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.28 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.31 정식</span>
   </div>
 </div>
 
 <div class="flex gap-2 mb-3">
-  <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠️️ 작업</button>
+  <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠 작업</button>
   <button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙️ 설정</button>
 </div>
 
@@ -164,7 +164,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
       <h2 class="font-bold text-[12px] flex items-center gap-1 text-blue-600 dark:text-blue-400">
         <span>📄 메인 구글 문서 2개 (역할 분리 자동 백업)</span>
       </h2>
-      <button onclick="autoCreateMainDocs()" class="btn btn-sm text-[9px] py-1 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">✨ 문서 2개 자동 생성</button>
+      <button onclick="autoCreateMainDocs()" class="btn btn-sm text-[9px] py-1 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">✨ 문서 2개 자동 연동/생성</button>
     </div>
     <p class="text-[9.5px] opacity-70 mb-3">빌드 시 메인1에는 업데이트 로그가 추가되고, 메인2에는 최신 소스코드가 자동 백업됩니다.</p>
     
@@ -261,7 +261,7 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
   <div id="livePreviewBox" class="live-preview-box mt-3">
     <div class="live-preview-header">
-      <span id="previewTitle">👁️️ 실시간 미리보기 - 빌드 전 확인</span>
+      <span id="previewTitle">👁 실시간 미리보기 - 빌드 전 확인</span>
       <button id="previewCloseBtn" class="btn text-[9px]">✕ 닫기</button>
     </div>
     <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
@@ -356,122 +356,112 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </div>
 
 <script>
-const SUPABASE_URL='https://xykaixtheudykyvkrlel.supabase.co';
-const GITHUB_USER='apoco211';
-const GOOGLE_CLIENT_ID='888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
-const $=id=>document.getElementById(id);
-
-let tokenClient=null;
-let gisInited=false;
-window._gisLoaded=false;
-let activePastedImageBase64 = null;
-let repoFileListCache = [];
-let accessToken='';
-try{accessToken=localStorage.getItem('google_access_token')||'';}catch{}
-let currentRepo='builder-a4u';
-try{currentRepo=localStorage.getItem('current_repo')||'builder-a4u';}catch{}
-let mainFile='index.html';
-let connectedDoc1 = null; // 메인문서1 (업데이트 히스토리)
-let connectedDoc2 = null; // 메인문서2 (최신 소스코드 백업)
-let customLinks=[];
-let driveTabMode = 'my';
-let activeDriveTargetSlot = 'main1'; // 'main1', 'main2', 'custom'
-
-function updateGisStatus(msg){
-  const el=$('googleStatus');
-  if(el) el.innerHTML=msg;
-}
-
-function log(m,t='info'){
-  const a=$('logArea');
-  if(!a) return;
-  const time=new Date().toLocaleTimeString();
-  const d=document.createElement('div');
-  d.innerHTML='<span style="opacity:.6">'+time+'</span> '+(t==='ok'?'✅':t==='err'?'❌':'ℹ️')+' '+m;
-  a.appendChild(d);
-  a.scrollTop=a.scrollHeight;
-}
-
-function getGitHubPat(){
+// 드라이브 내 동일한 이름의 구글 문서가 이미 존재하는지 탐색
+async function findExistingDocByName(title){
+  const token = accessToken || localStorage.getItem('google_access_token');
+  if(!token) return null;
+  const q = `trashed=false and mimeType='application/vnd.google-apps.document' and name='${title.replace(/'/g, "\\'")}'`;
+  const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=1`;
   try{
-    const keys=['github_pat','github_token','GITHUB_PAT','GITHUB_TOKEN','gh_pat','pat'];
-    for(const k of keys){
-      const v=localStorage.getItem(k);
-      if(v && v.trim().length>10) return v.trim();
+    const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+    if(res.ok){
+      const data = await res.json();
+      if(data.files && data.files.length > 0) return data.files[0];
     }
-    const input=$('githubPatInput');
-    if(input && input.value && input.value.trim().length>10) return input.value.trim();
-    return '';
-  }catch(e){ return ''; }
+  }catch(e){}
+  return null;
 }
 
-async function loadRepos(){
-  const s=$('repoSelect');
-  if(!s) return;
-  const CACHE_KEY = 'repo_list_cache_' + GITHUB_USER;
+// ✨ 백업 구글 문서 2개 스마트 자동 검색 & 기존 문서 연동 / 신규 생성 함수
+async function autoCreateMainDocs(){
+  let token = accessToken || localStorage.getItem('google_access_token');
+  if(!token){
+    alert('Google 로그인이 필요합니다. [⚙ 설정] 탭에서 Google 로그인 실행 후 시도해 주세요.');
+    switchTopView('settings');
+    return;
+  }
   
-  function renderRepos(list){
-    if(!s || !list || list.length===0) return;
-    s.innerHTML='';
-    list.forEach(repo=>{
-      const name=typeof repo==='string'?repo:(repo.full_name||repo.name||'');
-      if(!name) return;
-      const displayName=name.includes('/')?name.split('/')[1]:name;
-      const o=document.createElement('option');
-      o.value=displayName;
-      o.textContent=displayName;
-      if(displayName===currentRepo || name===currentRepo) o.selected=true;
-      s.appendChild(o);
-    });
-    if(!Array.from(s.options).some(o=>o.value===currentRepo)){
-      const o=document.createElement('option'); o.value=currentRepo; o.textContent=currentRepo; o.selected=true;
-      s.insertBefore(o, s.firstChild);
-    }
-  }
+  log(`✨ [${currentRepo}] 백업용 구글 문서 확인 및 자동 연동 중...`, 'info');
+  try {
+    const title1 = `[${currentRepo}] 업데이트 히스토리 기록`;
+    const title2 = `[${currentRepo}] 최신 소스코드 백업`;
 
-  function getCached(){
-    try{
-      const raw=localStorage.getItem(CACHE_KEY);
-      if(!raw) return null;
-      const obj=JSON.parse(raw);
-      return obj.list||obj.data||null;
-    }catch{return null;}
-  }
-
-  const cached=getCached();
-  if(cached && cached.length>0) renderRepos(cached);
-
-  try{
-    const pat=getGitHubPat();
-    const headers={'Accept':'application/vnd.github.v3+json'};
-    let hasPat=false;
-    if(pat && pat.length>10){
-      headers.Authorization='Bearer '+pat;
-      hasPat=true;
+    let data1 = null;
+    let isCreated1 = false;
+    // 1. 기존 문서1 탐색
+    const existing1 = await findExistingDocByName(title1);
+    if(existing1){
+      data1 = { documentId: existing1.id, title: existing1.name };
+    } else {
+      // 신규 생성
+      const res1 = await fetch('https://docs.googleapis.com/v1/documents', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title1 })
+      });
+      if(!res1.ok){
+        if(res1.status === 401){
+          localStorage.removeItem('google_access_token');
+          accessToken = '';
+          alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
+          switchTopView('settings');
+          return;
+        }
+        throw new Error(`메인문서1 생성 실패`);
+      }
+      const created1 = await res1.json();
+      data1 = { documentId: created1.documentId, title: title1 };
+      isCreated1 = true;
     }
-    const url=hasPat 
-      ? 'https://api.github.com/user/repos?per_page=100&sort=updated&affiliation=owner,collaborator,organization_member'
-      : 'https://api.github.com/users/'+GITHUB_USER+'/repos?per_page=100&sort=updated';
-    
-    const controller=new AbortController();
-    const timeout=setTimeout(()=>controller.abort(), 10000);
-    const r=await fetch(url, {headers, signal:controller.signal});
-    clearTimeout(timeout);
-    
-    if(!r.ok){
-      if(cached) renderRepos(cached);
-      return;
+
+    let data2 = null;
+    let isCreated2 = false;
+    // 2. 기존 문서2 탐색
+    const existing2 = await findExistingDocByName(title2);
+    if(existing2){
+      data2 = { documentId: existing2.id, title: existing2.name };
+    } else {
+      // 신규 생성
+      const res2 = await fetch('https://docs.googleapis.com/v1/documents', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: title2 })
+      });
+      if(!res2.ok){
+        if(res2.status === 401){
+          localStorage.removeItem('google_access_token');
+          accessToken = '';
+          alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
+          switchTopView('settings');
+          return;
+        }
+        throw new Error(`메인문서2 생성 실패`);
+      }
+      const created2 = await res2.json();
+      data2 = { documentId: created2.documentId, title: title2 };
+      isCreated2 = true;
     }
-    const d=await r.json();
-    if(!Array.isArray(d) || d.length===0) return;
-    renderRepos(d);
-    try{ localStorage.setItem(CACHE_KEY, JSON.stringify({ts:Date.now(), list:d})); }catch{}
-    log('✅ GitHub 실시간 레포 '+d.length+'개 로드 완료', 'ok');
-    
-    loadRepoFileTree();
-  }catch(e){
-    const cached2=getCached();
-    if(cached2) renderRepos(cached2);
+
+    connectedDoc1 = { id: data1.documentId, title: title1 };
+    connectedDoc2 = { id: data2.documentId, title: title2 };
+
+    localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
+    localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
+
+    renderConnectedDoc1();
+    renderConnectedDoc2();
+    renderContextCopySettings();
+    updateContextBox();
+
+    const statusMsg = (isCreated1 || isCreated2)
+      ? `✅ [${currentRepo}] 전용 백업 문서가 생성 및 연동되었습니다!`
+      : `✅ 기존 [${currentRepo}] 백업 문서 2개를 발견하여 그대로 연동했습니다! (중복 생성 방지)`;
+
+    log(statusMsg, 'ok');
+    alert(statusMsg + `\n\n1. ${title1}\n2. ${title2}`);
+  } catch(e) {
+    log(`❌ 문서 연동 실패: ${e.message}`, 'err');
+    alert('문서 연동 중 오류가 발생했습니다:\n' + e.message);
   }
 }
 
@@ -589,78 +579,6 @@ function handleGoogleLogin(){
   }
 }
 
-// ✨ 원클릭 백업 구글 문서 2개 자동 생성 및 연결 함수
-async function autoCreateMainDocs(){
-  let token = accessToken || localStorage.getItem('google_access_token');
-  if(!token){
-    alert('Google 로그인이 필요합니다. [⚙ 설정] 탭에서 Google 로그인 실행 후 시도해 주세요.');
-    switchTopView('settings');
-    return;
-  }
-  
-  log(`✨ [${currentRepo}] 백업용 구글 문서 2개 자동 생성 중...`, 'info');
-  try {
-    const title1 = `[${currentRepo}] 업데이트 히스토리 기록`;
-    const res1 = await fetch('https://docs.googleapis.com/v1/documents', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: title1 })
-    });
-    
-    if(!res1.ok){
-      const errBody = await res1.json().catch(() => ({}));
-      const errMsg = errBody.error?.message || `HTTP ${res1.status}`;
-      if(res1.status === 401){
-        localStorage.removeItem('google_access_token');
-        accessToken = '';
-        alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
-        switchTopView('settings');
-        return;
-      }
-      throw new Error(`메인문서1 생성 실패 (${errMsg})`);
-    }
-    const data1 = await res1.json();
-
-    const title2 = `[${currentRepo}] 최신 소스코드 백업`;
-    const res2 = await fetch('https://docs.googleapis.com/v1/documents', {
-      method: 'POST',
-      headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: title2 })
-    });
-
-    if(!res2.ok){
-      const errBody = await res2.json().catch(() => ({}));
-      const errMsg = errBody.error?.message || `HTTP ${res2.status}`;
-      if(res2.status === 401){
-        localStorage.removeItem('google_access_token');
-        accessToken = '';
-        alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
-        switchTopView('settings');
-        return;
-      }
-      throw new Error(`메인문서2 생성 실패 (${errMsg})`);
-    }
-    const data2 = await res2.json();
-
-    connectedDoc1 = { id: data1.documentId, title: title1 };
-    connectedDoc2 = { id: data2.documentId, title: title2 };
-
-    localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
-    localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
-
-    renderConnectedDoc1();
-    renderConnectedDoc2();
-    renderContextCopySettings();
-    updateContextBox();
-
-    log(`✅ [${currentRepo}] 전용 백업 문서 2개 자동 생성 및 연결 완료!`, 'ok');
-    alert(`✅ 구글 문서 2개가 성공적으로 생성되어 연동되었습니다!\n\n1. ${title1}\n2. ${title2}`);
-  } catch(e) {
-    log(`❌ 문서 자동 생성 실패: ${e.message}`, 'err');
-    alert('문서 자동 생성 중 오류가 발생했습니다:\n' + e.message);
-  }
-}
-
 // 스마트폰 / PC 파일 선택 첨부 이벤트
 $('imageFileInput')?.addEventListener('change', e => {
   const file = e.target.files?.[0];
@@ -731,7 +649,7 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.27 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.31 (${targetFile})
 2.목적: AI 스마트 자동 파일 탐색 및 이중 구글문서 연동 백업
 3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
 4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
@@ -1264,7 +1182,7 @@ ${$('memory10')?.value || '없음'}
 
     // 📦 메인 문서 2: 최신 소스코드 전체 백업 (Overwrite)
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.27 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v5.8.31 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -1567,7 +1485,7 @@ function renderConnectedDoc1(){
     <div class="flex gap-1 shrink-0">
       <a href="https://docs.google.com/document/d/${connectedDoc1.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-2 text-[9px]">🔗 열기</a>
       <button onclick="fetchDocContent('${connectedDoc1.id}', '${title.replace(/'/g, "\\'")}', 'docPreview')" class="btn btn-sm py-0.5 px-2 text-[9px]">📥 읽기</button>
-      <button onclick="removeMainDoc(1)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500">✕</button>
+      <button onclick="removeMainDoc(1)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500 font-bold" title="문서 연결 해제">🗑 연결 해제</button>
     </div>
   </div>`;
 }
@@ -1586,7 +1504,7 @@ function renderConnectedDoc2(){
     <div class="flex gap-1 shrink-0">
       <a href="https://docs.google.com/document/d/${connectedDoc2.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-2 text-[9px]">🔗 열기</a>
       <button onclick="fetchDocContent('${connectedDoc2.id}', '${title.replace(/'/g, "\\'")}', 'docPreview')" class="btn btn-sm py-0.5 px-2 text-[9px]">📥 읽기</button>
-      <button onclick="removeMainDoc(2)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500">✕</button>
+      <button onclick="removeMainDoc(2)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500 font-bold" title="문서 연결 해제">🗑 연결 해제</button>
     </div>
   </div>`;
 }
@@ -1603,7 +1521,7 @@ function removeMainDoc(slot){
   }
   renderContextCopySettings();
   updateContextBox();
-  log(`📄 메인 문서${slot} 연결 해제됨`, 'info');
+  log(`📄 메인 문서${slot} 연결이 해제되었습니다.`, 'info');
 }
 
 async function fetchDocContent(docId, docTitle, previewTargetId = 'docPreview'){
@@ -1818,7 +1736,7 @@ function buildContextCopyV87(){
     customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
   } else customDocsText = '- 추가문서: 없음';
 
-  return `[${currentRepo} v5.8.27 이어가기용]
+  return `[${currentRepo} v5.8.31 이어가기용]
 📌 프로젝트(Repo): ${currentRepo}
 📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
@@ -1829,7 +1747,7 @@ ${mem}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.27`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.31`;
 }
 
 function renderContextCopySettings(){
@@ -1877,22 +1795,47 @@ function parseBulkKeys(){
   const lines = text.split('\n');
   lines.forEach(line => {
     const l = line.trim();
-    if(l.includes('GITHUB_PAT=') || l.includes('github_pat=')){
-      const v = l.split('=')[1]?.trim();
-      if(v){ localStorage.setItem('github_pat', v); if($('githubPatInput')) $('githubPatInput').value = v; count++; }
-    } else if(l.includes('GEMINI_KEY=') || l.includes('gemini_key=')){
-      const v = l.split('=')[1]?.trim();
-      if(v){ localStorage.setItem('gemini_key', v); if($('geminiKeyInput')) $('geminiKeyInput').value = v; count++; }
-    } else if(l.includes('GROQ_KEY=') || l.includes('groq_key=')){
-      const v = l.split('=')[1]?.trim();
-      if(v){ localStorage.setItem('groq_key', v); if($('groqKeyInput')) $('groqKeyInput').value = v; count++; }
-    } else if(l.includes('SUPABASE_KEY=') || l.includes('supabase_key=')){
-      const v = l.split('=')[1]?.trim();
-      if(v){ localStorage.setItem('supabase_key', v); if($('supabaseKeyInput')) $('supabaseKeyInput').value = v; count++; }
+    if(!l) return;
+
+    let val = l;
+    let keyPart = l.toLowerCase();
+    
+    // '=' 문자가 있는 경우 키 이름과 값 분리
+    if(l.includes('=')){
+      const parts = l.split('=');
+      keyPart = parts[0].toLowerCase().trim();
+      val = parts.slice(1).join('=').trim();
+    }
+
+    if(!val) return;
+
+    // 1. GitHub PAT 감지 (ghp_ 또는 github_pat_ 접두사, 또는 키 명칭에 github/pat 포함)
+    if(val.startsWith('ghp_') || val.startsWith('github_pat_') || keyPart.includes('github') || keyPart.includes('pat')){
+      localStorage.setItem('github_pat', val);
+      if($('githubPatInput')) $('githubPatInput').value = val;
+      count++;
+    }
+    // 2. Gemini Key 감지 (AIza 또는 AQ. 접두사, 또는 키 명칭에 gemini 포함)
+    else if(val.toLowerCase().startsWith('aiza') || val.toLowerCase().startsWith('aq.') || keyPart.includes('gemini')){
+      localStorage.setItem('gemini_key', val);
+      if($('geminiKeyInput')) $('geminiKeyInput').value = val;
+      count++;
+    }
+    // 3. Groq Key 감지 (gsk_ 접두사, 또는 키 명칭에 groq 포함)
+    else if(val.startsWith('gsk_') || keyPart.includes('groq')){
+      localStorage.setItem('groq_key', val);
+      if($('groqKeyInput')) $('groqKeyInput').value = val;
+      count++;
+    }
+    // 4. Supabase Key 감지 (sb_ 또는 eyJ 접두사, 또는 키 명칭에 supabase 포함)
+    else if(val.startsWith('sb_') || val.toLowerCase().startsWith('eyj') || keyPart.includes('supabase')){
+      localStorage.setItem('supabase_key', val);
+      if($('supabaseKeyInput')) $('supabaseKeyInput').value = val;
+      count++;
     }
   });
 
-  log(`⚡ 스마트 파서: ${count}개 API 키 자동 저장 완료!`, 'ok');
+  log(`⚡ 스마트 파서: ${count}개 API 키 자동 인식 및 저장 완료!`, 'ok');
   loadRepos();
 }
 
@@ -1982,7 +1925,7 @@ function setupEventListeners(){
   $('buildBtn')?.addEventListener('click', async () => {
     saveDraftCustom(null, '통합 빌드 실행전 저장');
     log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.27 커밋');
+    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.31 커밋');
     await syncToSupabaseCloud();
   });
 
