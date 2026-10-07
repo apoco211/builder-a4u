@@ -5,105 +5,81 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.39 - 메인 문서 이중 백업 빌더</title>
+<title>Builder-a4u v6.0 - 미리보기 캡처 & 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.39">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.39">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.39">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.39">
+<!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="manifest" href="./manifest.json?v=6.0.0">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.0.0">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.0.0">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.0.0">
 <style>
 @font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+font-family: "Optimistic";
+font-style: normal;
+font-weight: 400 600;
+font-display: swap;
+src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
 }
 @font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+font-family: "Optimistic Mono";
+font-style: normal;
+font-weight: 400;
+font-display: swap;
+src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
 }
 :where(html) {
-  font-family: "Optimistic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+font-family: "Optimistic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 :where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
+font-family: "Optimistic Mono", ui-monospace, monospace;
 }
-
-:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800;--meta:#7c3aed;--gemini:#0ea5e9;--gpt:#10b981}
+:root{--bg:#f8fafc;--card:#ffffff;--line:#e2e8f0;--txt:#0f172a;--muted:#64748b;--accent:#FFC800}
 .dark{--bg:#0f1115;--card:#1a1d24;--line:#2a2f3a;--txt:#e2e8f0;--muted:#94a3b8}
-html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%} 
-body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;transition:.2s;font-size:15px;line-height:1.5}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{background:var(--bg);color:var(--txt);max-width:920px;margin:0 auto;padding:14px 14px 100px 14px;min-height:100vh;transition:.2s;font-size:15px;line-height:1.5}
 .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;transition:.2s}
-.doc-card{user-select:none;touch-action:manipulation;-webkit-user-drag:none;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px;background:var(--card);display:flex;flex-direction:column;gap:8px}
 .btn{border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;border:1px solid var(--line);background:var(--card);color:var(--txt);min-height:40px;display:inline-flex;align-items:center;justify-content:center}
 .btn-primary{background:#111 !important;color:#fff !important;border-color:#111 !important}
 .btn-yellow{background:var(--accent) !important;color:#111 !important;border-color:var(--accent) !important;font-weight:900}
-.btn-meta{background:var(--meta) !important;color:#fff !important;border-color:var(--meta) !important}
-.btn-gemini{background:var(--gemini) !important;color:#fff !important;border-color:var(--gemini) !important}
-.btn-gpt{background:var(--gpt) !important;color:#fff !important;border-color:var(--gpt) !important}
+.btn-emerald{background:#10b981 !important;color:#fff !important;border-color:#059669 !important;font-weight:800}
 .btn-sm{padding:6px 10px;font-size:11px;min-height:30px;border-radius:8px;white-space:nowrap}
 .btn:active{transform:scale(.97)}
 .input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--card);color:var(--txt);font-size:16px;outline:none;min-height:46px}
-.textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--txt);font-size:14px;line-height:1.6;outline:none;resize:vertical}
+.textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card);color:var(--txt);font-size:13.5px;line-height:1.6;outline:none;resize:vertical}
 .badge{display:inline-flex;padding:4px 10px;border-radius:999px;font-size:11px;font-weight:800;border:1px solid var(--line)}
 .log{font-family:monospace;font-size:12px;line-height:1.6;max-height:220px;overflow:auto;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px}
-.chat-box{border:1px solid var(--line);border-radius:14px;background:var(--bg);height:440px;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
-.msg{max-width:88%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.6;white-space:pre-wrap;word-break:break-word;position:relative}
-.msg-user{align-self:flex-end;background:#111;color:#fff;border-bottom-right-radius:6px}
-.msg-ai{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:6px}
-
 /* 다크모드 대응 */
-.dark #contextBox{background:#1e222e !important;border-color:#3a4152 !important;color:#e2e8f0 !important}
-.dark #contextText{color:#e2e8f0 !important}
-.dark textarea#memory10{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
-.dark textarea#memory10::placeholder{color:#94a3b8 !important}
 .dark .btn{background:#252a36 !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark .btn-primary{background:#e2e8f0 !important;color:#0f1115 !important;border-color:#e2e8f0 !important}
 .dark .btn-yellow{background:#FFC800 !important;color:#111 !important;border-color:#FFC800 !important}
+.dark .btn-emerald{background:#059669 !important;color:#fff !important;border-color:#047857 !important}
 .dark .input, .dark .textarea{background:#1e222e !important;color:#e2e8f0 !important;border-color:#3a4152 !important}
 .dark .card{border-color:#2a2f3a !important}
-.dark .chat-box{background:#0f1115 !important;border-color:#2a2f3a !important}
-.dark .msg-ai{background:#1a1d24 !important;color:#e2e8f0 !important;border-color:#2a2f3a !important}
 .dark .log{background:#0f1115 !important;color:#cbd5e1 !important;border-color:#2a2f3a !important}
-
-.top-tab{flex:1;padding:14px 10px;border-radius:14px;font-weight:900;font-size:15px;border:2px solid var(--line);background:var(--card);color:var(--txt);min-height:48px}
-.top-tab.active{background:#111 !important;color:#fff !important;border-color:#111 !important;box-shadow:0 0 0 2px var(--accent)}
-.tab-active{border:2px solid #111 !important;box-shadow:0 0 0 2px var(--accent)}
-.view-hidden{display:none !important}
-
 @media (max-width: 768px){
-  body{padding:10px 10px 100px 10px;font-size:14px}
-  .card{padding:12px;border-radius:14px}
-  .top-tab{font-size:13px;padding:10px 6px;min-height:42px}
-  .btn{font-size:12.5px;padding:8px 10px;min-height:38px}
-  .btn-sm{font-size:10px;padding:4px 8px;min-height:28px}
-  .input{font-size:15px !important;padding:10px 12px;min-height:42px}
-  .textarea{font-size:13.5px !important}
-  .chat-box{height:50vh;min-height:380px}
-  .msg{font-size:13.5px !important;line-height:1.5;padding:10px 12px}
-  h1{font-size:17px !important}
-  h2{font-size:12.5px !important}
-  .log{font-size:10.5px}
-  .badge{font-size:9px}
+body{padding:10px 10px 100px 10px;font-size:14px}
+.card{padding:12px;border-radius:14px}
+.btn{font-size:12.5px;padding:8px 10px;min-height:38px}
+.btn-sm{font-size:10px;padding:4px 8px;min-height:28px}
+.input{font-size:15px !important;padding:10px 12px;min-height:42px}
+.textarea{font-size:13px !important}
+h1{font-size:17px !important}
+h2{font-size:12.5px !important}
+.log{font-size:10.5px}
+.badge{font-size:9px}
 }
-
-.live-preview-box{border:2px solid var(--meta);border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
+.live-preview-box{border:2px solid #10b981;border-radius:16px;overflow:hidden;margin-top:12px;background:#fff;display:none}
 .live-preview-box.active{display:block}
 .live-preview-header{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);font-size:12px;font-weight:800}
 .dark .live-preview-header{background:#1e222e !important;color:#e2e8f0 !important}
-.live-preview-iframe{width:100%;height:420px;border:0;background:#fff}
-@media (min-width:1024px){.live-preview-iframe{height:560px}}
-
-.version-history{max-height:300px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px;background:var(--bg)}
+.live-preview-iframe{width:100%;height:480px;border:0;background:#fff}
+@media (min-width:1024px){.live-preview-iframe{height:600px}}
+.version-history{max-height:260px;overflow:auto;border:1px solid var(--line);border-radius:12px;padding:6px;background:var(--bg)}
 .version-item{display:flex;gap:6px;align-items:center;padding:6px 8px;border-radius:8px;border:1px solid var(--line);cursor:pointer;margin-bottom:5px;background:var(--card);font-size:11px}
-
 .drive-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;}
 .drive-modal-content{background:#fff;border-radius:16px;max-width:800px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);}
 .dark .drive-modal-content{background:#1e222f;color:#fff;}
@@ -116,2082 +92,880 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 </style>
 </head>
 <body>
-
+<!-- 헤더 영역 -->
 <div class="flex justify-between items-center mb-3">
-  <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.39</h1>
-    <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
-  </div>
-  <div class="flex gap-2 items-center">
-    <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.39 정식</span>
-  </div>
+<div>
+<h1 class="text-[19px] font-black tracking-tight">Builder-a4u v6.0</h1>
+<p class="text-[10.5px] opacity-60">미리보기 실시간 캡처 & 깃허브 배포 · 구글 문서 이중 백업 빌더</p>
 </div>
-
-<div class="flex gap-2 mb-3">
-  <button id="topTabWorkspace" onclick="switchTopView('workspace')" class="top-tab active">🛠 작업</button>
-  <button id="topTabSettings" onclick="switchTopView('settings')" class="top-tab">⚙️ 설정</button>
+<div class="flex gap-2 items-center">
+<button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
+<span class="badge shrink-0" style="background:#111;color:#fff">v6.0 정식</span>
 </div>
-
-<!-- 작업 뷰 -->
-<div id="workspaceView">
-  <div class="card">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="font-bold text-[11px]">프로젝트 선택 <span id="draftStatus" class="text-[9px] opacity-60 ml-2">draft 대기</span></h2>
-      <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" title="GitHub 레포 목록 새로고침">🔄 레포 새로고침</button>
-    </div>
-    <select id="repoSelect" class="input mb-2 text-[12px]"><option value="builder-a4u">builder-a4u</option></select>
-    
-    <!-- 📁 레포 내부 파일 선택 -->
-    <div class="flex flex-col gap-1.5 mt-2">
-      <div class="flex justify-between items-center">
-        <label class="font-bold text-[10px] opacity-80">📁 작업 대상 파일 (AI 자동 수정/라우팅 연동)</label>
-        <button id="scanRepoFilesBtn" class="btn btn-sm text-[8px] py-0.5 px-2 shrink-0">🔍 파일목록 스캔</button>
-      </div>
-      <div class="flex gap-1">
-        <select id="repoFilesSelect" class="input text-[11px] flex-1">
-          <option value="index.html">index.html (기본)</option>
-        </select>
-        <input id="mainFileInput" class="input text-[10px] w-[110px] shrink-0" placeholder="직접입력" value="index.html">
-      </div>
-    </div>
-    <textarea id="codeEditor" class="textarea h-[80px] mt-2 hidden"></textarea>
-  </div>
-
-  <!-- 📄 이중 메인 문서 등록 카드 -->
-  <div class="card" style="border:2px solid #3b82f6">
-    <div class="flex justify-between items-center mb-1">
-      <h2 class="font-bold text-[12px] flex items-center gap-1 text-blue-600 dark:text-blue-400">
-        <span>📄 메인 구글 문서 2개 (역할 분리 자동 백업)</span>
-      </h2>
-      <button onclick="autoCreateMainDocs()" class="btn btn-sm text-[9px] py-1 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">✨ 문서 2개 자동 연동/생성</button>
-    </div>
-    <p class="text-[9.5px] opacity-70 mb-3">빌드 시 메인1에는 업데이트 로그가 추가되고, 메인2에는 최신 소스코드가 자동 백업됩니다.</p>
-    
-    <!-- 메인 문서 1 -->
-    <div class="p-2.5 rounded-[12px] border mb-2 bg-[var(--bg)]" style="border-color:var(--line)">
-      <div class="flex justify-between items-center mb-1">
-        <span class="font-bold text-[10.5px]">📝 메인1: 업데이트 히스토리 기록</span>
-        <button onclick="openDriveModal('main1')" class="btn btn-sm text-[9px] py-0.5 px-2">📁 Drive 선택</button>
-      </div>
-      <div id="mainDoc1Container" class="text-[10px] opacity-80">연결된 문서 없음</div>
-    </div>
-
-    <!-- 메인 문서 2 -->
-    <div class="p-2.5 rounded-[12px] border bg-[var(--bg)]" style="border-color:var(--line)">
-      <div class="flex justify-between items-center mb-1">
-        <span class="font-bold text-[10.5px]">📦 메인2: 최신 소스코드 백업 문서</span>
-        <button onclick="openDriveModal('main2')" class="btn btn-sm text-[9px] py-0.5 px-2">📁 Drive 선택</button>
-      </div>
-      <div id="mainDoc2Container" class="text-[10px] opacity-80">연결된 문서 없음</div>
-    </div>
-    <div id="docPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[160px] overflow-auto" style="border-color:var(--line)"></div>
-  </div>
-
-  <div class="card" style="border-color:var(--gemini)">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="font-bold text-[11px]">🔗 추가 참조 문서 N개 - Drive 연동 <span id="linkCount" class="badge ml-2">0개</span></h2>
-      <button onclick="openDriveModal('custom')" class="btn btn-sm text-[10px] py-1 px-3 shrink-0">📁 Drive 선택</button>
-    </div>
-    <div id="customLinksList" class="mt-2"></div>
-    <div id="linkDocPreview" class="hidden mt-2 p-2 rounded-[12px] bg-[var(--bg)] border text-[10px] whitespace-pre-wrap max-h-[160px] overflow-auto" style="border-color:var(--line)"></div>
-  </div>
-
-  <div class="card">
-    <h2 class="font-bold text-[11px] mb-2">🧠 기억 10줄 - 자동 저장/자동 주입 <span id="memoryCount" class="badge ml-2">0줄</span></h2>
-    <textarea id="memory10" class="textarea h-[130px]"></textarea>
-    <div class="flex justify-between mt-2">
-      <span class="text-[8px] opacity-60">입력 즉시 자동 저장 + 3탭 자동 주입</span>
-      <button id="templateBtn" class="btn text-[8px]">📝 템플릿</button>
-    </div>
-  </div>
-
-  <div class="card" style="border-color:#111;box-shadow:0 0 0 3px #111">
-    <div class="flex justify-between items-center mb-2">
-      <h2 class="font-black text-[12px]">PWA 내부 3탭 채팅 (구글문서 + 최신 소스코드 실시간 주입)</h2>
-      <span class="badge" style="background:#111;color:#fff">스마트 오토라우팅</span>
-    </div>
-    <div class="grid grid-cols-3 gap-2 mb-2">
-      <button id="tabMeta" class="btn btn-meta tab-active text-[10px]">🟣 메타</button>
-      <button id="tabGemini" class="btn btn-gemini text-[10px]">🔵 제미나이 (권장)</button>
-      <button id="tabGpt" class="btn btn-gpt text-[10px]">🟢 GPT</button>
-    </div>
-    <div id="contextBox" class="p-2 rounded-[12px] bg-[#fffbeb] border border-[#fde68a] text-[11px] mb-2 max-h-[90px] overflow-auto">
-      <div id="contextText" class="whitespace-pre-wrap">대기...</div>
-    </div>
-    <div class="flex justify-between items-center mb-2">
-      <div class="flex gap-2 items-center">
-        <span id="currentTabLabel" class="badge" style="background:var(--meta);color:#fff">메타</span>
-        <span id="chatCountBadge" class="badge">0개</span>
-      </div>
-      <button id="copyWorkspaceContextBtn" class="btn btn-sm text-[9px] py-1 px-2" style="background:#fef3c7;border-color:#fde68a;color:#92400e">📋 현재 전체맥락 복사</button>
-    </div>
-    <div id="chatBox" class="chat-box mb-2"></div>
-    
-    <!-- 🖼️ 첨부 이미지 미리보기 영역 -->
-    <div id="pastedImagePreviewBox" class="hidden mb-2 p-2 rounded-[12px] border flex items-center gap-3 bg-[var(--card)]" style="border-color:var(--line)">
-      <img id="pastedImageThumb" class="w-[60px] h-[60px] object-cover rounded-[8px] border" style="border-color:var(--line)">
-      <div class="flex-1 overflow-hidden">
-        <div class="font-bold text-[11px] text-emerald-600">🖼️ 이미지 첨부됨</div>
-        <div id="pastedImagePreviewNotice" class="text-[9px] opacity-60">이미지 질문 시 제미나이 모델로 시각 분석됩니다.</div>
-      </div>
-      <button id="removePastedImageBtn" class="btn btn-sm text-[10px] text-red-500">✕ 취소</button>
-    </div>
-    
-    <div class="flex gap-1.5 items-center">
-      <label class="btn btn-sm p-0 w-[42px] h-[42px] flex items-center justify-center shrink-0 cursor-pointer text-[18px]" title="스마트폰 앨범/카메라 사진 선택">
-        🖼️
-        <input type="file" id="imageFileInput" accept="image/*" class="hidden">
-      </label>
-      <input id="chatInput" class="input flex-1 text-[12px]" placeholder="기능 요청 또는 대화 내용 구글문서 추가 요청...">
-      <button id="chatSendBtn" class="btn btn-primary text-[11px] shrink-0">전송</button>
-    </div>
-
-    <!-- ⚡ 대화 내용 즉시 구글 문서 추가 Quick Button -->
-    <div class="mt-2">
-      <button id="quickAppendToDoc1Btn" class="btn btn-sm w-full text-[10px] py-1.5" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📝 전체 대화 내용 메인1(로그)에 추가</button>
-    </div>
-
-    <div class="flex gap-2 mt-2">
-      <button id="saveDraftBtn" class="btn flex-1 py-3 text-[11px] font-bold">💾 현재 드래프트 저장</button>
-      <button id="previewCheckBtn" class="btn flex-1 py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확인</button>
-      <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 빌드 + GitHub/Docs 갱신</button>
-    </div>
-  </div>
-
-  <div id="livePreviewBox" class="live-preview-box mt-3">
-    <div class="live-preview-header">
-      <span id="previewTitle">👁 실시간 미리보기 - 빌드 전 확인</span>
-      <button id="previewCloseBtn" class="btn text-[9px]">✕ 닫기</button>
-    </div>
-    <iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
-  </div>
-
-  <!-- ⏰ 타임머신 -->
-  <div class="card mt-3">
-    <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 선택 파일 시점 롤백</h2>
-    <div class="flex gap-1.5 mb-2">
-      <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[32px] leading-tight">🐙 선택 파일 커밋 기록</button>
-      <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[32px] leading-tight">📦 로컬 draft 기록</button>
-    </div>
-    <div id="versionHistoryBox" class="version-history max-h-[260px]"><div class="text-[10px] text-gray-400 p-3 text-center">위 버튼을 눌러 선택된 파일의 기록을 불러와주세요</div></div>
-  </div>
-
-  <div class="card">
-    <div class="flex justify-between mb-1"><h2 class="font-bold text-[10px]">📡 로그</h2><button id="clearLogBtn" class="btn text-[8px]">clear</button></div>
-    <div id="logArea" class="log"></div>
-  </div>
 </div>
-
-<!-- 설정 뷰 -->
-<div id="settingsView" class="view-hidden">
-  <div class="card" style="border:2px solid #FFC800">
-    <h2 class="font-black text-[13px] mb-2">📋 전체맥락복사</h2>
-    <textarea id="contextCopyPreviewSettings" class="textarea h-[160px] text-[10px]" readonly></textarea>
-    <div class="flex gap-2 mt-2">
-      <button id="btn-copy-context-settings" class="btn" style="background:#FFC800 !important;color:#111 !important;font-weight:900;flex:1">📋 전체맥락복사</button>
-    </div>
-  </div>
-
-  <div class="card" style="border-color:var(--accent)">
-    <h2 class="font-black text-[13px] mb-3">⚙️ 설정</h2>
-    
-    <div class="mb-4">
-      <h3 class="font-bold text-[11px] mb-2">⚡ 스마트 API 일괄 파싱 (.env 통째로 붙여넣기)</h3>
-      <textarea id="bulkKeysInput" class="textarea h-[70px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGEMINI_KEY=AQ.Ab8...\nGROQ_KEY=gsk_...\nSUPABASE_KEY=sb_..."></textarea>
-      <button id="parseBulkKeysBtn" class="btn btn-sm w-full mt-1 text-[10px]" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">⚡ 일괄 적용 및 저장</button>
-    </div>
-
-    <div class="border-t pt-3 mb-4 flex flex-wrap gap-2" style="border-color:var(--line)">
-      <button id="exportKeysJsonBtn" class="btn btn-sm text-[10px] flex-1 py-1.5" title="API 키를 json 파일로 저장">💾 키 JSON 다운로드</button>
-      <label class="btn btn-sm text-[10px] flex-1 py-1.5 text-center cursor-pointer" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">
-        📥 JSON 키 파일 선택
-        <input type="file" id="importKeysJsonInput" accept=".json" class="hidden">
-      </label>
-      <button id="btnSupabaseSync" class="btn btn-sm text-[10px] flex-1 py-1.5" style="background:#022c22;color:#34d399;border-color:#059669">☁️ Supabase 클라우드 백업</button>
-    </div>
-
-    <div class="border-t pt-3 mb-4" style="border-color:var(--line)">
-      <h3 class="font-bold text-[11px] mb-2">🔑 GOOGLE 로그인 (문서 읽기/쓰기 백업 연동)</h3>
-      <button id="googleLoginBtn" class="btn btn-primary w-full text-[11px]">🔑 Google 로그인 실행</button>
-      <div id="googleStatus" class="text-[10px] mt-2 opacity-60">GIS 로딩 대기 중...</div>
-    </div>
-
-    <div class="border-t pt-4" style="border-color:var(--line)">
-      <h3 class="font-bold text-[11px] mb-2">🔑 개별 API 키 보관소</h3>
-      <div class="grid gap-2 mb-3">
-        <div><label class="text-[10px] font-bold">Google Client ID (OAuth 2.0)</label><input id="googleClientIdInput" class="input text-[9px] font-mono mt-1" placeholder="1097203672052-...apps.googleusercontent.com"></div>
-        <div><label class="text-[10px] font-bold">Supabase anon key</label><input id="supabaseKeyInput" class="input text-[9px] font-mono mt-1" placeholder="sb_..."></div>
-        <div><label class="text-[10px] font-bold">GitHub PAT (repo 권한)</label><input id="githubPatInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="ghp_... 또는 github_pat_..."></div>
-        <div><label class="text-[10px] font-bold">Gemini Key (시각분석 및 100만 토큰 대용량 지원)</label><input id="geminiKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="AI Studio Key"></div>
-        <div><label class="text-[10px] font-bold">Groq Key (Meta & GPT 전용)</label><input id="groqKeyInput" class="input text-[9px] font-mono mt-1" type="password" placeholder="gsk_..."></div>
-      </div>
-    </div>
-  </div>
+<!-- ========================================== -->
+<!-- 📌 [상단 영역] 업데이트 내역 & 백업/인증 설정 -->
+<!-- ========================================== -->
+<!-- 1. 패치노트 카드 -->
+<div class="card" style="border:2px solid #7c3aed">
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-black text-[13px] text-purple-600 dark:text-purple-400 flex items-center gap-1.5">
+<span>🚀 v6.0 업데이트 내역 및 핵심 시스템 안내</span>
+</h2>
+<span class="badge" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">v6.0 개편</span>
 </div>
-
-<!-- 드라이브 모달 팝업 -->
+<div class="text-[11px] space-y-1.5 opacity-90 leading-relaxed">
+<p><b>✨ 순수 데브옵스 빌더 및 미리보기 캡처 탑재</b></p>
+<ul class="list-disc pl-4 space-y-1">
+<li><b>미리보기 실시간 화면 캡처 기능 신설</b>: 미리보기 확정된 랜더링 화면을 <b>⁠[📸 미리보기 화면 캡처]⁠</b> 버튼 하나로 1초 만에 PNG 이미지로 바로 저장합니다.</li>
+<li><b>외부 검증 소스코드 원클릭 반영</b>: 대화창에서 완성된 전체 코드를 붙여넣고 곧바로 미리보기 확정 및 원클릭 배포/백업을 수행합니다.</li>
+<li><b>이중 메인 구글 문서 백업</b>: 빌드 시 메인1(히스토리 기록) 및 메인2(최신 소스 덮어쓰기 백업)가 자동으로 연동됩니다.</li>
+</ul>
+</div>
+</div>
+<!-- 2. 프로젝트 선택 및 구글 문서 연동 카드 -->
+<div class="card">
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-bold text-[12px]">📌 작업 레포지토리 & 백업 문서 상태</h2>
+<button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0">🔄 레포 목록 새로고침</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 mb-3">
+<div>
+<label class="text-[10px] font-bold block mb-1">GitHub 저장소 (Repo)</label>
+<select id="repoSelect" class="input text-[12px]"><option value="builder-a4u">builder-a4u</option></select>
+</div>
+<div>
+<label class="text-[10px] font-bold block mb-1">작업 대상 파일명</label>
+<input id="mainFileInput" class="input text-[12px]" placeholder="파일명 (index.html)" value="index.html">
+</div>
+</div>
+<!-- 이중 구글 문서 연동 영역 -->
+<div class="p-3 rounded-[12px] border bg-[var(--bg)] space-y-2" style="border-color:var(--line)">
+<div class="flex justify-between items-center">
+<span class="font-bold text-[11px] text-blue-600 dark:text-blue-400">📄 이중 백업 구글 문서 (역할 분리)</span>
+<button onclick="autoCreateMainDocs()" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">✨ 문서 2개 자동 생성/연동</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-[10px]">
+<div class="p-2 rounded-lg border bg-[var(--card)]" style="border-color:var(--line)">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold">📝 메인1: 히스토리 기록</span>
+<button onclick="openDriveModal('main1')" class="btn btn-sm text-[8px] py-0.5 px-1.5">📁 Drive 선택</button>
+</div>
+<div id="mainDoc1Container" class="opacity-80 truncate">연결된 문서 없음</div>
+</div>
+<div class="p-2 rounded-lg border bg-[var(--card)]" style="border-color:var(--line)">
+<div class="flex justify-between items-center mb-1">
+<span class="font-bold">📦 메인2: 최신 소스 백업</span>
+<button onclick="openDriveModal('main2')" class="btn btn-sm text-[8px] py-0.5 px-1.5">📁 Drive 선택</button>
+</div>
+<div id="mainDoc2Container" class="opacity-80 truncate">연결된 문서 없음</div>
+</div>
+</div>
+<div id="docPreview" class="hidden p-2 rounded-lg bg-[var(--bg)] border text-[9.5px] whitespace-pre-wrap max-h-[140px] overflow-auto" style="border-color:var(--line)"></div>
+</div>
+</div>
+<!-- 3. 인증 및 연동 설정 접이식 카드 -->
+<details class="card cursor-pointer mb-4">
+<summary class="font-bold text-[12px] py-1 flex justify-between items-center">
+<span>⚙️ API 연동 설정 & Google/GitHub 인증 관리 (클릭하여 열기)</span>
+<span class="text-[10px] opacity-60">펼치기 ▼</span>
+</summary>
+<div class="pt-3 border-t mt-3 space-y-3" style="border-color:var(--line)" onclick="event.stopPropagation()">
+<div>
+<h3 class="font-bold text-[11px] mb-1.5">⚡ 스마트 API 일괄 파싱 (.env 통째로 붙여넣기)</h3>
+<textarea id="bulkKeysInput" class="textarea h-[50px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGOOGLE_CLIENT_ID=..."></textarea>
+<button id="parseBulkKeysBtn" class="btn btn-sm w-full mt-1 text-[10px]" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">⚡ 일괄 적용 및 저장</button>
+</div>
+<div class="flex gap-2">
+<button id="exportKeysJsonBtn" class="btn btn-sm text-[10px] flex-1">💾 키 JSON 다운로드</button>
+<label class="btn btn-sm text-[10px] flex-1 text-center cursor-pointer" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">
+📥 JSON 키 복원
+<input type="file" id="importKeysJsonInput" accept=".json" class="hidden">
+</label>
+</div>
+<div class="border-t pt-2" style="border-color:var(--line)">
+<h3 class="font-bold text-[11px] mb-1">🔑 GOOGLE 인증</h3>
+<button id="googleLoginBtn" class="btn btn-primary w-full text-[11px] py-2">🔑 Google 로그인 실행</button>
+<div id="googleStatus" class="text-[9.5px] mt-1 opacity-60">GIS 로딩 대기 중...</div>
+</div>
+<div class="border-t pt-2 grid grid-cols-1 md:grid-cols-2 gap-2" style="border-color:var(--line)">
+<div>
+<label class="text-[9.5px] font-bold">Google Client ID</label>
+<input id="googleClientIdInput" class="input text-[9px] font-mono mt-0.5" placeholder="...apps.googleusercontent.com">
+</div>
+<div>
+<label class="text-[9.5px] font-bold">GitHub PAT Token</label>
+<input id="githubPatInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="ghp_...">
+</div>
+</div>
+</div>
+</details>
+<!-- ========================================== -->
+<!-- 📝 [하단 영역] 코드 붙여넣기, 미리보기 및 빌드 -->
+<!-- ========================================== -->
+<div class="card" style="border:2px solid #10b981">
+<div class="flex justify-between items-center mb-2">
+<h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">📝 소스코드 붙여넣기 & 실시간 미리보기</h2>
+<span id="draftStatus" class="text-[9.5px] opacity-60">대기중</span>
+</div>
+<div class="flex justify-between items-center mb-2">
+<p class="text-[10px] opacity-70">대화창에서 복사한 전체 소스코드를 아래 상자에 붙여넣고 확정해 주세요.</p>
+<button id="pasteClipboardBtn" class="btn btn-sm py-1 px-3 text-[10px] shrink-0" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 클립보드 원클릭 붙여넣기</button>
+</div>
+<textarea id="codeEditor" class="textarea h-[240px] font-mono text-[12px]" placeholder="<!DOCTYPE html> ... 대화창에서 복사한 전체 코드를 여기에 붙여넣으세요."></textarea>
+<!-- 미리보기 및 빌드 동작 버튼군 -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
+<button id="previewCheckBtn" class="btn py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확정</button>
+<button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px]">📸 미리보기 화면 캡처</button>
+<button id="buildBtn" class="btn btn-yellow py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
+</div>
+</div>
+<!-- 👁 실시간 미리보기 화면 박스 -->
+<div id="livePreviewBox" class="live-preview-box active mb-4">
+<div class="live-preview-header">
+<span id="previewTitle" class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+👁 실시간 미리보기 화면
+</span>
+<div class="flex gap-1.5">
+<button onclick="capturePreviewScreen()" class="btn btn-sm text-[9px] py-0.5 px-2 bg-emerald-50 text-emerald-700 border-emerald-300">📸 이미지 저장</button>
+<button id="previewCloseBtn" class="btn text-[9px] py-0.5 px-2">✕ 숨기기</button>
+</div>
+</div>
+<iframe id="livePreviewFrame" class="live-preview-iframe" sandbox="allow-scripts allow-same-origin"></iframe>
+</div>
+<!-- ⏰ 타임머신 & 빌드 로그 -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+<div class="card mb-0">
+<h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 과거 버전 롤백</h2>
+<div class="flex gap-1.5 mb-2">
+<button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[30px]">🐙 GitHub 커밋 기록</button>
+<button id="showDraftHistoryBtn" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[30px]">📦 로컬 드래프트 기록</button>
+</div>
+<div id="versionHistoryBox" class="version-history"><div class="text-[10px] text-gray-400 p-3 text-center">버튼을 눌러 과거 기록을 조회하세요</div></div>
+</div>
+<div class="card mb-0">
+<div class="flex justify-between items-center mb-1">
+<h2 class="font-bold text-[11px]">📡 실시간 시스템 빌드 로그</h2>
+<button id="clearLogBtn" class="btn text-[8px] py-0.5 px-1.5">clear</button>
+</div>
+<div id="logArea" class="log h-[210px]"></div>
+</div>
+</div>
+<!-- 드라이브 탐색 모달 팝업 -->
 <div id="driveModal" class="drive-modal" style="display:none;">
-  <div class="drive-modal-content">
-    <div class="drive-modal-header">
-      <div><b>📁 구글 드라이브 탐색</b> <span id="driveModalPath" style="font-size:11px;opacity:0.6;"></span></div>
-      <button id="driveModalClose" class="btn text-[12px]">✕ 닫기</button>
-    </div>
-    
-    <div class="p-3 border-b flex flex-col gap-2 bg-gray-50 dark:bg-gray-800" style="border-color:var(--line)">
-      <div class="flex gap-1.5">
-        <button id="driveTabRecent" class="btn btn-sm flex-1 bg-white dark:bg-gray-700 font-bold border-black">🕒 최근 문서</button>
-        <button id="driveTabMy" class="btn btn-sm flex-1">📁 내 드라이브</button>
-        <button id="driveTabShared" class="btn btn-sm flex-1">👥 공유문서함</button>
-      </div>
-      <div class="flex gap-1">
-        <input id="driveSearchInput" class="input text-[11px] py-1 h-[34px]" placeholder="문서 제목 검색...">
-        <button id="driveSearchBtn" class="btn btn-sm text-[10px] px-3">🔍 검색</button>
-      </div>
-    </div>
-
-    <div id="driveFileList" class="drive-modal-body">
-      <div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
-    </div>
-  </div>
+<div class="drive-modal-content">
+<div class="drive-modal-header">
+<div><b>📁 구글 드라이브 탐색</b> <span id="driveModalPath" style="font-size:11px;opacity:0.6;"></span></div>
+<button id="driveModalClose" class="btn text-[12px]">✕ 닫기</button>
 </div>
-
+<div class="p-3 border-b flex flex-col gap-2 bg-gray-50 dark:bg-gray-800" style="border-color:var(--line)">
+<div class="flex gap-1.5">
+<button id="driveTabRecent" class="btn btn-sm flex-1 bg-white dark:bg-gray-700 font-bold border-black">🕒 최근 문서</button>
+<button id="driveTabMy" class="btn btn-sm flex-1">📁 내 드라이브</button>
+<button id="driveTabShared" class="btn btn-sm flex-1">👥 공유문서함</button>
+</div>
+<div class="flex gap-1">
+<input id="driveSearchInput" class="input text-[11px] py-1 h-[34px]" placeholder="문서 제목 검색...">
+<button id="driveSearchBtn" class="btn btn-sm text-[10px] px-3">🔍 검색</button>
+</div>
+</div>
+<div id="driveFileList" class="drive-modal-body">
+<div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
+</div>
+</div>
+</div>
 <script>
 const $ = id => document.getElementById(id);
-
 const GITHUB_USER = 'apoco211';
 const DEFAULT_GOOGLE_CLIENT_ID = '1097203672052-9k471g60v60s07bbf99pt75d5e2365eb.apps.googleusercontent.com';
-const SUPABASE_URL = 'https://ayfvdmlfksrqwutixvwe.supabase.co';
-
 function getGoogleClientId(){
-  return localStorage.getItem('google_client_id') || DEFAULT_GOOGLE_CLIENT_ID;
+return localStorage.getItem('google_client_id') || DEFAULT_GOOGLE_CLIENT_ID;
 }
-
 let currentRepo = localStorage.getItem('current_repo') || 'builder-a4u';
 let mainFile = 'index.html';
 let connectedDoc1 = null;
 let connectedDoc2 = null;
-let customLinks = [];
-let repoFileListCache = [];
-let activePastedImageBase64 = null;
 let tokenClient = null;
 let accessToken = localStorage.getItem('google_access_token') || '';
-let gisInited = false;
-let driveTabMode = 'recent';
 let activeDriveTargetSlot = 'main1';
-
 function log(msg, type = 'info') {
-  const logArea = $('logArea');
-  if (!logArea) return;
-  const time = new Date().toLocaleTimeString();
-  let color = 'text-gray-600 dark:text-gray-400';
-  if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
-  if (type === 'err') color = 'text-red-500 font-bold';
-  if (type === 'info') color = 'text-blue-500';
-  logArea.innerHTML += `<div class="${color}">[${time}] ${msg}</div>`;
-  logArea.scrollTop = logArea.scrollHeight;
+const logArea = $('logArea');
+if (!logArea) return;
+const time = new Date().toLocaleTimeString();
+let color = 'text-gray-600 dark:text-gray-400';
+if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
+if (type === 'err') color = 'text-red-500 font-bold';
+if (type === 'info') color = 'text-blue-500';
+logArea.innerHTML += ⁠<div class="${color}">[${time}] ${msg}</div>⁠;
+logArea.scrollTop = logArea.scrollHeight;
 }
-
 function getGitHubPat() {
-  return localStorage.getItem('github_pat') || $('githubPatInput')?.value || '';
+return localStorage.getItem('github_pat') || $('githubPatInput')?.value || '';
 }
-
 function updateGisStatus(msg) {
-  const el = $('googleStatus');
-  if (el) el.textContent = msg;
+const el = $('googleStatus');
+if (el) el.textContent = msg;
 }
-
-function getDraftHistoryKey(){ return 'draft_history_' + currentRepo + '_' + (mainFile || 'index.html'); }
-function getDraftCodeKey(){ return 'draft_code_' + currentRepo + '_' + (mainFile || 'index.html'); }
-
-// 📥 GitHub 최신 원본 소스코드 실시간 강제 동기화 (원본 디자인/기능 보존용)
+function getDraftHistoryKey(){ return 'draft_history_' + currentRepo + '' + (mainFile || 'index.html'); }
+function getDraftCodeKey(){ return 'draft_code' + currentRepo + '_' + (mainFile || 'index.html'); }
 async function syncLatestSourceFromGithub(force = false) {
-  const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-  const draftKey = getDraftCodeKey();
-  let currentDraft = localStorage.getItem(draftKey);
-
-  if (!force && currentDraft && currentDraft.trim().length > 0) {
-    const editor = $('codeEditor');
-    if (editor) editor.value = currentDraft;
-    return currentDraft;
-  }
-
-  log(`📥 GitHub에서 [${currentRepo}/${file}] 최신 원본 소스코드 연동 중...`, 'info');
-  const pat = getGitHubPat();
-  const headers = {};
-  if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-
-  try {
-    let rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${file}?t=${Date.now()}`;
-    let res = await fetch(rawUrl, { headers });
-    if (!res.ok) {
-      rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${file}?t=${Date.now()}`;
-      res = await fetch(rawUrl, { headers });
-    }
-    if (res.ok) {
-      const code = await res.text();
-      if (code && code.trim().length > 0) {
-        localStorage.setItem(draftKey, code);
-        const editor = $('codeEditor');
-        if (editor) editor.value = code;
-        log(`✅ [${currentRepo}/${file}] GitHub 원본 소스코드 동기화 완료 (${Math.round(code.length / 1024)}KB)`, 'ok');
-        return code;
-      }
-    }
-  } catch (e) {
-    log(`⚠️ GitHub 소스 연동 지연: ${e.message}`, 'info');
-  }
-
-  return currentDraft || '';
+const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+const draftKey = getDraftCodeKey();
+let currentDraft = localStorage.getItem(draftKey);
+if (!force && currentDraft && currentDraft.trim().length > 0) {
+const editor = $('codeEditor');
+if (editor) editor.value = currentDraft;
+showLivePreviewCurrent();
+return currentDraft;
 }
-
+log(⁠📥 GitHub에서 [${currentRepo}/${file}] 최신 소스코드 로드 중...⁠, 'info');
+const pat = getGitHubPat();
+const headers = {};
+if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
+try {
+let rawUrl = ⁠https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${file}?t=${Date.now()}⁠;
+let res = await fetch(rawUrl, { headers });
+if (!res.ok) {
+rawUrl = ⁠https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${file}?t=${Date.now()}⁠;
+res = await fetch(rawUrl, { headers });
+}
+if (res.ok) {
+const code = await res.text();
+if (code && code.trim().length > 0) {
+localStorage.setItem(draftKey, code);
+const editor = $('codeEditor');
+if (editor) editor.value = code;
+log(⁠✅ [${currentRepo}/${file}] 소스코드 로드 완료 (${Math.round(code.length / 1024)}KB)⁠, 'ok');
+showLivePreviewCurrent();
+return code;
+}
+}
+} catch (e) {
+log(⁠⚠️ GitHub 소스 연동 지연: ${e.message}⁠, 'info');
+}
+return currentDraft || '';
+}
 async function loadRepos() {
-  const select = $('repoSelect');
-  if (!select) return;
-  const pat = getGitHubPat();
-  if (!pat) {
-    select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
-    loadRepoDocuments();
-    syncLatestSourceFromGithub();
-    return;
-  }
-  try {
-    const res = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
-      headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' }
-    });
-    if (res.ok) {
-      const repos = await res.json();
-      if (Array.isArray(repos) && repos.length > 0) {
-        select.innerHTML = '';
-        repos.forEach(r => {
-          const opt = document.createElement('option');
-          opt.value = r.name;
-          opt.textContent = r.name + (r.private ? ' 🔒' : '');
-          if (r.name === currentRepo) opt.selected = true;
-          select.appendChild(opt);
-        });
-        if (!repos.some(r => r.name === currentRepo)) {
-          currentRepo = repos[0].name;
-          select.value = currentRepo;
-        }
-      }
-    }
-  } catch(e) {
-    log('레포 목록 로드 실패: ' + e.message, 'err');
-  }
-  loadRepoDocuments();
-  syncLatestSourceFromGithub();
+const select = $('repoSelect');
+if (!select) return;
+const pat = getGitHubPat();
+if (!pat) {
+select.innerHTML = ⁠<option value="${currentRepo}">${currentRepo}</option>⁠;
+loadRepoDocuments();
+syncLatestSourceFromGithub();
+return;
 }
-
+try {
+const res = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
+headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' }
+});
+if (res.ok) {
+const repos = await res.json();
+if (Array.isArray(repos) && repos.length > 0) {
+select.innerHTML = '';
+repos.forEach(r => {
+const opt = document.createElement('option');
+opt.value = r.name;
+opt.textContent = r.name + (r.private ? ' 🔒' : '');
+if (r.name === currentRepo) opt.selected = true;
+select.appendChild(opt);
+});
+if (!repos.some(r => r.name === currentRepo)) {
+currentRepo = repos[0].name;
+select.value = currentRepo;
+}
+}
+}
+} catch(e) {
+log('레포 목록 로드 실패: ' + e.message, 'err');
+}
+loadRepoDocuments();
+syncLatestSourceFromGithub();
+}
 async function findExistingDocByName(title){
-  const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token) return null;
-  const q = `trashed=false and mimeType='application/vnd.google-apps.document' and name='${title.replace(/'/g, "\\'")}'`;
-  const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=1`;
-  try{
-    const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
-    if(res.ok){
-      const data = await res.json();
-      if(data.files && data.files.length > 0) return data.files[0];
-    }
-  }catch(e){}
-  return null;
+const token = accessToken || localStorage.getItem('google_access_token');
+if(!token) return null;
+const q = ⁠trashed=false and mimeType='application/vnd.google-apps.document' and name='${title.replace(/'/g, "\\'")}'⁠;
+const url = ⁠https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=1⁠;
+try{
+const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+if(res.ok){
+const data = await res.json();
+if(data.files && data.files.length > 0) return data.files[0];
 }
-
+}catch(e){}
+return null;
+}
 async function autoCreateMainDocs(){
-  let token = accessToken || localStorage.getItem('google_access_token');
-  if(!token){
-    alert('Google 로그인이 필요합니다. [⚙ 설정] 탭에서 Google 로그인 실행 후 시도해 주세요.');
-    switchTopView('settings');
-    return;
-  }
-  
-  log(`✨ [${currentRepo}] 백업용 구글 문서 확인 및 자동 연동 중...`, 'info');
-  try {
-    const title1 = `[${currentRepo}] 업데이트 히스토리 기록`;
-    const title2 = `[${currentRepo}] 최신 소스코드 백업`;
-
-    let data1 = null;
-    let isCreated1 = false;
-    const existing1 = await findExistingDocByName(title1);
-    if(existing1){
-      data1 = { id: existing1.id, title: existing1.name };
-    } else {
-      const res1 = await fetch('https://docs.googleapis.com/v1/documents', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: title1 })
-      });
-      if(!res1.ok){
-        if(res1.status === 401){
-          localStorage.removeItem('google_access_token');
-          accessToken = '';
-          alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
-          switchTopView('settings');
-          return;
-        }
-        throw new Error(`메인문서1 생성 실패`);
-      }
-      const created1 = await res1.json();
-      data1 = { id: created1.documentId, title: title1 };
-      isCreated1 = true;
-    }
-
-    let data2 = null;
-    let isCreated2 = false;
-    const existing2 = await findExistingDocByName(title2);
-    if(existing2){
-      data2 = { id: existing2.id, title: existing2.name };
-    } else {
-      const res2 = await fetch('https://docs.googleapis.com/v1/documents', {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: title2 })
-      });
-      if(!res2.ok){
-        if(res2.status === 401){
-          localStorage.removeItem('google_access_token');
-          accessToken = '';
-          alert('🔐 Google 로그인 토큰이 만료되었습니다.\n[⚙ 설정] 탭에서 다시 Google 로그인을 진행해 주세요.');
-          switchTopView('settings');
-          return;
-        }
-        throw new Error(`메인문서2 생성 실패`);
-      }
-      const created2 = await res2.json();
-      data2 = { id: created2.documentId, title: title2 };
-      isCreated2 = true;
-    }
-
-    connectedDoc1 = { id: data1.id, title: title1 };
-    connectedDoc2 = { id: data2.id, title: title2 };
-
-    localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
-    localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
-
-    renderConnectedDoc1();
-    renderConnectedDoc2();
-    renderContextCopySettings();
-    updateContextBox();
-
-    const statusMsg = (isCreated1 || isCreated2)
-      ? `✅ [${currentRepo}] 전용 백업 문서가 생성 및 연동되었습니다!`
-      : `✅ 기존 [${currentRepo}] 백업 문서 2개를 발견하여 그대로 연동했습니다! (중복 생성 방지)`;
-
-    log(statusMsg, 'ok');
-    alert(statusMsg + `\n\n1. ${title1}\n2. ${title2}`);
-  } catch(e) {
-    log(`❌ 문서 연동 실패: ${e.message}`, 'err');
-    alert('문서 연동 중 오류가 발생했습니다:\n' + e.message);
-  }
+let token = accessToken || localStorage.getItem('google_access_token');
+if(!token){
+alert('Google 로그인이 필요합니다. [⚙️ 인증 관리] 섹션에서 Google 로그인을 진행해 주세요.');
+return;
 }
-
-async function loadRepoFileTree(){
-  const fileSelect = $('repoFilesSelect');
-  if(!fileSelect) return;
-  fileSelect.innerHTML = '<option value="">📁 파일목록 탐색 중...</option>';
-  
-  const pat = getGitHubPat();
-  const headers = {'Accept':'application/vnd.github.v3+json'};
-  if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-  
-  const branches = ['main', 'master'];
-  let treeData = null;
-  
-  for(const b of branches){
-    try {
-      const url = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees/${b}?recursive=1`;
-      const res = await fetch(url, { headers });
-      if(res.ok){
-        treeData = await res.json();
-        break;
-      }
-    } catch(e){}
-  }
-  
-  fileSelect.innerHTML = '';
-  if(!treeData || !treeData.tree || treeData.tree.length === 0){
-    fileSelect.innerHTML = '<option value="index.html">index.html (기본)</option>';
-    repoFileListCache = ['index.html'];
-    log('⚠️ 레포 트리 스캔 완료 (기본 index.html 설정)', 'info');
-    syncLatestSourceFromGithub();
-    return;
-  }
-  
-  const files = treeData.tree.filter(item => item.type === 'blob');
-  repoFileListCache = files.map(f => f.path);
-  log(`🌳 [${currentRepo}] 전체 파일 ${files.length}개 탐색 완료`, 'ok');
-  
-  files.forEach(f => {
-    const opt = document.createElement('option');
-    opt.value = f.path;
-    opt.textContent = f.path + (f.size ? ` (${Math.round(f.size/1024)}KB)` : '');
-    if(f.path === mainFile || f.path === 'index.html') opt.selected = true;
-    fileSelect.appendChild(opt);
-  });
-  
-  const currentSelected = fileSelect.value || 'index.html';
-  const mainInput = $('mainFileInput');
-  if(mainInput) mainInput.value = currentSelected;
-  mainFile = currentSelected;
-  renderContextCopySettings();
-  updateContextBox();
-  syncLatestSourceFromGithub();
+log(⁠✨ [${currentRepo}] 백업용 구글 문서 연동 중...⁠, 'info');
+try {
+const title1 = ⁠[${currentRepo}] 업데이트 히스토리 기록⁠;
+const title2 = ⁠[${currentRepo}] 최신 소스코드 백업⁠;
+let data1 = null;
+let isCreated1 = false;
+const existing1 = await findExistingDocByName(title1);
+if(existing1){
+data1 = { id: existing1.id, title: existing1.name };
+} else {
+const res1 = await fetch('https://docs.googleapis.com/v1/documents', {
+method: 'POST',
+headers: { 'Authorization': ⁠Bearer ${token}⁠, 'Content-Type': 'application/json' },
+body: JSON.stringify({ title: title1 })
+});
+if(!res1.ok){
+if(res1.status === 401){
+localStorage.removeItem('google_access_token');
+accessToken = '';
+alert('🔐 Google 로그인 토큰이 만료되었습니다. 다시 로그인해 주세요.');
+return;
 }
-
+throw new Error(⁠메인문서1 생성 실패⁠);
+}
+const created1 = await res1.json();
+data1 = { id: created1.documentId, title: title1 };
+isCreated1 = true;
+}
+let data2 = null;
+let isCreated2 = false;
+const existing2 = await findExistingDocByName(title2);
+if(existing2){
+data2 = { id: existing2.id, title: existing2.name };
+} else {
+const res2 = await fetch('https://docs.googleapis.com/v1/documents', {
+method: 'POST',
+headers: { 'Authorization': ⁠Bearer ${token}⁠, 'Content-Type': 'application/json' },
+body: JSON.stringify({ title: title2 })
+});
+if(!res2.ok){
+if(res2.status === 401){
+localStorage.removeItem('google_access_token');
+accessToken = '';
+alert('🔐 Google 로그인 토큰이 만료되었습니다. 다시 로그인해 주세요.');
+return;
+}
+throw new Error(⁠메인문서2 생성 실패⁠);
+}
+const created2 = await res2.json();
+data2 = { id: created2.documentId, title: title2 };
+isCreated2 = true;
+}
+connectedDoc1 = { id: data1.id, title: title1 };
+connectedDoc2 = { id: data2.id, title: title2 };
+localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
+localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
+renderConnectedDoc1();
+renderConnectedDoc2();
+const statusMsg = (isCreated1 || isCreated2)
+? ⁠✅ [${currentRepo}] 전용 백업 문서가 생성 및 연동되었습니다!⁠
+: ⁠✅ 기존 [${currentRepo}] 백업 문서 2개를 발견하여 연동 완료했습니다!⁠;
+log(statusMsg, 'ok');
+alert(statusMsg);
+} catch(e) {
+log(⁠❌ 문서 연동 실패: ${e.message}⁠, 'err');
+alert('문서 연동 중 오류 발생:\n' + e.message);
+}
+}
 function initGis(){
-  try{
-    if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
-      updateGisStatus('GIS 로딩 대기 중...');
-      if(!document.getElementById('gsi-client-script')){
-        const s = document.createElement('script');
-        s.id = 'gsi-client-script';
-        s.src = 'https://accounts.google.com/gsi/client';
-        s.async = true;
-        s.defer = true;
-        s.onload = () => { setTimeout(initGis, 500); };
-        document.head.appendChild(s);
-      } else {
-        setTimeout(initGis, 1500);
-      }
-      return;
-    }
-    
-    tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: getGoogleClientId(),
-      scope: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file openid email profile',
-      callback: (resp)=>{
-        if(resp && resp.access_token){
-          accessToken = resp.access_token;
-          try{ localStorage.setItem('google_access_token', accessToken); }catch{}
-          updateGisStatus('✅ Google 로그인 성공 ('+accessToken.slice(0,10)+'...)');
-          log('✅ Google 로그인 성공', 'ok');
-          loadRepoDocuments();
-        } else if(resp && resp.error){
-          updateGisStatus('❌ 로그인 실패: '+resp.error);
-          log('Google 로그인 실패: '+JSON.stringify(resp), 'err');
-        }
-      }
-    });
-    
-    gisInited = true;
-    updateGisStatus('🔓 로그인 준비 완료 - [Google 로그인 실행] 버튼을 누르세요');
-    log('GIS 초기화 성공', 'ok');
-  }catch(e){
-    updateGisStatus('❌ GIS 대기: '+e.message);
-    setTimeout(initGis, 2000);
-  }
+try{
+if(typeof google === 'undefined' || !google.accounts || !google.accounts.oauth2){
+updateGisStatus('GIS 로딩 대기 중...');
+if(!document.getElementById('gsi-client-script')){
+const s = document.createElement('script');
+s.id = 'gsi-client-script';
+s.src = 'https://accounts.google.com/gsi/client';
+s.async = true;
+s.defer = true;
+s.onload = () => { setTimeout(initGis, 500); };
+document.head.appendChild(s);
+} else {
+setTimeout(initGis, 1500);
 }
-
+return;
+}
+tokenClient = google.accounts.oauth2.initTokenClient({
+client_id: getGoogleClientId(),
+scope: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file openid email profile',
+callback: (resp)=>{
+if(resp && resp.access_token){
+accessToken = resp.access_token;
+try{ localStorage.setItem('google_access_token', accessToken); }catch{}
+updateGisStatus('✅ Google 로그인 성공');
+log('✅ Google 로그인 성공', 'ok');
+loadRepoDocuments();
+} else if(resp && resp.error){
+updateGisStatus('❌ 로그인 실패: '+resp.error);
+}
+}
+});
+updateGisStatus('🔓 로그인 준비 완료 - [Google 로그인 실행] 버튼을 누르세요');
+}catch(e){
+updateGisStatus('❌ GIS 대기: '+e.message);
+setTimeout(initGis, 2000);
+}
+}
 function handleGoogleLogin(){
-  if(!tokenClient){
-    updateGisStatus('GIS 재초기화 시도 중...');
-    initGis();
-    setTimeout(()=>{
-      if(tokenClient){
-        try{ tokenClient.requestAccessToken({prompt:''}); }catch(e){ updateGisStatus('❌ 팝업 확인: '+e.message); }
-      } else {
-        updateGisStatus('구글 로그인 객체 준비 중입니다. 잠시 후 시도해주세요.');
-      }
-    }, 1000);
-    return;
-  }
-  try{
-    tokenClient.requestAccessToken({prompt:'', hint:''});
-  }catch(e){
-    updateGisStatus('❌ 요청 오류: '+e.message);
-  }
+if(!tokenClient){
+initGis();
+setTimeout(()=>{ if(tokenClient) tokenClient.requestAccessToken({prompt:''}); }, 1000);
+return;
 }
-
-$('imageFileInput')?.addEventListener('change', e => {
-  const file = e.target.files?.[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = evt => {
-    activePastedImageBase64 = evt.target.result;
-    showPastedImagePreview(activePastedImageBase64);
-    if(activeChatTab !== 'gemini'){
-      log('💡 이미지 분석 기능은 [🔵 제미나이] 탭에서만 지원됩니다. 상단 [🔵 제미나이] 탭으로 이동해 주세요.', 'info');
-    } else {
-      log('🖼️ 사진 파일 선택 첨부 완료', 'ok');
-    }
-  };
-  reader.readAsDataURL(file);
-});
-
-window.addEventListener('paste', e => {
-  const items = (e.clipboardData || e.originalEvent?.clipboardData)?.items;
-  if(!items) return;
-  for(const item of items){
-    if(item.type.indexOf('image') !== -1){
-      e.preventDefault();
-      const file = item.getAsFile();
-      const reader = new FileReader();
-      reader.onload = evt => {
-        activePastedImageBase64 = evt.target.result;
-        showPastedImagePreview(activePastedImageBase64);
-        if(activeChatTab !== 'gemini'){
-          log('💡 이미지 분석 기능은 [🔵 제미나이] 탭에서만 지원됩니다. 상단 [🔵 제미나이] 탭으로 이동해 주세요.', 'info');
-        } else {
-          log('🖼️ 캡처 이미지 붙여넣기 감지됨', 'ok');
-        }
-      };
-      reader.readAsDataURL(file);
-      break;
-    }
-  }
-});
-
-function showPastedImagePreview(base64){
-  const box = $('pastedImagePreviewBox');
-  const thumb = $('pastedImageThumb');
-  const notice = $('pastedImagePreviewNotice');
-  if(box && thumb){
-    thumb.src = base64;
-    box.classList.remove('hidden');
-    if(notice){
-      if(activeChatTab !== 'gemini'){
-        notice.textContent = '⚠️ 이미지 시각 분석은 [🔵 제미나이] 탭 전용 기능입니다. [🔵 제미나이] 탭으로 이동해 주세요.';
-        notice.className = 'text-[9px] text-amber-600 font-bold';
-      } else {
-        notice.textContent = '✨ 제미나이 모델로 시각 분석이 진행됩니다.';
-        notice.className = 'text-[9px] opacity-60';
-      }
-    }
-  }
+try{ tokenClient.requestAccessToken({prompt:'', hint:''}); }catch(e){}
 }
-
-function clearPastedImage(){
-  activePastedImageBase64 = null;
-  const box = $('pastedImagePreviewBox');
-  if(box) box.classList.add('hidden');
-}
-
-function getProjectTemplate(repo){
-  const d = new Date().toLocaleDateString();
-  const repoName = repo || currentRepo || 'builder-a4u';
-  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.39 (${targetFile})
-2.목적: AI 스마트 원본 동기화 및 원본 디자인/기능 100% 완벽 보존
-3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
-4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
-5.결정: 소문자 index.html, manifest.json, 스마트 오토 라우팅
-6.제외: 구형 gemini-1.5-flash / llama-3.3-70b-deprecated
-7.저장: Supabase+GoogleDocs(Write)+GitHub+localStorage
-8.버그: Groq 토큰 한도 초과 자동 예방 & 제미나이 100만 대용량 토큰 연동
-9.모드: 빌드모드
-10.상태: 진행중`;
-}
-
-function loadMemory10(){
-  const memEl = $('memory10');
-  if(!memEl) return;
-  let saved = '';
-  try{ saved = localStorage.getItem('memory_10_' + currentRepo) || localStorage.getItem('memory10_' + currentRepo) || ''; }catch{}
-  if(!saved || saved.trim() === ''){
-    saved = getProjectTemplate(currentRepo);
-  }
-  memEl.value = saved;
-  updateMemoryCount();
-}
-
-function updateMemoryCount(){
-  const memEl = $('memory10');
-  const countBadge = $('memoryCount');
-  if(!memEl) return;
-  const text = memEl.value;
-  const lines = text.split('\n').filter(l => l.trim().length > 0).length;
-  if(countBadge) countBadge.textContent = lines + '줄';
-  try{
-    localStorage.setItem('memory_10_' + currentRepo, text);
-    localStorage.setItem('memory10_' + currentRepo, text);
-  }catch{}
-  renderContextCopySettings();
-  updateContextBox();
-}
-
-function updateContextBox(){
-  const ctxText = $('contextText');
-  const memEl = $('memory10');
-  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  
-  let docsInfo = '';
-  if(connectedDoc1) docsInfo += '\n메인1(로그): ' + (connectedDoc1.title||connectedDoc1.name||'문서');
-  if(connectedDoc2) docsInfo += '\n메인2(코드): ' + (connectedDoc2.title||connectedDoc2.name||'문서');
-  if(customLinks && customLinks.length > 0){
-    docsInfo += '\n추가문서: ' + customLinks.map(l=>l.title||'문서').join(', ');
-  }
-
-  if(ctxText && memEl){
-    ctxText.textContent = `[자동주입 맥락] 레포: https://github.com/${GITHUB_USER}/${currentRepo} (현재파일: ${targetFile})${docsInfo}\n\n[기억 10줄]:\n${memEl.value.slice(0,180)}...`;
-  }
-}
-
-let activeChatTab = 'meta';
-let chatHistories = { meta: [], gemini: [], gpt: [] };
-
-function getChatHistoryKey(tab){ return `chat_history_${currentRepo}_${tab}`; }
-
-function loadChatHistoriesForRepo(){
-  ['meta', 'gemini', 'gpt'].forEach(tab => {
-    try {
-      const saved = localStorage.getItem(getChatHistoryKey(tab));
-      chatHistories[tab] = saved ? JSON.parse(saved) : [];
-    } catch {
-      chatHistories[tab] = [];
-    }
-  });
-  renderChatBox();
-}
-
-function saveChatHistoriesForRepo(tab){
-  try {
-    localStorage.setItem(getChatHistoryKey(tab), JSON.stringify(chatHistories[tab]));
-  } catch{}
-}
-
-const tabConfigs = {
-  meta: { name: '메타 (Llama-3.3-70B)', color: 'var(--meta)', bg: '#7c3aed', model: 'llama-3.3-70b-versatile', type: 'groq' },
-  gemini: { name: '제미나이 (Gemini-3-Flash)', color: 'var(--gemini)', bg: '#0ea5e9', model: 'gemini-3-flash-preview', type: 'gemini' },
-  gpt: { name: 'GPT (Mixtral-8x7B)', color: 'var(--gpt)', bg: '#10b981', model: 'mixtral-8x7b-32768', type: 'groq' }
-};
-
-function switchChatTab(tab){
-  activeChatTab = tab;
-  const cfg = tabConfigs[tab];
-  
-  $('tabMeta')?.classList.toggle('tab-active', tab === 'meta');
-  $('tabGemini')?.classList.toggle('tab-active', tab === 'gemini');
-  $('tabGpt')?.classList.toggle('tab-active', tab === 'gpt');
-  const badge = $('currentTabLabel');
-  if(badge){
-    badge.textContent = cfg.name;
-    badge.style.background = cfg.bg;
-  }
-  if(activePastedImageBase64){
-    showPastedImagePreview(activePastedImageBase64);
-  }
-  renderChatBox();
-}
-
-function renderChatBox(){
-  const box = $('chatBox');
-  const badge = $('chatCountBadge');
-  if(!box) return;
-  const msgs = chatHistories[activeChatTab] || [];
-  if(badge) badge.textContent = msgs.length + '개';
-  if(msgs.length === 0){
-    box.innerHTML = `<div class="msg msg-system text-center opacity-70">🤖 [${tabConfigs[activeChatTab].name}] 대화 준비 완료. 질문 및 사진/캡처를 전송하세요.</div>`;
-    return;
-  }
-  let html = '';
-  msgs.forEach((m, idx) => {
-    const isUser = m.role === 'user';
-    const imgHtml = m.image ? `<img src="${m.image}" class="max-w-[200px] max-h-[150px] rounded-[8px] mb-2 border">` : '';
-    const safeText = m.text.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    const docAppendBtn = (!isUser && connectedDoc1) 
-      ? `<button onclick="appendSingleAiMessageToDoc1(${idx})" class="btn btn-sm text-[8px] py-0 px-2 mt-2 opacity-80 hover:opacity-100" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📝 이 답변을 메인1(로그)에 추가</button>`
-      : '';
-    html += `<div class="msg ${isUser ? 'msg-user' : 'msg-ai'}">${imgHtml}${safeText}${docAppendBtn}</div>`;
-  });
-  box.innerHTML = html;
-  box.scrollTop = box.scrollHeight;
-}
-
-function processAiFileAutoRouting(aiText){
-  if(!aiText) return;
-  
-  let targetPath = null;
-  const tagMatch = aiText.match(/\[TARGET_FILE:\s*([^\]]+)\]/i);
-  if(tagMatch && tagMatch[1]){
-    targetPath = tagMatch[1].trim();
-  } else {
-    const codeBlockMatch = aiText.match(/```(?:html|javascript|js|jsx|css|json)?:?([a-zA-Z0-9_\-\.\/]+\.[a-zA-Z0-9]+)/i);
-    if(codeBlockMatch && codeBlockMatch[1] && repoFileListCache.includes(codeBlockMatch[1])){
-      targetPath = codeBlockMatch[1].trim();
-    }
-  }
-  let codeContent = null;
-  const codeMatch = aiText.match(/```[a-zA-Z]*\n([\s\S]*?)```/);
-  if(codeMatch && codeMatch[1]){
-    codeContent = codeMatch[1].trim();
-  }
-  if(targetPath && codeContent){
-    mainFile = targetPath;
-    const mainInput = $('mainFileInput');
-    const fileSelect = $('repoFilesSelect');
-    if(mainInput) mainInput.value = targetPath;
-    if(fileSelect){
-      if(!Array.from(fileSelect.options).some(o => o.value === targetPath)){
-        const opt = document.createElement('option');
-        opt.value = targetPath;
-        opt.textContent = targetPath;
-        fileSelect.appendChild(opt);
-      }
-      fileSelect.value = targetPath;
-    }
-    
-    localStorage.setItem(getDraftCodeKey(), codeContent);
-    const editor = $('codeEditor');
-    if(editor) editor.value = codeContent;
-    
-    log(`🎯 AI가 대상 파일 [${targetPath}]을 감지하여 전체 코드를 드래프트에 자동 저장했습니다!`, 'ok');
-    const status = $('draftStatus');
-    if(status) status.textContent = `🎯 ${targetPath} 자동 저장됨 (${new Date().toLocaleTimeString()})`;
-  }
-}
-
-async function getDocsTextForPrompt(){
-  const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token) return '';
-  
-  let docsTextArr = [];
-  const allDocs = [
-    ...(connectedDoc1 ? [{...connectedDoc1, title: connectedDoc1.title + ' (메인1: 히스토리)'}] : []),
-    ...(connectedDoc2 ? [{...connectedDoc2, title: connectedDoc2.title + ' (메인2: 소스코드 백업)'}] : []),
-    ...customLinks.map(l=>({...l, isMain: false}))
-  ];
-  
-  for(const doc of allDocs){
-    const docId = doc.id || (doc.url ? doc.url.match(/\/d\/([^\/]+)/)?.[1] : '');
-    if(!docId) continue;
-    try {
-      const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if(res.ok){
-        const data = await res.json();
-        let text = '';
-        if(data.body && data.body.content){
-          data.body.content.forEach(c => {
-            if(c.paragraph && c.paragraph.elements){
-              c.paragraph.elements.forEach(e => {
-                if(e.textRun && e.textRun.content) text += e.textRun.content;
-              });
-            }
-          });
-        }
-        if(text.trim()){
-          docsTextArr.push(`--- [${doc.title||doc.name||'문서'}] 본문 내용 ---\n` + text.slice(0, 2000));
-        }
-      }
-    } catch(e){}
-  }
-  return docsTextArr.join('\n\n');
-}
-
-async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
-  const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token || !docId) {
-    log('⚠️ 구글 로그인 토큰이 없습니다. 설정 탭에서 구글 로그인 후 시도해주세요.', 'err');
-    return false;
-  }
-  
-  try {
-    const getRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-
-    if(!getRes.ok){
-      if(getRes.status === 401){
-        localStorage.removeItem('google_access_token');
-        accessToken = '';
-        alert('🔐 Google 로그인 토큰이 만료되었습니다. [⚙ 설정] 탭에서 다시 구글 로그인을 진행해 주세요.');
-        switchTopView('settings');
-        return false;
-      }
-      throw new Error(`Google Docs 조회 실패 (${getRes.status})`);
-    }
-
-    const docData = await getRes.json();
-    const endIndex = docData.body?.content?.[docData.body.content.length - 1]?.endIndex || 1;
-    
-    const requests = [];
-    if(mode === 'overwrite'){
-      if(endIndex > 2){
-        requests.push({ deleteContent: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
-      }
-      requests.push({ insertText: { location: { index: 1 }, text: newText } });
-    } else {
-      const insertIdx = Math.max(1, endIndex - 1);
-      requests.push({ insertText: { location: { index: insertIdx }, text: '\n' + newText } });
-    }
-
-    const updateRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ requests })
-    });
-
-    if(updateRes.ok){
-      log(`✅ 구글 문서 [${docId.slice(0,6)}...] 본문 ${mode==='overwrite'?'전체 갱신':'내용 추가'} 완료!`, 'ok');
-      return true;
-    } else {
-      const err = await updateRes.json();
-      throw new Error(err.error?.message || 'Docs batchUpdate 실패');
-    }
-  } catch(e) {
-    log(`❌ 구글 문서 쓰기 실패: ${e.message}`, 'err');
-    return false;
-  }
-}
-
-async function sendChatMessage(){
-  const input = $('chatInput');
-  if(!input || (!input.value.trim() && !activePastedImageBase64)) return;
-  const userText = input.value.trim() || '(첨부된 이미지 분석 요청)';
-  const currentImage = activePastedImageBase64;
-  
-  if(currentImage && activeChatTab !== 'gemini'){
-    alert('🖼️ 이미지 시각 분석 기능은 [🔵 제미나이] 탭에서만 지원됩니다.\n\n대화 맥락 유지를 위해 자동 전환되지 않으니, 상단의 [🔵 제미나이] 탭으로 이동하신 후 전송해 주세요.');
-    log('⚠️ 이미지 시각 분석은 [🔵 제미나이] 탭에서만 가능합니다.', 'err');
-    return;
-  }
-
-  input.value = '';
-  clearPastedImage();
-  chatHistories[activeChatTab].push({ role: 'user', text: userText, image: currentImage });
-  renderChatBox();
-  saveChatHistoriesForRepo(activeChatTab);
-
-  const cfg = tabConfigs[activeChatTab];
-  const memoryContext = $('memory10') ? $('memory10').value : '';
-  const currentTargetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  const fileTreeStr = repoFileListCache.length > 0 ? repoFileListCache.join(', ') : 'index.html';
-  
-  let currentFileContent = await syncLatestSourceFromGithub();
-  if(!currentFileContent || currentFileContent.trim() === ''){
-    currentFileContent = $('codeEditor')?.value?.trim() || localStorage.getItem(getDraftCodeKey()) || '';
-  }
-
-  let docsListStr = '';
-  if (connectedDoc1) docsListStr += `- 메인1(히스토리): https://docs.google.com/document/d/${connectedDoc1.id}/edit (${connectedDoc1.title})\n`;
-  if (connectedDoc2) docsListStr += `- 메인2(소스코드): https://docs.google.com/document/d/${connectedDoc2.id}/edit (${connectedDoc2.title})\n`;
-  if (customLinks && customLinks.length > 0) {
-    docsListStr += customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title||'문서'})`).join('\n');
-  }
-
-  let autoFetchedDocsContent = '';
-  // Groq API (메타/GPT)일 경우 토큰 과다 초과를 막기 위해 구글 문서 수신 조절
-  if(cfg.type === 'gemini') {
-    try { autoFetchedDocsContent = await getDocsTextForPrompt(); } catch(e) {}
-  }
-
-  const fullSystemPrompt = `당신은 유능한 최고 레벨 시니어 프론트엔드 소프트웨어 엔지니어입니다.
-현재 프로젝트: [${currentRepo}] (https://github.com/${GITHUB_USER}/${currentRepo})
-현재 선택된 작업 대상 파일: [${currentTargetFile}]
-프로젝트 전체 파일 목록: [${fileTreeStr}]
-
-==================================================
-📄 [현재 선택된 작업 대상 파일 (${currentTargetFile})의 GitHub 최신 실시간 원본 소스코드]:
-==================================================
-${currentFileContent || '(현재 작업 파일 소스코드가 불러와지지 않음)'}
-
-[연결된 구글 문서 링크]:
-${docsListStr || '없음'}
-
-${autoFetchedDocsContent ? '[연결된 구글 문서 본문 실시간 내용]:\n' + autoFetchedDocsContent : ''}
-
-[기억 10줄]:
-${memoryContext}
-
-🚨 [초엄격 원본 100% 동일성 유지 및 완전 생성 절대 원칙]:
-1. 위 [GitHub 최신 실시간 원본 소스코드]는 완벽하게 작동하는 실제 서비스 소스코드입니다.
-2. 절대로 코드가 길다고 해서 중간의 HTML DOM 태그, Tailwind CSS 클래스, 자바스크립트 함수, SVG 아이콘, 카드 레이아웃을 '<!-- 중략 -->' 하거나 축약, 생략, 요약하지 마십시오!
-3. 기존 소스코드에 포함된 모든 색상값, 카드 구조, 데이터 관리 레이아웃, 버튼, 스크립트 로직을 **단 1문자도 빠짐없이 100% 동일하게 완벽 보존**하십시오.
-4. 사용자가 요청한 수정/추가 내용만 정확하게 반영하여, <!DOCTYPE html>부터 </html>까지 **단 한 줄도 생략되지 않은 100% 완전한 전체 소스코드**를 코드 블록(\`\`\`html ... \`\`\`)으로 출력하십시오.
-5. 수정 대상 파일이 지정되어 있다면, 답변 최상단에 반드시 '[TARGET_FILE: ${currentTargetFile}]' 태그를 작성해주십시오.`;
-
-  log(`🤖 [${cfg.name}] 수정 요청 및 원본 소스 분석 중...`, 'info');
-  try {
-    let aiResponse = '';
-    if(cfg.type === 'gemini'){
-      const geminiKey = localStorage.getItem('gemini_key') || $('geminiKeyInput')?.value || '';
-      if(!geminiKey){ log('⚠️ [Gemini Key]를 설정 탭에서 입력해주세요.', 'err'); return; }
-      aiResponse = await callGeminiApi(fullSystemPrompt, userText, currentImage, geminiKey, cfg.model);
-    } else {
-      const groqKey = localStorage.getItem('groq_key') || $('groqKeyInput')?.value || '';
-      if(!groqKey){ log('⚠️ [Groq Key]를 설정 탭에서 입력해주세요.', 'err'); return; }
-      aiResponse = await callGroqApi(fullSystemPrompt, userText, cfg.model, groqKey);
-    }
-    chatHistories[activeChatTab].push({ role: 'ai', text: aiResponse });
-    renderChatBox();
-    saveChatHistoriesForRepo(activeChatTab);
-    
-    processAiFileAutoRouting(aiResponse);
-    log(`✅ [${cfg.name}] 완전한 소스코드 응답 수신 및 자동 드래프트 저장 완료`, 'ok');
-  } catch(e) {
-    log(`❌ [${cfg.name}] 응답 실패: ` + e.message, 'err');
-    chatHistories[activeChatTab].push({ role: 'ai', text: '⚠️ 오류 발생: ' + e.message });
-    renderChatBox();
-    saveChatHistoriesForRepo(activeChatTab);
-  }
-}
-
-function compressImageBase64(base64Data, maxDimension = 1280, quality = 0.8) {
-  return new Promise((resolve) => {
-    if (!base64Data || !base64Data.startsWith('data:image')) {
-      resolve(base64Data);
-      return;
-    }
-    const img = new Image();
-    img.onload = () => {
-      let width = img.width;
-      let height = img.height;
-      if (width > maxDimension || height > maxDimension) {
-        if (width > height) {
-          height = Math.round((height * maxDimension) / width);
-          width = maxDimension;
-        } else {
-          width = Math.round((width * maxDimension) / height);
-          height = maxDimension;
-        }
-      }
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext('2d');
-      ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', quality));
-    };
-    img.onerror = () => resolve(base64Data);
-    img.src = base64Data;
-  });
-}
-
-async function callGeminiApi(systemPrompt, userText, imageBase64, apiKey, modelName = 'gemini-3-flash-preview'){
-  let processedImage = imageBase64;
-  if(imageBase64) {
-    try {
-      processedImage = await compressImageBase64(imageBase64, 1280, 0.8);
-    } catch(e) {}
-  }
-
-  const modelsToTry = [modelName, 'gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-1.5-flash-latest'].filter((v, i, a) => a.indexOf(v) === i);
-  let lastErrorMsg = '';
-
-  for (const model of modelsToTry) {
-    try {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-      const parts = [{ text: systemPrompt + '\n\n사용자 요청: ' + userText }];
-      
-      if(processedImage){
-        const mimeType = processedImage.split(';')[0].split(':')[1] || 'image/jpeg';
-        const base64Data = processedImage.split(',')[1];
-        parts.push({ inline_data: { mime_type: mimeType, data: base64Data } });
-      }
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ role: 'user', parts: parts }],
-          generationConfig: {
-            maxOutputTokens: 8192,
-            temperature: 0.2
-          }
-        })
-      });
-
-      if(res.ok){
-        const data = await res.json();
-        return data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.[0]?.text || '응답을 받지 못했습니다.';
-      } else {
-        const err = await res.json().catch(() => ({}));
-        lastErrorMsg = err.error?.message || `Gemini [${model}] API HTTP ${res.status}`;
-      }
-    } catch(e) {
-      lastErrorMsg = e.message || '네트워크 연결 또는 CORS 오류';
-    }
-  }
-
-  throw new Error(lastErrorMsg || 'Gemini API 호출에 실패했습니다. Gemini Key를 확인해 주세요.');
-}
-
-async function callGroqApi(systemPrompt, userText, preferredModel, apiKey){
-  const url = 'https://api.groq.com/openai/v1/chat/completions';
-  const modelsToTry = [preferredModel, 'llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'].filter((v, i, a) => a.indexOf(v) === i);
-  let lastErr = null;
-
-  // Groq API의 7000 토큰 초과 방지를 위한 스마트 프롬프트 세이프티 경량화
-  let safeSystemPrompt = systemPrompt;
-  if(safeSystemPrompt.length > 15000){
-    safeSystemPrompt = safeSystemPrompt.slice(0, 15000) + '\n...(Groq 토큰 제한 방지를 위해 일부 배경 데이터 생략됨)';
-  }
-
-  for (const m of modelsToTry) {
-    try {
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-        body: JSON.stringify({
-          model: m,
-          messages: [{ role: 'system', content: safeSystemPrompt }, { role: 'user', content: userText }],
-          temperature: 0.2,
-          max_tokens: 8192
-        })
-      });
-      if(res.ok) {
-        const data = await res.json();
-        return data.choices?.[0]?.message?.content || '응답을 받지 못했습니다.';
-      } else {
-        const err = await res.json();
-        lastErr = err.error?.message || `Groq API [${m}] 호출 오류`;
-      }
-    } catch(e) { lastErr = e.message; }
-  }
-  throw new Error(lastErr || '모든 Groq 유효 모델 시도 실패');
-}
-
 function saveDraftCustom(codeToSave, note = '수동 저장'){
-  const editor = $('codeEditor');
-  const code = codeToSave || (editor && editor.value ? editor.value : '');
-  if(!code) return;
-  try {
-    localStorage.setItem(getDraftCodeKey(), code);
-    let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
-    const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
-    history.unshift(newEntry);
-    if(history.length > 20) history = history.slice(0, 20);
-    localStorage.setItem(getDraftHistoryKey(), JSON.stringify(history));
-    log(`💾 로컬 드래프트 저장 완료 (${newEntry.time})`, 'ok');
-    const status = $('draftStatus');
-    if(status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
-  } catch(e) { log('드래프트 저장 실패: ' + e.message, 'err'); }
+const editor = $('codeEditor');
+const code = codeToSave || (editor && editor.value ? editor.value : '');
+if(!code) return;
+try {
+localStorage.setItem(getDraftCodeKey(), code);
+let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
+const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
+history.unshift(newEntry);
+if(history.length > 20) history = history.slice(0, 20);
+localStorage.setItem(getDraftHistoryKey(), JSON.stringify(history));
+log(⁠💾 로컬 드래프트 저장 완료 (${newEntry.time})⁠, 'ok');
+const status = $('draftStatus');
+if(status) status.textContent = ⁠저장됨 (${new Date().toLocaleTimeString()})⁠;
+} catch(e) { log('드래프트 저장 실패: ' + e.message, 'err'); }
 }
-
-async function pushToGitHubRepository(commitMessage = '🚀 Builder-a4u 공용 빌드 및 이중 문서 백업'){
-  const pat = getGitHubPat();
-  if(!pat || pat.length < 10){
-    log('⚠ GitHub PAT가 설정되어 있지 않습니다. [⚙ 설정] 탭에서 GitHub PAT를 입력해주세요.', 'err');
-    return false;
-  }
-  
-  const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-  const editor = $('codeEditor');
-  let codeToPush = editor && editor.value && editor.value.trim().length > 0 
-    ? editor.value 
-    : localStorage.getItem(getDraftCodeKey());
-    
-  if(!codeToPush || codeToPush.trim() === '') codeToPush = await syncLatestSourceFromGithub();
-
-  log(`🚀 GitHub API: [${currentRepo}/${targetFile}] 커밋/푸시 실행 중...`, 'info');
-  
-  try {
-    const headers = {
-      'Accept': 'application/vnd.github.v3+json',
-      'Authorization': 'Bearer ' + pat,
-      'Content-Type': 'application/json'
-    };
-
-    let fileSha = null;
-    const fileUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`;
-    const getRes = await fetch(fileUrl, { headers });
-    if(getRes.ok){
-      const fileData = await getRes.json();
-      fileSha = fileData.sha;
-    }
-
-    const base64Content = window.btoa(unescape(encodeURIComponent(codeToPush)));
-    const payload = { message: commitMessage + ` (${new Date().toLocaleString()})`, content: base64Content };
-    if(fileSha) payload.sha = fileSha;
-
-    const putRes = await fetch(fileUrl, { method: 'PUT', headers, body: JSON.stringify(payload) });
-    if(!putRes.ok){
-      const errData = await putRes.json();
-      throw new Error(errData.message || `HTTP ${putRes.status}`);
-    }
-
-    const resData = await putRes.json();
-    const commitSha = resData.commit?.sha?.slice(0, 7) || '성공';
-    log(`✅ [${targetFile}] GitHub 레포지토리에 푸시 완료! (Commit: #${commitSha})`, 'ok');
-    
-    const status = $('draftStatus');
-    if(status) status.textContent = `🚀 GitHub 푸시 완료 (#${commitSha})`;
-
-    if(connectedDoc1 && connectedDoc1.id){
-      const logText = `==================================================
-📌 [공용 빌드 완료 백업]
-⏰ 빌드 일시: ${new Date().toLocaleString()}
-🐙 Commit SHA: #${commitSha}
-📂 파일: ${targetFile}
-📝 빌드 메모: ${commitMessage}
-
-[기억 10줄]
-${$('memory10')?.value || '없음'}
-==================================================\n`;
-      await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
-    }
-
-    if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.39 최신 소스코드 백업]
-📌 레포지토리: ${currentRepo} (${targetFile})
-⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
-🐙 Commit SHA: #${commitSha}
-🔗 Live Pages: https://${GITHUB_USER}.github.io/${currentRepo}/
-
+async function pushToGitHubRepository(commitMessage = '🚀 Builder-a4u v6.0 최종 빌드 및 백업'){
+const pat = getGitHubPat();
+if(!pat || pat.length < 10){
+log('⚠️ GitHub PAT가 설정되어 있지 않습니다.', 'err');
+alert('GitHub PAT가 설정되어 있지 않습니다. 설정에서 입력해 주세요.');
+return false;
+}
+const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+const editor = $('codeEditor');
+let codeToPush = editor && editor.value && editor.value.trim().length > 0
+? editor.value
+: localStorage.getItem(getDraftCodeKey());
+if(!codeToPush || codeToPush.trim() === '') codeToPush = await syncLatestSourceFromGithub();
+log(⁠🚀 GitHub API: [${currentRepo}/${targetFile}] 커밋/푸시 실행 중...⁠, 'info');
+try {
+const headers = {
+'Accept': 'application/vnd.github.v3+json',
+'Authorization': 'Bearer ' + pat,
+'Content-Type': 'application/json'
+};
+let fileSha = null;
+const fileUrl = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}⁠;
+const getRes = await fetch(fileUrl, { headers });
+if(getRes.ok){
+const fileData = await getRes.json();
+fileSha = fileData.sha;
+}
+const base64Content = window.btoa(unescape(encodeURIComponent(codeToPush)));
+const payload = { message: commitMessage + ⁠ (${new Date().toLocaleString()})⁠, content: base64Content };
+if(fileSha) payload.sha = fileSha;
+const putRes = await fetch(fileUrl, { method: 'PUT', headers, body: JSON.stringify(payload) });
+if(!putRes.ok){
+const errData = await putRes.json();
+throw new Error(errData.message || ⁠HTTP ${putRes.status}⁠);
+}
+const resData = await putRes.json();
+const commitSha = resData.commit?.sha?.slice(0, 7) || '성공';
+log(⁠✅ [${targetFile}] GitHub 푸시 완료! (Commit: #${commitSha})⁠, 'ok');
+const status = $('draftStatus');
+if(status) status.textContent = ⁠🚀 GitHub 푸시 완료 (#${commitSha})⁠;
+if(connectedDoc1 && connectedDoc1.id){
+const logText = ⁠================================================== 📌 [Builder-a4u v6.0 빌드 완료 백업] ⏰ 빌드 일시: ${new Date().toLocaleString()} 🐙 Commit SHA: #${commitSha} 📂 파일: ${targetFile} 📝 메모: ${commitMessage} ==================================================\n⁠;
+await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+}
+if(connectedDoc2 && connectedDoc2.id){
+const sourceBackupText = `[Builder-a4u v6.0 최신 소스코드 백업]
+📌 레포지토리: ￼{targetFile})
+⏰ 최근 빌드 일시: ￼
+￼{commitSha}
+🔗 Live Pages: https://￼{currentRepo}/
 ==================================================
 📄 최신 소스코드 전체 본문 (100% 복구용)
-==================================================
 ${codeToPush}`;
-      await writeOrAppendToGoogleDoc(connectedDoc2.id, sourceBackupText, 'overwrite');
-    }
-
-    return true;
-  } catch(e) {
-    log(`❌ GitHub 푸시 및 백업 실패: ${e.message}`, 'err');
-    return false;
-  }
+await writeOrAppendToGoogleDoc(connectedDoc2.id, sourceBackupText, 'overwrite');
 }
-
-window.appendSingleAiMessageToDoc1 = async function(msgIndex){
-  if(!connectedDoc1 || !connectedDoc1.id){
-    log('⚠️ [메인1: 히스토리 문서]가 연결되어 있지 않습니다.', 'err');
-    alert('메인1 히스토리 구글 문서를 먼저 선택해주세요.');
-    return;
-  }
-  const msgs = chatHistories[activeChatTab] || [];
-  const targetMsg = msgs[msgIndex];
-  if(!targetMsg) return;
-
-  const appendText = `--- [대화 기록 백업 - ${new Date().toLocaleString()}] ---
-[질문/요청]: 대화 요약 기록
-[AI 답변 내용]:
-${targetMsg.text}
---------------------------------------------------\n`;
-
-  const success = await writeOrAppendToGoogleDoc(connectedDoc1.id, appendText, 'append');
-  if(success) alert('✅ 메인1 구글 문서에 답변 내용이 추가되었습니다!');
-};
-
-async function appendAllChatsToDoc1(){
-  if(!connectedDoc1 || !connectedDoc1.id){
-    log('⚠️ [메인1: 히스토리 문서]가 연결되어 있지 않습니다.', 'err');
-    alert('메인1 히스토리 구글 문서를 먼저 선택해주세요.');
-    return;
-  }
-  const msgs = chatHistories[activeChatTab] || [];
-  if(msgs.length === 0){ alert('추가할 대화 내용이 없습니다.'); return; }
-
-  let combinedText = `==================================================
-💬 [채팅 대화 기록 일괄 추가 - ${new Date().toLocaleString()}]
-탭: ${tabConfigs[activeChatTab].name}
-==================================================\n`;
-
-  msgs.forEach((m) => {
-    combinedText += `[${m.role === 'user' ? '사용자' : 'AI'}]: ${m.text}\n\n`;
-  });
-
-  const success = await writeOrAppendToGoogleDoc(connectedDoc1.id, combinedText, 'append');
-  if(success) alert('✅ 메인1 구글 문서에 대화 내용 전체가 추가되었습니다!');
+alert('🚀 최종 빌드 및 백업 완료!\n- GitHub 푸시 반영 완료\n- 메인1(로그) 및 메인2(코드 백업) 구글 문서 업데이트 완료!');
+return true;
+} catch(e) {
+log(⁠❌ 빌드 및 백업 실패: ${e.message}⁠, 'err');
+alert('빌드 중 오류가 발생했습니다: ' + e.message);
+return false;
 }
-
-async function syncToSupabaseCloud(){
-  const key = localStorage.getItem('supabase_key') || $('supabaseKeyInput')?.value || '';
-  if(!key){ log('⚠️ Supabase Anon Key가 없습니다.', 'err'); return; }
-  log('☁️ Supabase 클라우드 데이터 동기화 시작...', 'info');
-  try {
-    const dataToSave = {
-      repo: currentRepo,
-      memory10: $('memory10')?.value || '',
-      connectedDoc1: connectedDoc1,
-      connectedDoc2: connectedDoc2,
-      customLinks: customLinks,
-      updatedAt: new Date().toISOString()
-    };
-    
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/builder_sync`, {
-      method: 'POST',
-      headers: {
-        'apikey': key,
-        'Authorization': `Bearer ${key}`,
-        'Content-Type': 'application/json',
-        'Prefer': 'resolution=merge-duplicates'
-      },
-      body: JSON.stringify(dataToSave)
-    });
-    
-    if(res.ok || res.status === 201 || res.status === 204){
-      log('✅ Supabase 클라우드 데이터 동기화 성공!', 'ok');
-    } else { log(`☁️ Supabase 요청 처리 완료 (HTTP ${res.status})`, 'ok'); }
-  } catch(e){ log('☁️ Supabase 동기화 완료: ' + e.message, 'info'); }
 }
-
-async function loadGitHubCommitHistory(){
-  const box = $('versionHistoryBox');
-  if(!box) return;
-  const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-  box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">🐙 [${file}] GitHub 커밋 기록 불러오는 중...</div>`;
-  const pat = getGitHubPat();
-  const headers = {'Accept':'application/vnd.github.v3+json'};
-  if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-  
-  const url = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=20`;
-  
-  try {
-    const res = await fetch(url, { headers });
-    if(!res.ok){
-      box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ GitHub 커밋 로드 실패 (${res.status})</div>`;
-      return;
-    }
-    const commits = await res.json();
-    if(!Array.isArray(commits) || commits.length === 0){
-      box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">[${file}] 커밋 내역이 없습니다.</div>`;
-      return;
-    }
-    
-    let html = '';
-    commits.forEach((c) => {
-      const sha = c.sha;
-      const shortSha = sha.slice(0, 7);
-      const msg = c.commit?.message?.split('\n')[0] || 'Commit ' + shortSha;
-      const dateStr = c.commit?.committer?.date ? new Date(c.commit.committer.date).toLocaleString() : '일시 미상';
-      const author = c.commit?.author?.name || c.author?.login || '익명';
-      const safeMsg = msg.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-      
-      html += `
-      <div class="version-item flex justify-between items-center p-1.5 px-2 mb-1.5 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-        <div class="flex flex-col overflow-hidden pr-2 flex-1 min-w-0">
-          <div class="flex items-center gap-1 overflow-hidden">
-            <span class="badge text-[8px] py-0 px-1 shrink-0 rounded-[4px]" style="background:#f1f5f9;color:#0f172a;border:none">#${shortSha}</span>
-            <span class="font-bold text-[10.5px] truncate text-[var(--txt)]">${msg}</span>
-          </div>
-          <span class="text-[8.5px] opacity-60 truncate mt-0.5">${dateStr} · ${author}</span>
-        </div>
-        <div class="flex gap-1 shrink-0">
-          <button onclick="previewGitHubCommit('${sha}', '${shortSha}', '${safeMsg}')" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">👁️ 미리보기</button>
-          <button onclick="rollbackGitHubCommit('${sha}', '${shortSha}', '${safeMsg}')" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button>
-        </div>
-      </div>`;
-    });
-    box.innerHTML = html;
-    log(`🐙 [${file}] 커밋 기록 ${commits.length}개 로드 완료`, 'ok');
-  } catch(e) {
-    box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">❌ 오류: ${e.message}</div>`;
-  }
+async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append'){
+const token = accessToken || localStorage.getItem('google_access_token');
+if(!token || !docId) return false;
+try {
+const getRes = await fetch(⁠https://docs.googleapis.com/v1/documents/${docId}⁠, {
+headers: { Authorization: ⁠Bearer ${token}⁠ }
+});
+if(!getRes.ok) return false;
+const docData = await getRes.json();
+const endIndex = docData.body?.content?.[docData.body.content.length - 1]?.endIndex || 1;
+const requests = [];
+if(mode === 'overwrite'){
+if(endIndex > 2){
+requests.push({ deleteContent: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
 }
-
-async function fetchGitHubCommitContent(sha){
-  const pat = getGitHubPat();
-  const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-  const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/${sha}/${file}`;
-  
-  try {
-    const headers = {};
-    if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-    const res = await fetch(rawUrl, { headers });
-    if(res.ok) return await res.text();
-  } catch(e) {}
-  
-  const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(file)}?ref=${sha}`;
-  const headers = {'Accept':'application/vnd.github.v3+json'};
-  if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-  const res = await fetch(apiUrl, { headers });
-  if(!res.ok) throw new Error(`HTTP ${res.status}`);
-  const data = await res.json();
-  if(data.content){
-    const cleanB64 = data.content.replace(/\s/g, '');
-    const bytes = Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0));
-    return new TextDecoder().decode(bytes);
-  }
-  throw new Error('파일 해석 불가');
-}
-
-window.previewGitHubCommit = async function(sha, shortSha, msg){
-  try {
-    const code = await fetchGitHubCommitContent(sha);
-    const frame = $('livePreviewFrame');
-    const box = $('livePreviewBox');
-    const title = $('previewTitle');
-    if(frame && box){
-      if(title) title.textContent = `👁 [GitHub 커밋 #${shortSha}] ${msg}`;
-      frame.srcdoc = code;
-      box.classList.add('active');
-      box.scrollIntoView({ behavior: 'smooth' });
-    }
-  } catch(e) { log('미리보기 실패: ' + e.message, 'err'); }
-};
-
-window.rollbackGitHubCommit = async function(sha, shortSha, msg){
-  try {
-    const code = await fetchGitHubCommitContent(sha);
-    localStorage.setItem(getDraftCodeKey(), code);
-    const editor = $('codeEditor');
-    if(editor) editor.value = code;
-    log(`↺ 커밋 #${shortSha} 코드로 롤백 성공!`, 'ok');
-  } catch(e) { log('롤백 실패: ' + e.message, 'err'); }
-};
-
-function loadDraftHistory(){
-  const box = $('versionHistoryBox');
-  if(!box) return;
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
-  
-  if(!history || history.length === 0){
-    box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">저장된 로컬 draft 기록이 없습니다.</div>';
-    return;
-  }
-  
-  let html = '';
-  history.forEach((item) => {
-    const sizeKb = Math.round((item.code || '').length / 1024);
-    html += `
-    <div class="version-item flex justify-between items-center p-1.5 px-2 mb-1.5 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-      <div class="flex flex-col overflow-hidden pr-2 flex-1 min-w-0">
-        <span class="font-bold text-[10.5px] truncate text-[var(--txt)]">${item.note || '드래프트'}</span>
-        <span class="text-[8.5px] opacity-60 truncate mt-0.5">${item.time} (${sizeKb} KB)</span>
-      </div>
-      <div class="flex gap-1 shrink-0">
-        <button onclick="previewVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">👁️ 미리보기</button>
-        <button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button>
-      </div>
-    </div>`;
-  });
-  box.innerHTML = html;
-}
-
-window.previewVersionHistory = function(id){
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
-  const item = history.find(h => h.id === id);
-  if(!item) return;
-  const frame = $('livePreviewFrame');
-  const box = $('livePreviewBox');
-  if(frame && box){
-    frame.srcdoc = item.code;
-    box.classList.add('active');
-    box.scrollIntoView({ behavior: 'smooth' });
-  }
-};
-
-window.rollbackToVersionHistory = function(id){
-  let history = [];
-  try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
-  const item = history.find(h => h.id === id);
-  if(!item) return;
-  localStorage.setItem(getDraftCodeKey(), item.code);
-  const editor = $('codeEditor');
-  if(editor) editor.value = item.code;
-  log(`↺ 로컬 draft 복구 완료 (${item.time})`, 'ok');
-};
-
-async function showLivePreviewCurrent(){
-  const editor = $('codeEditor');
-  let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
-  if(!code || code.trim() === '') code = await syncLatestSourceFromGithub();
-  
-  const frame = $('livePreviewFrame');
-  const box = $('livePreviewBox');
-  if(frame && box){
-    frame.srcdoc = code;
-    box.classList.add('active');
-    box.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-function hideLivePreviewBox(){
-  const box = $('livePreviewBox');
-  if(box) box.classList.remove('active');
-}
-
-function loadRepoDocuments(){
-  try{ connectedDoc1 = JSON.parse(localStorage.getItem('connected_doc1_' + currentRepo) || 'null'); }catch{ connectedDoc1 = null; }
-  try{ connectedDoc2 = JSON.parse(localStorage.getItem('connected_doc2_' + currentRepo) || 'null'); }catch{ connectedDoc2 = null; }
-  try{ customLinks = JSON.parse(localStorage.getItem('customLinks_' + currentRepo) || '[]'); }catch{ customLinks = []; }
-
-  const docPreview = $('docPreview');
-  if(docPreview){ docPreview.classList.add('hidden'); docPreview.textContent = ''; }
-  const linkDocPreview = $('linkDocPreview');
-  if(linkDocPreview){ linkDocPreview.classList.add('hidden'); linkDocPreview.textContent = ''; }
-
-  renderConnectedDoc1();
-  renderConnectedDoc2();
-  renderCustomLinks();
-}
-
-function renderConnectedDoc1(){
-  const el = $('mainDoc1Container');
-  if(!el) return;
-  if(!connectedDoc1){
-    el.innerHTML = '<span class="opacity-60">[선택 안됨] 업데이트 로그용 문서</span>';
-    return;
-  }
-  const title = connectedDoc1.title || connectedDoc1.name || '메인1 문서';
-  el.innerHTML = `
-  <div class="flex items-center justify-between gap-2 overflow-hidden">
-    <div class="truncate font-bold text-[11px] text-blue-600 dark:text-blue-400">📄 ${title}</div>
-    <div class="flex gap-1 shrink-0">
-      <a href="https://docs.google.com/document/d/${connectedDoc1.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-2 text-[9px]">🔗 열기</a>
-      <button onclick="fetchDocContent('${connectedDoc1.id}', '${title.replace(/'/g, "\\'")}', 'docPreview')" class="btn btn-sm py-0.5 px-2 text-[9px]">📥 읽기</button>
-      <button onclick="removeMainDoc(1)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500 font-bold" title="문서 연결 해제">🗑 연결 해제</button>
-    </div>
-  </div>`;
-}
-
-function renderConnectedDoc2(){
-  const el = $('mainDoc2Container');
-  if(!el) return;
-  if(!connectedDoc2){
-    el.innerHTML = '<span class="opacity-60">[선택 안됨] 최신 소스코드 백업용 문서</span>';
-    return;
-  }
-  const title = connectedDoc2.title || connectedDoc2.name || '메인2 문서';
-  el.innerHTML = `
-  <div class="flex items-center justify-between gap-2 overflow-hidden">
-    <div class="truncate font-bold text-[11px] text-emerald-600 dark:text-emerald-400">📦 ${title}</div>
-    <div class="flex gap-1 shrink-0">
-      <a href="https://docs.google.com/document/d/${connectedDoc2.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-2 text-[9px]">🔗 열기</a>
-      <button onclick="fetchDocContent('${connectedDoc2.id}', '${title.replace(/'/g, "\\'")}', 'docPreview')" class="btn btn-sm py-0.5 px-2 text-[9px]">📥 읽기</button>
-      <button onclick="removeMainDoc(2)" class="btn btn-sm py-0.5 px-2 text-[9px] text-red-500 font-bold" title="문서 연결 해제">🗑 연결 해제</button>
-    </div>
-  </div>`;
-}
-
-function removeMainDoc(slot){
-  if(slot === 1){
-    connectedDoc1 = null;
-    try{ localStorage.removeItem('connected_doc1_' + currentRepo); }catch{}
-    renderConnectedDoc1();
-  } else {
-    connectedDoc2 = null;
-    try{ localStorage.removeItem('connected_doc2_' + currentRepo); }catch{}
-    renderConnectedDoc2();
-  }
-  renderContextCopySettings();
-  updateContextBox();
-  log(`📄 메인 문서${slot} 연결이 해제되었습니다.`, 'info');
-}
-
-async function fetchDocContent(docId, docTitle, previewTargetId = 'docPreview'){
-  const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token){ log('⚠️ Google 로그인이 필요합니다.', 'err'); return; }
-  log(`📄 [${docTitle || '문서'}] 내용 불러오는 중...`, 'info');
-  try{
-    const res = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, {
-      headers: { Authorization: `Bearer ${token}` }
-    });
-    if(!res.ok){
-      if(res.status === 401){
-        localStorage.removeItem('google_access_token');
-        accessToken = '';
-        alert('🔐 Google 로그인 토큰이 만료되었습니다. [⚙ 설정] 탭에서 구글 로그인을 진행해 주세요.');
-        switchTopView('settings');
-        return;
-      }
-      throw new Error(`HTTP ${res.status}`);
-    }
-    const data = await res.json();
-    let text = '';
-    if(data.body && data.body.content){
-      data.body.content.forEach(c => {
-        if(c.paragraph && c.paragraph.elements){
-          c.paragraph.elements.forEach(e => {
-            if(e.textRun && e.textRun.content) text += e.textRun.content;
-          });
-        }
-      });
-    }
-    const previewEl = $(previewTargetId);
-    if(previewEl){
-      previewEl.classList.remove('hidden');
-      previewEl.textContent = `[${docTitle || '문서'}]\n` + text.slice(0, 3000) + (text.length > 3000 ? '\n...(이하 생략)' : '');
-    }
-    log(`✅ 문서 내용 불러오기 성공 (${text.length}자)`, 'ok');
-  }catch(e){ log('문서 불러오기 실패: ' + e.message, 'err'); }
-}
-
-function renderCustomLinks(){
-  const el = $('customLinksList');
-  const badge = $('linkCount');
-  if(badge) badge.textContent = (customLinks ? customLinks.length : 0) + '개';
-  if(!el) return;
-  if(!customLinks || customLinks.length === 0){
-    el.innerHTML = '<div class="text-[11px] opacity-60 p-2 text-center border rounded-[12px]" style="border-color:var(--line)">추가된 참조 문서 없음</div>';
-    return;
-  }
-  let html = '';
-  customLinks.forEach((l, i) => {
-    const docId = l.id || (l.url ? l.url.match(/\/d\/([^\/]+)/)?.[1] : '');
-    const titleText = l.title || l.name || l.url || '추가 문서';
-    html += `
-    <div class="doc-card flex flex-col gap-2 p-2.5 rounded-[12px] border text-[11px] mb-2" style="border-color:var(--line)">
-      <div class="flex items-center gap-2 overflow-hidden w-full">
-        <span class="text-[13px]">🔗</span>
-        <span class="font-bold text-[11.5px] text-[var(--txt)] break-all flex-1">${titleText}</span>
-      </div>
-      <div class="flex gap-1.5 justify-end w-full pt-1 border-t" style="border-color:var(--line)">
-        <a href="${l.url || ('https://docs.google.com/document/d/' + l.id + '/edit')}" target="_blank" class="btn btn-sm py-1 px-2.5 text-[10px]">🔗 열기</a>
-        ${docId ? `<button onclick="fetchDocContent('${docId}', '${titleText.replace(/'/g, "\\'")}', 'linkDocPreview')" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📥 불러오기</button>` : ''}
-        <button onclick="removeCustomLink(${i})" class="btn btn-sm py-1 px-2.5 text-[10px] text-red-500">🗑 삭제</button>
-      </div>
-    </div>`;
-  });
-  el.innerHTML = html;
-}
-
-function removeCustomLink(idx){
-  customLinks.splice(idx, 1);
-  try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
-  renderCustomLinks();
-  renderContextCopySettings();
-  updateContextBox();
-}
-
-function setTheme(th){
-  const html=document.documentElement;
-  if(th==='dark') html.classList.add('dark'); else html.classList.remove('dark');
-  try{localStorage.setItem('theme',th);}catch{}
-}
-
-function initTheme(){
-  let th='light';
-  try{th=localStorage.getItem('theme')||'light';}catch{}
-  setTheme(th);
-}
-
-function switchTopView(view){
-  const ws=$('workspaceView');
-  const st=$('settingsView');
-  const btnW=$('topTabWorkspace');
-  const btnS=$('topTabSettings');
-  if(view==='workspace'){
-    ws?.classList.remove('view-hidden'); st?.classList.add('view-hidden');
-    btnW?.classList.add('active'); btnS?.classList.remove('active');
-  }else{
-    ws?.classList.add('view-hidden'); st?.classList.remove('view-hidden');
-    btnW?.classList.remove('active'); btnS?.classList.add('active');
-    renderContextCopySettings();
-  }
-}
-
-async function fetchDriveFiles(folderId = 'root', queryStr = ''){
-  const token = accessToken || localStorage.getItem('google_access_token');
-  if(!token){ 
-    alert('Google 로그인이 필요합니다. [⚙ 설정] 탭으로 이동합니다.');
-    switchTopView('settings');
-    return []; 
-  }
-
-  let q = "trashed=false and mimeType='application/vnd.google-apps.document'";
-  
-  if(queryStr && queryStr.trim() !== ''){
-    q += ` and name contains '${queryStr.trim().replace(/'/g, "\\'")}'`;
-  } else {
-    if(driveTabMode === 'recent'){
-      q += "";
-    } else if(driveTabMode === 'shared'){
-      q += " and sharedWithMe=true";
-    } else if(folderId && folderId !== 'root'){
-      q += ` and '${folderId}' in parents`;
-    }
-  }
-
-  const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,modifiedTime)&orderBy=modifiedTime desc&pageSize=50&supportsAllDrives=true&includeItemsFromAllDrives=true`;
-  
-  try{
-    const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
-    if(!res.ok){
-      if(res.status === 401){
-        localStorage.removeItem('google_access_token');
-        accessToken = '';
-        alert('🔐 Google 로그인 토큰이 만료되었습니다. [⚙ 설정] 탭에서 구글 로그인을 진행해 주세요.');
-        switchTopView('settings');
-      }
-      return [];
-    }
-    const data = await res.json();
-    return data.files || [];
-  }catch(e){ return []; }
-}
-
-function openDriveModal(targetSlot = 'main1'){
-  activeDriveTargetSlot = targetSlot;
-  const modal=$('driveModal');
-  if(!modal) return;
-  modal.style.display='flex';
-  const searchInput = $('driveSearchInput');
-  if(searchInput) searchInput.value = '';
-  
-  driveTabMode = 'recent';
-  updateDriveTabButtons();
-  loadDriveFolder('root', '');
-}
-
-function updateDriveTabButtons(){
-  const btnRecent = $('driveTabRecent');
-  const btnMy = $('driveTabMy');
-  const btnShared = $('driveTabShared');
-  
-  if(btnRecent) btnRecent.className = `btn btn-sm flex-1 ${driveTabMode === 'recent' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
-  if(btnMy) btnMy.className = `btn btn-sm flex-1 ${driveTabMode === 'my' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
-  if(btnShared) btnShared.className = `btn btn-sm flex-1 ${driveTabMode === 'shared' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
-}
-
-async function loadDriveFolder(folderId, queryStr = ''){
-  const list=$('driveFileList');
-  if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">문서 탐색 중...</div>';
-  const files = await fetchDriveFiles(folderId, queryStr);
-  if(!list) return;
-  
-  if(files.length === 0){ 
-    list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">구글 문서가 없습니다.</div>'; 
-    return; 
-  }
-  
-  let html = '';
-  files.forEach(file => {
-    const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
-    const icon = isFolder ? '📁' : '📄';
-    const safeName = file.name.replace(/'/g, "\\'");
-    const modifiedStr = file.modifiedTime ? new Date(file.modifiedTime).toLocaleDateString() : '';
-    html += `
-    <div class="drive-file" onclick="${isFolder ? `openSubFolder('${file.id}')` : `selectDriveFile('${file.id}', '${safeName}')`}">
-      <span>${icon}</span>
-      <div class="flex-1 min-w-0">
-        <div class="font-bold text-[12px] text-gray-800 dark:text-gray-200 truncate">${file.name}</div>
-        ${modifiedStr ? `<div class="text-[9px] opacity-50">${modifiedStr} 수정됨</div>` : ''}
-      </div>
-    </div>`;
-  });
-  list.innerHTML = html;
-}
-
-window.openSubFolder = (folderId) => loadDriveFolder(folderId);
-
-window.selectDriveFile = (fileId, fileName) => {
-  const modal = $('driveModal');
-  if(modal) modal.style.display='none';
-  
-  if(activeDriveTargetSlot === 'main1'){
-    connectedDoc1 = { id: fileId, title: fileName };
-    try{ localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1)); }catch{}
-    renderConnectedDoc1();
-    log('📄 메인1(히스토리) 문서 연결 완료: ' + fileName, 'ok');
-  } else if(activeDriveTargetSlot === 'main2'){
-    connectedDoc2 = { id: fileId, title: fileName };
-    try{ localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2)); }catch{}
-    renderConnectedDoc2();
-    log('📦 메인2(최신코드) 백업 문서 연결 완료: ' + fileName, 'ok');
-  } else {
-    customLinks.push({ id: fileId, title: fileName, url: 'https://docs.google.com/document/d/' + fileId + '/edit' });
-    try{ localStorage.setItem('customLinks_' + currentRepo, JSON.stringify(customLinks)); }catch{}
-    renderCustomLinks();
-    log('🔗 추가 문서 연결 완료: ' + fileName, 'ok');
-  }
-  renderContextCopySettings();
-  updateContextBox();
-};
-
-function buildContextCopyV87(){
-  const mem = document.getElementById('memory10') ? document.getElementById('memory10').value : '';
-  const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  const doc1Str = connectedDoc1 ? `https://docs.google.com/document/d/${connectedDoc1.id}/edit (${connectedDoc1.title})` : '없음';
-  const doc2Str = connectedDoc2 ? `https://docs.google.com/document/d/${connectedDoc2.id}/edit (${connectedDoc2.title})` : '없음';
-  
-  let customDocsText = '';
-  if (customLinks && customLinks.length > 0) {
-    customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
-  } else customDocsText = '- 추가문서: 없음';
-
-  return `[${currentRepo} v5.8.39 이어가기용]
-📌 프로젝트(Repo): ${currentRepo}
-📂 작업 대상 파일: ${targetFile}
-[기억 10줄]
-${mem}
-[이중 메인 구글 문서 링크]
-- 메인1(히스토리): ${doc1Str}
-- 메인2(소스코드): ${doc2Str}
-${customDocsText}
-[프로젝트 링크]
-1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.39`;
-}
-
-function renderContextCopySettings(){
-  const ta=$('contextCopyPreviewSettings');
-  if(ta) ta.value=buildContextCopyV87();
-}
-
-function initSettingsInputs(){
-  const googleClientInput = $('googleClientIdInput');
-  const ghInput = $('githubPatInput');
-  const geminiInput = $('geminiKeyInput');
-  const groqInput = $('groqKeyInput');
-  const supabaseInput = $('supabaseKeyInput');
-  
-  if(googleClientInput){
-    googleClientInput.value = getGoogleClientId();
-    googleClientInput.addEventListener('input', e => {
-      try{ localStorage.setItem('google_client_id', e.target.value.trim()); }catch{}
-      initGis();
-    });
-  }
-  if(ghInput){
-    ghInput.value = getGitHubPat();
-    ghInput.addEventListener('input', e => {
-      try{ localStorage.setItem('github_pat', e.target.value.trim()); }catch{}
-      loadRepos();
-    });
-  }
-  if(geminiInput){
-    geminiInput.value = localStorage.getItem('gemini_key') || '';
-    geminiInput.addEventListener('input', e => {
-      try{ localStorage.setItem('gemini_key', e.target.value.trim()); }catch{}
-    });
-  }
-  if(groqInput){
-    groqInput.value = localStorage.getItem('groq_key') || '';
-    groqInput.addEventListener('input', e => {
-      try{ localStorage.setItem('groq_key', e.target.value.trim()); }catch{}
-    });
-  }
-  if(supabaseInput){
-    supabaseInput.value = localStorage.getItem('supabase_key') || '';
-    supabaseInput.addEventListener('input', e => {
-      try{ localStorage.setItem('supabase_key', e.target.value.trim()); }catch{}
-    });
-  }
-}
-
-function parseBulkKeys(){
-  const text = $('bulkKeysInput')?.value || '';
-  if(!text.trim()){ log('⚠️ 키 텍스트를 입력해주세요.', 'err'); return; }
-  
-  let count = 0;
-  const lines = text.split('\n');
-  lines.forEach(line => {
-    const l = line.trim();
-    if(!l) return;
-
-    let val = l;
-    let keyPart = l.toLowerCase();
-    
-    if(l.includes('=')){
-      const parts = l.split('=');
-      keyPart = parts[0].toLowerCase().trim();
-      val = parts.slice(1).join('=').trim();
-    }
-
-    if(!val) return;
-
-    if(val.includes('.apps.googleusercontent.com') || keyPart.includes('client_id') || keyPart.includes('clientid')){
-      localStorage.setItem('google_client_id', val);
-      if($('googleClientIdInput')) $('googleClientIdInput').value = val;
-      count++;
-    }
-    else if(val.startsWith('ghp_') || val.startsWith('github_pat_') || keyPart.includes('github') || keyPart.includes('pat')){
-      localStorage.setItem('github_pat', val);
-      if($('githubPatInput')) $('githubPatInput').value = val;
-      count++;
-    }
-    else if(val.toLowerCase().startsWith('aiza') || val.toLowerCase().startsWith('aq.') || keyPart.includes('gemini')){
-      localStorage.setItem('gemini_key', val);
-      if($('geminiKeyInput')) $('geminiKeyInput').value = val;
-      count++;
-    }
-    else if(val.startsWith('gsk_') || keyPart.includes('groq')){
-      localStorage.setItem('groq_key', val);
-      if($('groqKeyInput')) $('groqKeyInput').value = val;
-      count++;
-    }
-    else if(val.startsWith('sb_') || val.toLowerCase().startsWith('eyj') || keyPart.includes('supabase')){
-      localStorage.setItem('supabase_key', val);
-      if($('supabaseKeyInput')) $('supabaseKeyInput').value = val;
-      count++;
-    }
-  });
-
-  log(`⚡ 스마트 파서: ${count}개 API 키 자동 인식 및 저장 완료!`, 'ok');
-  loadRepos();
-  initGis();
-}
-
-function exportKeysJson(){
-  const keysObj = {
-    google_client_id: getGoogleClientId(),
-    github_pat: getGitHubPat(),
-    gemini_key: localStorage.getItem('gemini_key') || '',
-    groq_key: localStorage.getItem('groq_key') || '',
-    supabase_key: localStorage.getItem('supabase_key') || '',
-    exportedAt: new Date().toLocaleString()
-  };
-  const blob = new Blob([JSON.stringify(keysObj, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'builder_api_keys.json';
-  a.click();
-}
-
-function importKeysJson(e){
-  const file = e.target.files?.[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = evt => {
-    try {
-      const keysObj = JSON.parse(evt.target.result);
-      if(keysObj.google_client_id){ localStorage.setItem('google_client_id', keysObj.google_client_id); if($('googleClientIdInput')) $('googleClientIdInput').value = keysObj.google_client_id; }
-      if(keysObj.github_pat){ localStorage.setItem('github_pat', keysObj.github_pat); if($('githubPatInput')) $('githubPatInput').value = keysObj.github_pat; }
-      if(keysObj.gemini_key){ localStorage.setItem('gemini_key', keysObj.gemini_key); if($('geminiKeyInput')) $('geminiKeyInput').value = keysObj.gemini_key; }
-      if(keysObj.groq_key){ localStorage.setItem('groq_key', keysObj.groq_key); if($('groqKeyInput')) $('groqKeyInput').value = keysObj.groq_key; }
-      if(keysObj.supabase_key){ localStorage.setItem('supabase_key', keysObj.supabase_key); if($('supabaseKeyInput')) $('supabaseKeyInput').value = keysObj.supabase_key; }
-      log('📥 API 키 원클릭 복원 완료!', 'ok');
-      loadRepos();
-      initGis();
-    } catch(err) { log('❌ JSON 파싱 실패: ' + err.message, 'err'); }
-  };
-  reader.readAsText(file);
-}
-
-function setupEventListeners(){
-  initTheme();
-  
-  $('themeToggle')?.addEventListener('click', ()=>{
-    const isDark=document.documentElement.classList.contains('dark');
-    setTheme(isDark?'light':'dark');
-  });
-  
-  $('repoFilesSelect')?.addEventListener('change', async e => {
-    const val = e.target.value;
-    if(!val) return;
-    mainFile = val;
-    if($('mainFileInput')) $('mainFileInput').value = val;
-    renderContextCopySettings();
-    updateContextBox();
-    await syncLatestSourceFromGithub(true);
-  });
-
-  $('mainFileInput')?.addEventListener('change', async e => {
-    mainFile = e.target.value.trim() || 'index.html';
-    renderContextCopySettings();
-    updateContextBox();
-    await syncLatestSourceFromGithub(true);
-  });
-
-  $('scanRepoFilesBtn')?.addEventListener('click', () => loadRepoFileTree());
-  $('removePastedImageBtn')?.addEventListener('click', clearPastedImage);
-  $('memory10')?.addEventListener('input', () => updateMemoryCount());
-  
-  $('templateBtn')?.addEventListener('click', () => {
-    const memEl = $('memory10');
-    if(memEl){
-      memEl.value = getProjectTemplate(currentRepo);
-      updateMemoryCount();
-    }
-  });
-
-  $('tabMeta')?.addEventListener('click', () => switchChatTab('meta'));
-  $('tabGemini')?.addEventListener('click', () => switchChatTab('gemini'));
-  $('tabGpt')?.addEventListener('click', () => switchChatTab('gpt'));
-  $('chatSendBtn')?.addEventListener('click', sendChatMessage);
-  $('chatInput')?.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
-  
-  $('quickAppendToDoc1Btn')?.addEventListener('click', appendAllChatsToDoc1);
-
-  $('saveDraftBtn')?.addEventListener('click', () => saveDraftCustom());
-  $('previewCheckBtn')?.addEventListener('click', () => showLivePreviewCurrent());
-  $('previewCloseBtn')?.addEventListener('click', () => hideLivePreviewBox());
-  
-  $('showGithubCommitHistoryBtn')?.addEventListener('click', () => loadGitHubCommitHistory());
-  $('showDraftHistoryBtn')?.addEventListener('click', () => loadDraftHistory());
-  
-  $('clearLogBtn')?.addEventListener('click', () => {
-    const logEl = $('logArea');
-    if (logEl) logEl.innerHTML = '';
-  });
-
-  $('buildBtn')?.addEventListener('click', async () => {
-    saveDraftCustom(null, '통합 빌드 실행전 저장');
-    log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.39 커밋');
-    await syncToSupabaseCloud();
-  });
-
-  $('btnSupabaseSync')?.addEventListener('click', () => syncToSupabaseCloud());
-  $('driveModalClose')?.addEventListener('click', ()=>{ const m=$('driveModal'); if(m) m.style.display='none'; });
-
-  $('driveTabRecent')?.addEventListener('click', () => {
-    driveTabMode = 'recent';
-    updateDriveTabButtons();
-    loadDriveFolder('root');
-  });
-
-  $('driveTabMy')?.addEventListener('click', () => {
-    driveTabMode = 'my';
-    updateDriveTabButtons();
-    loadDriveFolder('root');
-  });
-
-  $('driveTabShared')?.addEventListener('click', () => {
-    driveTabMode = 'shared';
-    updateDriveTabButtons();
-    loadDriveFolder('root');
-  });
-
-  $('driveSearchBtn')?.addEventListener('click', () => {
-    const q = $('driveSearchInput')?.value || '';
-    loadDriveFolder('root', q);
-  });
-
-  $('copyWorkspaceContextBtn')?.addEventListener('click', async()=>{
-    try{
-      await navigator.clipboard.writeText(buildContextCopyV87());
-      log('📋 전체맥락 복사 완료!', 'ok');
-    }catch(e){ log('복사 실패: ' + e.message, 'err'); }
-  });
-
-  $('btn-copy-context-settings')?.addEventListener('click', async()=>{
-    try{
-      await navigator.clipboard.writeText(buildContextCopyV87());
-      log('📋 전체맥락복사 완료!', 'ok');
-    }catch(e){ log('복사 실패', 'err'); }
-  });
-
-  $('parseBulkKeysBtn')?.addEventListener('click', parseBulkKeys);
-  $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
-  $('importKeysJsonInput')?.addEventListener('change', importKeysJson);
-
-  $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
-  
-  $('repoSelect')?.addEventListener('change', async e=>{
-    currentRepo=e.target.value;
-    try{ localStorage.setItem('current_repo', currentRepo); }catch{}
-    mainFile = 'index.html';
-    if($('mainFileInput')) $('mainFileInput').value = 'index.html';
-
-    loadMemory10();
-    loadRepoDocuments();
-    loadRepoFileTree();
-    loadGitHubCommitHistory();
-    loadChatHistoriesForRepo();
-    renderContextCopySettings();
-    updateContextBox();
-    await syncLatestSourceFromGithub(true);
-    log('📌 레포지토리 맥락 및 최신 소스 연동 완료: '+currentRepo, 'ok');
-  });
-
-  $('refreshRepoBtn')?.addEventListener('click', () => loadRepos());
-}
-
-function startApp(){
-  try { setupEventListeners(); } catch(e){}
-  try { initSettingsInputs(); } catch(e){}
-  try { loadRepos(); } catch(e){}
-  try { loadMemory10(); } catch(e){}
-  try { loadRepoDocuments(); } catch(e){}
-  try { loadGitHubCommitHistory(); } catch(e){}
-  try { loadChatHistoriesForRepo(); } catch(e){}
-  if (window._gisLoaded) { try{ initGis(); }catch(e){} }
-  setTimeout(() => { try{ initGis(); }catch(e){} }, 800);
-}
-
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(startApp, 0);
+requests.push({ insertText: { location: { index: 1 }, text: newText } });
 } else {
-  document.addEventListener('DOMContentLoaded', startApp);
+const insertIdx = Math.max(1, endIndex - 1);
+requests.push({ insertText: { location: { index: insertIdx }, text: '\n' + newText } });
+}
+const updateRes = await fetch(⁠https://docs.googleapis.com/v1/documents/${docId}:batchUpdate⁠, {
+method: 'POST',
+headers: { 'Authorization': ⁠Bearer ${token}⁠, 'Content-Type': 'application/json' },
+body: JSON.stringify({ requests })
+});
+if(updateRes.ok){
+log(⁠✅ 구글 문서 [${docId.slice(0,6)}...] ${mode==='overwrite'?'전체 갱신':'내용 추가'} 완료!⁠, 'ok');
+return true;
+}
+} catch(e) {}
+return false;
+}
+function showLivePreviewCurrent(){
+const editor = $('codeEditor');
+let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
+if(!code || code.trim() === '') return;
+const frame = $('livePreviewFrame');
+const box = $('livePreviewBox');
+if(frame && box){
+frame.srcdoc = code;
+box.classList.add('active');
+log('👁 실시간 미리보기 화면이 확정 적용되었습니다.', 'ok');
+}
+}
+// 📸 미리보기 화면 실시간 이미지 캡처 기능
+async function capturePreviewScreen(){
+const frame = $('livePreviewFrame');
+if (!frame || !frame.contentDocument || !frame.contentDocument.body) {
+alert('미리보기 화면이 준비되지 않았습니다. 코드를 붙여넣고 [👁 미리보기 확정]을 눌러주세요.');
+return;
+}
+log('📸 미리보기 화면 실시간 캡처 생성 중...', 'info');
+try {
+const doc = frame.contentDocument;
+const canvas = await html2canvas(doc.body, {
+useCORS: true,
+allowTaint: true,
+scale: 2,
+backgroundColor: '#ffffff'
+});
+const imgData = canvas.toDataURL('image/png');
+const a = document.createElement('a');
+a.href = imgData;
+a.download = ⁠${currentRepo}_preview_${Date.now()}.png⁠;
+a.click();
+log('✅ 미리보기 화면 캡처 이미지가 성공적으로 다운로드되었습니다!', 'ok');
+} catch(e) {
+log(⁠❌ 미리보기 캡처 실패: ${e.message}⁠, 'err');
+alert('화면 캡처 도중 오류가 발생했습니다: ' + e.message);
+}
+}
+function hideLivePreviewBox(){
+const box = $('livePreviewBox');
+if(box) box.classList.remove('active');
+}
+function loadRepoDocuments(){
+try{ connectedDoc1 = JSON.parse(localStorage.getItem('connected_doc1_' + currentRepo) || 'null'); }catch{ connectedDoc1 = null; }
+try{ connectedDoc2 = JSON.parse(localStorage.getItem('connected_doc2_' + currentRepo) || 'null'); }catch{ connectedDoc2 = null; }
+renderConnectedDoc1();
+renderConnectedDoc2();
+}
+function renderConnectedDoc1(){
+const el = $('mainDoc1Container');
+if(!el) return;
+if(!connectedDoc1){
+el.innerHTML = '<span class="opacity-60">[선택 안됨] 로그 기록용</span>';
+return;
+}
+const title = connectedDoc1.title || connectedDoc1.name || '메인1 문서';
+el.innerHTML = ⁠ <div class="flex items-center justify-between gap-1 overflow-hidden"> <div class="truncate font-bold text-blue-600 dark:text-blue-400">📄 ${title}</div> <div class="flex gap-1 shrink-0"> <a href="https://docs.google.com/document/d/${connectedDoc1.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-1.5 text-[8.5px]">🔗</a> <button onclick="removeMainDoc(1)" class="btn btn-sm py-0.5 px-1.5 text-[8.5px] text-red-500 font-bold">🗑</button> </div> </div>⁠;
+}
+function renderConnectedDoc2(){
+const el = $('mainDoc2Container');
+if(!el) return;
+if(!connectedDoc2){
+el.innerHTML = '<span class="opacity-60">[선택 안됨] 소스 백업용</span>';
+return;
+}
+const title = connectedDoc2.title || connectedDoc2.name || '메인2 문서';
+el.innerHTML = ⁠ <div class="flex items-center justify-between gap-1 overflow-hidden"> <div class="truncate font-bold text-emerald-600 dark:text-emerald-400">📦 ${title}</div> <div class="flex gap-1 shrink-0"> <a href="https://docs.google.com/document/d/${connectedDoc2.id}/edit" target="_blank" class="btn btn-sm py-0.5 px-1.5 text-[8.5px]">🔗</a> <button onclick="removeMainDoc(2)" class="btn btn-sm py-0.5 px-1.5 text-[8.5px] text-red-500 font-bold">🗑</button> </div> </div>⁠;
+}
+function removeMainDoc(slot){
+if(slot === 1){
+connectedDoc1 = null;
+try{ localStorage.removeItem('connected_doc1_' + currentRepo); }catch{}
+renderConnectedDoc1();
+} else {
+connectedDoc2 = null;
+try{ localStorage.removeItem('connected_doc2_' + currentRepo); }catch{}
+renderConnectedDoc2();
+}
+log(⁠📄 메인 문서${slot} 연결이 해제되었습니다.⁠, 'info');
+}
+function setTheme(th){
+const html=document.documentElement;
+if(th==='dark') html.classList.add('dark'); else html.classList.remove('dark');
+try{localStorage.setItem('theme',th);}catch{}
+}
+function initTheme(){
+let th='light';
+try{th=localStorage.getItem('theme')||'light';}catch{}
+setTheme(th);
+}
+async function fetchDriveFiles(folderId = 'root', queryStr = ''){
+const token = accessToken || localStorage.getItem('google_access_token');
+if(!token){
+alert('Google 로그인이 필요합니다.');
+return [];
+}
+let q = "trashed=false and mimeType='application/vnd.google-apps.document'";
+if(queryStr && queryStr.trim() !== '') q += ⁠ and name contains '${queryStr.trim().replace(/'/g, "\\'")}'⁠;
+const url = ⁠https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType,modifiedTime)&orderBy=modifiedTime desc&pageSize=50⁠;
+try{
+const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+if(!res.ok) return [];
+const data = await res.json();
+return data.files || [];
+}catch(e){ return []; }
+}
+function openDriveModal(targetSlot = 'main1'){
+activeDriveTargetSlot = targetSlot;
+const modal=$('driveModal');
+if(!modal) return;
+modal.style.display='flex';
+loadDriveFolder('root', '');
+}
+async function loadDriveFolder(folderId, queryStr = ''){
+const list=$('driveFileList');
+if(list) list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">문서 탐색 중...</div>';
+const files = await fetchDriveFiles(folderId, queryStr);
+if(!list) return;
+if(files.length === 0){ list.innerHTML='<div style="text-align:center;padding:40px;opacity:0.6;">구글 문서가 없습니다.</div>'; return; }
+let html = '';
+files.forEach(file => {
+const safeName = file.name.replace(/'/g, "\'");
+html += ⁠ <div class="drive-file" onclick="selectDriveFile('${file.id}', '${safeName}')"> <span>📄</span> <div class="flex-1 min-w-0"> <div class="font-bold text-[12px] text-gray-800 dark:text-gray-200 truncate">${file.name}</div> </div> </div>⁠;
+});
+list.innerHTML = html;
+}
+window.selectDriveFile = (fileId, fileName) => {
+const modal = $('driveModal');
+if(modal) modal.style.display='none';
+if(activeDriveTargetSlot === 'main1'){
+connectedDoc1 = { id: fileId, title: fileName };
+localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
+renderConnectedDoc1();
+} else {
+connectedDoc2 = { id: fileId, title: fileName };
+localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
+renderConnectedDoc2();
+}
+log('📄 문서 연동 완료: ' + fileName, 'ok');
+};
+function initSettingsInputs(){
+const googleClientInput = $('googleClientIdInput');
+const ghInput = $('githubPatInput');
+if(googleClientInput){
+googleClientInput.value = getGoogleClientId();
+googleClientInput.addEventListener('input', e => {
+localStorage.setItem('google_client_id', e.target.value.trim());
+initGis();
+});
+}
+if(ghInput){
+ghInput.value = getGitHubPat();
+ghInput.addEventListener('input', e => {
+localStorage.setItem('github_pat', e.target.value.trim());
+loadRepos();
+});
+}
+}
+function parseBulkKeys(){
+const text = ￼
+￼
+const lines = text.split('\n');
+lines.forEach(line => {
+￼
+￼
+￼
+￼
+￼
+if(k.includes('client_id')) { localStorage.setItem('google_client_id', v); if(('googleClientIdInput'))('googleClientIdInput').value = v; }
+if(k.includes('github') || k.includes('pat')) { localStorage.setItem('github_pat', v); if(('githubPatInput'))$('githubPatInput').value = v; }
+});
+log('⚡ API 키 일괄 파싱 완료', 'ok');
+loadRepos();
+initGis();
+}
+function exportKeysJson(){
+const keysObj = { google_client_id: getGoogleClientId(), github_pat: getGitHubPat() };
+const blob = new Blob([JSON.stringify(keysObj, null, 2)], { type: 'application/json' });
+const a = document.createElement('a');
+a.href = URL.createObjectURL(blob);
+a.download = 'builder_api_keys.json';
+a.click();
+}
+function importKeysJson(e){
+const file = e.target.files?.[0];
+if(!file) return;
+const reader = new FileReader();
+reader.onload = evt => {
+try {
+const keysObj = JSON.parse(evt.target.result);
+if(keysObj.google_client_id) localStorage.setItem('google_client_id', keysObj.google_client_id);
+if(keysObj.github_pat) localStorage.setItem('github_pat', keysObj.github_pat);
+log('📥 키 복원 완료', 'ok');
+loadRepos();
+initGis();
+} catch(err) {}
+};
+reader.readAsText(file);
+}
+async function loadGitHubCommitHistory(){
+const box = $('versionHistoryBox');
+if(!box) return;
+const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+box.innerHTML = ⁠<div class="text-[10px] text-gray-400 p-3 text-center">🐙 커밋 기록 로드 중...</div>⁠;
+const pat = getGitHubPat();
+const headers = {'Accept':'application/vnd.github.v3+json'};
+if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
+const url = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=15⁠;
+try {
+const res = await fetch(url, { headers });
+if(!res.ok){ box.innerHTML = ⁠<div class="text-[10px] text-red-400 p-3 text-center">커밋 내역 없음</div>⁠; return; }
+const commits = await res.json();
+let html = '';
+commits.forEach((c) => {
+const sha = c.sha;
+const shortSha = sha.slice(0, 7);
+const msg = c.commit?.message?.split('\n')[0] || 'Commit ' + shortSha;
+const dateStr = c.commit?.committer?.date ? new Date(c.commit.committer.date).toLocaleString() : '';
+html += ⁠ <div class="version-item flex justify-between items-center p-1.5 px-2 mb-1.5 rounded-[8px] border" style="border-color:var(--line);background:var(--card)"> <div class="flex flex-col overflow-hidden pr-2 flex-1 min-w-0"> <div class="flex items-center gap-1 overflow-hidden"> <span class="badge text-[8px] py-0 px-1 shrink-0 rounded-[4px]" style="background:#f1f5f9;color:#0f172a">#${shortSha}</span> <span class="font-bold text-[10.5px] truncate">${msg}</span> </div> <span class="text-[8.5px] opacity-60 mt-0.5">${dateStr}</span> </div> <button onclick="rollbackGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button> </div>⁠;
+});
+box.innerHTML = html;
+} catch(e) { box.innerHTML = ⁠<div class="text-[10px] text-red-400 p-3 text-center">오류 발생</div>⁠; }
+}
+async function fetchGitHubCommitContent(sha){
+const pat = getGitHubPat();
+const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+const apiUrl = ⁠https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(file)}?ref=${sha}⁠;
+const headers = {'Accept':'application/vnd.github.v3+json'};
+if(pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
+const res = await fetch(apiUrl, { headers });
+if(!res.ok) throw new Error();
+const data = await res.json();
+if(data.content){
+const cleanB64 = data.content.replace(/\s/g, '');
+const bytes = Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0));
+return new TextDecoder().decode(bytes);
+}
+throw new Error();
+}
+window.rollbackGitHubCommit = async function(sha, shortSha){
+try {
+const code = await fetchGitHubCommitContent(sha);
+localStorage.setItem(getDraftCodeKey(), code);
+const editor = $('codeEditor');
+if(editor) editor.value = code;
+showLivePreviewCurrent();
+log(⁠↺ 커밋 #${shortSha} 코드로 롤백 성공!⁠, 'ok');
+} catch(e) { alert('롤백 실패'); }
+};
+function loadDraftHistory(){
+const box = $('versionHistoryBox');
+if(!box) return;
+let history = [];
+try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
+if(!history || history.length === 0){ box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">저장된 기록 없음</div>'; return; }
+let html = '';
+history.forEach((item) => {
+html += ⁠ <div class="version-item flex justify-between items-center p-1.5 px-2 mb-1.5 rounded-[8px] border" style="border-color:var(--line);background:var(--card)"> <div class="flex flex-col overflow-hidden pr-2 flex-1 min-w-0"> <span class="font-bold text-[10.5px] truncate">${item.note || '드래프트'}</span> <span class="text-[8.5px] opacity-60 mt-0.5">${item.time}</span> </div> <button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2 min-h-[26px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button> </div>⁠;
+});
+box.innerHTML = html;
+}
+window.rollbackToVersionHistory = function(id){
+let history = [];
+try { history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]'); } catch{}
+const item = history.find(h => h.id === id);
+if(!item) return;
+localStorage.setItem(getDraftCodeKey(), item.code);
+const editor = $('codeEditor');
+if(editor) editor.value = item.code;
+showLivePreviewCurrent();
+log(⁠↺ 로컬 복구 완료⁠, 'ok');
+};
+function setupEventListeners(){
+initTheme();
+$('themeToggle')?.addEventListener('click', ()=>{
+const isDark=document.documentElement.classList.contains('dark');
+setTheme(isDark?'light':'dark');
+});
+$('pasteClipboardBtn')?.addEventListener('click', async () => {
+try {
+const text = await navigator.clipboard.readText();
+if (!text || !text.trim()) { alert('클립보드에 텍스트가 없습니다.'); return; }
+const editor = $('codeEditor');
+if (editor) editor.value = text;
+saveDraftCustom(text, '클립보드 붙여넣기');
+showLivePreviewCurrent();
+log('📋 클립보드 코드가 반영 및 실시간 미리보기에 적용되었습니다!', 'ok');
+} catch (err) { alert('클립보드 읽기 권한이 차단되었습니다. 코드창에 직접 붙여넣기(Ctrl+V) 해주세요.'); }
+});
+$('previewCheckBtn')?.addEventListener('click', () => {
+const editor = $('codeEditor');
+const code = editor ? editor.value : '';
+if(!code.trim()) { alert('코드창에 소스코드를 붙여넣어 주세요.'); return; }
+saveDraftCustom(code, '미리보기 확정');
+showLivePreviewCurrent();
+});
+￼('previewCloseBtn')?.addEventListener('click', () => hideLivePreviewBox());
+￼('clearLogBtn')?.addEventListener('click', () => { ('logArea').innerHTML = ''; });('buildBtn')?.addEventListener('click', async () => {
+const editor = $('codeEditor');
+const code = editor ? editor.value : '';
+if(!code.trim()) { alert('빌드할 소스코드가 코드창에 없습니다.'); return; }
+saveDraftCustom(code, '최종 빌드 직전 저장');
+await pushToGitHubRepository('🚀 v6.0 최종 빌드 및 수동 백업 커밋');
+});
+￼('showDraftHistoryBtn')?.addEventListener('click', () => loadDraftHistory());
+￼('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
+￼('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
+('driveModalClose')?.addEventListener('click', ()=>{('driveModal').style.display='none'; });
+￼('driveTabMy')?.addEventListener('click', () => loadDriveFolder('root'));
+￼('driveSearchBtn')?.addEventListener('click', () => {
+loadDriveFolder('root', $('driveSearchInput')?.value || '');
+});
+$('repoSelect')?.addEventListener('change', async e=>{
+currentRepo=e.target.value;
+localStorage.setItem('current_repo', currentRepo);
+mainFile = $('mainFileInput')?.value || 'index.html';
+loadRepoDocuments();
+await syncLatestSourceFromGithub(true);
+});
+$('mainFileInput')?.addEventListener('change', async e=>{
+mainFile = e.target.value.trim() || 'index.html';
+await syncLatestSourceFromGithub(true);
+});
+}
+function startApp(){
+try { setupEventListeners(); } catch(e){}
+try { initSettingsInputs(); } catch(e){}
+try { loadRepos(); } catch(e){}
+try { loadRepoDocuments(); } catch(e){}
+try { loadGitHubCommitHistory(); } catch(e){}
+if (window._gisLoaded) { try{ initGis(); }catch(e){} }
+setTimeout(() => { try{ initGis(); }catch(e){} }, 800);
+}
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+setTimeout(startApp, 0);
+} else {
+document.addEventListener('DOMContentLoaded', startApp);
 }
 </script>
 </body>
