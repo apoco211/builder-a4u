@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <meta http-equiv="Cache-Control" content="no-cache">
-<title>Builder-a4u v5.8.33 - 메인 문서 이중 백업 빌더</title>
+<title>Builder-a4u v5.8.34 - 메인 문서 이중 백업 빌더</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>tailwind.config={darkMode:'class'}</script>
 <!-- Google Identity Services 라이브러리 -->
 <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async defer onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();"></script>
-<link rel="manifest" href="./manifest.json?v=5.8.33">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.33">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.33">
-<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.33">
+<link rel="manifest" href="./manifest.json?v=5.8.34">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=5.8.34">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=5.8.34">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=5.8.34">
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -119,12 +119,12 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
 
 <div class="flex justify-between items-center mb-3">
   <div>
-    <h1 class="text-[18px] font-black">Builder-a4u v5.8.33</h1>
+    <h1 class="text-[18px] font-black">Builder-a4u v5.8.34</h1>
     <p class="text-[10px] opacity-60">원클릭 구글문서 자동 생성 & 이중 백업 빌더</p>
   </div>
   <div class="flex gap-2 items-center">
     <button id="themeToggle" class="btn w-[40px] h-[40px] p-0 flex items-center justify-center text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.33 정식</span>
+    <span class="badge shrink-0" style="background:#111;color:#fff">v5.8.34 정식</span>
   </div>
 </div>
 
@@ -340,8 +340,9 @@ body{background:var(--bg);color:var(--txt);max-width:900px;margin:0 auto;padding
     
     <!-- 탐색 탭 및 검색창 -->
     <div class="p-3 border-b flex flex-col gap-2 bg-gray-50 dark:bg-gray-800" style="border-color:var(--line)">
-      <div class="flex gap-2">
-        <button id="driveTabMy" class="btn btn-sm flex-1 bg-white dark:bg-gray-700">📁 내 드라이브</button>
+      <div class="flex gap-1.5">
+        <button id="driveTabRecent" class="btn btn-sm flex-1 bg-white dark:bg-gray-700">🕒 최근 문서</button>
+        <button id="driveTabMy" class="btn btn-sm flex-1">📁 내 드라이브</button>
         <button id="driveTabShared" class="btn btn-sm flex-1">👥 공유문서함</button>
       </div>
       <div class="flex gap-1">
@@ -378,7 +379,7 @@ let activePastedImageBase64 = null;
 let tokenClient = null;
 let accessToken = localStorage.getItem('google_access_token') || '';
 let gisInited = false;
-let driveTabMode = 'my';
+let driveTabMode = 'recent'; // 'recent', 'my', 'shared'
 let activeDriveTargetSlot = 'main1';
 
 function log(msg, type = 'info') {
@@ -409,6 +410,7 @@ async function loadRepos() {
   const pat = getGitHubPat();
   if (!pat) {
     select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
+    loadRepoDocuments();
     return;
   }
   try {
@@ -435,6 +437,7 @@ async function loadRepos() {
   } catch(e) {
     log('레포 목록 로드 실패: ' + e.message, 'err');
   }
+  loadRepoDocuments();
 }
 
 // 드라이브 내 동일한 이름의 구글 문서가 이미 존재하는지 탐색
@@ -469,12 +472,10 @@ async function autoCreateMainDocs(){
 
     let data1 = null;
     let isCreated1 = false;
-    // 1. 기존 문서1 탐색
     const existing1 = await findExistingDocByName(title1);
     if(existing1){
-      data1 = { documentId: existing1.id, title: existing1.name };
+      data1 = { id: existing1.id, title: existing1.name };
     } else {
-      // 신규 생성
       const res1 = await fetch('https://docs.googleapis.com/v1/documents', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -491,18 +492,16 @@ async function autoCreateMainDocs(){
         throw new Error(`메인문서1 생성 실패`);
       }
       const created1 = await res1.json();
-      data1 = { documentId: created1.documentId, title: title1 };
+      data1 = { id: created1.documentId, title: title1 };
       isCreated1 = true;
     }
 
     let data2 = null;
     let isCreated2 = false;
-    // 2. 기존 문서2 탐색
     const existing2 = await findExistingDocByName(title2);
     if(existing2){
-      data2 = { documentId: existing2.id, title: existing2.name };
+      data2 = { id: existing2.id, title: existing2.name };
     } else {
-      // 신규 생성
       const res2 = await fetch('https://docs.googleapis.com/v1/documents', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
@@ -519,12 +518,12 @@ async function autoCreateMainDocs(){
         throw new Error(`메인문서2 생성 실패`);
       }
       const created2 = await res2.json();
-      data2 = { documentId: created2.documentId, title: title2 };
+      data2 = { id: created2.documentId, title: title2 };
       isCreated2 = true;
     }
 
-    connectedDoc1 = { id: data1.documentId, title: title1 };
-    connectedDoc2 = { id: data2.documentId, title: title2 };
+    connectedDoc1 = { id: data1.id, title: title1 };
+    connectedDoc2 = { id: data2.id, title: title2 };
 
     localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
     localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
@@ -624,6 +623,7 @@ function initGis(){
           try{ localStorage.setItem('google_access_token', accessToken); }catch{}
           updateGisStatus('✅ Google 로그인 성공 ('+accessToken.slice(0,10)+'...)');
           log('✅ Google 로그인 성공', 'ok');
+          loadRepoDocuments();
         } else if(resp && resp.error){
           updateGisStatus('❌ 로그인 실패: '+resp.error);
           log('Google 로그인 실패: '+JSON.stringify(resp), 'err');
@@ -730,14 +730,14 @@ function getProjectTemplate(repo){
   const d = new Date().toLocaleDateString();
   const repoName = repo || currentRepo || 'builder-a4u';
   const targetFile = $('mainFileInput')?.value || mainFile || 'index.html';
-  return `1.프로젝트: ${repoName} v5.8.33 (${targetFile})
+  return `1.프로젝트: ${repoName} v5.8.34 (${targetFile})
 2.목적: AI 스마트 자동 파일 탐색 및 이중 구글문서 연동 백업
 3.현재: ${d} - GitHub 커밋 & 메인1(로그)/메인2(소스) 양방향 자동 백업
 4.다음: 대화 내용 실시간 메인 문서 추가 및 기능 확장
 5.결정: 소문자 index.html, manifest.json, 스마트 오토 라우팅
 6.제외: 퇴출된 gemini-2.0-flash / llama-3.3-70b
 7.저장: Supabase+GoogleDocs(Write)+GitHub+localStorage
-8.버그: UI 레이아웃 정화 및 캔버스 자동 이미지 압축 안정성
+8.버그: 구글 드라이브 최근문서 탭 및 연결 문서 영구 유지 패치
 9.모드: 빌드모드
 10.상태: 진행중`;
 }
@@ -1263,7 +1263,7 @@ ${$('memory10')?.value || '없음'}
 
     // 📦 메인 문서 2: 최신 소스코드 전체 백업 (Overwrite)
     if(connectedDoc2 && connectedDoc2.id){
-      const sourceBackupText = `[Builder-a4u v5.8.33 최신 소스코드 백업]
+      const sourceBackupText = `[Builder-a4u v5.8.34 최신 소스코드 백업]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드/갱신 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -1717,10 +1717,14 @@ async function fetchDriveFiles(folderId = 'root', queryStr = ''){
   }
 
   let q = "trashed=false and mimeType='application/vnd.google-apps.document'";
+  
   if(queryStr && queryStr.trim() !== ''){
     q += ` and name contains '${queryStr.trim().replace(/'/g, "\\'")}'`;
   } else {
-    if(driveTabMode === 'shared'){
+    if(driveTabMode === 'recent'){
+      // 최근 수정순 검색 (부모 폴더 제한 없이 가장 최근에 열거나 편집한 구글 문서 조회)
+      q += "";
+    } else if(driveTabMode === 'shared'){
       q += " and sharedWithMe=true";
     } else if(folderId && folderId !== 'root'){
       q += ` and '${folderId}' in parents`;
@@ -1752,7 +1756,20 @@ function openDriveModal(targetSlot = 'main1'){
   modal.style.display='flex';
   const searchInput = $('driveSearchInput');
   if(searchInput) searchInput.value = '';
-  loadDriveFolder('root', queryStr = '');
+  
+  driveTabMode = 'recent';
+  updateDriveTabButtons();
+  loadDriveFolder('root', '');
+}
+
+function updateDriveTabButtons(){
+  const btnRecent = $('driveTabRecent');
+  const btnMy = $('driveTabMy');
+  const btnShared = $('driveTabShared');
+  
+  if(btnRecent) btnRecent.className = `btn btn-sm flex-1 ${driveTabMode === 'recent' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
+  if(btnMy) btnMy.className = `btn btn-sm flex-1 ${driveTabMode === 'my' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
+  if(btnShared) btnShared.className = `btn btn-sm flex-1 ${driveTabMode === 'shared' ? 'bg-white dark:bg-gray-700 font-bold border-black' : ''}`;
 }
 
 async function loadDriveFolder(folderId, queryStr = ''){
@@ -1771,10 +1788,14 @@ async function loadDriveFolder(folderId, queryStr = ''){
     const isFolder = file.mimeType === 'application/vnd.google-apps.folder';
     const icon = isFolder ? '📁' : '📄';
     const safeName = file.name.replace(/'/g, "\\'");
+    const modifiedStr = file.modifiedTime ? new Date(file.modifiedTime).toLocaleDateString() : '';
     html += `
     <div class="drive-file" onclick="${isFolder ? `openSubFolder('${file.id}')` : `selectDriveFile('${file.id}', '${safeName}')`}">
       <span>${icon}</span>
-      <span class="font-bold text-[12px] text-gray-800 dark:text-gray-200">${file.name}</span>
+      <div class="flex-1 min-w-0">
+        <div class="font-bold text-[12px] text-gray-800 dark:text-gray-200 truncate">${file.name}</div>
+        ${modifiedStr ? `<div class="text-[9px] opacity-50">${modifiedStr} 수정됨</div>` : ''}
+      </div>
     </div>`;
   });
   list.innerHTML = html;
@@ -1817,7 +1838,7 @@ function buildContextCopyV87(){
     customDocsText = customLinks.map((l, i) => `- 추가문서${i+1}: ${l.url} (${l.title || '문서'})`).join('\n');
   } else customDocsText = '- 추가문서: 없음';
 
-  return `[${currentRepo} v5.8.33 이어가기용]
+  return `[${currentRepo} v5.8.34 이어가기용]
 📌 프로젝트(Repo): ${currentRepo}
 📂 작업 대상 파일: ${targetFile}
 [기억 10줄]
@@ -1828,7 +1849,7 @@ ${mem}
 ${customDocsText}
 [프로젝트 링크]
 1. repo: https://github.com/${GITHUB_USER}/${currentRepo}
-2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.33`;
+2. pages: https://${GITHUB_USER}.github.io/${currentRepo}/?v=5.8.34`;
 }
 
 function renderContextCopySettings(){
@@ -2024,24 +2045,28 @@ function setupEventListeners(){
   $('buildBtn')?.addEventListener('click', async () => {
     saveDraftCustom(null, '통합 빌드 실행전 저장');
     log('🚀 통합 빌드 실행 (GitHub 푸시 + 메인1,2 동시 백업 + Supabase)', 'info');
-    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.33 커밋');
+    await pushToGitHubRepository('🚀 통합 빌드: Builder-a4u v5.8.34 커밋');
     await syncToSupabaseCloud();
   });
 
   $('btnSupabaseSync')?.addEventListener('click', () => syncToSupabaseCloud());
   $('driveModalClose')?.addEventListener('click', ()=>{ const m=$('driveModal'); if(m) m.style.display='none'; });
 
+  $('driveTabRecent')?.addEventListener('click', () => {
+    driveTabMode = 'recent';
+    updateDriveTabButtons();
+    loadDriveFolder('root');
+  });
+
   $('driveTabMy')?.addEventListener('click', () => {
     driveTabMode = 'my';
-    $('driveTabMy').className = 'btn btn-sm flex-1 bg-white dark:bg-gray-700';
-    $('driveTabShared').className = 'btn btn-sm flex-1';
+    updateDriveTabButtons();
     loadDriveFolder('root');
   });
 
   $('driveTabShared')?.addEventListener('click', () => {
     driveTabMode = 'shared';
-    $('driveTabShared').className = 'btn btn-sm flex-1 bg-white dark:bg-gray-700';
-    $('driveTabMy').className = 'btn btn-sm flex-1';
+    updateDriveTabButtons();
     loadDriveFolder('root');
   });
 
