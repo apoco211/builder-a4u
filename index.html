@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.5.7 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v6.5.8 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.5.7">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.5.7">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.5.7">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.5.7">
+  <link rel="manifest" href="./manifest.json?v=6.5.8">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.5.8">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.5.8">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.5.8">
 
   <style>
     @font-face {
@@ -321,7 +321,7 @@
         white-space: nowrap;
       }
       
-      /* 모바일 UI 깨짐 방지 레이아웃 조정 (v6.5.7) */
+      /* 모바일 UI 깨짐 방지 레이아웃 조정 */
       .card-header-mobile-col {
         flex-direction: column;
         align-items: flex-start !important;
@@ -515,7 +515,7 @@
 <!-- 상단 헤더 영역 -->
 <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
   <div class="min-w-0 flex-1">
-    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.5.7</h1>
+    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.5.8</h1>
     <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 실시간 미리보기 캡처 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-1 items-center shrink-0">
@@ -607,7 +607,7 @@
         <span class="text-[9.5px] opacity-60 hidden md:inline">빌드 시 메인1(히스토리) 문서에 함께 기록됩니다</span>
       </div>
     </div>
-    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: app.js 투두 로직 기능 개선 및 v6.5.7 빌드 동기화)"></textarea>
+    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: app.js 투두 로직 기능 개선 및 v6.5.8 빌드 동기화)"></textarea>
   </div>
 
   <!-- 하단 코드 입력 및 미리보기 컨트롤 상자 -->
@@ -630,7 +630,11 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
       <button id="previewCheckBtn" class="btn py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확정</button>
       <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px]">📸 미리보기 클립보드 캡처</button>
-      <button id="buildBtn" class="btn btn-yellow py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
+      <!-- 구글 로그아웃 상태일 때 빌드 버튼 옆에 5:5로 쪼개져서 나타나는 로그인 버튼 -->
+      <div class="flex gap-1.5">
+        <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[10.5px] sm:text-[11px] hidden">🔑 구글 연동(로그인)</button>
+        <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
+      </div>
     </div>
   </div>
 
@@ -878,21 +882,31 @@
     return localStorage.getItem('github_pat') || $('githubPatInput')?.value || '';
   }
 
-  // 구글 로그인 상태 배지 실시간 동기화
+  // 구글 로그인 상태 배지 실시간 동기화 (v6.5.8 빌드버튼 옆 로그인 UI 적용)
   function updateGisStatus(msg) {
     const el = $('googleStatus');
     if (el) el.textContent = msg;
 
     const topBadge = $('topGoogleStatusBadge');
-    if (topBadge) {
-      if (isGoogleLoggedIn()) {
+    const bottomLoginBtn = $('bottomGoogleLoginBtn');
+
+    if (isGoogleLoggedIn()) {
+      if (topBadge) {
         topBadge.style.background = '#10b981';
         topBadge.style.color = '#ffffff';
         topBadge.textContent = '🟢 로그인됨';
-      } else {
+      }
+      if (bottomLoginBtn) {
+        bottomLoginBtn.style.display = 'none'; // 로그인 상태면 하단 5:5 버튼 숨김
+      }
+    } else {
+      if (topBadge) {
         topBadge.style.background = '#64748b';
         topBadge.style.color = '#ffffff';
         topBadge.textContent = '⚪ 로그인 필요';
+      }
+      if (bottomLoginBtn) {
+        bottomLoginBtn.style.display = 'inline-flex'; // 로그아웃 상태면 5:5 버튼 노출
       }
     }
   }
@@ -1097,7 +1111,7 @@
       }
     }
 
-    return `[${repo} 작업 맥락 (via Builder-a4u v6.5.7)]
+    return `[${repo} 작업 맥락 (via Builder-a4u v6.5.8)]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -1130,7 +1144,7 @@ ${extraDocsText}${ideaBlock}
   };
 
   // ----------------------------------------------------
-  // 핵심 기능: 캔버스 이미지 병합 및 라벨링 (v6.5.7 추가)
+  // 핵심 기능: 캔버스 이미지 병합 및 라벨링
   // ----------------------------------------------------
   window.copyMergedImagesToClipboard = async function() {
     if (!currentIdeaImages || currentIdeaImages.length === 0) {
@@ -1863,7 +1877,7 @@ ${extraDocsText}${ideaBlock}
     try {
       if (connectedDoc1 && connectedDoc1.id) {
         const logText = `==================================================
-📌 [${currentRepo} 빌드 완료 백업 (via Builder-a4u v6.5.7)]
+📌 [${currentRepo} 빌드 완료 백업 (via Builder-a4u v6.5.8)]
 ⏰ 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
 📂 파일: ${targetFile}
@@ -1874,7 +1888,7 @@ ${userNote}
       }
 
       if (connectedDoc2 && connectedDoc2.id) {
-        const sourceBackupText = `[${currentRepo} 최신 소스코드 백업 (via Builder-a4u v6.5.7)]
+        const sourceBackupText = `[${currentRepo} 최신 소스코드 백업 (via Builder-a4u v6.5.8)]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -2337,6 +2351,11 @@ ${codeToPush}`;
       const editor = $('codeEditor');
       const code = editor ? editor.value : '';
       if (!code.trim()) { showToast('빌드할 소스코드가 하단 상자에 없습니다.', 'err'); return; }
+      
+      if (!isGoogleLoggedIn()) {
+         showToast('⚠️ 구글 연동(로그인)이 안되어 구글 문서 백업은 건너뜁니다.', 'info');
+      }
+
       saveDraftCustom(code, '최종 빌드 직전 저장');
       await pushToGitHubRepository();
     });
