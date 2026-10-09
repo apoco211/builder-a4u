@@ -1837,7 +1837,7 @@ ${extraDocsText}${ideaBlock}
   };
 
   function initSettingsInputs() {
-    $('googleClientIdInput')?.addEventListener('input', e => {       localStorage.setItem('google_client_id', e.target.value.trim());       initGis();     });$('githubPatInput')?.addEventListener('input', e => {
+    $('googleClientIdInput')?.addEventListener('input', e => {        localStorage.setItem('google_client_id', e.target.value.trim());        initGis();      });$('githubPatInput')?.addEventListener('input', e => {
       localStorage.setItem('github_pat', e.target.value.trim());
       loadRepos();
     });
