@@ -513,7 +513,7 @@
 <!-- 상단 헤더 영역 -->
 <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
   <div class="min-w-0 flex-1">
-    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.0</h1>
+    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.1</h1>
     <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 텍스트 문서 다운로드 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-1 items-center shrink-0">
@@ -1723,50 +1723,103 @@ ${extraDocsText}${ideaBlock}
       const resData = await putRes.json();
       commitSha = resData.commit?.sha?.slice(0, 7) || '완료';
       log(`✅ [${targetFile}] GitHub 푸시 완료! (#${commitSha})`, 'ok');
-      showToast(`🚀 GitHub 푸시 완료! (#${commitSha})`, 'ok');
     } catch(e) {
       log(`❌ GitHub 푸시 실패: ${e.message}`, 'err');
       showToast('푸시 실패: ' + e.message, 'err');
       return false;
     }
 
+    // ============================================
+    // 구글 문서 이중 백업 로직 개선 (에러 핸들링 강화)
+    // ============================================
+    let doc1Success = true;
+    let doc2Success = true;
+
     try {
       if (connectedDoc1 && connectedDoc1.id) {
+        log(`📄 메인1(히스토리) 백업 시도 중...`, 'info');
         const logText = `==================================================\n📌 [${currentRepo} 빌드 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n📂 파일: ${targetFile}\n📝 업데이트 내용:\n${userNote}\n==================================================\n`;
-        await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+        doc1Success = await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+        if (doc1Success) log(`✅ 메인1(히스토리) 구글 문서 백업 완료!`, 'ok');
       }
       if (connectedDoc2 && connectedDoc2.id) {
+        log(`📦 메인2(소스코드) 백업 시도 중...`, 'info');
         const srcText = `[${currentRepo} 소스 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n\n${codeToPush}`;
-        await writeOrAppendToGoogleDoc(connectedDoc2.id, srcText, 'overwrite');
+        doc2Success = await writeOrAppendToGoogleDoc(connectedDoc2.id, srcText, 'overwrite');
+        if (doc2Success) log(`✅ 메인2(소스코드) 구글 문서 백업 완료!`, 'ok');
       }
-    } catch(docErr) {}
+    } catch(docErr) {
+        log(`❌ 구글 문서 연동 중 예상치 못한 오류 발생: ${docErr.message}`, 'err');
+    }
+
+    if ((connectedDoc1 && !doc1Success) || (connectedDoc2 && !doc2Success)) {
+        showToast('⚠️ Github 푸시는 완료되었으나, 구글 문서 백업에 실패했습니다. 로그를 확인하세요.', 'err');
+    } else {
+        showToast(`🚀 Github 푸시 및 백업 완료! (#${commitSha})`, 'ok');
+    }
+    
     return true;
   }
 
+  // ============================================
+  // 백업 문서 쓰기 함수 개선 (조용히 실패하지 않도록)
+  // ============================================
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
-    if (!isGoogleLoggedIn() || !docId) return false;
+    if (!isGoogleLoggedIn()) {
+      log('❌ 구글 로그인(권한)이 만료되었습니다. 우측 상단이나 하단 버튼으로 다시 로그인해주세요.', 'err');
+      return false;
+    }
+    if (!docId) return false;
+    
     try {
+      // 제어문자 제거(구글 API 에러 원인 1순위 방지)
       const cleanText = newText.replace(/\r\n/g, '\n').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
-      const getRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, { headers: { Authorization: `Bearer ${accessToken}` } });
-      if (!getRes.ok) return false;
+      
+      // 1. 문서 메타데이터 조회
+      const getRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, { 
+          headers: { Authorization: `Bearer ${accessToken}` } 
+      });
+      
+      if (!getRes.ok) {
+          const err = await getRes.json().catch(()=>({}));
+          log(`❌ 문서 정보 조회 실패 (HTTP ${getRes.status}): ` + (err.error?.message || ''), 'err');
+          return false;
+      }
+      
       const docData = await getRes.json();
-      const endIndex = docData.body?.content?.[docData.body.content.length - 1]?.endIndex || 1;
+      const content = docData.body?.content || [];
+      const endIndex = content.length > 0 ? content[content.length - 1].endIndex : 2;
       
       const requests = [];
       if (mode === 'overwrite') {
-        if (endIndex > 2) requests.push({ deleteContentRange: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
+        if (endIndex > 2) {
+            requests.push({ deleteContentRange: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
+        }
         requests.push({ insertText: { location: { index: 1 }, text: cleanText } });
       } else {
-        requests.push({ insertText: { location: { index: Math.max(1, endIndex - 1) }, text: '\n' + cleanText } });
+        // append mode
+        const insertIndex = Math.max(1, endIndex - 1);
+        requests.push({ insertText: { location: { index: insertIndex }, text: '\n' + cleanText } });
       }
 
+      // 2. 문서 업데이트 (BatchUpdate)
       const updateRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}:batchUpdate`, {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ requests })
       });
-      return updateRes.ok;
-    } catch(e) { return false; }
+      
+      if (!updateRes.ok) {
+          const err = await updateRes.json().catch(()=>({}));
+          log(`❌ 문서 업데이트 실패 (HTTP ${updateRes.status}): ` + (err.error?.message || ''), 'err');
+          return false;
+      }
+      
+      return true;
+    } catch(e) { 
+        log('❌ 문서 API 접근 중 예외 발생: ' + e.message, 'err');
+        return false; 
+    }
   }
 
   window.openDriveModal = function(targetSlot = 'main1') {
@@ -1834,9 +1887,9 @@ ${extraDocsText}${ideaBlock}
   };
 
   function initSettingsInputs() {
-    $('googleClientIdInput')?.addEventListener('input', e => {       
-      localStorage.setItem('google_client_id', e.target.value.trim());       
-      initGis();     
+    $('googleClientIdInput')?.addEventListener('input', e => {
+        localStorage.setItem('google_client_id', e.target.value.trim());       
+        initGis();     
     });
     $('githubPatInput')?.addEventListener('input', e => {
       localStorage.setItem('github_pat', e.target.value.trim());
@@ -2009,78 +2062,37 @@ ${extraDocsText}${ideaBlock}
   function setupEventListeners() {
     initTheme();
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
-    
-    $('clearUpdateNoteBtn')?.addEventListener('click', () => { 
-      if ($('updateNoteInput')) $('updateNoteInput').value = ''; 
-    });
+    $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
-    
-    $('clearCodeBtn')?.addEventListener('click', () => { 
-      if ($('codeEditor')) $('codeEditor').value = ''; 
-      localStorage.removeItem(getDraftCodeKey()); 
-    });
-    $('pasteClipboardBtn')?.addEventListener('click', () => smartPasteToTarget($('codeEditor'), val => { 
-      saveDraftCustom(val, '붙여넣기'); 
-      showLivePreviewCurrent(); 
-    }));
-    
-    $('previewCheckBtn')?.addEventListener('click', () => { 
-      const c = $('codeEditor')?.value || ''; 
-      if (c.trim()) { 
-        saveDraftCustom(c, '미리보기 확정'); 
-        showLivePreviewCurrent(); 
-      } 
-    });
-    
+    $('clearCodeBtn')?.addEventListener('click', () => { if ($('codeEditor'))$('codeEditor').value = ''; localStorage.removeItem(getDraftCodeKey()); });
+    $('pasteClipboardBtn')?.addEventListener('click', () => smartPasteToTarget($('codeEditor'), val => { saveDraftCustom(val, '붙여넣기'); showLivePreviewCurrent(); }));
+    $('previewCheckBtn')?.addEventListener('click', () => { const c =$('codeEditor')?.value || ''; if (c.trim()) { saveDraftCustom(c, '미리보기 확정'); showLivePreviewCurrent(); } });
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
     $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);
-    
-    $('refreshRepoBtn')?.addEventListener('click', () => { 
-      loadRepos(); 
-      scanRepoFileTree(); 
-    });
-    
-    $('clearLogBtn')?.addEventListener('click', () => { 
-      $('logArea').innerHTML = ''; 
-    });
+    $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
+    $('clearLogBtn')?.addEventListener('click', () => {$('logArea').innerHTML = ''; });
     
     $('buildBtn')?.addEventListener('click', async () => { 
-      const c = $('codeEditor')?.value || ''; 
-      if (c.trim()) { 
-        saveDraftCustom(c, '최종 빌드 전 저장'); 
-        await pushToGitHubRepository(); 
-      } 
+        const c = $('codeEditor')?.value || ''; 
+        if (c.trim()) { 
+            saveDraftCustom(c, '최종 빌드 전 저장'); 
+            await pushToGitHubRepository(); 
+        } else {
+            showToast('빌드할 소스 코드가 입력되지 않았습니다.', 'err');
+        }
     });
-    
+
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
     $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
     $('parseBulkKeysBtn')?.addEventListener('click', parseBulkKeys);
     $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
     $('importKeysJsonInput')?.addEventListener('change', importKeysJson);
     $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
-    
-    $('driveModalClose')?.addEventListener('click', () => { 
-      $('driveModal').style.display = 'none'; 
-    });
-    
-    $('driveTabRecent')?.addEventListener('click', () => { 
-      setDriveTabStyle('recent'); 
-      loadDriveFolder('recent', $('driveSearchInput')?.value || ''); 
-    });
-    
-    $('driveTabMy')?.addEventListener('click', () => { 
-      setDriveTabStyle('my'); 
-      loadDriveFolder('my', $('driveSearchInput')?.value || ''); 
-    });
-    
-    $('driveTabShared')?.addEventListener('click', () => { 
-      setDriveTabStyle('shared'); 
-      loadDriveFolder('shared', $('driveSearchInput')?.value || ''); 
-    });
-    
-    $('driveSearchBtn')?.addEventListener('click', () => {
-      loadDriveFolder(activeDriveTab || 'recent', $('driveSearchInput')?.value || '');
-    });
+    $('driveModalClose')?.addEventListener('click', () => { $('driveModal').style.display = 'none'; });
+    $('driveTabRecent')?.addEventListener('click', () => { setDriveTabStyle('recent'); loadDriveFolder('recent', $('driveSearchInput')?.value || ''); });
+    $('driveTabMy')?.addEventListener('click', () => { setDriveTabStyle('my'); loadDriveFolder('my', $('driveSearchInput')?.value || ''); });
+    $('driveTabShared')?.addEventListener('click', () => { setDriveTabStyle('shared'); loadDriveFolder('shared', $('driveSearchInput')?.value || ''); });
+    $('driveSearchBtn')?.addEventListener('click', () => loadDriveFolder(activeDriveTab || 'recent', $('driveSearchInput')?.value || ''));
     
     $('repoSelect')?.addEventListener('change', async e => {
       currentRepo = e.target.value;
@@ -2116,7 +2128,6 @@ ${extraDocsText}${ideaBlock}
       if (e.target.files) Array.from(e.target.files).forEach(f => processIdeaImageFile(f));
       e.target.value = '';
     });
-    
     document.addEventListener('paste', handlePasteEvent);
   }
 
