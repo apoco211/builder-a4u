@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.5.5 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v6.5.7 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.5.5">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.5.5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.5.5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.5.5">
+  <link rel="manifest" href="./manifest.json?v=6.5.7">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.5.7">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.5.7">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.5.7">
 
   <style>
     @font-face {
@@ -320,6 +320,22 @@
         padding: 9px 6px !important;
         white-space: nowrap;
       }
+      
+      /* 모바일 UI 깨짐 방지 레이아웃 조정 (v6.5.7) */
+      .card-header-mobile-col {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 8px;
+      }
+      .card-header-mobile-col .flex {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+      }
+      .card-header-mobile-col h2 {
+        white-space: normal;
+        line-height: 1.3;
+      }
     }
 
     .live-preview-box {
@@ -458,6 +474,40 @@
     .dark .drive-file:hover {
       background: #2a2f3f;
     }
+
+    /* 아이디어 사진 썸네일 컨테이너 */
+    .idea-img-container {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .idea-img-thumb {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background-size: cover;
+      background-position: center;
+    }
+    .idea-img-remove {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #ef4444;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
@@ -465,7 +515,7 @@
 <!-- 상단 헤더 영역 -->
 <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
   <div class="min-w-0 flex-1">
-    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.5.5</h1>
+    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.5.7</h1>
     <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 실시간 미리보기 캡처 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-1 items-center shrink-0">
@@ -485,7 +535,7 @@
 
   <!-- 작업 레포지토리 & 대상 파일 감지 카드 -->
   <div class="card">
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 class="font-bold text-[12px]">📌 작업 레포지토리 & 대상 파일 감지</h2>
       <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0">🔄 레포 새로고침</button>
     </div>
@@ -511,7 +561,7 @@
 
     <!-- 구글 문서 이중 백업 및 추가 참조 문서 연동 영역 -->
     <div class="p-3 rounded-[12px] border bg-[var(--bg)] space-y-2" style="border-color:var(--line)">
-      <div class="flex justify-between items-center">
+      <div class="flex justify-between items-center card-header-mobile-col">
         <span class="font-bold text-[11px] text-blue-600 dark:text-blue-400">📄 이중 백업 구글 문서</span>
         <button onclick="autoCreateMainDocs()" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">✨ 문서 전체 자동 탐색/생성/연동</button>
       </div>
@@ -549,7 +599,7 @@
 
   <!-- 상단 패치 메모 상자 -->
   <div class="card mb-3">
-    <div class="flex justify-between items-center mb-1.5">
+    <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 상단 상자: 업데이트 내용 & 빌드 요약 메모</h2>
       <div class="flex gap-1 items-center">
         <button id="clearUpdateNoteBtn" class="btn btn-sm text-[9.5px] py-0.5 px-2" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑 지우기</button>
@@ -557,12 +607,12 @@
         <span class="text-[9.5px] opacity-60 hidden md:inline">빌드 시 메인1(히스토리) 문서에 함께 기록됩니다</span>
       </div>
     </div>
-    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: app.js 투두 로직 기능 개선 및 v6.5.5 빌드 동기화)"></textarea>
+    <textarea id="updateNoteInput" class="textarea h-[80px] text-[12px]" placeholder="이번 빌드의 주요 변경사항이나 패치 내역을 입력하세요. (예: app.js 투두 로직 기능 개선 및 v6.5.7 빌드 동기화)"></textarea>
   </div>
 
   <!-- 하단 코드 입력 및 미리보기 컨트롤 상자 -->
   <div class="card" style="border:2px solid #10b981">
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 하단 상자: 소스코드 붙여넣기 & 실시간 미리보기</h2>
       <span id="draftStatus" class="text-[9.5px] opacity-60">대기중</span>
     </div>
@@ -628,9 +678,12 @@
 
   <!-- 전체 작업 맥락 복사 카드 -->
   <div class="card mb-4" style="border:2px solid #3b82f6">
-    <div class="flex justify-between items-center mb-2">
+    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 class="font-bold text-[13px] text-blue-600 dark:text-blue-400">📋 대화창 전달용 전체 작업 맥락 복사</h2>
-      <button onclick="copyFullContext()" class="btn btn-sm py-1.5 px-3 text-[10px] btn-primary">📋 전체 맥락 복사하기</button>
+      <div class="flex gap-1">
+        <button onclick="copyFullContext()" class="btn btn-sm py-1.5 px-3 text-[10px] btn-primary">📋 전체 텍스트 복사</button>
+        <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1.5 px-3 text-[10px] btn-yellow">🖼️ 첨부사진 통합 복사</button>
+      </div>
     </div>
     <p class="text-[10.5px] opacity-70 mb-2">아래 맥락 텍스트를 복사하여 Gemini/대화창에 붙여넣으면 프로젝트와 문서 상태가 그대로 공유됩니다.</p>
     <textarea id="fullContextBox" class="textarea h-[180px] text-[11px] font-mono" readonly></textarea>
@@ -638,12 +691,21 @@
 
   <!-- 레포지토리별 다음 업데이트 아이디어 메모 카드 -->
   <div class="card mb-4" style="border:2px solid #8b5cf6">
-    <div class="flex justify-between items-center mb-2">
-      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
-      <button onclick="saveRepoIdea()" class="btn btn-sm py-1 px-3 text-[10px]" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">💾 아이디어 저장</button>
+    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
+      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
+      <div class="flex gap-1">
+        <label class="btn btn-sm py-1 px-3 text-[10px] cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
+          📷 사진 첨부
+          <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple>
+        </label>
+        <button onclick="saveRepoIdea()" class="btn btn-sm py-1 px-3 text-[10px]" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 전체 아이디어 저장</button>
+      </div>
     </div>
-    <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어두시면 맥락 복사 시 [다음 업데이트 아이디어] 항목으로 자동 첨부됩니다.</p>
+    <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어주세요. 사진 첨부 또는 Ctrl+V(붙여넣기)도 지원합니다.</p>
     <textarea id="repoIdeaInput" class="textarea h-[100px] text-[12px]" placeholder="예: 1. 오른쪽 위의 앱제목이 다 보이도록 조정&#10;2. 모바일 UI 버튼 세로 간격 미세 조정"></textarea>
+    
+    <!-- 첨부된 썸네일이 표시될 컨테이너 -->
+    <div id="ideaImageContainer" class="idea-img-container"></div>
   </div>
 
   <!-- 인증 및 API 키 관리 카드 -->
@@ -735,6 +797,9 @@
   let tokenExpiry = 0;
   let activeDriveTargetSlot = 'main1';
   let activeDriveTab = 'recent';
+  
+  // 아이디어 이미지 상태 배열 (Base64 압축 저장용)
+  let currentIdeaImages = [];
 
   // 구글 로그인 상태 유효성 검사
   function isGoogleLoggedIn() {
@@ -850,22 +915,111 @@
   function getIdeaKey() {
     return 'repo_idea_' + currentRepo;
   }
+  
+  // 이미지 저장을 위한 고유 키
+  function getIdeaImagesKey() {
+    return 'repo_idea_images_' + currentRepo;
+  }
 
   function loadRepoIdea() {
     const title = $('repoIdeaTitle');
     if (title) title.textContent = `💡 [${currentRepo}] 다음 업데이트 아이디어 (영구 저장)`;
     const input = $('repoIdeaInput');
     if (input) input.value = localStorage.getItem(getIdeaKey()) || '';
+    
+    // 이미지 불러오기
+    try {
+      const savedImages = localStorage.getItem(getIdeaImagesKey());
+      currentIdeaImages = savedImages ? JSON.parse(savedImages) : [];
+    } catch(e) {
+      currentIdeaImages = [];
+    }
+    renderIdeaImages();
   }
 
   window.saveRepoIdea = function() {
     const input = $('repoIdeaInput');
     if (input) {
       localStorage.setItem(getIdeaKey(), input.value);
-      showToast(`💡 [${currentRepo}] 업데이트 아이디어가 영구 저장되었습니다!`, 'ok');
+      localStorage.setItem(getIdeaImagesKey(), JSON.stringify(currentIdeaImages));
+      showToast(`💡 [${currentRepo}] 업데이트 아이디어 전체가 영구 저장되었습니다!`, 'ok');
       updateFullContextBox();
     }
   };
+
+  // 이미지 파일 리사이징 및 Base64 변환
+  function processIdeaImageFile(file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 800;
+        const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+        
+        canvas.width = img.width * scale;
+        canvas.height = img.height * scale;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        
+        const compressedBase64 = canvas.toDataURL('image/webp', 0.8);
+        currentIdeaImages.push(compressedBase64);
+        renderIdeaImages();
+        saveRepoIdea(); // 첨부 즉시 자동 저장
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // 썸네일 렌더링
+  function renderIdeaImages() {
+    const container = $('ideaImageContainer');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    currentIdeaImages.forEach((imgBase64, index) => {
+      const thumb = document.createElement('div');
+      thumb.className = 'idea-img-thumb';
+      thumb.style.backgroundImage = `url(${imgBase64})`;
+      
+      const removeBtn = document.createElement('button');
+      removeBtn.className = 'idea-img-remove';
+      removeBtn.textContent = '✕';
+      removeBtn.onclick = function() {
+        currentIdeaImages.splice(index, 1);
+        renderIdeaImages();
+        saveRepoIdea();
+      };
+      
+      thumb.appendChild(removeBtn);
+      container.appendChild(thumb);
+    });
+    updateFullContextBox();
+  }
+  
+  // 클립보드 붙여넣기 이벤트 처리 (이미지 지원)
+  function handlePasteEvent(e) {
+    // 설정 탭이 활성화되어 있고, 아이디어 텍스트창이나 그 주변에서 붙여넣기가 일어날 때만 처리
+    const activeTab = $('tabSettingsContent');
+    if (activeTab && activeTab.style.display !== 'none') {
+      const items = (e.clipboardData || e.originalEvent.clipboardData).items;
+      let hasImage = false;
+      for (let index in items) {
+        const item = items[index];
+        if (item.kind === 'file' && item.type.startsWith('image/')) {
+          const blob = item.getAsFile();
+          processIdeaImageFile(blob);
+          hasImage = true;
+        }
+      }
+      if (hasImage) {
+        showToast('📸 이미지가 클립보드에서 추가되었습니다.', 'ok');
+      }
+    }
+  }
 
   function initTheme() {
     const saved = localStorage.getItem('theme');
@@ -911,7 +1065,7 @@
     }
   };
 
-  // 전체 작업 맥락 텍스트 생성
+  // 전체 작업 맥락 텍스트 생성 (이미지 지시어 추가)
   function getFullContextText() {
     const repo = currentRepo || 'builder-a4u';
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
@@ -930,11 +1084,19 @@
 
     const ideaText = localStorage.getItem(getIdeaKey()) || $('repoIdeaInput')?.value || '';
     let ideaBlock = '';
-    if (ideaText && ideaText.trim().length > 0) {
-      ideaBlock = `\n[다음 업데이트 아이디어]\n${ideaText.trim()}\n`;
+    
+    // 아이디어 텍스트가 있거나 첨부된 사진이 있을 경우 블록 생성
+    if (ideaText && ideaText.trim().length > 0 || currentIdeaImages.length > 0) {
+      ideaBlock = `\n[다음 업데이트 아이디어]\n${ideaText.trim() || '(텍스트 내용 없음)'}\n`;
+      
+      if (currentIdeaImages.length > 0) {
+        // [사진 1, 사진 2] 형태로 자동 지시어 생성
+        const photoLabels = currentIdeaImages.map((_, imgIdx) => `'사진 ${imgIdx + 1}'`).join(', ');
+        ideaBlock += `   👉 (첨부된 통합 이미지의 ${photoLabels} 참조)\n`;
+      }
     }
 
-    return `[${repo} 작업 맥락 (via Builder-a4u v6.5.5)]
+    return `[${repo} 작업 맥락 (via Builder-a4u v6.5.7)]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -959,12 +1121,97 @@ ${extraDocsText}${ideaBlock}
     try {
       await navigator.clipboard.writeText(text);
       log('📋 전체 작업 맥락이 클립보드에 복사되었습니다!', 'ok');
-      showToast('📋 작업 맥락이 클립보드에 복사되었습니다!', 'ok');
+      showToast('📋 텍스트 복사 완료! AI 창에 1순위로 붙여넣으세요.', 'ok');
     } catch (e) {
       log('❌ 맥락 복사 실패: ' + e.message, 'err');
       showToast('❌ 맥락 복사 실패: ' + e.message, 'err');
     }
   };
+
+  // ----------------------------------------------------
+  // 핵심 기능: 캔버스 이미지 병합 및 라벨링 (v6.5.7 추가)
+  // ----------------------------------------------------
+  window.copyMergedImagesToClipboard = async function() {
+    if (!currentIdeaImages || currentIdeaImages.length === 0) {
+      showToast('첨부된 사진이 없습니다.', 'err');
+      return;
+    }
+    
+    log('🖼️ 이미지 병합 및 복사 준비 중...', 'info');
+    showToast('🖼️ 이미지 병합 중...', 'info');
+
+    const itemsToDraw = [];
+    let totalHeight = 0;
+    const CANVAS_WIDTH = 800;
+
+    for (let j = 0; j < currentIdeaImages.length; j++) {
+      const img = new Image();
+      img.src = currentIdeaImages[j];
+      
+      // 이미지 로드 대기
+      await new Promise(resolve => { img.onload = resolve; });
+      
+      const scale = Math.min(1, (CANVAS_WIDTH - 40) / img.width);
+      const drawWidth = img.width * scale;
+      const drawHeight = img.height * scale;
+      
+      itemsToDraw.push({
+        label: `[아이디어 사진 ${j + 1}]`,
+        img: img,
+        width: drawWidth,
+        height: drawHeight
+      });
+      
+      // 각 이미지 섹션 높이 누적 (이미지 높이 + 텍스트 영역 40px + 여백 20px)
+      totalHeight += drawHeight + 60; 
+    }
+
+    // 통합 캔버스 생성 및 렌더링
+    const canvas = document.createElement('canvas');
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = totalHeight + 20; // 하단 최종 여백 추가
+    const ctx = canvas.getContext('2d');
+
+    // 하얀색 배경 채우기 (투명도 방지 및 가독성 확보)
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    let currentY = 30;
+    
+    itemsToDraw.forEach(item => {
+      // 1. 텍스트 라벨 그리기 (이미지 상단)
+      ctx.fillStyle = '#111111';
+      ctx.font = 'bold 18px "Optimistic", sans-serif';
+      ctx.fillText(item.label, 20, currentY);
+      
+      currentY += 15; // 텍스트와 이미지 사이 간격
+      
+      // 2. 이미지 그리기 (가운데 정렬)
+      const xPos = (CANVAS_WIDTH - item.width) / 2;
+      ctx.drawImage(item.img, xPos, currentY, item.width, item.height);
+      
+      currentY += item.height + 40; // 다음 사진 렌더링을 위한 Y축 이동
+    });
+
+    // 클립보드에 PNG 형태로 복사 (Safari 및 최신 브라우저 지원 API)
+    try {
+      canvas.toBlob(async (blob) => {
+        if (blob && navigator.clipboard && window.ClipboardItem) {
+          const item = new ClipboardItem({ 'image/png': blob });
+          await navigator.clipboard.write([item]);
+          log('🖼️ 사진 통합본 클립보드 복사 완료', 'ok');
+          alert('🖼️ 첨부 사진 통합본이 복사되었습니다!\nAI 채팅창에 두 번째로 붙여넣기(Ctrl+V) 하세요.');
+        } else {
+           throw new Error("ClipboardItem을 지원하지 않는 브라우저입니다.");
+        }
+      }, 'image/png');
+    } catch (error) {
+      log("❌ 클립보드 이미지 복사 실패: " + error.message, "err");
+      showToast('브라우저 권한 문제로 복사에 실패했습니다. Safari/Chrome 최신버전을 권장합니다.', 'err');
+    }
+  };
+  // ----------------------------------------------------
+
 
   function loadRepoDocuments() {
     try {
@@ -1615,7 +1862,7 @@ ${extraDocsText}${ideaBlock}
     try {
       if (connectedDoc1 && connectedDoc1.id) {
         const logText = `==================================================
-📌 [${currentRepo} 빌드 완료 백업 (via Builder-a4u v6.5.5)]
+📌 [${currentRepo} 빌드 완료 백업 (via Builder-a4u v6.5.7)]
 ⏰ 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
 📂 파일: ${targetFile}
@@ -1626,7 +1873,7 @@ ${userNote}
       }
 
       if (connectedDoc2 && connectedDoc2.id) {
-        const sourceBackupText = `[${currentRepo} 최신 소스코드 백업 (via Builder-a4u v6.5.5)]
+        const sourceBackupText = `[${currentRepo} 최신 소스코드 백업 (via Builder-a4u v6.5.7)]
 📌 레포지토리: ${currentRepo} (${targetFile})
 ⏰ 최근 빌드 일시: ${new Date().toLocaleString()}
 🐙 Commit SHA: #${commitSha}
@@ -2042,6 +2289,17 @@ ${codeToPush}`;
       localStorage.setItem(getIdeaKey(), e.target.value);
       updateFullContextBox();
     });
+
+    // 이미지 파일 첨부 인풋 이벤트 리스너 추가
+    $('ideaImageInput')?.addEventListener('change', e => {
+      if (e.target.files) {
+        Array.from(e.target.files).forEach(file => processIdeaImageFile(file));
+      }
+      e.target.value = ''; // 동일 파일 재업로드를 위해 초기화
+    });
+    
+    // 전역 paste 이벤트 리스너 추가 (클립보드 이미지 캡처용)
+    document.addEventListener('paste', handlePasteEvent);
 
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
     $('previewCloseBtn')?.addEventListener('click', () => hideLivePreviewBox());
