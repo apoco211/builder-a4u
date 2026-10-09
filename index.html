@@ -800,9 +800,6 @@
     return Boolean(accessToken && Date.now() < tokenExpiry);
   }
 
-  // ----------------------------------------------------
-  // 신규 추가: 텍스트 문서 (.txt / .html) 로컬 다운로드 기능
-  // ----------------------------------------------------
   window.downloadCodeAsTextDoc = function() {
     const editor = $('codeEditor');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
@@ -1837,7 +1834,11 @@ ${extraDocsText}${ideaBlock}
   };
 
   function initSettingsInputs() {
-    $('googleClientIdInput')?.addEventListener('input', e => {       localStorage.setItem('google_client_id', e.target.value.trim());       initGis();     });$('githubPatInput')?.addEventListener('input', e => {
+    $('googleClientIdInput')?.addEventListener('input', e => {       
+      localStorage.setItem('google_client_id', e.target.value.trim());       
+      initGis();     
+    });
+    $('githubPatInput')?.addEventListener('input', e => {
       localStorage.setItem('github_pat', e.target.value.trim());
       loadRepos();
     });
@@ -2008,17 +2009,80 @@ ${extraDocsText}${ideaBlock}
   function setupEventListeners() {
     initTheme();
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
-    $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });$('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));$('clearCodeBtn')?.addEventListener('click', () => { if ($('codeEditor'))$('codeEditor').value = ''; localStorage.removeItem(getDraftCodeKey()); });
-    $('pasteClipboardBtn')?.addEventListener('click', () => smartPasteToTarget($('codeEditor'), val => { saveDraftCustom(val, '붙여넣기'); showLivePreviewCurrent(); }));
-    $('previewCheckBtn')?.addEventListener('click', () => { const c =$('codeEditor')?.value || ''; if (c.trim()) { saveDraftCustom(c, '미리보기 확정'); showLivePreviewCurrent(); } });
+    
+    $('clearUpdateNoteBtn')?.addEventListener('click', () => { 
+      if ($('updateNoteInput')) $('updateNoteInput').value = ''; 
+    });
+    $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
+    
+    $('clearCodeBtn')?.addEventListener('click', () => { 
+      if ($('codeEditor')) $('codeEditor').value = ''; 
+      localStorage.removeItem(getDraftCodeKey()); 
+    });
+    $('pasteClipboardBtn')?.addEventListener('click', () => smartPasteToTarget($('codeEditor'), val => { 
+      saveDraftCustom(val, '붙여넣기'); 
+      showLivePreviewCurrent(); 
+    }));
+    
+    $('previewCheckBtn')?.addEventListener('click', () => { 
+      const c = $('codeEditor')?.value || ''; 
+      if (c.trim()) { 
+        saveDraftCustom(c, '미리보기 확정'); 
+        showLivePreviewCurrent(); 
+      } 
+    });
+    
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
-    $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);$('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
-    $('clearLogBtn')?.addEventListener('click', () => {$('logArea').innerHTML = ''; });
-    $('buildBtn')?.addEventListener('click', async () => { const c =$('codeEditor')?.value || ''; if (c.trim()) { saveDraftCustom(c, '최종 빌드 전 저장'); await pushToGitHubRepository(); } });
+    $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);
+    
+    $('refreshRepoBtn')?.addEventListener('click', () => { 
+      loadRepos(); 
+      scanRepoFileTree(); 
+    });
+    
+    $('clearLogBtn')?.addEventListener('click', () => { 
+      $('logArea').innerHTML = ''; 
+    });
+    
+    $('buildBtn')?.addEventListener('click', async () => { 
+      const c = $('codeEditor')?.value || ''; 
+      if (c.trim()) { 
+        saveDraftCustom(c, '최종 빌드 전 저장'); 
+        await pushToGitHubRepository(); 
+      } 
+    });
+    
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
-    $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);$('parseBulkKeysBtn')?.addEventListener('click', parseBulkKeys);
-    $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);$('importKeysJsonInput')?.addEventListener('change', importKeysJson);
-    $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);$('driveModalClose')?.addEventListener('click', () => { $('driveModal').style.display = 'none'; });$('driveTabRecent')?.addEventListener('click', () => { setDriveTabStyle('recent'); loadDriveFolder('recent', $('driveSearchInput')?.value \vert{}\vert{} ''); });$('driveTabMy')?.addEventListener('click', () => { setDriveTabStyle('my'); loadDriveFolder('my', $('driveSearchInput')?.value \vert{}\vert{} ''); });$('driveTabShared')?.addEventListener('click', () => { setDriveTabStyle('shared'); loadDriveFolder('shared', $('driveSearchInput')?.value \vert{}\vert{} ''); });$('driveSearchBtn')?.addEventListener('click', () => loadDriveFolder(activeDriveTab || 'recent', $('driveSearchInput')?.value \vert{}\vert{} ''));$('repoSelect')?.addEventListener('change', async e => {
+    $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
+    $('parseBulkKeysBtn')?.addEventListener('click', parseBulkKeys);
+    $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
+    $('importKeysJsonInput')?.addEventListener('change', importKeysJson);
+    $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
+    
+    $('driveModalClose')?.addEventListener('click', () => { 
+      $('driveModal').style.display = 'none'; 
+    });
+    
+    $('driveTabRecent')?.addEventListener('click', () => { 
+      setDriveTabStyle('recent'); 
+      loadDriveFolder('recent', $('driveSearchInput')?.value || ''); 
+    });
+    
+    $('driveTabMy')?.addEventListener('click', () => { 
+      setDriveTabStyle('my'); 
+      loadDriveFolder('my', $('driveSearchInput')?.value || ''); 
+    });
+    
+    $('driveTabShared')?.addEventListener('click', () => { 
+      setDriveTabStyle('shared'); 
+      loadDriveFolder('shared', $('driveSearchInput')?.value || ''); 
+    });
+    
+    $('driveSearchBtn')?.addEventListener('click', () => {
+      loadDriveFolder(activeDriveTab || 'recent', $('driveSearchInput')?.value || '');
+    });
+    
+    $('repoSelect')?.addEventListener('change', async e => {
       currentRepo = e.target.value;
       localStorage.setItem('current_repo', currentRepo);
       mainFile = localStorage.getItem('main_file_' + currentRepo) || 'index.html';
@@ -2052,6 +2116,7 @@ ${extraDocsText}${ideaBlock}
       if (e.target.files) Array.from(e.target.files).forEach(f => processIdeaImageFile(f));
       e.target.value = '';
     });
+    
     document.addEventListener('paste', handlePasteEvent);
   }
 
