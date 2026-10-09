@@ -780,7 +780,8 @@
 
   // 상수 설정
   const GITHUB_USER = 'apoco211';
-  const DEFAULT_GOOGLE_CLIENT_ID = '1097203672052-9k471g60v60s07bbf99pt75d5e2365eb.apps.googleusercontent.com';
+  // 대표님이 새로 요청하신 구글 클라이언트 ID로 업데이트 완료
+  const DEFAULT_GOOGLE_CLIENT_ID = '888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
 
   function getGoogleClientId() {
     return localStorage.getItem('google_client_id') || DEFAULT_GOOGLE_CLIENT_ID;
@@ -2099,6 +2100,9 @@ ${codeToPush}`;
     reader.readAsText(file);
   }
 
+  // ------------------------------------------------------------------
+  // v6.5.7 타임머신 에러 핸들링 보완 로직
+  // ------------------------------------------------------------------
   async function loadGitHubCommitHistory() {
     const box = $('versionHistoryBox');
     if (!box) return;
@@ -2110,7 +2114,13 @@ ${codeToPush}`;
     const url = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=15`;
     try {
       const res = await fetch(url, { headers });
-      if (!res.ok) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">커밋 내역 없음</div>`; return; }
+      if (!res.ok) { 
+        let errMsg = `HTTP ${res.status}`;
+        try { const errData = await res.json(); errMsg = errData.message || errMsg; } catch(e){}
+        box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">커밋 내역을 불러오지 못했습니다.<br>(${errMsg})</div>`; 
+        log(`❌ 커밋 내역 로드 실패: ${errMsg}`, 'err');
+        return; 
+      }
       const commits = await res.json();
       let html = '';
       commits.forEach((c) => {
@@ -2134,7 +2144,10 @@ ${codeToPush}`;
         </div>`;
       });
       box.innerHTML = html;
-    } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류 발생</div>`; }
+    } catch(e) { 
+      box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류 발생: ${e.message}</div>`; 
+      log(`❌ GitHub 커밋 로드 오류: ${e.message}`, 'err');
+    }
   }
 
   async function fetchGitHubCommitContent(sha) {
@@ -2144,14 +2157,20 @@ ${codeToPush}`;
     const headers = { 'Accept': 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
     const res = await fetch(apiUrl, { headers });
-    if (!res.ok) throw new Error();
+    if (!res.ok) {
+      let errMsg = `HTTP ${res.status}`;
+      if (res.status === 403) errMsg = '요청 횟수 제한(Rate Limit) 초과';
+      if (res.status === 404) errMsg = '파일을 찾을 수 없음';
+      try { const errData = await res.json(); errMsg = errData.message || errMsg; } catch(e){}
+      throw new Error(errMsg);
+    }
     const data = await res.json();
     if (data.content) {
       const cleanB64 = data.content.replace(/\s/g, '');
       const bytes = Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0));
       return new TextDecoder().decode(bytes);
     }
-    throw new Error();
+    throw new Error("파일 내용(content)이 없습니다.");
   }
 
   window.previewGitHubCommit = async function(sha, shortSha) {
@@ -2167,11 +2186,15 @@ ${codeToPush}`;
         if (title) title.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block animate-pulse"></span> 👁 과거 커밋 미리보기 (#${shortSha})`;
         log(`👁 과거 커밋 #${shortSha} 미리보기가 화면에 적용되었습니다.`, 'ok');
       }
-    } catch(e) { showToast('과거 커밋 미리보기 실패', 'err'); }
+    } catch(e) { 
+      log(`❌ 미리보기 실패 (#${shortSha}): ${e.message}`, 'err');
+      showToast(`과거 커밋 로드 실패: ${e.message}`, 'err'); 
+    }
   };
 
   window.rollbackGitHubCommit = async function(sha, shortSha) {
     try {
+      log(`↺ 커밋 #${shortSha} 코드를 불러오는 중...`, 'info');
       const code = await fetchGitHubCommitContent(sha);
       localStorage.setItem(getDraftCodeKey(), code);
       const editor = $('codeEditor');
@@ -2183,8 +2206,12 @@ ${codeToPush}`;
       showToast(`↺ #${shortSha} 코드가 복원됨! 사파리 반영을 위해 [🚀 최종 빌드] 버튼을 눌러주세요.`, 'ok');
 
       $('buildBtn')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } catch(e) { showToast('롤백 실패', 'err'); }
+    } catch(e) { 
+      log(`❌ 롤백 실패 (#${shortSha}): ${e.message}`, 'err');
+      showToast(`롤백 실패: ${e.message}`, 'err'); 
+    }
   };
+  // ------------------------------------------------------------------
 
   function loadDraftHistory() {
     const box = $('versionHistoryBox');
