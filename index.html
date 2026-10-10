@@ -531,6 +531,14 @@
   <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn flex-1">⚙️ 설정 & 맥락 복사</button>
 </div>
   
+<!-- 현재 작업 중인 앱(Repo) 상시 표시 배지 -->
+<div class="mb-3 px-1 md:px-2 flex justify-end">
+  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm" style="border-color:var(--line)">
+    <span class="animate-pulse text-emerald-500 text-[10px]">🟢</span> 
+    작업앱 : <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
+  </div>
+</div>
+  
 <!-- 1번 탭: 프로젝트선택 (레포지토리, 파일 감지, 메인 구글문서, 추가문서) -->
 <div id="tabProjectContent">
   <div class="card">
@@ -700,18 +708,21 @@
   <div class="card mb-4" style="border:2px solid #8b5cf6">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
-      <div class="flex gap-1 flex-wrap items-center">
-        <button onclick="clearRepoIdea()" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 내용 지우기</button>
-        <button onclick="copyRepoIdea()" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 내용 복사</button>
-        <label class="btn btn-sm py-1 px-2.5 text-[10px] cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
-          📷 사진 첨부
-          <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple>
-        </label>
-        <button onclick="pasteIdeaImageFromClipboard()" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 사진 붙여넣기</button>
-        <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1 px-2.5 text-[10px] btn-yellow">🖼️ 첨부사진 통합 복사</button>
-        <button onclick="saveRepoIdea()" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 전체 아이디어 저장</button>
-      </div>
     </div>
+    
+    <!-- 모바일 환경을 고려한 2열/3열 그리드 버튼 정렬 -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+      <button onclick="clearRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 내용 지우기</button>
+      <button onclick="copyRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 내용 복사</button>
+      <label class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full cursor-pointer flex justify-center items-center" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
+        📷 사진 첨부
+        <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple>
+      </label>
+      <button onclick="pasteIdeaImageFromClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 사진 붙여넣기</button>
+      <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">🖼️ 사진 통합 복사</button>
+      <button onclick="saveRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">💾 아이디어 저장</button>
+    </div>
+
     <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어주세요. 사진 첨부 또는 Ctrl+V 사진 붙여넣기도 지원합니다.</p>
     <textarea id="repoIdeaInput" class="textarea h-[100px] text-[12px]" placeholder="업데이트 아이디어를 입력하세요."></textarea>
     <div id="ideaImageContainer" class="idea-img-container"></div>
@@ -803,6 +814,25 @@
   let activeDriveTab = 'recent';
   let currentIdeaImages = [];
   
+  function updateActiveRepoDisplay() {
+    const el = $('currentActiveRepoDisplay');
+    if (el) el.textContent = currentRepo;
+  }
+  
+  function getTargetAppVersion() {
+    const editor = $('codeEditor');
+    const code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
+    if (!code) return '버전 미상';
+    
+    const titleMatch = code.match(/<title>.*?v(\d+\.\d+\.\d+).*?<\/title>/i);
+    if (titleMatch) return 'v' + titleMatch[1];
+    
+    const h1Match = code.match(/<h1.*?>.*?v(\d+\.\d+\.\d+).*?<\/h1>/i);
+    if (h1Match) return 'v' + h1Match[1];
+    
+    return '버전 미상';
+  }
+
   function isGoogleLoggedIn() {
     return Boolean(accessToken && Date.now() < tokenExpiry);
   }
@@ -1139,6 +1169,7 @@
   function getFullContextText() {
     const repo = currentRepo || 'builder-a4u';
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+    const appVersion = getTargetAppVersion();
     const doc1Title = connectedDoc1 ? (connectedDoc1.title || connectedDoc1.name) : '연결된 문서 없음';
     const doc1Url = connectedDoc1 ? `https://docs.google.com/document/d/${connectedDoc1.id}/edit` : '없음';
     const doc2Title = connectedDoc2 ? (connectedDoc2.title || connectedDoc2.name) : '연결된 문서 없음';
@@ -1154,7 +1185,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} 작업 맥락 (via Builder-a4u v6.6.5)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.6.5)]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -2202,6 +2233,7 @@ ${contextConstraint}`;
     $('repoSelect')?.addEventListener('change', async e => {
       currentRepo = e.target.value;
       localStorage.setItem('current_repo', currentRepo);
+      updateActiveRepoDisplay();
       mainFile = localStorage.getItem('main_file_' + currentRepo) || 'index.html';
       if ($('mainFileInput')) $('mainFileInput').value = mainFile;
       loadRepoDocuments();
@@ -2238,6 +2270,7 @@ ${contextConstraint}`;
   
   function startApp() {
     if ($('mainFileInput')) $('mainFileInput').value = mainFile;
+    updateActiveRepoDisplay();
     setupEventListeners();
     initSettingsInputs();
     loadRepos();
