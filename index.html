@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.6.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v6.6.4 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.6.0">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.6.0">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.6.0">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.6.0">
+  <link rel="manifest" href="./manifest.json?v=6.6.4">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.6.4">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.6.4">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.6.4">
 
   <style>
     @font-face {
@@ -172,6 +172,8 @@
       line-height: 1.6;
       outline: none;
       resize: vertical;
+      word-break: break-all;
+      white-space: pre-wrap;
     }
 
     .badge {
@@ -513,7 +515,7 @@
 <!-- 상단 헤더 영역 -->
 <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
   <div class="min-w-0 flex-1">
-    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.1</h1>
+    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.4</h1>
     <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 텍스트 문서 다운로드 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-1 items-center shrink-0">
@@ -629,10 +631,13 @@
 
     <textarea id="codeEditor" class="textarea h-[120px] font-mono text-[12px]" placeholder="대화창에서 복사한 전체 코드(index.html, app.js 등)를 여기에 붙여넣으세요."></textarea>
     
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mt-3">
+    <div class="flex flex-col gap-2 mt-3">
       <button id="previewCheckBtn" class="btn py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁 미리보기 확정</button>
-      <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px]">📸 미리보기 클립보드 캡처</button>
-      <div class="flex gap-1.5">
+      <div class="flex gap-1.5 w-full">
+        <button id="copyCurrentCodeBtn" onclick="copyCurrentCode()" class="btn py-3 text-[11px] flex-1" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">📋 현재코드복사</button>
+        <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px] flex-1">📸 화면캡처</button>
+      </div>
+      <div class="flex gap-1.5 w-full">
         <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[10.5px] sm:text-[11px] hidden">🔑 구글 연동(로그인)</button>
         <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
       </div>
@@ -647,7 +652,7 @@
         👁 실시간 미리보기 화면
       </span>
       <div class="flex gap-1.5">
-        <button onclick="capturePreviewScreen()" class="btn btn-sm text-[9px] py-0.5 px-2 bg-emerald-50 text-emerald-700 border-emerald-300">📸 클립보드 복사</button>
+        <!-- 버튼이 제거됨 (위쪽에 동일 기능이 있으므로) -->
         <button id="previewCloseBtn" class="btn text-[9px] py-0.5 px-2">✕ 숨기기</button>
       </div>
     </div>
@@ -798,6 +803,15 @@
 
   function isGoogleLoggedIn() {
     return Boolean(accessToken && Date.now() < tokenExpiry);
+  }
+  
+  function getCurrentAppVersion() {
+    const h1 = document.querySelector('h1');
+    if (h1) {
+      const match = h1.textContent.match(/v\d+\.\d+\.\d+/);
+      if (match) return match[0];
+    }
+    return '';
   }
 
   window.downloadCodeAsTextDoc = function() {
@@ -1093,8 +1107,10 @@
         ideaBlock += `   👉 (첨부된 통합 이미지의 ${photoLabels} 참조)\n`;
       }
     }
+    
+    const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-    return `[${repo} 작업 맥락 (via Builder-a4u v6.6.0)]
+    return `[${repo} 작업 맥락 (via Builder-a4u v6.6.4)]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -1105,8 +1121,7 @@ ${extraDocsText}${ideaBlock}
 [프로젝트 주요 링크]
 1. repo: https://github.com/${GITHUB_USER}/${repo}
 2. pages: https://${GITHUB_USER}.github.io/${repo}/
-
-⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지`;
+${contextConstraint}`;
   }
 
   function updateFullContextBox() {
@@ -1183,6 +1198,25 @@ ${extraDocsText}${ideaBlock}
       log("❌ 이미지 복사 실패: " + error.message, "err");
       showToast('브라우저 권한 문제로 복사에 실패했습니다.', 'err');
     }
+  };
+
+  window.copyCurrentCode = async function() {
+      const editor = $('codeEditor');
+      const code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
+      
+      if (!code || code.trim() === '') {
+          showToast('복사할 코드가 없습니다.', 'err');
+          return;
+      }
+      
+      try {
+          await navigator.clipboard.writeText(code);
+          showToast('📋 현재 코드가 클립보드에 복사되었습니다!', 'ok');
+          log('📋 에디터 내용 클립보드 복사 완료', 'ok');
+      } catch(e) {
+          showToast('복사 실패: ' + e.message, 'err');
+          log('❌ 코드 복사 실패: ' + e.message, 'err');
+      }
   };
 
   function loadRepoDocuments() {
@@ -1681,7 +1715,18 @@ ${extraDocsText}${ideaBlock}
     }
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const editor = $('codeEditor');
-    const userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
+    const version = getCurrentAppVersion();
+    let userNote = $('updateNoteInput')?.value?.trim();
+    
+    if (!userNote) {
+        userNote = `🚀 [${currentRepo}] 빌드 및 업데이트`;
+    }
+    
+    let commitPrefix = version ? `[${version}] ` : '';
+    let finalCommitMsg = userNote;
+    if (version && !finalCommitMsg.includes(version)) {
+        finalCommitMsg = commitPrefix + finalCommitMsg;
+    }
 
     let codeToPush = editor && editor.value && editor.value.trim().length > 0 
       ? editor.value 
@@ -1714,7 +1759,7 @@ ${extraDocsText}${ideaBlock}
         const fileData = await getRes.json();
         fileSha = fileData.sha;
       }
-      const commitMsg = `${userNote} (${new Date().toLocaleString()})`;
+      const commitMsg = `${finalCommitMsg} (${new Date().toLocaleString()})`;
       const payload = { message: commitMsg, content: base64Content };
       if (fileSha) payload.sha = fileSha;
 
@@ -1887,6 +1932,15 @@ ${extraDocsText}${ideaBlock}
   };
 
   function initSettingsInputs() {
+    function populateSettingsInputs() {
+      const savedGoogleId = localStorage.getItem('google_client_id');
+      const savedGithubPat = localStorage.getItem('github_pat');
+      if (savedGoogleId && $('googleClientIdInput')) $('googleClientIdInput').value = savedGoogleId;
+      if (savedGithubPat && $('githubPatInput')) $('githubPatInput').value = savedGithubPat;
+    }
+    
+    populateSettingsInputs();
+    
     $('googleClientIdInput')?.addEventListener('input', e => {
         localStorage.setItem('google_client_id', e.target.value.trim());       
         initGis();     
@@ -1932,6 +1986,10 @@ ${extraDocsText}${ideaBlock}
         const keysObj = JSON.parse(evt.target.result);
         if (keysObj.google_client_id) localStorage.setItem('google_client_id', keysObj.google_client_id);
         if (keysObj.github_pat) localStorage.setItem('github_pat', keysObj.github_pat);
+        
+        if ($('googleClientIdInput')) $('googleClientIdInput').value = keysObj.google_client_id || '';
+        if ($('githubPatInput')) $('githubPatInput').value = keysObj.github_pat || '';
+        
         showToast('📥 API 키 복원 완료', 'ok');
         loadRepos();
         initGis();
@@ -1958,12 +2016,21 @@ ${extraDocsText}${ideaBlock}
         const shortSha = sha.slice(0, 7);
         const msg = c.commit?.message?.split('\n')[0] || 'Commit ' + shortSha;
         const dateStr = c.commit?.committer?.date ? new Date(c.commit.committer.date).toLocaleString() : '';
+        
+        let versionBadge = '';
+        let displayMsg = msg;
+        const verMatch = msg.match(/v\d+\.\d+\.\d+/);
+        if (verMatch) {
+            versionBadge = `<span class="badge text-[8.5px] py-0.5 px-1.5 shrink-0 rounded-[4px]" style="background:#dbeafe;color:#1e40af">${verMatch[0]}</span>`;
+        }
+
         html += `
         <div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
           <div class="flex flex-col min-w-0 flex-1 pr-1">
             <div class="flex items-center gap-1.5 flex-wrap mb-1">
               <span class="badge text-[8.5px] py-0.5 px-1.5 shrink-0 rounded-[4px]" style="background:#f1f5f9;color:#0f172a">#${shortSha}</span>
-              <span class="font-bold text-[11px] break-words leading-tight">${msg}</span>
+              ${versionBadge}
+              <span class="font-bold text-[11px] break-words leading-tight">${displayMsg}</span>
             </div>
             <span class="text-[8.5px] opacity-60">${dateStr}</span>
           </div>
