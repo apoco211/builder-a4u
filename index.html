@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.6.5 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v6.6.7 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.6.5">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.6.5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.6.5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.6.5">
+  <link rel="manifest" href="./manifest.json?v=6.6.7">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.6.7">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.6.7">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.6.7">
   
   <style>
     @font-face {
@@ -515,7 +515,7 @@
 <!-- 상단 헤더 영역 -->
 <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
   <div class="min-w-0 flex-1">
-    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.5</h1>
+    <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.7</h1>
     <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 텍스트 문서 다운로드 · 구글 문서 이중 백업 빌더</p>
   </div>
   <div class="flex gap-1 items-center shrink-0">
@@ -720,7 +720,7 @@
       </label>
       <button onclick="pasteIdeaImageFromClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 사진 붙여넣기</button>
       <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">🖼️ 사진 통합 복사</button>
-      <button onclick="saveRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">💾 아이디어 저장</button>
+      <button onclick="saveRepoIdea(event)" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 아이디어 저장</button>
     </div>
 
     <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어주세요. 사진 첨부 또는 Ctrl+V 사진 붙여넣기도 지원합니다.</p>
@@ -984,7 +984,7 @@
   function getIdeaImagesKey() {
     return 'repo_idea_images_' + currentRepo;
   }
-  
+
   function loadRepoIdea() {
     const title = $('repoIdeaTitle');
     if (title) title.textContent = `💡 [${currentRepo}] 다음 업데이트 아이디어 (영구 저장)`;
@@ -999,20 +999,83 @@
     renderIdeaImages();
   }
   
-  window.saveRepoIdea = function() {
+  async function saveRepoIdeaToDrive(repo, text, imagesArray) {
+    if (!isGoogleLoggedIn()) return false;
+    const fileName = `[${repo}]_idea_backup.json`;
+    const content = JSON.stringify({ text, images: imagesArray });
+
+    try {
+      const q = `trashed=false and name='${fileName}'`;
+      const searchRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)`, {
+        headers: { Authorization: "Bearer " + accessToken }
+      });
+      const searchData = await searchRes.json();
+      let fileId = searchData.files?.[0]?.id;
+
+      if (!fileId) {
+        const createRes = await fetch('https://www.googleapis.com/drive/v3/files', {
+          method: 'POST',
+          headers: { 'Authorization': "Bearer " + accessToken, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: fileName, mimeType: 'application/json' })
+        });
+        const createData = await createRes.json();
+        fileId = createData.id;
+      }
+
+      if (fileId) {
+        const updateRes = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+          method: 'PATCH',
+          headers: { 'Authorization': "Bearer " + accessToken, 'Content-Type': 'application/json' },
+          body: content
+        });
+        return updateRes.ok;
+      }
+    } catch(e) {
+      console.error('Drive Idea Backup Error:', e);
+    }
+    return false;
+  }
+  
+  window.saveRepoIdea = async function(btnEvent) {
     const input = $('repoIdeaInput');
     if (input) {
-      localStorage.setItem(getIdeaKey(), input.value);
+      const textVal = input.value;
+      localStorage.setItem(getIdeaKey(), textVal);
       localStorage.setItem(getIdeaImagesKey(), JSON.stringify(currentIdeaImages));
-      showToast(`💡 [${currentRepo}] 업데이트 아이디어 전체가 영구 저장되었습니다!`, 'ok');
+      updateFullContextBox();
+      showToast(`💡 [${currentRepo}] 아이디어가 로컬에 저장되었습니다!`, 'ok');
+      
+      if (isGoogleLoggedIn()) {
+        const btn = btnEvent ? (btnEvent.currentTarget || btnEvent.target) : null;
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) btn.innerHTML = '☁️ 드라이브 백업 중...';
+        
+        const success = await saveRepoIdeaToDrive(currentRepo, textVal, currentIdeaImages);
+        
+        if (btn) btn.innerHTML = originalText;
+        if (success) {
+          showToast(`☁️ 구글 드라이브(백업 파일)에도 안전하게 동기화되었습니다!`, 'ok');
+          log(`☁️ [${currentRepo}] 아이디어 드라이브 영구 백업 완료`, 'ok');
+        }
+      } else {
+        showToast('⚠️ 구글 로그인 시 드라이브에도 영구 저장(동기화)됩니다.', 'info');
+      }
     }
   };
 
-  window.clearRepoIdea = function() {
-    if (confirm('작성 중인 업데이트 아이디어 내용을 지우시겠습니까?')) {
+  window.clearRepoIdea = async function() {
+    if (confirm('작성 중인 업데이트 아이디어 내용을 지우시겠습니까? (구글 드라이브 백업도 함께 초기화됩니다)')) {
       const input = $('repoIdeaInput');
       if (input) input.value = '';
+      currentIdeaImages = [];
       localStorage.removeItem(getIdeaKey());
+      localStorage.removeItem(getIdeaImagesKey());
+      renderIdeaImages();
+      updateFullContextBox();
+      
+      if (isGoogleLoggedIn()) {
+          await saveRepoIdeaToDrive(currentRepo, '', []);
+      }
       showToast('🗑️ 아이디어 내용이 지워졌습니다.', 'info');
     }
   };
@@ -1185,7 +1248,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.6.5)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.6.7)]
 📌 프로젝트(Repo): ${repo}
 📂 작업 대상 파일: ${file}
 
@@ -1551,32 +1614,38 @@ ${contextConstraint}`;
   async function autoRestoreDocsFromDrive() {
     if (!isGoogleLoggedIn()) return;
     try {
-      const q = `trashed=false and mimeType='application/vnd.google-apps.document' and name contains '[${currentRepo}]'`;
-      const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=50`;
+      const q = `trashed=false and (mimeType='application/vnd.google-apps.document' or mimeType='application/json') and name contains '[${currentRepo}]'`;
+      const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType)&pageSize=50`;
       const res = await fetch(url, { headers: { Authorization: "Bearer " + accessToken } });
       if (!res.ok) return;
       const data = await res.json();
       if (!data.files || data.files.length === 0) return;
   
       let restoredCount = 0;
+      let ideaFileToRestore = null;
+  
       data.files.forEach(file => {
-        if (file.name.includes('업데이트 히스토리') || file.name.includes('메인1')) {
-          if (!connectedDoc1) {
-            connectedDoc1 = { id: file.id, title: file.name };
-            localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
-            restoredCount++;
-          }
-        } else if (file.name.includes('최신 소스코드') || file.name.includes('메인2')) {
-          if (!connectedDoc2) {
-            connectedDoc2 = { id: file.id, title: file.name };
-            localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
-            restoredCount++;
-          }
-        } else {
-          if (!extraDocs) extraDocs = [];
-          if (!extraDocs.some(d => d.id === file.id)) {
-            extraDocs.push({ id: file.id, title: file.name });
-            restoredCount++;
+        if (file.mimeType === 'application/json' && file.name.includes('_idea_backup.json')) {
+          ideaFileToRestore = file;
+        } else if (file.mimeType === 'application/vnd.google-apps.document') {
+          if (file.name.includes('업데이트 히스토리') || file.name.includes('메인1')) {
+            if (!connectedDoc1) {
+              connectedDoc1 = { id: file.id, title: file.name };
+              localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
+              restoredCount++;
+            }
+          } else if (file.name.includes('최신 소스코드') || file.name.includes('메인2')) {
+            if (!connectedDoc2) {
+              connectedDoc2 = { id: file.id, title: file.name };
+              localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
+              restoredCount++;
+            }
+          } else {
+            if (!extraDocs) extraDocs = [];
+            if (!extraDocs.some(d => d.id === file.id)) {
+              extraDocs.push({ id: file.id, title: file.name });
+              restoredCount++;
+            }
           }
         }
       });
@@ -1590,6 +1659,28 @@ ${contextConstraint}`;
         renderExtraDocs();
         updateFullContextBox();
         log(`🔄 구글 드라이브에서 [${currentRepo}] 백업 문서 ${restoredCount}개 자동 연동 완료!`, 'ok');
+      }
+      
+      // 아이디어 백업 복구 (로컬이 비어있을 때만 작동)
+      if (ideaFileToRestore) {
+        const currentLocalText = localStorage.getItem(getIdeaKey());
+        if (!currentLocalText || currentLocalText.trim() === '') {
+          try {
+            const getRes = await fetch(`https://www.googleapis.com/drive/v3/files/${ideaFileToRestore.id}?alt=media`, {
+              headers: { Authorization: "Bearer " + accessToken }
+            });
+            if (getRes.ok) {
+              const backupData = await getRes.json();
+              if (backupData && typeof backupData.text !== 'undefined') {
+                localStorage.setItem(getIdeaKey(), backupData.text);
+                localStorage.setItem(getIdeaImagesKey(), JSON.stringify(backupData.images || []));
+                loadRepoIdea();
+                log(`☁️ [${currentRepo}] 드라이브에서 아이디어 백업 자동 복구 완료!`, 'ok');
+                showToast('☁️ 드라이브 백업에서 이전 아이디어를 100% 자동 복구했습니다!', 'ok');
+              }
+            }
+          } catch(err) { console.error(err); }
+        }
       }
     } catch(e) {}
   }
@@ -2068,7 +2159,7 @@ ${contextConstraint}`;
     const box = $('versionHistoryBox');
     if (!box) return;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">🐙 커밋 기록 로드 중...</div>`;
+    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">🐙 [${currentRepo}] 커밋 기록 로드 중...</div>`;
     const pat = getGitHubPat();
     const headers = { 'Accept': 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
@@ -2190,7 +2281,7 @@ ${contextConstraint}`;
     const item = history.find(h => h.id === id);
     if (!item) return;
     localStorage.setItem(getDraftCodeKey(), item.code);
-    if ($('codeEditor')) $('codeEditor').value = item.code;
+    if ($('codeEditor')) $('codeEditor.value') = item.code;
     showLivePreviewCurrent();
     showToast(`↺ 드래프트 코드가 복원되었습니다!`, 'ok');
   };
@@ -2242,6 +2333,7 @@ ${contextConstraint}`;
       await autoRestoreDocsFromDrive();
       await syncLatestSourceFromGithub(true);
       updateFullContextBox();
+      loadGitHubCommitHistory(); // 프로젝트 변경 시 커밋 히스토리 즉시 새로고침 반영
     });
   
     $('fileTreeSelect')?.addEventListener('change', async e => {
@@ -2251,6 +2343,7 @@ ${contextConstraint}`;
         if ($('mainFileInput')) $('mainFileInput').value = mainFile;
         await syncLatestSourceFromGithub(true);
         updateFullContextBox();
+        loadGitHubCommitHistory(); // 파일 변경 시 커밋 히스토리 즉시 새로고침 반영
       }
     });
   
@@ -2259,6 +2352,7 @@ ${contextConstraint}`;
       localStorage.setItem('main_file_' + currentRepo, mainFile);
       await syncLatestSourceFromGithub(true);
       updateFullContextBox();
+      loadGitHubCommitHistory(); // 파일 변경 시 커밋 히스토리 즉시 새로고침 반영
     });
   
     $('ideaImageInput')?.addEventListener('change', e => {
