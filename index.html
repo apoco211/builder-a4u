@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.6.8 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v6.7.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.6.8">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.6.8">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.6.8">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.6.8">
+  <link rel="manifest" href="./manifest.json?v=6.7.0">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.7.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.7.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.7.0">
   
   <style>
     @font-face {
@@ -55,7 +55,7 @@
     :where(code, pre, kbd, samp) {
       font-family: "Optimistic Mono", ui-monospace, monospace;
     }
-
+  
     :root {
       --bg: #f8fafc;
       --card: #ffffff;
@@ -64,7 +64,7 @@
       --muted: #64748b;
       --accent: #FFC800;
     }
-
+  
     .dark {
       --bg: #0f1115;
       --card: #1a1d24;
@@ -72,13 +72,13 @@
       --txt: #e2e8f0;
       --muted: #94a3b8;
     }
-
+  
     html {
       background: var(--bg);
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     } 
-
+  
     body {
       background: var(--bg);
       color: var(--txt);
@@ -90,7 +90,7 @@
       font-size: 15px;
       line-height: 1.5;
     }
-
+  
     /* 상단 스크롤 고정 (Sticky Header) */
     .sticky-header {
       position: sticky;
@@ -98,16 +98,16 @@
       z-index: 99;
       background: var(--bg);
       margin: -14px -14px 14px -14px;
-      padding: 14px 14px 12px 14px;
+      padding: 14px 14px 10px 14px;
       border-bottom: 1px solid var(--line);
       box-shadow: 0 4px 10px rgba(0,0,0,0.03);
       transition: background 0.2s, border-color 0.2s;
     }
-
+  
     .dark .sticky-header {
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-
+  
     .card {
       background: var(--card);
       border: 1px solid var(--line);
@@ -116,7 +116,7 @@
       margin-bottom: 14px;
       transition: background 0.2s, border-color 0.2s;
     }
-
+  
     .btn {
       border-radius: 12px;
       padding: 10px 14px;
@@ -133,27 +133,27 @@
       user-select: none;
       transition: transform 0.1s ease, background 0.2s;
     }
-
+  
     .btn-primary {
       background: #111111 !important;
       color: #ffffff !important;
       border-color: #111111 !important;
     }
-
+  
     .btn-yellow {
       background: var(--accent) !important;
       color: #111111 !important;
       border-color: var(--accent) !important;
       font-weight: 900;
     }
-
+  
     .btn-emerald {
       background: #10b981 !important;
       color: #ffffff !important;
       border-color: #059669 !important;
       font-weight: 800;
     }
-
+  
     .btn-sm {
       padding: 6px 10px;
       font-size: 11px;
@@ -161,11 +161,11 @@
       border-radius: 8px;
       white-space: nowrap;
     }
-
+  
     .btn:active {
       transform: scale(0.97);
     }
-
+  
     .input {
       width: 100%;
       border: 1px solid var(--line);
@@ -177,7 +177,7 @@
       outline: none;
       min-height: 46px;
     }
-
+  
     .textarea {
       width: 100%;
       border: 1px solid var(--line);
@@ -192,7 +192,7 @@
       word-break: break-all;
       white-space: pre-wrap;
     }
-
+  
     .badge {
       display: inline-flex;
       align-items: center;
@@ -203,7 +203,7 @@
       font-weight: 800;
       border: 1px solid var(--line);
     }
-
+  
     .log {
       font-family: monospace;
       font-size: 12px;
@@ -215,48 +215,48 @@
       border-radius: 12px;
       padding: 12px;
     }
-
+  
     .dark .btn {
       background: #252a36 !important;
       color: #e2e8f0 !important;
       border-color: #3a4152 !important;
     }
-
+  
     .dark .btn-primary {
       background: #e2e8f0 !important;
       color: #0f1115 !important;
       border-color: #e2e8f0 !important;
     }
-
+  
     .dark .btn-yellow {
       background: #FFC800 !important;
       color: #111111 !important;
       border-color: #FFC800 !important;
     }
-
+  
     .dark .btn-emerald {
       background: #059669 !important;
       color: #ffffff !important;
       border-color: #047857 !important;
     }
-
+  
     .dark .input, 
     .dark .textarea {
       background: #1e222e !important;
       color: #e2e8f0 !important;
       border-color: #3a4152 !important;
     }
-
+  
     .dark .card {
       border-color: #2a2f3a !important;
     }
-
+  
     .dark .log {
       background: #0f1115 !important;
       color: #cbd5e1 !important;
       border-color: #2a2f3a !important;
     }
-
+  
     .tab-btn {
       padding: 10px 12px;
       font-weight: 800;
@@ -272,19 +272,19 @@
       align-items: center;
       justify-content: center;
     }
-
+  
     .tab-btn.active {
       background: #111111 !important;
       color: #ffffff !important;
       border-color: #111111 !important;
     }
-
+  
     .dark .tab-btn.active {
       background: #e2e8f0 !important;
       color: #0f1115 !important;
       border-color: #e2e8f0 !important;
     }
-
+  
     @media (max-width: 768px) {
       body {
         padding: 8px 8px 100px 8px;
@@ -293,52 +293,52 @@
       
       .sticky-header {
         margin: -8px -8px 12px -8px;
-        padding: 8px 8px 10px 8px;
+        padding: 8px 8px 8px 8px;
       }
-
+  
       .card {
         padding: 12px;
         border-radius: 14px;
       }
-
+  
       .btn {
         font-size: 12.5px;
         padding: 8px 10px;
         min-height: 38px;
       }
-
+  
       .btn-sm {
         font-size: 10px;
         padding: 4px 8px;
         min-height: 28px;
       }
-
+  
       .input {
         font-size: 15px !important;
         padding: 10px 12px;
         min-height: 42px;
       }
-
+  
       .textarea {
         font-size: 13px !important;
       }
-
+  
       h1 {
         font-size: 15px !important;
       }
-
+  
       h2 {
         font-size: 12.5px !important;
       }
-
+  
       .log {
         font-size: 10.5px;
       }
-
+  
       .badge {
         font-size: 9px;
       }
-
+  
       .tab-btn {
         font-size: 11.5px !important;
         padding: 9px 6px !important;
@@ -360,7 +360,7 @@
         line-height: 1.3;
       }
     }
-
+  
     .live-preview-box {
       border: 2px solid #10b981;
       border-radius: 16px;
@@ -369,11 +369,11 @@
       background: #ffffff;
       display: none;
     }
-
+  
     .live-preview-box.active {
       display: block;
     }
-
+  
     .live-preview-header {
       display: flex;
       justify-content: space-between;
@@ -384,25 +384,25 @@
       font-size: 12px;
       font-weight: 800;
     }
-
+  
     .dark .live-preview-header {
       background: #1e222e !important;
       color: #e2e8f0 !important;
     }
-
+  
     .live-preview-iframe {
       width: 100%;
       height: 480px;
       border: 0;
       background: #ffffff;
     }
-
+  
     @media (min-width: 1024px) {
       .live-preview-iframe {
         height: 600px;
       }
     }
-
+  
     .version-history {
       max-height: 280px;
       overflow-y: auto;
@@ -411,7 +411,7 @@
       padding: 6px;
       background: var(--bg);
     }
-
+  
     .version-item {
       display: flex;
       flex-direction: column;
@@ -424,7 +424,7 @@
       background: var(--card);
       font-size: 11px;
     }
-
+  
     @media (min-width: 640px) {
       .version-item {
         flex-direction: row;
@@ -432,7 +432,7 @@
         justify-content: space-between;
       }
     }
-
+  
     .drive-modal {
       position: fixed;
       inset: 0;
@@ -443,7 +443,7 @@
       justify-content: center;
       padding: 16px;
     }
-
+  
     .drive-modal-content {
       background: #ffffff;
       border-radius: 16px;
@@ -454,12 +454,12 @@
       flex-direction: column;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
-
+  
     .dark .drive-modal-content {
       background: #1e222f;
       color: #ffffff;
     }
-
+  
     .drive-modal-header {
       padding: 16px;
       border-bottom: 1px solid #eeeeee;
@@ -467,17 +467,17 @@
       justify-content: space-between;
       align-items: center;
     }
-
+  
     .dark .drive-modal-header {
       border-color: #333333;
     }
-
+  
     .drive-modal-body {
       flex: 1;
       overflow-y: auto;
       padding: 12px;
     }
-
+  
     .drive-file {
       padding: 10px 12px;
       border-radius: 8px;
@@ -488,16 +488,16 @@
       border: 1px solid transparent;
       transition: background 0.15s ease;
     }
-
+  
     .drive-file:hover {
       background: #f5f5f5;
       border-color: #dddddd;
     }
-
+  
     .dark .drive-file:hover {
       background: #2a2f3f;
     }
-
+  
     .idea-img-container {
       display: flex;
       gap: 8px;
@@ -533,14 +533,21 @@
   </style>
 </head>
 <body>
-
+  
 <!-- 상단 영역 (스크롤 시 고정됨) -->
 <div class="sticky-header">
   <!-- 상단 헤더 영역 -->
-  <div class="flex justify-between items-center mb-3 gap-1.5 px-1 md:px-2">
+  <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
-      <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.6.8</h1>
-      <p class="text-[9.5px] sm:text-[10px] md:text-[10.5px] opacity-60 truncate">멀티파일 자동 감지 & 텍스트 문서 다운로드 · 구글 문서 이중 백업 빌더</p>
+      <div class="flex items-center gap-1.5 flex-wrap">
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.7.0</h1>
+        <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
+        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
+          <span class="animate-pulse text-emerald-500">🟢</span> 
+          <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
+        </div>
+      </div>
+
     </div>
     <div class="flex gap-1 items-center shrink-0">
       <button id="themeToggle" class="btn w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] md:w-[40px] md:h-[40px] p-0 flex items-center justify-center text-[14px] sm:text-[16px] md:text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
@@ -548,19 +555,12 @@
     </div>
   </div>
     
-  <!-- 탭 메인 네비게이션 버튼 (3개 구조) -->
-  <div class="flex gap-2 mb-3">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active flex-1">📌 프로젝트선택</button>
-    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn flex-1">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn flex-1">⚙️ 설정 & 맥락 복사</button>
-  </div>
-    
-  <!-- 현재 작업 중인 앱(Repo) 상시 표시 배지 -->
-  <div class="px-1 md:px-2 flex justify-end">
-    <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm" style="border-color:var(--line)">
-      <span class="animate-pulse text-emerald-500 text-[10px]">🟢</span> 
-      작업앱 : <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
-    </div>
+  <!-- 탭 메인 네비게이션 버튼 (4개 구조 - 모바일 2x2 격자) -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
+    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 & 맥락 복사</button>
+    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
@@ -583,7 +583,7 @@
         </select>
       </div>
       <div>
-        <label class="text-[10px] font-bold block mb-1">📂 레포 파일 자동 감지</label>
+        <label class="text-[10px] font-bold block mb-1">📁 레포 파일 자동 감지</label>
         <select id="fileTreeSelect" class="input text-[12px]">
           <option value="">스캔 중...</option>
         </select>
@@ -739,26 +739,39 @@
       <button onclick="clearRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 내용 지우기</button>
       <button onclick="copyRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 내용 복사</button>
       <label class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full cursor-pointer flex justify-center items-center" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
-        📷 사진 첨부
+        📸 사진 첨부
         <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple>
       </label>
       <button onclick="pasteIdeaImageFromClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 사진 붙여넣기</button>
       <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">🖼️ 사진 통합 복사</button>
       <button onclick="saveRepoIdea(event)" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 아이디어 저장</button>
     </div>
-
-    <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어주세요. 사진 첨부 또는 Ctrl+V 사진 붙여넣기도 지원합니다.</p>
+  
+    <p class="text-[10.5px] opacity-70 mb-2">생각나는 기능 개선 및 패치 아이디어를 적어주세요. 분류 에이전트가 정리해준 내용이 이곳으로 자동 이관됩니다.</p>
     <textarea id="repoIdeaInput" class="textarea h-[100px] text-[12px]" placeholder="업데이트 아이디어를 입력하세요."></textarea>
     <div id="ideaImageContainer" class="idea-img-container"></div>
   </div>
   
+  <!-- 신규/미분류 아이디어 보관소 (에이전트 '기타' 분류 전용) -->
+  <div class="card mb-4" style="border:2px dashed #9ca3af">
+    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
+      <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소</h2>
+    </div>
+    <div class="flex gap-2 mb-3">
+      <button onclick="clearOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] flex-1" style="background:#f3f4f6;color:#374151;border-color:#d1d5db">🗑️ 비우기</button>
+      <button onclick="copyOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] flex-1" style="background:#e5e7eb;color:#111827;border-color:#d1d5db">📋 내용 복사</button>
+    </div>
+    <p class="text-[10px] opacity-60 mb-2">분류 에이전트가 기존 앱 목록에 해당하지 않는다고 판단한 '새로운 기획/아이디어'들이 이곳에 모입니다.</p>
+    <textarea id="otherIdeaInput" class="textarea h-[80px] text-[12px] bg-gray-50 dark:bg-gray-800" placeholder="미분류된 신규 아이디어들이 자동으로 누적됩니다. 수동으로 작성해도 저장됩니다." onchange="saveOtherIdea()"></textarea>
+  </div>
+
   <div class="card mb-4">
-    <h2 class="font-bold text-[12px] mb-3">⚙️ GitHub & Google 인증 관리</h2>
+    <h2 class="font-bold text-[12px] mb-3">⚙️ GitHub & Google & AI 인증 관리</h2>
     
     <div class="space-y-3">
       <div>
         <h3 class="font-bold text-[11px] mb-1.5">⚡ 스마트 API 일괄 파싱 (.env 통째로 붙여넣기)</h3>
-        <textarea id="bulkKeysInput" class="textarea h-[60px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGOOGLE_CLIENT_ID=..."></textarea>
+        <textarea id="bulkKeysInput" class="textarea h-[60px] text-[10px] font-mono" placeholder="GITHUB_PAT=ghp_...\nGOOGLE_CLIENT_ID=...\nGEMINI_API_KEY=AIzaSy..."></textarea>
         <button id="parseBulkKeysBtn" class="btn btn-sm w-full mt-1 text-[10px]" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">⚡ 일괄 적용 및 저장</button>
       </div>
   
@@ -785,8 +798,56 @@
           <label class="text-[9.5px] font-bold">GitHub PAT Token</label>
           <input id="githubPatInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="ghp_...">
         </div>
+        <div class="col-span-1 md:col-span-2 mt-1">
+          <label class="text-[9.5px] font-bold text-purple-600 dark:text-purple-400">🤖 Gemini API Key (자동 분류용)</label>
+          <input id="geminiApiKeyInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="AIzaSy...">
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 4번 탭: 아이디어 막던지기 (운전 중 2초 컷 인박스) -->
+<div id="tabInboxContent" style="display:none;">
+  <div class="card mb-4" style="border:2px solid #eab308; background:#fefce8;">
+    <h2 class="font-bold text-[14px] text-yellow-700 mb-3">💡 운전 중 2초 컷 인박스</h2>
+    
+    <button id="voiceRecordBtn" class="btn w-full py-6 mb-3 flex flex-col items-center justify-center shadow-md transition-all" style="background:#ef4444; color:white; border:none; border-radius:16px;">
+      <span class="text-[32px] mb-1">🎙️</span>
+      <span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>
+    </button>
+
+    <!-- 카카오톡 스타일 텍스트+사진 입력기 -->
+    <div class="bg-white p-2 rounded-xl border shadow-sm" style="border-color:#fde047">
+      <!-- 사진 첨부 시 나타나는 썸네일 미리보기 컨테이너 -->
+      <div id="inboxPhotoPreviewContainer" class="hidden mb-2 relative inline-block">
+        <img id="inboxPhotoPreviewImg" src="" class="h-[60px] w-auto rounded-lg border border-gray-200 object-cover shadow-sm">
+        <button onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
+      </div>
+      
+      <div class="flex gap-1 items-center">
+        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200" title="사진 첨부">
+          📸<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
+        </label>
+        <input type="text" id="inboxTextInput" class="input flex-1 text-[13px] bg-white !border-none !shadow-none !px-2 focus:ring-0" placeholder="아이디어나 사진(Ctrl+V) 입력 후 엔터..." onkeydown="if(event.key==='Enter') saveIdeaInbox('text')">
+        <button onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 h-[42px] rounded-lg">🚀 던지기</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="font-bold text-[13px]">📥 쌓인 아이디어 (<span id="inboxCount">0</span>)</h2>
+      <button onclick="runClassificationAgent()" class="btn btn-sm text-[11px] py-1.5 px-3 shadow-sm" style="background:#3b82f6; color:white; border-color:#2563eb;">
+        🤖 앱별로 묶어줘
+      </button>
+    </div>
+    <div id="ideaInboxList" class="space-y-2 max-h-[350px] overflow-y-auto p-1"></div>
+  </div>
+
+  <div id="agentResultArea" class="hidden">
+    <h2 class="font-bold text-[13px] text-blue-600 mb-2">✨ 분류 에이전트 결과</h2>
+    <div id="agentResultList" class="space-y-3"></div>
   </div>
 </div>
   
@@ -859,7 +920,7 @@
     
     return '버전 미상';
   }
-
+  
   function isGoogleLoggedIn() {
     return Boolean(accessToken && Date.now() < tokenExpiry);
   }
@@ -1003,11 +1064,33 @@
     return 'repo_idea_images_' + currentRepo;
   }
 
+  window.saveOtherIdea = function() {
+    const val = $('otherIdeaInput')?.value || '';
+    localStorage.setItem('repo_idea_기타', val);
+  };
+  window.clearOtherIdea = function() {
+    if(confirm('신규/미분류 아이디어 보관소 내용을 모두 지우시겠습니까?')) {
+      if($('otherIdeaInput')) $('otherIdeaInput').value = '';
+      localStorage.removeItem('repo_idea_기타');
+      showToast('비워졌습니다.', 'ok');
+    }
+  };
+  window.copyOtherIdea = async function() {
+    const val = $('otherIdeaInput')?.value || '';
+    if(!val) return showToast('복사할 내용이 없습니다.', 'err');
+    await navigator.clipboard.writeText(val);
+    showToast('클립보드에 복사되었습니다.', 'ok');
+  };
+  
   function loadRepoIdea() {
     const title = $('repoIdeaTitle');
     if (title) title.textContent = `💡 [${currentRepo}] 다음 업데이트 아이디어 (영구 저장)`;
     const input = $('repoIdeaInput');
     if (input) input.value = localStorage.getItem(getIdeaKey()) || '';
+    
+    const otherInput = $('otherIdeaInput');
+    if (otherInput) otherInput.value = localStorage.getItem('repo_idea_기타') || '';
+
     try {
       const savedImages = localStorage.getItem(getIdeaImagesKey());
       currentIdeaImages = savedImages ? JSON.parse(savedImages) : [];
@@ -1021,7 +1104,7 @@
     if (!isGoogleLoggedIn()) return false;
     const fileName = `[${repo}]_idea_backup.json`;
     const content = JSON.stringify({ text, images: imagesArray });
-
+  
     try {
       const q = `trashed=false and name='${fileName}'`;
       const searchRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)`, {
@@ -1029,7 +1112,7 @@
       });
       const searchData = await searchRes.json();
       let fileId = searchData.files?.[0]?.id;
-
+  
       if (!fileId) {
         const createRes = await fetch('https://www.googleapis.com/drive/v3/files', {
           method: 'POST',
@@ -1039,7 +1122,7 @@
         const createData = await createRes.json();
         fileId = createData.id;
       }
-
+  
       if (fileId) {
         const updateRes = await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
           method: 'PATCH',
@@ -1080,7 +1163,7 @@
       }
     }
   };
-
+  
   window.clearRepoIdea = async function() {
     if (confirm('작성 중인 업데이트 아이디어 내용을 지우시겠습니까? (구글 드라이브 백업도 함께 초기화됩니다)')) {
       const input = $('repoIdeaInput');
@@ -1097,7 +1180,7 @@
       showToast('🗑️ 아이디어 내용이 지워졌습니다.', 'info');
     }
   };
-
+  
   window.copyRepoIdea = async function() {
     const input = $('repoIdeaInput');
     const val = input ? input.value : '';
@@ -1112,7 +1195,7 @@
       showToast('복사 실패: ' + e.message, 'err');
     }
   };
-
+  
   window.pasteIdeaImageFromClipboard = async function() {
     try {
       if (!navigator.clipboard || !navigator.clipboard.read) {
@@ -1125,13 +1208,16 @@
         for (const type of item.types) {
           if (type.startsWith('image/')) {
             const blob = await item.getType(type);
-            processIdeaImageFile(blob);
+            const b64 = await processImageFileToBase64(blob);
+            currentIdeaImages.push(b64);
             hasImage = true;
           }
         }
       }
       if (hasImage) {
-        showToast('📷 클립보드에서 이미지가 추가되었습니다!', 'ok');
+        renderIdeaImages();
+        saveRepoIdea();
+        showToast('📸 클립보드에서 이미지가 추가되었습니다!', 'ok');
       } else {
         showToast('클립보드에 복사된 이미지가 없습니다.', 'err');
       }
@@ -1140,27 +1226,29 @@
     }
   };
   
-  function processIdeaImageFile(file) {
-    if (!file || !file.type.startsWith('image/')) return;
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const img = new Image();
-      img.onload = function() {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 800;
-        const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
-        canvas.width = img.width * scale;
-        canvas.height = img.height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        const compressedBase64 = canvas.toDataURL('image/webp', 0.8);
-        currentIdeaImages.push(compressedBase64);
-        renderIdeaImages();
-        saveRepoIdea();
+  // 범용 이미지 파일 -> Base64 압축기
+  function processImageFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      if (!file || !file.type.startsWith('image/')) return reject('Not an image');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const MAX_WIDTH = 800;
+          const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1;
+          canvas.width = img.width * scale;
+          canvas.height = img.height * scale;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          resolve(canvas.toDataURL('image/webp', 0.8));
+        };
+        img.onerror = reject;
+        img.src = e.target.result;
       };
-      img.src = e.target.result;
-    };
-    reader.readAsDataURL(file);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   }
   
   function renderIdeaImages() {
@@ -1194,13 +1282,17 @@
         const item = items[index];
         if (item.kind === 'file' && item.type.startsWith('image/')) {
           const blob = item.getAsFile();
-          processIdeaImageFile(blob);
+          processImageFileToBase64(blob).then(b64 => {
+             currentIdeaImages.push(b64);
+             renderIdeaImages();
+             saveRepoIdea();
+          });
           hasImage = true;
         }
       }
       if (hasImage) {
         e.preventDefault();
-        showToast('📷 이미지가 클립보드에서 추가되었습니다.', 'ok');
+        showToast('📸 이미지가 클립보드에서 추가되었습니다.', 'ok');
       }
     }
   }
@@ -1229,18 +1321,23 @@
     const projectTab = $('tabProjectContent');
     const buildTab = $('tabBuildContent');
     const settingsTab = $('tabSettingsContent');
+    const inboxTab = $('tabInboxContent');
+
     const projectBtn = $('tabProjectBtn');
     const buildBtn = $('tabBuildBtn');
     const settingsBtn = $('tabSettingsBtn');
+    const inboxBtn = $('tabInboxBtn');
   
     if (projectTab) projectTab.style.display = (tabName === 'project') ? 'block' : 'none';
     if (buildTab) buildTab.style.display = (tabName === 'build') ? 'block' : 'none';
     if (settingsTab) settingsTab.style.display = (tabName === 'settings') ? 'block' : 'none';
+    if (inboxTab) inboxTab.style.display = (tabName === 'inbox') ? 'block' : 'none';
   
     if (projectBtn) projectBtn.classList.toggle('active', tabName === 'project');
     if (buildBtn) buildBtn.classList.toggle('active', tabName === 'build');
     if (settingsBtn) settingsBtn.classList.toggle('active', tabName === 'settings');
-
+    if (inboxBtn) inboxBtn.classList.toggle('active', tabName === 'inbox');
+  
     if (tabName === 'settings') {
       loadRepoIdea();
       updateFullContextBox();
@@ -1266,10 +1363,10 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.6.8)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.7.0)]
 📌 프로젝트(Repo): ${repo}
-📂 작업 대상 파일: ${file}
-
+📁 작업 대상 파일: ${file}
+  
 [이중 메인 구글 문서 정보]
 - 메인1(히스토리): ${doc1Url} (${doc1Title})
 - 메인2(소스코드): ${doc2Url} (${doc2Title})
@@ -1459,7 +1556,7 @@ ${contextConstraint}`;
         ignored.push(removedDoc.id);
         localStorage.setItem('ignored_docs_' + currentRepo, JSON.stringify(ignored));
       }
-
+  
       extraDocs.splice(index, 1);
       localStorage.setItem('extra_docs_' + currentRepo, JSON.stringify(extraDocs));
       renderExtraDocs();
@@ -1470,7 +1567,7 @@ ${contextConstraint}`;
   async function scanRepoFileTree() {
     const select = $('fileTreeSelect');
     if (!select) return;
-    select.innerHTML = '<option value="">📂 레포 파일 스캔 중...</option>';
+    select.innerHTML = '<option value="">📁 레포 파일 스캔 중...</option>';
     const pat = getGitHubPat();
     const headers = { Accept: 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
@@ -1823,7 +1920,7 @@ ${contextConstraint}`;
     } catch(e) { log('드래프트 저장 실패: ' + e.message, 'err'); }
   }
   
-  // 실시간 미리보기 화면 렌더링 함수 (React JSX / 일반 HTML / JS 완벽 지원 + 스마트 외부 모듈 리졸버)
+  // 실시간 미리보기 화면 렌더링 함수
   function showLivePreviewCurrent() {
     const editor = $('codeEditor');
     let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
@@ -1832,29 +1929,25 @@ ${contextConstraint}`;
     const frame = $('livePreviewFrame');
     const box = $('livePreviewBox');
     if (!frame || !box) return;
-
+  
     const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'") || code.includes('from "react"')));
-
+  
     if (isReactJsx) {
-      // 컴포넌트 이름 추출 (기본값: App)
       let compName = 'App';
       const defaultFnMatch = code.match(/export\s+default\s+function\s+([A-Za-z0-9_]+)/);
       const defaultVarMatch = code.match(/export\s+default\s+([A-Za-z0-9_]+);/);
       if (defaultFnMatch) compName = defaultFnMatch[1];
       else if (defaultVarMatch) compName = defaultVarMatch[1];
-
-      // 코드 내 외부 npm import 구문을 esm.sh CDN URL로 자동 변환 (React 단일 인스턴스 공유 설정)
+  
       let transformedCode = code
-        // CSS import 구문 브라우저 충돌 방지 (제거)
         .replace(/import\s+['"][^'"]+\.css['"];?/g, '// [css import skipped]')
-        // 상대경로가 아닌 외부 npm 패키지(예: @dnd-kit/core 등)를 esm.sh URL로 치환
         .replace(/(from\s+['"])([^'"\.\/][^'"]*)(['"])/g, (match, p1, modName, p3) => {
           if (modName === 'react' || modName === 'react-dom' || modName === 'react-dom/client' || modName === 'react/jsx-runtime') {
-            return match; // importmap에 지정된 react 계열은 유지
+            return match; 
           }
           return `${p1}https://esm.sh/${modName}?deps=react@18.2.0,react-dom@18.2.0${p3}`;
         });
-
+  
       frame.srcdoc = `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -1881,20 +1974,20 @@ ${contextConstraint}`;
 <body class="bg-gray-50 text-gray-900">
   <div id="runtime-error-msg"></div>
   <div id="root"></div>
-
+  
   <script>
     window.addEventListener('error', function(e) {
       const errBox = document.getElementById('runtime-error-msg');
       if (errBox) { errBox.style.display = 'block'; errBox.textContent = '❌ 실행 오류: ' + (e.message || e); }
     });
   <\/script>
-
+  
   <script type="text/babel" data-type="module">
     import React from 'react';
     import ReactDOM from 'react-dom/client';
-
+  
     ${transformedCode}
-
+  
     try {
       const rootEl = document.getElementById('root');
       if (rootEl && typeof ${compName} !== 'undefined') {
@@ -1913,7 +2006,7 @@ ${contextConstraint}`;
     } else {
       frame.srcdoc = code;
     }
-
+  
     box.classList.add('active');
     const title = $('previewTitle');
     if (title) title.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> 👁️ 실시간 미리보기 화면 (${file})`;
@@ -2049,7 +2142,7 @@ ${contextConstraint}`;
     try {
       if (connectedDoc1 && connectedDoc1.id) {
         log(`📄 메인1(히스토리) 백업 시도 중...`, 'info');
-        const logText = `==================================================\n📌 [${currentRepo} 빌드 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n📂 파일: ${targetFile}\n📝 업데이트 내용:\n${userNote}\n==================================================\n`;
+        const logText = `==================================================\n📌 [${currentRepo} 빌드 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n📁 파일: ${targetFile}\n📝 업데이트 내용:\n${userNote}\n==================================================\n`;
         doc1Success = await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
         if (doc1Success) log(`✅ 메인1(히스토리) 구글 문서 백업 완료!`, 'ok');
       }
@@ -2185,9 +2278,9 @@ ${contextConstraint}`;
         localStorage.setItem('extra_docs_' + currentRepo, JSON.stringify(extraDocs));
         
         let ignored = JSON.parse(localStorage.getItem('ignored_docs_' + currentRepo) || '[]');
-        ignored = ignored.filter(id => id !== fileId);
+        ignored = ignored.filter(id !== fileId);
         localStorage.setItem('ignored_docs_' + currentRepo, JSON.stringify(ignored));
-
+  
         renderExtraDocs();
       }
     }
@@ -2199,8 +2292,11 @@ ${contextConstraint}`;
     function populateSettingsInputs() {
       const savedGoogleId = localStorage.getItem('google_client_id');
       const savedGithubPat = localStorage.getItem('github_pat');
+      const savedGeminiKey = localStorage.getItem('gemini_api_key');
+      
       if (savedGoogleId && $('googleClientIdInput')) $('googleClientIdInput').value = savedGoogleId;
       if (savedGithubPat && $('githubPatInput')) $('githubPatInput').value = savedGithubPat;
+      if (savedGeminiKey && $('geminiApiKeyInput')) $('geminiApiKeyInput').value = savedGeminiKey;
     }
     
     populateSettingsInputs();
@@ -2212,6 +2308,9 @@ ${contextConstraint}`;
     $('githubPatInput')?.addEventListener('input', e => {
       localStorage.setItem('github_pat', e.target.value.trim());
       loadRepos();
+    });
+    $('geminiApiKeyInput')?.addEventListener('input', e => {
+      localStorage.setItem('gemini_api_key', e.target.value.trim());
     });
   }
   
@@ -2225,6 +2324,7 @@ ${contextConstraint}`;
         const v = parts.slice(1).join('=').trim();
         if (k.includes('client_id')) { localStorage.setItem('google_client_id', v); if ($('googleClientIdInput'))$('googleClientIdInput').value = v; }
         if (k.includes('github') || k.includes('pat')) { localStorage.setItem('github_pat', v); if ($('githubPatInput'))$('githubPatInput').value = v; }
+        if (k.includes('gemini') || k.includes('ai_key')) { localStorage.setItem('gemini_api_key', v); if ($('geminiApiKeyInput'))$('geminiApiKeyInput').value = v; }
       }
     });
     showToast('⚡ API 키 저장 완료', 'ok');
@@ -2233,7 +2333,11 @@ ${contextConstraint}`;
   }
   
   function exportKeysJson() {
-    const keysObj = { google_client_id: getGoogleClientId(), github_pat: getGitHubPat() };
+    const keysObj = { 
+      google_client_id: getGoogleClientId(), 
+      github_pat: getGitHubPat(),
+      gemini_api_key: localStorage.getItem('gemini_api_key') || ''
+    };
     const blob = new Blob([JSON.stringify(keysObj, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -2250,9 +2354,11 @@ ${contextConstraint}`;
         const keysObj = JSON.parse(evt.target.result);
         if (keysObj.google_client_id) localStorage.setItem('google_client_id', keysObj.google_client_id);
         if (keysObj.github_pat) localStorage.setItem('github_pat', keysObj.github_pat);
+        if (keysObj.gemini_api_key) localStorage.setItem('gemini_api_key', keysObj.gemini_api_key);
         
         if ($('googleClientIdInput')) $('googleClientIdInput').value = keysObj.google_client_id || '';
         if ($('githubPatInput')) $('githubPatInput').value = keysObj.github_pat || '';
+        if ($('geminiApiKeyInput')) $('geminiApiKeyInput').value = keysObj.gemini_api_key || '';
         
         showToast('📥 API 키 복원 완료', 'ok');
         loadRepos();
@@ -2392,9 +2498,258 @@ ${contextConstraint}`;
     showLivePreviewCurrent();
     showToast(`↺ 드래프트 코드가 복원되었습니다!`, 'ok');
   };
+
+  // ==========================================
+  // [💡 아이디어 막던지기 & 에이전트 분류 로직]
+  // ==========================================
+  let ideaInbox = [];
+  let isRecording = false;
+  let recognition = null;
+  let pendingInboxPhoto = null; // 던지기 대기 중인 사진
+
+  function loadIdeaInbox() {
+    try { ideaInbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } 
+    catch(e) { ideaInbox = []; }
+    renderIdeaInbox();
+  }
+
+  // 던지기 대기 사진 설정 및 취소
+  window.setPendingInboxPhoto = function(b64) {
+    pendingInboxPhoto = b64;
+    $('inboxPhotoPreviewImg').src = b64;
+    $('inboxPhotoPreviewContainer').classList.remove('hidden');
+    $('inboxTextInput').focus();
+  };
+  window.removePendingInboxPhoto = function() {
+    pendingInboxPhoto = null;
+    $('inboxPhotoPreviewImg').src = '';
+    $('inboxPhotoPreviewContainer').classList.add('hidden');
+  };
+
+  window.saveIdeaInbox = function(type = 'text', textData = '') {
+    let text = textData;
+    if (type === 'text' && !text) {
+      text = $('inboxTextInput')?.value?.trim();
+      if (!text && !pendingInboxPhoto) return showToast('내용이나 사진을 입력해주세요.', 'info');
+    }
+    
+    // 만약 텍스트 입력창을 통해 저장되는데 대기중인 사진이 있다면 photo 타입으로 전환
+    let finalSource = type;
+    if (type === 'text' && pendingInboxPhoto) {
+        finalSource = 'photo';
+    }
+
+    const newIdea = {
+      id: Date.now(),
+      text: text,
+      photo: pendingInboxPhoto, // 대기중인 사진 첨부 (없으면 null)
+      source: finalSource,
+      createdAt: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+    };
+    
+    ideaInbox.unshift(newIdea);
+    localStorage.setItem('idea_inbox_global', JSON.stringify(ideaInbox));
+    
+    // 초기화
+    if($('inboxTextInput')) $('inboxTextInput').value = '';
+    removePendingInboxPhoto();
+    
+    renderIdeaInbox();
+    showToast('📥 인박스에 저장되었습니다! (2초 컷)', 'ok');
+  }
+
+  function renderIdeaInbox() {
+    const list = $('ideaInboxList');
+    const count = $('inboxCount');
+    if(!list || !count) return;
+    count.textContent = ideaInbox.length;
+    
+    if(ideaInbox.length === 0) {
+      list.innerHTML = '<div class="text-[11px] text-gray-400 text-center py-4">아이디어가 없습니다. 운전 중 2초 만에 던져보세요!</div>';
+      return;
+    }
+    
+    list.innerHTML = ideaInbox.map((idea, idx) => {
+      const icon = idea.source === 'voice' ? '🎙️' : (idea.source === 'photo' ? '📸' : '✍️');
+      const imgHtml = idea.photo ? `<img src="${idea.photo}" class="mt-2 h-[60px] w-auto rounded-md border border-gray-200 shadow-sm object-cover">` : '';
+      return `
+        <div class="p-3 border rounded-xl bg-white dark:bg-gray-800 shadow-sm relative">
+          <button onclick="deleteInboxIdea(${idx})" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 font-bold">✕</button>
+          <div class="flex items-start gap-2 pr-6">
+            <span class="text-[14px] mt-0.5">${icon}</span>
+            <div class="flex-1 min-w-0">
+              <p class="text-[12.5px] font-bold text-gray-800 dark:text-gray-200 break-words leading-snug">${idea.text || '<span class="text-gray-400 italic">(텍스트 메모 없음)</span>'}</p>
+              ${imgHtml}
+              <span class="text-[9px] text-gray-400 mt-1.5 block">${idea.createdAt}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.deleteInboxIdea = function(idx) {
+    ideaInbox.splice(idx, 1);
+    localStorage.setItem('idea_inbox_global', JSON.stringify(ideaInbox));
+    renderIdeaInbox();
+  };
+
+  // Web Speech API (iOS 14.5+, 안드로이드 크롬 지원)
+  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognition = new SpeechRec();
+    recognition.lang = 'ko-KR';
+    recognition.interimResults = false;
+    
+    recognition.onresult = function(event) {
+      saveIdeaInbox('voice', event.results[0][0].transcript);
+      resetVoiceBtn();
+    };
+    recognition.onerror = function() { resetVoiceBtn(); showToast('음성 인식 실패', 'err'); };
+    recognition.onend = function() { resetVoiceBtn(); };
+  }
+
+  function resetVoiceBtn() {
+    isRecording = false;
+    const btn = $('voiceRecordBtn');
+    if(btn) {
+      btn.innerHTML = '<span class="text-[32px] mb-1">🎙️</span><span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>';
+      btn.style.background = '#ef4444';
+      btn.classList.remove('animate-pulse');
+    }
+  }
+
+  // 막던지기 분류 에이전트 실행 로직 (Gemini API 100% 연동 + '기타' 처리)
+  window.runClassificationAgent = async function() {
+    const geminiKey = localStorage.getItem('gemini_api_key');
+    if(!geminiKey) {
+       showToast('설정 탭에서 Gemini API 키를 먼저 입력해주세요.', 'err');
+       switchTab('settings');
+       $('geminiApiKeyInput')?.focus();
+       return;
+    }
+    if(ideaInbox.length === 0) return showToast('분류할 아이디어가 없습니다.', 'err');
+    
+    $('agentResultArea').classList.remove('hidden');
+    $('agentResultList').innerHTML = '<div class="text-[12px] text-blue-500 font-bold animate-pulse py-6 text-center">🤖 Gemini AI가 프로젝트별로 이관하는 중...<br><span class="text-[9.5px] opacity-70 mt-1 block">(약 5~10초 소요)</span></div>';
+    
+    const repoOptions = Array.from($('repoSelect').options).map(o => o.value);
+    const repoListStr = repoOptions.join(', ');
+    
+    const promptData = ideaInbox.map(i => ({ 
+        id: i.id, 
+        text: i.text || '(사진만 첨부됨)' 
+    }));
+    
+    const prompt = `
+      너는 아이디어 분류 에이전트야. 사용자가 막 던진 아이디어들을 적절한 프로젝트(앱)에 매핑하고, 비슷한 주제는 하나로 묶어줘.
+      
+      사용자 프로젝트(앱) 목록: [${repoListStr}, "기타"]
+      던져진 아이디어: ${JSON.stringify(promptData)}
+      
+      출력은 반드시 JSON 배열 형태여야 해. 마크다운 백틱(\`\`\`json) 없이 순수 JSON만 반환해줘.
+      
+      규칙:
+      1. 같은 앱, 비슷한 주제는 반드시 묶기.
+      2. 사용자 프로젝트 목록에 해당되는 앱이 없거나 완전히 새로운 아이디어라면 반드시 "기타"로 분류할 것.
+      3. summary는 15자 이내 핵심 요약.
+      4. ids는 묶인 아이디어들의 id 배열.
+      5. mergedText는 각 프로젝트 업데이트 메모에 그대로 붙여넣을 수 있도록, 여러 아이디어를 자연스럽게 합친 1~2문장.
+    `;
+
+    try {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.1 }
+        })
+      });
+      
+      if(!res.ok) throw new Error(`API 통신 실패 (${res.status})`);
+      
+      const data = await res.json();
+      let textRes = data.candidates[0].content.parts[0].text;
+      textRes = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
+      
+      const classified = JSON.parse(textRes);
+      let resultHtml = '';
+      
+      classified.forEach(group => {
+         const targetRepo = group.app;
+         let statusMsg = '';
+         
+         // 저장할 사진들 찾기
+         const imagesToMove = [];
+         group.ids.forEach(id => {
+             const originalItem = ideaInbox.find(i => i.id === id);
+             if(originalItem && originalItem.photo) {
+                 imagesToMove.push(originalItem.photo);
+             }
+         });
+         
+         if(repoOptions.includes(targetRepo)) {
+            // 1. 기존 프로젝트인 경우
+            const existingIdeaText = localStorage.getItem('repo_idea_' + targetRepo) || '';
+            const existingImagesStr = localStorage.getItem('repo_idea_images_' + targetRepo);
+            let existingImages = [];
+            try { existingImages = JSON.parse(existingImagesStr); } catch(e){}
+            if(!Array.isArray(existingImages)) existingImages = [];
+            
+            const newText = existingIdeaText ? existingIdeaText + '\n\n' + group.mergedText : group.mergedText;
+            localStorage.setItem('repo_idea_' + targetRepo, newText);
+            
+            existingImages.push(...imagesToMove);
+            localStorage.setItem('repo_idea_images_' + targetRepo, JSON.stringify(existingImages));
+            statusMsg = '<span class="text-emerald-600 font-bold">✅ 업데이트 아이디어 공간으로 자동 이관됨</span>';
+            
+         } else if(targetRepo === '기타') {
+            // 2. '기타' 신규 프로젝트인 경우
+            const existingOtherText = localStorage.getItem('repo_idea_기타') || '';
+            const newText = existingOtherText ? existingOtherText + '\n\n- ' + group.mergedText : '- ' + group.mergedText;
+            localStorage.setItem('repo_idea_기타', newText);
+            statusMsg = '<span class="text-purple-600 font-bold">🌟 신규/미분류 아이디어 보관소로 이동됨</span>';
+         } else {
+            statusMsg = '<span class="text-orange-600 font-bold">⚠️ 앱 매칭 오류 (이관 생략)</span>';
+         }
+         
+         // 인박스 리스트에서 묶인 아이템 삭제
+         ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
+         
+         resultHtml += `
+           <div class="p-3 border rounded-xl bg-gray-50 border-gray-200">
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="badge bg-blue-100 text-blue-800 text-[10px] border-blue-200">📂 ${group.app}</span>
+              <span class="text-[10px] font-bold text-gray-500">${group.ids.length}개 묶음</span>
+            </div>
+            <h3 class="font-bold text-[13px] text-gray-900 mb-1">${group.summary}</h3>
+            <p class="text-[11px] text-gray-700 leading-tight">${group.mergedText}</p>
+            <p class="text-[10px] mt-2">${statusMsg}</p>
+           </div>
+         `;
+      });
+      
+      localStorage.setItem('idea_inbox_global', JSON.stringify(ideaInbox));
+      renderIdeaInbox();
+      
+      // 현재 UI 즉시 리로드
+      loadRepoIdea();
+      updateFullContextBox();
+      
+      $('agentResultList').innerHTML = resultHtml;
+      showToast('🤖 AI 분류 및 각 저장소로 자동 이관이 완료되었습니다!', 'ok');
+
+    } catch(err) {
+       console.error(err);
+       $('agentResultList').innerHTML = `<div class="text-[11px] text-red-500 p-3 bg-red-50 rounded-lg">❌ 오류 발생: Gemini API 키가 유효한지 확인하세요. (${err.message})</div>`;
+    }
+  };
   
   function setupEventListeners() {
     initTheme();
+    loadIdeaInbox();
+
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
@@ -2462,26 +2817,70 @@ ${contextConstraint}`;
       loadGitHubCommitHistory();
     });
   
-    $('ideaImageInput')?.addEventListener('change', e => {
-      if (e.target.files) Array.from(e.target.files).forEach(f => processIdeaImageFile(f));
+    $('ideaImageInput')?.addEventListener('change', async e => {
+      if (e.target.files) {
+        for(let f of e.target.files) {
+            const b64 = await processImageFileToBase64(f).catch(()=>{});
+            if(b64) { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); }
+        }
+      }
       e.target.value = '';
     });
-    document.addEventListener('paste', handlePasteEvent);
+    
+    // 인박스 파일 버튼 처리
+    $('inboxPhotoInput')?.addEventListener('change', async e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const b64 = await processImageFileToBase64(file).catch(err=>showToast('사진 처리 실패', 'err'));
+      if(b64) setPendingInboxPhoto(b64);
+      e.target.value = '';
+    });
+    
+    // 인박스 입력창 클립보드(Ctrl+V) 사진 붙여넣기 감지
+    $('inboxTextInput')?.addEventListener('paste', async (e) => {
+        const items = (e.clipboardData || window.clipboardData)?.items;
+        if (!items) return;
+        for (let item of items) {
+            if (item.type.startsWith('image/')) {
+                const file = item.getAsFile();
+                const b64 = await processImageFileToBase64(file).catch(()=>{});
+                if(b64) {
+                    setPendingInboxPhoto(b64);
+                    e.preventDefault(); // 텍스트처럼 붙여넣어지는 것 방지
+                    showToast('📸 클립보드 이미지가 첨부 대기 중입니다.', 'info');
+                }
+                break;
+            }
+        }
+    });
+    
+    // Web Speech API 활성화 버튼
+    $('voiceRecordBtn')?.addEventListener('click', () => {
+      if(!recognition) return showToast('현재 브라우저에서 음성 인식을 지원하지 않습니다.', 'err');
+      if(isRecording) { recognition.stop(); return; }
+      
+      if(navigator.vibrate) navigator.vibrate(100);
+      isRecording = true;
+      recognition.start();
+      
+      const btn = $('voiceRecordBtn');
+      btn.innerHTML = '<span class="text-[32px] mb-1">🎧</span><span class="font-bold text-[14px]">듣는 중... (완료 시 자동 저장)</span>';
+      btn.style.background = '#3b82f6';
+      btn.classList.add('animate-pulse');
+    });
+
+    document.addEventListener('paste', handlePasteEvent); // 전역 paste 이벤트 (설정탭 용도)
   }
   
   function startApp() {
     if ($('mainFileInput')) $('mainFileInput').value = mainFile;
     updateActiveRepoDisplay();
-    setupEventListeners();
     initSettingsInputs();
+    setupEventListeners();
     loadRepos();
-    loadRepoDocuments();
-    loadRepoIdea();
-    loadGitHubCommitHistory();
-    updateFullContextBox();
   }
   
-  window.addEventListener('DOMContentLoaded', startApp);
+  window.onload = startApp;
 </script>
 </body>
 </html>
