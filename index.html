@@ -2681,8 +2681,8 @@ ${contextConstraint}`;
     `;
 
     try {
-      // 구글 최신 Gemini API의 공식 모델명으로 수정 (에러 유발 태그 제거)
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
+      // 구글 최신 Gemini API의 공식 모델명 및 v1 안정화 엔드포인트 적용
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${geminiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
