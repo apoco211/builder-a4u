@@ -2702,8 +2702,8 @@ ${contextConstraint}`;
     `;
 
     try {
-      // FIX: v1 + gemini-1.5-flash-latest 조합은 404. v1beta + gemini-2.0-flash로 교체 (2026년 안정화)
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiKey}`, {
+      // FIX: v1 + gemini-1.5-flash-latest 조합은 404. v1beta + gemini-3.8-flash로 교체 (2026년 안정화)
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${geminiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
