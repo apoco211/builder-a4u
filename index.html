@@ -21,12 +21,33 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v7.5.3 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v7.6.4 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -561,7 +582,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.5.3</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.6.4</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -854,28 +875,41 @@
       <button id="closeRecoveryBannerBtn" type="button" class="btn btn-sm text-[10px] shrink-0">닫기</button>
     </div>
   </div>
-  <div class="card mb-4" style="border:2px solid #eab308; background:#fefce8;">
-    <h2 class="font-bold text-[14px] text-yellow-700 mb-3">💡 운전 중 2초 컷 인박스</h2>
+  <div class="card mb-3" style="border:2px solid #eab308; background:#fefce8; padding:10px 12px;">
+    <h2 class="font-bold text-[13px] text-yellow-700 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal text-amber-700 bg-yellow-100 px-2 py-0.5 rounded-full">선택 없으면 미분류</span></h2>
     
-    <button id="voiceRecordBtn" class="btn w-full py-6 mb-3 flex flex-col items-center justify-center shadow-md transition-all" style="background:#ef4444; color:white; border:none; border-radius:16px;">
-      <span class="text-[32px] mb-1">🎙️</span>
-      <span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>
-    </button>
+    <div class="flex gap-2 mb-2 items-stretch" style="gap:8px">
+      <div class="flex flex-col justify-between" style="flex:0.95; min-width:0">
+        <div>
+          <label class="text-[10px] font-bold text-slate-600 block mb-1">📁 프로젝트 선택</label>
+          <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
+            <option value="">미분류 (선택없음)</option>
+          </select>
+        </div>
+        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
+      </div>
+      <div class="flex flex-col" style="flex:1.05">
+        <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; -webkit-tap-highlight-color:transparent; padding:10px">
+          <span class="text-[28px] mb-0.5">🎙️</span>
+          <span class="font-bold text-[12px] leading-tight">크게 말하기</span>
+          <span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span>
+          <span id="voiceRecStatus" class="text-[9px] mt-1 hidden">● 녹음중...</span>
+        </button>
+      </div>
+    </div>
 
-    <!-- 카카오톡 스타일 텍스트+사진 입력기 -->
-    <div class="bg-white p-2 rounded-xl border shadow-sm" style="border-color:#fde047">
-      <!-- 사진 첨부 시 나타나는 썸네일 미리보기 컨테이너 -->
+    <div class="bg-white p-2 rounded-xl border shadow-sm" style="border-color:#fde047; padding:8px">
       <div id="inboxPhotoPreviewContainer" class="hidden mb-2 relative inline-block">
         <img id="inboxPhotoPreviewImg" src="" class="h-[60px] w-auto rounded-lg border border-gray-200 object-cover shadow-sm">
-        <button onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
+        <button type="button" onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
       </div>
       
-      <div class="flex gap-1 items-center">
-        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200" title="사진 첨부">
+      <div class="flex gap-1.5 items-start">
+        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200 select-none mt-0.5" title="사진 첨부" style="touch-action:manipulation">
           📸<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
         </label>
-        <input type="text" id="inboxTextInput" class="input flex-1 text-[13px] bg-white !border-none !shadow-none !px-2 focus:ring-0" placeholder="아이디어나 사진(Ctrl+V) 입력 후 엔터..." onkeydown="if(event.key==='Enter') saveIdeaInbox('text')">
-        <button onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 h-[42px] rounded-lg">🚀 던지기</button>
+        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white !border !border-slate-200 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:72px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
+        <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 rounded-lg mt-0.5" style="touch-action:manipulation; height:72px">🚀<br>던지기</button>
       </div>
     </div>
   </div>
@@ -1409,7 +1443,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.5.3)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.6.4)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -2706,7 +2740,7 @@ ${contextConstraint}`;
     isRecording = false;
     const btn = $('voiceRecordBtn');
     if(btn) {
-      btn.innerHTML = '<span class="text-[32px] mb-1">🎙️</span><span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>';
+      btn.innerHTML = '<span class="text-[28px] mb-0.5">🎙️</span><span class="font-bold text-[12px] leading-tight">크게 말하기</span><span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span><span id="voiceRecStatus" class="text-[9px] mt-1 hidden">● 녹음중...</span>';
       btn.style.background = '#ef4444';
       btn.classList.remove('animate-pulse');
     }
@@ -2915,6 +2949,141 @@ ${contextConstraint}`;
     initTheme();
     loadIdeaInbox();
 
+    // === v7.6.4 FIX: 터치 전체 먹통 수정 + 심플 분할 ===
+    try {
+      // 전체 버튼 터치 개선
+      document.querySelectorAll('.btn, button, select, label').forEach(el=>{
+        if(el.style) {
+          el.style.touchAction='manipulation';
+          el.style.webkitTapHighlightColor='transparent';
+        }
+      });
+
+      window.inboxSelectedProject = localStorage.getItem('inbox_selected_project') || '';
+
+      window.syncInboxProjectSelect = function(){
+        const inboxSel = document.getElementById('inboxProjectSelect');
+        const repoSel = document.getElementById('repoSelect');
+        const hintEl = document.getElementById('inboxSelectedProjectHint');
+        const infoEl = document.getElementById('splitSelectedInfo');
+        if(!inboxSel || !repoSel) return;
+        const repos = Array.from(repoSel.options).map(o=>o.value).filter(v=>v);
+        const prev = inboxSel.value || window.inboxSelectedProject;
+        inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
+        repos.forEach(r=>{
+          const opt = document.createElement('option');
+          opt.value = r;
+          opt.textContent = r;
+          inboxSel.appendChild(opt);
+        });
+        if(prev && repos.includes(prev)){
+          inboxSel.value = prev;
+          window.inboxSelectedProject = prev;
+        }
+        if(hintEl){
+          if(inboxSel.value){
+            hintEl.textContent = '→ '+inboxSel.value+' 로 저장';
+            hintEl.style.background = '#111111';
+            hintEl.style.color = '#ffffff';
+          } else {
+            hintEl.textContent = '선택 없으면 미분류';
+            hintEl.style.background = '#fef9c3';
+            hintEl.style.color = '#854d0e';
+          }
+        }
+        if(infoEl){
+          infoEl.innerHTML = inboxSel.value ? '선택: '+inboxSel.value+'<br>→ 직접 저장' : '선택 없으면<br>→ 미분류로 저장';
+        }
+      };
+
+      // 초기 동기화 - 약간 지연 후 (repoSelect 로드 후)
+      setTimeout(()=>{ syncInboxProjectSelect(); }, 300);
+      setTimeout(()=>{ syncInboxProjectSelect(); }, 1000);
+
+      document.getElementById('repoSelect')?.addEventListener('change', ()=> setTimeout(()=>{ syncInboxProjectSelect(); }, 200));
+      document.getElementById('inboxProjectSelect')?.addEventListener('change', (e)=>{
+        window.inboxSelectedProject = e.target.value;
+        localStorage.setItem('inbox_selected_project', window.inboxSelectedProject);
+        syncInboxProjectSelect();
+      });
+
+      // 터치 먹통 원인: 기존 click만 있고 passive 문제 - touchend 추가 + click도 유지
+      const voiceBtn = document.getElementById('voiceRecordBtn');
+      if(voiceBtn){
+        const handleVoiceTap = (e)=>{
+          if(e) { e.preventDefault(); e.stopPropagation(); }
+          if(!recognition) { showToast('음성 미지원, 텍스트 입력 사용', 'info'); return; }
+          if(isRecording){ try{ recognition.stop(); }catch(e){} return; }
+          try{
+            if(navigator.vibrate) navigator.vibrate(50);
+            isRecording = true;
+            recognition.start();
+            voiceBtn.innerHTML = '<span class="text-[28px] mb-0.5">🎧</span><span class="font-bold text-[12px] leading-tight">듣는 중...</span><span class="font-bold text-[10px] opacity-80">완료 시 자동 저장</span><span id="voiceRecStatus" class="text-[9px] mt-1">● 녹음중...</span>';
+            voiceBtn.style.background = '#3b82f6';
+            voiceBtn.classList.add('animate-pulse');
+          }catch(err){
+            resetVoiceBtn();
+            showToast('음성 권한 없음 - 텍스트 입력 사용', 'err');
+          }
+        };
+        // 기존 리스너 제거하고 새로 등록을 위해 클론? 간단히 touchend 추가 + click도 같은 핸들러로
+        voiceBtn.addEventListener('touchend', handleVoiceTap, {passive:false});
+        // click은 기존 로직이 있으나 중복 방지 위해 한 번 더 바인딩 (기존 유지)
+        // voiceBtn.addEventListener('click', handleVoiceTap);
+
+      }
+
+      // saveIdeaInbox 심플 오버라이드 - 미분류
+      const _origSave = window.saveIdeaInbox;
+      window.saveIdeaInbox = function(type='text', textData=''){
+        let text = textData;
+        if(type==='text' && !text){
+          const el = document.getElementById('inboxTextInput');
+          text = el?.value?.trim();
+        }
+        if(!text && !pendingInboxPhoto){ showToast('내용이나 사진 입력', 'info'); return; }
+        const inboxSel = document.getElementById('inboxProjectSelect');
+        const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
+        let finalText = text || '';
+        if(!finalText && pendingInboxPhoto) finalText = '(사진 메모)';
+        const key = 'repo_idea_' + targetRepo;
+        const imgKey = 'repo_idea_images_' + targetRepo;
+        const existing = localStorage.getItem(key) || '';
+        const newEntry = finalText ? (existing ? existing + '\n\n' + finalText : finalText) : existing;
+        localStorage.setItem(key, newEntry);
+        if(pendingInboxPhoto){
+          try{
+            let imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs=[]; imgs.push(pendingInboxPhoto); localStorage.setItem(imgKey, JSON.stringify(imgs));
+          }catch(e){}
+        }
+        const inp = document.getElementById('inboxTextInput'); if(inp) inp.value='';
+        removePendingInboxPhoto();
+        showToast('✅ ['+targetRepo+'] 로 저장됨', 'ok');
+        if(typeof loadRepoIdea==='function' && currentRepo===targetRepo) loadRepoIdea();
+        if(targetRepo==='미분류'){
+          const etcKey = 'repo_idea_기타';
+          const etcExisting = localStorage.getItem(etcKey) || '';
+          const etcNew = finalText ? (etcExisting ? etcExisting + '\n\n- ' + finalText : '- ' + finalText) : etcExisting;
+          localStorage.setItem(etcKey, etcNew);
+        }
+        // 쌓인 아이디어 리스트도 갱신
+        if(typeof renderIdeaInbox==='function') { try { loadIdeaInbox(); } catch(e){} }
+      };
+
+      const ta = document.getElementById('inboxTextInput');
+      if(ta){
+        ta.addEventListener('keydown', (e)=>{
+          if(e.key==='Enter' && (e.ctrlKey || e.metaKey)){
+            e.preventDefault();
+            saveIdeaInbox('text');
+          }
+        });
+      }
+
+    } catch(e){ console.log('v7.6.4 init err', e); }
+
+
+
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
@@ -3092,5 +3261,5 @@ ${contextConstraint}`;
   
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
