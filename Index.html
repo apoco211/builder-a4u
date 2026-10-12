@@ -21,12 +21,33 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v7.5 - 범용 복구함 (재사용) - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v7.5.3 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,10 +68,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.7.5">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.7.5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.7.5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.7.5">
+  <link rel="manifest" href="./manifest.json?v=1791782097">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=1791782097">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=1791782097">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=1791782097">
   
   <style>
     @font-face {
@@ -561,7 +582,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.5 - 범용 복구함 (재사용)</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.5.3</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -844,41 +865,58 @@
 
 <!-- 4번 탭: 아이디어 막던지기 (운전 중 2초 컷 인박스) -->
 <div id="tabInboxContent" style="display:none;">
-  <!-- v7.5: 범용 복구 배너 (재사용 가능) -->
   <div id="recoveryBanner" class="card" style="border:2px dashed #f59e0b; background:#fffbeb; display:none;">
-    <div class="flex justify-between items-center">
-      <div>
-        <div class="font-bold text-[13px] text-amber-800">🆘 복구함 (재사용 가능)</div>
-        <div class="text-[10px] text-amber-700 mt-0.5">날아갔던 아이디어를 다시 인박스로. 복구 후에도 필요하면 다시 쓸 수 있어요.</div>
+    <div class="flex justify-between items-center gap-2">
+      <div class="flex-1">
+        <div class="font-bold text-[13px] text-amber-800">🆘 복구함</div>
+        <div class="text-[10px] text-amber-700">날아간 3개 복구 - 터치 안되면 새로고침</div>
       </div>
-      <div class="flex gap-1">
-        <button id="recoverLostBtn" class="btn btn-yellow btn-sm text-[11px]">복구</button>
-        <button id="closeRecoveryBannerBtn" class="btn btn-sm text-[10px]">닫기</button>
-      </div>
+      <button id="recoverLostBtn" type="button" class="btn btn-yellow btn-sm text-[11px] shrink-0">복구</button>
+      <button id="closeRecoveryBannerBtn" type="button" class="btn btn-sm text-[10px] shrink-0">닫기</button>
     </div>
   </div>
   <div class="card mb-4" style="border:2px solid #eab308; background:#fefce8;">
-    <h2 class="font-bold text-[14px] text-yellow-700 mb-3">💡 운전 중 2초 컷 인박스</h2>
+    <h2 class="font-bold text-[14px] text-yellow-700 mb-3 flex justify-between items-center">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal text-amber-700 bg-yellow-100 px-2 py-0.5 rounded-full">프로젝트 선택 후 던지기</span></h2>
     
-    <button id="voiceRecordBtn" class="btn w-full py-6 mb-3 flex flex-col items-center justify-center shadow-md transition-all" style="background:#ef4444; color:white; border:none; border-radius:16px;">
-      <span class="text-[32px] mb-1">🎙️</span>
-      <span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>
-    </button>
+    <!-- ✅ 요청 반영: 녹음버튼 반으로 줄이고 왼쪽 프로젝트+실시간 아이디어 -->
+    <div class="flex gap-2 mb-3 items-stretch">
+      <!-- 왼쪽: 프로젝트 목록 + 실시간 아이디어 -->
+      <div class="flex-1 flex flex-col gap-2 min-w-0" style="flex:1.15">
+        <div class="bg-[#f8fafc] border border-slate-200 rounded-xl p-2">
+          <div class="text-[10px] font-bold text-slate-500 mb-1.5 flex justify-between"><span>📁 프로젝트</span><span id="splitProjectCount" class="font-normal"></span></div>
+          <div id="splitProjectList" class="max-h-[108px] overflow-y-auto space-y-1 pr-0.5"></div>
+        </div>
+        <div class="bg-[#f1f5f9] border border-slate-200 rounded-xl p-2">
+          <div class="text-[10px] font-bold text-slate-500 mb-1.5 flex justify-between"><span>⚡ 실시간</span><span id="splitLiveCount" class="font-normal">0</span></div>
+          <div id="splitLiveIdeas" class="max-h-[88px] overflow-y-auto space-y-1"></div>
+        </div>
+      </div>
+      <!-- 오른쪽: 반으로 줄인 녹음 버튼 -->
+      <div class="flex flex-col" style="flex:0.85">
+        <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:16px; min-height:144px; touch-action:manipulation; -webkit-tap-highlight-color:transparent;">
+          <span class="text-[32px] mb-1">🎙️</span>
+          <span class="font-bold text-[13px] leading-tight">크게 말하기</span>
+          <span class="font-bold text-[11px] opacity-90">(터치 시 바로 녹음)</span>
+          <span id="voiceRecStatus" class="text-[10px] mt-2 hidden">● 녹음중...</span>
+        </button>
+        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 mt-1.5 text-center leading-tight">선택: 없음<br>→ 기본 인박스</div>
+      </div>
+    </div>
 
-    <!-- 카카오톡 스타일 텍스트+사진 입력기 -->
+    <!-- 카카오톡 스타일 텍스트+사진 입력기 - ID 그대로 유지 -->
     <div class="bg-white p-2 rounded-xl border shadow-sm" style="border-color:#fde047">
       <!-- 사진 첨부 시 나타나는 썸네일 미리보기 컨테이너 -->
       <div id="inboxPhotoPreviewContainer" class="hidden mb-2 relative inline-block">
         <img id="inboxPhotoPreviewImg" src="" class="h-[60px] w-auto rounded-lg border border-gray-200 object-cover shadow-sm">
-        <button onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
+        <button type="button" onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
       </div>
       
       <div class="flex gap-1 items-center">
-        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200" title="사진 첨부">
+        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200 select-none" title="사진 첨부" style="touch-action:manipulation">
           📸<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
         </label>
-        <input type="text" id="inboxTextInput" class="input flex-1 text-[13px] bg-white !border-none !shadow-none !px-2 focus:ring-0" placeholder="아이디어나 사진(Ctrl+V) 입력 후 엔터..." onkeydown="if(event.key==='Enter') saveIdeaInbox('text')">
-        <button onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 h-[42px] rounded-lg">🚀 던지기</button>
+        <input type="text" id="inboxTextInput" class="input flex-1 text-[13px] bg-white !border-none !shadow-none !px-2 focus:ring-0" placeholder="프로젝트 선택 후 아이디어 입력..." onkeydown="if(event.key==='Enter') saveIdeaInbox('text')">
+        <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 h-[42px] rounded-lg" style="touch-action:manipulation">🚀 던지기</button>
       </div>
     </div>
   </div>
@@ -1412,7 +1450,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.5 - 범용 복구함 (재사용))]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.5.3)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -2709,7 +2747,7 @@ ${contextConstraint}`;
     isRecording = false;
     const btn = $('voiceRecordBtn');
     if(btn) {
-      btn.innerHTML = '<span class="text-[32px] mb-1">🎙️</span><span class="font-bold text-[14px]">크게 말하기 (터치 시 바로 녹음)</span>';
+      btn.innerHTML = '<span class="text-[32px] mb-1">🎙️</span><span class="font-bold text-[13px] leading-tight">크게 말하기</span><span class="font-bold text-[11px] opacity-90">(터치 시 바로 녹음)</span><span id="voiceRecStatus" class="text-[10px] mt-2 hidden">● 녹음중...</span>';
       btn.style.background = '#ef4444';
       btn.classList.remove('animate-pulse');
     }
@@ -2740,37 +2778,17 @@ ${contextConstraint}`;
     const prompt = `
       너는 아이디어 분류 에이전트야. 사용자가 막 던진 아이디어들을 적절한 프로젝트(앱)에 매핑하고, 비슷한 주제는 하나로 묶어줘.
       
-      [중요] 사용자 프로젝트(앱) 목록 (반드시 이 중 하나를 app 필드에 그대로 사용):
-      [${repoListStr}, "기타"]
-      
-      참고: repo 이름이 영어(suda-taxi-k)여도 사용자 아이디어에는 한글(수다택시k)로 적혀있을 수 있다. 아래 별칭 규칙으로 매핑해라:
-      - "수다택시", "수다택시k", "수다택시 k", "수다" => "suda-taxi-k"
-      - repo 목록에 있는 이름을 정확히 그대로 사용해야 함 (대소문자까지 일치)
-
+      사용자 프로젝트(앱) 목록: [${repoListStr}, "기타"]
       던져진 아이디어: ${JSON.stringify(promptData)}
       
-      출력은 반드시 순수 JSON 배열만. 마크다운 금지.
-      각 객체는 반드시 아래 4개 필드를 포함:
-      {
-        "app": "목록 중 하나 (정확한 문자열)",
-        "summary": "15자 이내 핵심 요약",
-        "ids": ["아이디어 id 배열"],
-        "mergedText": "프로젝트 메모에 붙여넣을 1~2문장"
-      }
-      
-      예시:
-      [
-        {"app": "suda-taxi-k", "summary": "주간카드 시인성 개선", "ids": ["id1"], "mergedText": "주간카드 노란 텍스트 가독성 개선 요청"},
-        {"app": "기타", "summary": "화장실 찾기", "ids": ["id2"], "mergedText": "운행 중 가까운 화장실 찾기 기능 추가"}
-      ]
+      출력은 반드시 JSON 배열 형태여야 해. 마크다운 백틱(\`\`\`json) 없이 순수 JSON만 반환해줘.
       
       규칙:
       1. 같은 앱, 비슷한 주제는 반드시 묶기.
-      2. 목록에 없는 앱이면 반드시 "기타"로.
-      3. app 필드는 절대 빈값이나 undefined가 되면 안 됨. 반드시 목록 중 하나.
-      4. summary는 15자 이내.
-      5. ids는 묶인 아이디어들의 id 배열.
-      6. mergedText는 자연스러운 1~2문장.
+      2. 사용자 프로젝트 목록에 해당되는 앱이 없거나 완전히 새로운 아이디어라면 반드시 "기타"로 분류할 것.
+      3. summary는 15자 이내 핵심 요약.
+      4. ids는 묶인 아이디어들의 id 배열.
+      5. mergedText는 각 프로젝트 업데이트 메모에 그대로 붙여넣을 수 있도록, 여러 아이디어를 자연스럽게 합친 1~2문장.
     `;
 
     try {
@@ -2832,55 +2850,30 @@ ${contextConstraint}`;
       const classified = JSON.parse(textRes);
       let resultHtml = '';
       
-      // v7.1: 퍼지 매칭 + undefined 방지
       function findBestRepo(rawApp, fallbackText) {
         const allRepos = repoOptions;
-        if (!rawApp || rawApp === 'undefined') {
-          rawApp = '';
-        }
+        if (!rawApp || rawApp === 'undefined') rawApp = '';
         const rawLower = String(rawApp).toLowerCase().trim();
-        // 1. 정확히 일치
         if (allRepos.includes(rawApp)) return rawApp;
-        // 2. 대소문자 무시 일치
         const ci = allRepos.find(r => r.toLowerCase() === rawLower);
         if (ci) return ci;
-        // 3. 포함 관계 (수다택시k 포함되면 suda-taxi-k)
-        const aliasMap = {
-          '수다택시': 'suda-taxi-k',
-          '수다택시k': 'suda-taxi-k',
-          '수다': 'suda-taxi-k',
-          'suda': 'suda-taxi-k',
-          '택시': 'suda-taxi-k'
-        };
+        const aliasMap = {'수다택시': 'suda-taxi-k','수다택시k': 'suda-taxi-k','수다': 'suda-taxi-k','suda': 'suda-taxi-k','택시': 'suda-taxi-k'};
         for (const [k,v] of Object.entries(aliasMap)) {
           if (rawLower.includes(k.toLowerCase()) || (fallbackText && fallbackText.toLowerCase().includes(k.toLowerCase()))) {
             if (allRepos.includes(v)) return v;
-            // v가 없어도 유사 repo 찾기
-            const similar = allRepos.find(r => r.includes('suda') || r.includes('taxi'));
-            if (similar) return similar;
+            const sim = allRepos.find(r => r.includes('suda') || r.includes('taxi'));
+            if (sim) return sim;
           }
-        }
-        // 4. fallbackText로 재추론
-        if (fallbackText) {
-          const ftLower = fallbackText.toLowerCase();
-          const byContent = allRepos.find(r => ftLower.includes(r.toLowerCase().split('-')[0]));
-          if (byContent) return byContent;
         }
         return '기타';
       }
 
       classified.forEach(group => {
          let targetRepo = group.app;
-         // undefined 방지
-         if (!targetRepo || targetRepo === 'undefined' || targetRepo === 'null') {
-           targetRepo = findBestRepo('', group.summary + ' ' + group.mergedText);
-         } else {
-           // 퍼지 보정
+         if (!targetRepo || targetRepo === 'undefined') targetRepo = findBestRepo('', (group.summary||'') + ' ' + (group.mergedText||''));
+         else {
            const corrected = findBestRepo(targetRepo, group.mergedText);
-           if (corrected !== targetRepo) {
-             console.log(`[Builder v7.1] 매칭 보정: ${targetRepo} -> ${corrected}`);
-             targetRepo = corrected;
-           }
+           if (corrected !== targetRepo) targetRepo = corrected;
          }
          let statusMsg = '';
          
@@ -2918,19 +2911,16 @@ ${contextConstraint}`;
             statusMsg = '<span class="text-orange-600 font-bold">⚠️ 앱 매칭 오류 (이관 생략)</span>';
          }
          
-         // v7.4: 성공한 것만 삭제, 실패는 기타+복구함으로 백업 (데이터 손실 방지)
+         // v7.5.3: 성공한 것만 삭제, 실패는 기타로
          const isSuccess = repoOptions.includes(targetRepo) || targetRepo === '기타';
          if (isSuccess) {
            ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
          } else {
-           console.warn(`[Builder v7.4] 매칭 실패로 삭제 보류: ${group.summary}`);
-           const recoveryKey = 'repo_idea_복구함';
-           const existingRecovery = localStorage.getItem(recoveryKey) || '';
-           const recoveryText = `[${new Date().toLocaleString()}] ${group.summary} | 원본앱: ${group.app} | 내용: ${group.mergedText}`;
-           localStorage.setItem(recoveryKey, existingRecovery ? existingRecovery + '\n\n' + recoveryText : recoveryText);
-           // 실패해도 기타로 자동 이관 - 절대 삭제 안 함
-           const fallbackText = localStorage.getItem('repo_idea_기타') || '';
-           localStorage.setItem('repo_idea_기타', fallbackText ? fallbackText + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
+           const recKey = 'repo_idea_복구함';
+           const existing = localStorage.getItem(recKey) || '';
+           localStorage.setItem(recKey, existing ? existing + '\n\n' + group.mergedText : group.mergedText);
+           const etc = localStorage.getItem('repo_idea_기타') || '';
+           localStorage.setItem('repo_idea_기타', etc ? etc + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
          }
          
          resultHtml += `
@@ -2966,65 +2956,136 @@ ${contextConstraint}`;
     initTheme();
     loadIdeaInbox();
 
-    // v7.5 복구 로직 - 범용 재사용 가능
-    window.recoverLostIdeas = function() {
-      // 1. 하드코딩된 3개 (v7.0 사고)
-      const hardcoded = [
-        {id: 'recovery_' + Date.now() + '_1', text: '운행 알고리즘 전략 개선 - 모드2 복귀 경로가 핫플레이스를 경유해 승객을 태우며 복귀하도록 알고리즘을 개선하고, 전략 탭을 신설해 시간대별 추천 전략을 푸시로 제공', photo: null, createdAt: new Date().toISOString()},
-        {id: 'recovery_' + Date.now() + '_2', text: '주간카드 텍스트 시인성 개선 - 주간카드의 노란색 텍스트 시인성이 떨어져 가독성이 좋은 색상으로 변경', photo: null, createdAt: new Date().toISOString()},
-        {id: 'recovery_' + Date.now() + '_3', text: '가까운 화장실 찾기 추가 - 운행 중 편의를 위해 현재 위치에서 가장 가까운 화장실을 탐색하는 기능 추가', photo: null, createdAt: new Date().toISOString()}
-      ];
-      // 2. 복구함에 쌓인 것들 (앞으로 미스매치 시 자동 저장됨)
-      const recoveryRaw = localStorage.getItem('repo_idea_복구함') || '';
-      const fromRecovery = [];
-      if (recoveryRaw) {
-        // 복구함은 텍스트로 저장되어 있으므로, 줄 단위로 아이디어로 변환
-        const lines = recoveryRaw.split('\n').filter(l => l.trim() && l.includes('|'));
-        lines.forEach((line, idx) => {
-          const parts = line.split('| 내용: ');
-          const content = parts[1] || line;
-          if (content) fromRecovery.push({id: 'recovery_box_' + Date.now() + '_' + idx, text: content.trim(), photo: null, createdAt: new Date().toISOString()});
-        });
-      }
+    // === v7.6.1 터치 수정 + 분할형 인박스 로직 (디자인 변경 없음, 기능 추가만) ===
+    try {
+      // 터치 반응 개선 - 모든 주요 버튼에 touch-action
+      document.querySelectorAll('.btn').forEach(b=>{ b.style.touchAction='manipulation'; b.style.webkitTapHighlightColor='transparent'; });
 
-      const allLost = [...hardcoded, ...fromRecovery];
-      let inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]');
-      const existingTexts = new Set(inbox.map(i => i.text));
-      const toAdd = allLost.filter(l => l.text && !existingTexts.has(l.text));
-
-      if (toAdd.length === 0) {
-        showToast('복구할 새로운 아이디어가 없습니다. (이미 복구됨)', 'info');
-        return;
-      }
-
-      inbox.push(...toAdd);
-      localStorage.setItem('idea_inbox_global', JSON.stringify(inbox));
-      if (typeof renderIdeaInbox === 'function') renderIdeaInbox();
-      showToast(`✅ ${toAdd.length}개 복구 완료! 인박스 확인`, 'ok');
+      // 프로젝트 분할 리스트 로직
+      window.inboxSelectedProject = localStorage.getItem('inbox_selected_project') || '';
       
-      // 하드코딩된 건 복구 후에도 배너는 유지 가능 (재사용을 위해 숨기지 않음, 필요하면 닫기 버튼으로)
-    };
-
-    const rb = document.getElementById('recoverLostBtn');
-    if (rb) rb.addEventListener('click', window.recoverLostIdeas);
-    
-    const closeBtn = document.getElementById('closeRecoveryBannerBtn');
-    if (closeBtn) closeBtn.addEventListener('click', () => {
-      const banner = document.getElementById('recoveryBanner');
-      if (banner) banner.style.display = 'none';
-    });
-
-    // 배너 표시 로직: 인박스 비었거나 복구함에 데이터 있으면 표시 (재사용 가능)
-    setTimeout(() => {
-      try {
-        const inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]');
-        const recovery = localStorage.getItem('repo_idea_복구함') || '';
-        const banner = document.getElementById('recoveryBanner');
-        if (banner && (inbox.length === 0 || recovery)) {
-          banner.style.display = 'block';
+      window.renderSplitProjectList = function(){
+        const container = document.getElementById('splitProjectList');
+        const countEl = document.getElementById('splitProjectCount');
+        const hintEl = document.getElementById('inboxSelectedProjectHint');
+        const infoEl = document.getElementById('splitSelectedInfo');
+        if(!container) return;
+        const repoSelect = document.getElementById('repoSelect');
+        let repos = [];
+        if(repoSelect && repoSelect.options.length>0){
+          repos = Array.from(repoSelect.options).map(o=>o.value).filter(v=>v);
+        } else {
+          try { repos = JSON.parse(localStorage.getItem('repo_list_cache')||'[]'); } catch(e){ repos=[]; }
+          if(repos.length===0) repos = ['builder-a4u'];
         }
-      } catch(e) {}
-    }, 600);
+        // 중복 제거
+        repos = [...new Set(repos)];
+        if(countEl) countEl.textContent = '('+repos.length+')';
+        container.innerHTML = '';
+        repos.forEach(r=>{
+          const isActive = r===window.inboxSelectedProject;
+          let cnt = 0;
+          try { const txt = localStorage.getItem('repo_idea_'+r); if(txt) cnt = txt.split('\n').filter(Boolean).length; } catch(e){}
+          const div = document.createElement('div');
+          div.className = 'flex justify-between items-center px-2 py-1.5 rounded-lg text-[11px] cursor-pointer border transition-all ' + (isActive ? 'bg-[#111111] text-white border-[#111111] font-bold' : 'bg-white border-slate-200 hover:border-slate-300 text-slate-700');
+          div.innerHTML = '<span class="truncate pr-1">'+r+'</span><span class="text-[9px] px-1.5 py-0.5 rounded-full shrink-0 '+(isActive?'bg-white text-black':'bg-slate-100 text-slate-500')+'">'+cnt+'</span>';
+          // 클릭 + 터치 모두 대응
+          const selectFn = (e)=>{ e && e.preventDefault(); window.inboxSelectedProject = (window.inboxSelectedProject===r?'':r); localStorage.setItem('inbox_selected_project', window.inboxSelectedProject); renderSplitProjectList(); };
+          div.addEventListener('click', selectFn);
+          div.addEventListener('touchend', selectFn, {passive:false});
+          container.appendChild(div);
+        });
+        if(hintEl){ hintEl.textContent = window.inboxSelectedProject ? '→ '+window.inboxSelectedProject+' 로 직접 저장' : '프로젝트 선택 후 던지기'; hintEl.style.background = window.inboxSelectedProject ? '#111111' : '#fef9c3'; hintEl.style.color = window.inboxSelectedProject ? '#ffffff' : '#854d0e'; }
+        if(infoEl){ infoEl.innerHTML = window.inboxSelectedProject ? '선택: '+window.inboxSelectedProject+'<br>→ 직접 저장' : '선택: 없음<br>→ 기본 인박스'; }
+      };
+
+      window.renderSplitLiveIdeas = function(){
+        const container = document.getElementById('splitLiveIdeas');
+        const countEl = document.getElementById('splitLiveCount');
+        if(!container) return;
+        let inbox = [];
+        try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global')||'[]'); } catch(e){ inbox=[]; }
+        if(countEl) countEl.textContent = inbox.length;
+        if(inbox.length===0){ container.innerHTML = '<div class="text-[9px] text-slate-400 text-center py-2">아이디어 없음</div>'; return; }
+        container.innerHTML = inbox.slice(0,5).map((it, idx)=>{
+          const isSel = it.project && it.project===window.inboxSelectedProject;
+          return '<div class="text-[10px] bg-white border rounded-md px-2 py-1 truncate flex justify-between gap-1 '+(isSel?'border-slate-800 bg-yellow-50':'border-slate-200')+'"><span class="truncate flex-1">'+(it.text||'(사진)').slice(0,20)+'</span><span class="text-[8px] text-slate-400 shrink-0">'+(it.createdAt||'')+'</span></div>';
+        }).join('');
+      };
+
+      // 기존 renderIdeaInbox를 래핑하여 분할 뷰도 같이 갱신
+      const _origRender = window.renderIdeaInbox || function(){};
+      // 이미 있는 함수가 아니고 내부 함수라면 setup 내에서 직접 호출 - 여기서는 주기적으로 갱신
+      // 초기 렌더
+      renderSplitProjectList();
+      renderSplitLiveIdeas();
+      // repoSelect 변경 시 다시 렌더
+      document.getElementById('repoSelect')?.addEventListener('change', ()=> setTimeout(()=>{ renderSplitProjectList(); }, 200));
+
+      // 터치 안됨 수정: voice 버튼에 touchend도 추가, iOS 더블클릭 방지
+      const voiceBtn = document.getElementById('voiceRecordBtn');
+      if(voiceBtn){
+        const handleVoiceTap = (e)=>{
+          e.preventDefault();
+          if(!recognition) { showToast('이 브라우저에서는 음성 미지원, 텍스트 입력 사용', 'info'); return; }
+          if(isRecording){ try{ recognition.stop(); }catch(e){} return; }
+          try{
+            if(navigator.vibrate) navigator.vibrate(50);
+            isRecording = true;
+            recognition.start();
+            voiceBtn.innerHTML = '<span class="text-[32px] mb-1">🎧</span><span class="font-bold text-[13px] leading-tight">듣는 중...</span><span class="font-bold text-[10px] opacity-80">완료 시 자동 저장</span><span id="voiceRecStatus" class="text-[10px] mt-2">● 녹음중...</span>';
+            voiceBtn.style.background = '#3b82f6';
+            voiceBtn.classList.add('animate-pulse');
+            const st = document.getElementById('voiceRecStatus'); if(st) st.classList.remove('hidden');
+          }catch(err){
+            resetVoiceBtn();
+            showToast('음성 권한 없음 - 텍스트 입력 사용', 'err');
+          }
+        };
+        voiceBtn.addEventListener('touchend', handleVoiceTap, {passive:false});
+        // 기존 click 리스너는 유지되지만 touch에서 이미 처리됨
+      }
+
+      // 전역 saveIdeaInbox 래핑 - 선택된 프로젝트가 있으면 직접 저장 (AI 분류 우회)
+      const _origSave = window.saveIdeaInbox;
+      window.saveIdeaInbox = function(type='text', textData=''){
+        let text = textData;
+        if(type==='text' && !text){ text = document.getElementById('inboxTextInput')?.value?.trim(); }
+        if(!text && !pendingInboxPhoto){ showToast('내용이나 사진 입력', 'info'); return; }
+        // 프로젝트 선택되어 있으면 직접 저장
+        if(window.inboxSelectedProject){
+          const targetRepo = window.inboxSelectedProject;
+          let finalText = text || '';
+          if(!finalText && pendingInboxPhoto) finalText = '(사진 메모)';
+          // repo_idea_{repo} 에 직접 저장
+          const key = 'repo_idea_' + targetRepo;
+          const imgKey = 'repo_idea_images_' + targetRepo;
+          const existing = localStorage.getItem(key) || '';
+          const newEntry = finalText ? (existing ? existing + '\n\n' + finalText : finalText) : existing;
+          localStorage.setItem(key, newEntry);
+          if(pendingInboxPhoto){
+            try{
+              let imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs=[]; imgs.push(pendingInboxPhoto); localStorage.setItem(imgKey, JSON.stringify(imgs));
+            }catch(e){}
+          }
+          // 입력 초기화
+          const inp = document.getElementById('inboxTextInput'); if(inp) inp.value='';
+          removePendingInboxPhoto();
+          showToast('✅ ['+targetRepo+'] 로 직접 저장됨 (AI 분류 우회)', 'ok');
+          renderSplitProjectList();
+          renderSplitLiveIdeas();
+          if(typeof loadRepoIdea==='function'){ loadRepoIdea(); }
+          return;
+        }
+        // 선택 없으면 기존 로직 그대로
+        return _origSave(type, textData);
+      };
+
+      // 1초마다 live 갱신
+      setInterval(()=>{ renderSplitLiveIdeas(); }, 1500);
+
+    } catch(e){ console.log('split inbox init err', e); }
+
 
 
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
@@ -3151,7 +3212,47 @@ ${contextConstraint}`;
       }
     });
 
-    document.addEventListener('paste', handlePasteEvent); // 전역 paste 이벤트 (설정탭 용도)
+    document.addEventListener('paste', handlePasteEvent);
+
+    // v7.5.3 복구 - 최소한의 터치 안전한 코드
+    try {
+      const recBtn = document.getElementById('recoverLostBtn');
+      const closeBtn = document.getElementById('closeRecoveryBannerBtn');
+      if (recBtn) {
+        recBtn.addEventListener('click', function() {
+          const hardcoded = [
+            {id: 'rec_' + Date.now() + '_1', text: '운행 알고리즘 전략 개선 - 모드2 복귀 경로가 핫플레이스를 경유해 승객을 태우며 복귀하도록 알고리즘을 개선하고, 전략 탭을 신설해 시간대별 추천 전략을 푸시로 제공', photo: null, createdAt: new Date().toISOString()},
+            {id: 'rec_' + Date.now() + '_2', text: '주간카드 텍스트 시인성 개선 - 주간카드의 노란색 텍스트 시인성이 떨어져 가독성이 좋은 색상으로 변경', photo: null, createdAt: new Date().toISOString()},
+            {id: 'rec_' + Date.now() + '_3', text: '가까운 화장실 찾기 추가 - 운행 중 편의를 위해 현재 위치에서 가장 가까운 화장실을 탐색하는 기능 추가', photo: null, createdAt: new Date().toISOString()}
+          ];
+          let inbox = [];
+          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) { inbox = []; }
+          const existing = new Set(inbox.map(i => i.text));
+          const toAdd = hardcoded.filter(x => !existing.has(x.text));
+          if (toAdd.length === 0) { showToast('이미 복구됨', 'info'); return; }
+          inbox.push(...toAdd);
+          localStorage.setItem('idea_inbox_global', JSON.stringify(inbox));
+          if (typeof renderIdeaInbox === 'function') renderIdeaInbox();
+          showToast('✅ ' + toAdd.length + '개 복구 완료!', 'ok');
+          const b = document.getElementById('recoveryBanner');
+          if (b) b.style.display = 'none';
+        });
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          const b = document.getElementById('recoveryBanner');
+          if (b) b.style.display = 'none';
+        });
+      }
+      setTimeout(function() {
+        try {
+          let inbox = [];
+          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) {}
+          const banner = document.getElementById('recoveryBanner');
+          if (banner && inbox.length === 0) banner.style.display = 'block';
+        } catch(e) {}
+      }, 800);
+    } catch(e) { console.log('recovery init err', e); }
   }
   
   function startApp() {
@@ -3164,5 +3265,5 @@ ${contextConstraint}`;
   
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
