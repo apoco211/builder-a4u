@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v7.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v7.5.3 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,10 +47,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=6.7.5">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=6.7.5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=6.7.5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=6.7.5">
+  <link rel="manifest" href="./manifest.json?v=1791782097">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=1791782097">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=1791782097">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=1791782097">
   
   <style>
     @font-face {
@@ -561,7 +561,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.0</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.5.3</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -844,6 +844,16 @@
 
 <!-- 4번 탭: 아이디어 막던지기 (운전 중 2초 컷 인박스) -->
 <div id="tabInboxContent" style="display:none;">
+  <div id="recoveryBanner" class="card" style="border:2px dashed #f59e0b; background:#fffbeb; display:none;">
+    <div class="flex justify-between items-center gap-2">
+      <div class="flex-1">
+        <div class="font-bold text-[13px] text-amber-800">🆘 복구함</div>
+        <div class="text-[10px] text-amber-700">날아간 3개 복구 - 터치 안되면 새로고침</div>
+      </div>
+      <button id="recoverLostBtn" type="button" class="btn btn-yellow btn-sm text-[11px] shrink-0">복구</button>
+      <button id="closeRecoveryBannerBtn" type="button" class="btn btn-sm text-[10px] shrink-0">닫기</button>
+    </div>
+  </div>
   <div class="card mb-4" style="border:2px solid #eab308; background:#fefce8;">
     <h2 class="font-bold text-[14px] text-yellow-700 mb-3">💡 운전 중 2초 컷 인박스</h2>
     
@@ -1399,7 +1409,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.0)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.5.3)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -2799,8 +2809,31 @@ ${contextConstraint}`;
       const classified = JSON.parse(textRes);
       let resultHtml = '';
       
+      function findBestRepo(rawApp, fallbackText) {
+        const allRepos = repoOptions;
+        if (!rawApp || rawApp === 'undefined') rawApp = '';
+        const rawLower = String(rawApp).toLowerCase().trim();
+        if (allRepos.includes(rawApp)) return rawApp;
+        const ci = allRepos.find(r => r.toLowerCase() === rawLower);
+        if (ci) return ci;
+        const aliasMap = {'수다택시': 'suda-taxi-k','수다택시k': 'suda-taxi-k','수다': 'suda-taxi-k','suda': 'suda-taxi-k','택시': 'suda-taxi-k'};
+        for (const [k,v] of Object.entries(aliasMap)) {
+          if (rawLower.includes(k.toLowerCase()) || (fallbackText && fallbackText.toLowerCase().includes(k.toLowerCase()))) {
+            if (allRepos.includes(v)) return v;
+            const sim = allRepos.find(r => r.includes('suda') || r.includes('taxi'));
+            if (sim) return sim;
+          }
+        }
+        return '기타';
+      }
+
       classified.forEach(group => {
-         const targetRepo = group.app;
+         let targetRepo = group.app;
+         if (!targetRepo || targetRepo === 'undefined') targetRepo = findBestRepo('', (group.summary||'') + ' ' + (group.mergedText||''));
+         else {
+           const corrected = findBestRepo(targetRepo, group.mergedText);
+           if (corrected !== targetRepo) targetRepo = corrected;
+         }
          let statusMsg = '';
          
          // 저장할 사진들 찾기
@@ -2837,8 +2870,17 @@ ${contextConstraint}`;
             statusMsg = '<span class="text-orange-600 font-bold">⚠️ 앱 매칭 오류 (이관 생략)</span>';
          }
          
-         // 인박스 리스트에서 묶인 아이템 삭제
-         ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
+         // v7.5.3: 성공한 것만 삭제, 실패는 기타로
+         const isSuccess = repoOptions.includes(targetRepo) || targetRepo === '기타';
+         if (isSuccess) {
+           ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
+         } else {
+           const recKey = 'repo_idea_복구함';
+           const existing = localStorage.getItem(recKey) || '';
+           localStorage.setItem(recKey, existing ? existing + '\n\n' + group.mergedText : group.mergedText);
+           const etc = localStorage.getItem('repo_idea_기타') || '';
+           localStorage.setItem('repo_idea_기타', etc ? etc + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
+         }
          
          resultHtml += `
            <div class="p-3 border rounded-xl bg-gray-50 border-gray-200">
@@ -2997,7 +3039,47 @@ ${contextConstraint}`;
       }
     });
 
-    document.addEventListener('paste', handlePasteEvent); // 전역 paste 이벤트 (설정탭 용도)
+    document.addEventListener('paste', handlePasteEvent);
+
+    // v7.5.3 복구 - 최소한의 터치 안전한 코드
+    try {
+      const recBtn = document.getElementById('recoverLostBtn');
+      const closeBtn = document.getElementById('closeRecoveryBannerBtn');
+      if (recBtn) {
+        recBtn.addEventListener('click', function() {
+          const hardcoded = [
+            {id: 'rec_' + Date.now() + '_1', text: '운행 알고리즘 전략 개선 - 모드2 복귀 경로가 핫플레이스를 경유해 승객을 태우며 복귀하도록 알고리즘을 개선하고, 전략 탭을 신설해 시간대별 추천 전략을 푸시로 제공', photo: null, createdAt: new Date().toISOString()},
+            {id: 'rec_' + Date.now() + '_2', text: '주간카드 텍스트 시인성 개선 - 주간카드의 노란색 텍스트 시인성이 떨어져 가독성이 좋은 색상으로 변경', photo: null, createdAt: new Date().toISOString()},
+            {id: 'rec_' + Date.now() + '_3', text: '가까운 화장실 찾기 추가 - 운행 중 편의를 위해 현재 위치에서 가장 가까운 화장실을 탐색하는 기능 추가', photo: null, createdAt: new Date().toISOString()}
+          ];
+          let inbox = [];
+          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) { inbox = []; }
+          const existing = new Set(inbox.map(i => i.text));
+          const toAdd = hardcoded.filter(x => !existing.has(x.text));
+          if (toAdd.length === 0) { showToast('이미 복구됨', 'info'); return; }
+          inbox.push(...toAdd);
+          localStorage.setItem('idea_inbox_global', JSON.stringify(inbox));
+          if (typeof renderIdeaInbox === 'function') renderIdeaInbox();
+          showToast('✅ ' + toAdd.length + '개 복구 완료!', 'ok');
+          const b = document.getElementById('recoveryBanner');
+          if (b) b.style.display = 'none';
+        });
+      }
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          const b = document.getElementById('recoveryBanner');
+          if (b) b.style.display = 'none';
+        });
+      }
+      setTimeout(function() {
+        try {
+          let inbox = [];
+          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) {}
+          const banner = document.getElementById('recoveryBanner');
+          if (banner && inbox.length === 0) banner.style.display = 'block';
+        } catch(e) {}
+      }, 800);
+    } catch(e) { console.log('recovery init err', e); }
   }
   
   function startApp() {
