@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v6.7.5 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v7.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -561,7 +561,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v6.7.5</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.0</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -822,6 +822,20 @@
         <div class="col-span-1 md:col-span-2 mt-1">
           <label class="text-[9.5px] font-bold text-purple-600 dark:text-purple-400">🤖 Gemini API Key (자동 분류용)</label>
           <input id="geminiApiKeyInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="AIzaSy...">
+        </div>
+        <div class="col-span-1 md:col-span-2 mt-2">
+          <label class="text-[9.5px] font-bold text-blue-600 dark:text-blue-400">🧠 분류 에이전트 모델 (v7.0 신규)</label>
+          <div class="flex gap-1 mt-0.5">
+            <select id="geminiModelSelect" class="input text-[10px] font-mono flex-1">
+              <option value="gemini-3.8-flash">gemini-3.8-flash (최신, 권장)</option>
+              <option value="gemini-3.5-flash">gemini-3.5-flash (안정)</option>
+              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (폭주에 강함, 무료 호환)</option>
+              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (최후 보루)</option>
+            </select>
+            <button id="checkModelsBtn" class="btn btn-sm text-[9px]" style="background:#dbeafe;color:#1e40af">🔍 사용가능 확인</button>
+          </div>
+          <p class="text-[9px] opacity-60 mt-1">💡 Google이 모델을 은퇴시켜도 여기서 바꾸면 바로 적용됩니다. ListModels API로 자동 확인 가능.</p>
+          <div id="availableModelsBox" class="log mt-1 hidden text-[9px]"></div>
         </div>
       </div>
     </div>
@@ -1385,7 +1399,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v6.7.5)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.0)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -2350,6 +2364,31 @@ ${contextConstraint}`;
     $('geminiApiKeyInput')?.addEventListener('input', e => {
       localStorage.setItem('gemini_api_key', e.target.value.trim());
     });
+    // v7.0 모델 선택 초기화
+    const savedModelForSelect = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
+    if ($('geminiModelSelect')) {
+      $('geminiModelSelect').value = savedModelForSelect;
+      $('geminiModelSelect').addEventListener('change', e => {
+        localStorage.setItem('builder_gemini_model', e.target.value);
+        showToast(`🧠 모델 변경: ${e.target.value}`, 'ok');
+      });
+    }
+    // 사용가능 모델 확인 버튼
+    $('checkModelsBtn')?.addEventListener('click', async () => {
+      const key = localStorage.getItem('gemini_api_key')?.trim();
+      if (!key) return showToast('API 키를 먼저 입력하세요', 'err');
+      const box = $('availableModelsBox');
+      if (box) { box.classList.remove('hidden'); box.textContent = '🔍 조회 중...'; }
+      try {
+        const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${key}`);
+        const d = await r.json();
+        const list = (d.models || []).map(m => m.name.replace('models/','')).filter(n => n.includes('flash') || n.includes('pro')).slice(0, 20);
+        if (box) box.textContent = '✅ 사용 가능: \n' + list.join('\n');
+        showToast(`✅ ${list.length}개 모델 확인됨`, 'ok');
+      } catch(err) {
+        if (box) box.textContent = '❌ 조회 실패: ' + err.message;
+      }
+    });
   }
   
   function parseBulkKeys() {
@@ -2702,21 +2741,56 @@ ${contextConstraint}`;
     `;
 
     try {
-      // FIX: v1 + gemini-1.5-flash-latest 조합은 404. v1beta + gemini-3.8-flash로 교체 (2026년 안정화)
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${geminiKey}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.1 }
-        })
-      });
+      // v7.0: 설정에서 모델 읽기 + ListModels 기반 폴백 + 폭주 재시도
+      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
+      const MODEL_CANDIDATES = [savedModel, 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite'].filter((v,i,a)=>a.indexOf(v)===i);
       
-      if(!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        const exactMessage = errorData.error?.message || `HTTP ${res.status} Error`;
-        throw new Error(`API 통신 실패: ${exactMessage}`);
+      async function fetchWithRetry(url, options, retries = 3) {
+        for (let i = 0; i < retries; i++) {
+          const res = await fetch(url, options);
+          if (res.ok) return res;
+          const errData = await res.json().catch(()=>({}));
+          const msg = errData.error?.message || '';
+          if (msg.includes('high demand') || msg.includes('overloaded') || res.status === 429 || res.status === 503) {
+            const wait = Math.pow(2, i) * 1000 + Math.random()*500;
+            if (typeof showToast === 'function') showToast(`⏳ ${MODEL_CANDIDATES[0]} 폭주 중... ${i+1}차 재시도 (${Math.round(wait/1000)}초)`, 'info');
+            await new Promise(r => setTimeout(r, wait));
+            continue;
+          }
+          throw new Error(`API 통신 실패: ${msg || `HTTP ${res.status}`}`);
+        }
+        throw new Error('This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.');
       }
+
+      let res = null;
+      let lastError = null;
+      for (const model of MODEL_CANDIDATES) {
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
+          res = await fetchWithRetry(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { temperature: 0.1 }
+            })
+          }, 3);
+          if (res && res.ok) {
+            localStorage.setItem('builder_last_success_model', model);
+            console.log(`[Builder v7.0] 성공: ${model}`);
+            break;
+          }
+        } catch (e) {
+          lastError = e;
+          const m = e.message || '';
+          if (m.includes('no longer available') || m.includes('not found') || m.includes('deprecated') || m.includes('high demand')) {
+            console.warn(`[Builder v7.0] ${model} 실패 (${m.substring(0,80)}), 다음 후보로`);
+            continue;
+          }
+          throw e;
+        }
+      }
+      if (!res || !res.ok) throw lastError || new Error('API 통신 실패: 모든 모델 후보 실패');
       
       const data = await res.json();
       let textRes = data.candidates[0].content.parts[0].text;
