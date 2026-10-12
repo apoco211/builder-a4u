@@ -2681,8 +2681,8 @@ ${contextConstraint}`;
     `;
 
     try {
-      // 구글 최신 Gemini API의 공식 모델명 및 v1 안정화 엔드포인트 적용 완료
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash-latest:generateContent?key=${geminiKey}`, {
+      // 구글 최신 Gemini API의 공식 모델명 및 정식 버전에 맞게 v1 엔드포인트로 수정
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
