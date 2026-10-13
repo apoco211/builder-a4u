@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v7.7.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v7.8.0 - 멀티파일 스캔 & 이중 백업 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=7.7.0">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=7.7.0">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=7.7.0">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=7.7.0">
+  <link rel="manifest" href="./manifest.json?v=7.8.0">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=7.8.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=7.8.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=7.8.0">
   
   <style>
     @font-face {
@@ -540,14 +540,13 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.7.0</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.8.0</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
         </div>
       </div>
-
     </div>
     <div class="flex gap-1 items-center shrink-0">
       <button id="themeToggle" class="btn w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] md:w-[40px] md:h-[40px] p-0 flex items-center justify-center text-[14px] sm:text-[16px] md:text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
@@ -570,8 +569,9 @@
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 class="font-bold text-[12px]">📌 작업 레포지토리 & 대상 파일 감지</h2>
       <div class="flex gap-1">
-        <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 텍스트 다운로드</button>
-        <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0">🔄 레포 새로고침</button>
+        <button onclick="setupPWA()" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" style="background:#fef3c7;color:#92400e;border-color:#fde68a" title="해당 레포지토리에 PWA 필수 파일 자동 푸시">✨ PWA 세팅</button>
+        <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 다운로드</button>
+        <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0">🔄 새로고침</button>
       </div>
     </div>
     
@@ -824,28 +824,18 @@
 
 <!-- 4번 탭: 아이디어 막던지기 (운전 중 2초 컷 인박스) -->
 <div id="tabInboxContent" style="display:none;">
-  <div id="recoveryBanner" class="card" style="border:2px dashed #f59e0b; background:#fffbeb; display:none;">
-    <div class="flex justify-between items-center gap-2">
-      <div class="flex-1">
-        <div class="font-bold text-[13px] text-amber-800">🆘 복구함</div>
-        <div class="text-[10px] text-amber-700">날아간 3개 복구 - 터치 안되면 새로고침</div>
-      </div>
-      <button id="recoverLostBtn" type="button" class="btn btn-yellow btn-sm text-[11px] shrink-0">복구</button>
-      <button id="closeRecoveryBannerBtn" type="button" class="btn btn-sm text-[10px] shrink-0">닫기</button>
-    </div>
-  </div>
-  <div class="card mb-3" style="border:2px solid #eab308; background:#fefce8; padding:10px 12px;">
-    <h2 class="font-bold text-[13px] text-yellow-700 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal text-amber-700 bg-yellow-100 px-2 py-0.5 rounded-full">선택 없으면 미분류</span></h2>
+  <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
+    <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 미분류</span></h2>
     
     <div class="flex gap-2 mb-2 items-stretch" style="gap:8px">
       <div class="flex flex-col justify-between" style="flex:0.95; min-width:0">
         <div>
-          <label class="text-[10px] font-bold text-slate-600 block mb-1">📁 프로젝트 선택</label>
+          <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block mb-1">📁 프로젝트 선택</label>
           <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
             <option value="">미분류 (선택없음)</option>
           </select>
         </div>
-        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
+        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
       </div>
       <div class="flex flex-col" style="flex:1.05">
         <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; -webkit-tap-highlight-color:transparent; padding:10px">
@@ -857,18 +847,21 @@
       </div>
     </div>
 
-    <div class="bg-white p-2 rounded-xl border shadow-sm" style="border-color:#fde047; padding:8px">
+    <div class="bg-white dark:bg-gray-800 p-2 rounded-xl border border-yellow-300 dark:border-yellow-700 shadow-sm" style="padding:8px">
       <div id="inboxPhotoPreviewContainer" class="hidden mb-2 relative inline-block">
-        <img id="inboxPhotoPreviewImg" src="" class="h-[60px] w-auto rounded-lg border border-gray-200 object-cover shadow-sm">
-        <button type="button" onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white">✕</button>
+        <img id="inboxPhotoPreviewImg" src="" class="h-[60px] w-auto rounded-lg border border-gray-200 dark:border-gray-600 object-cover shadow-sm">
+        <button type="button" onclick="removePendingInboxPhoto()" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] shadow border-2 border-white dark:border-gray-800">✕</button>
       </div>
       
       <div class="flex gap-1.5 items-start">
-        <label class="cursor-pointer text-[18px] p-2 bg-gray-50 rounded-lg hover:bg-gray-100 shrink-0 border border-gray-200 select-none mt-0.5" title="사진 첨부" style="touch-action:manipulation">
-          📸<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
-        </label>
-        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white !border !border-slate-200 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:72px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
-        <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 rounded-lg mt-0.5" style="touch-action:manipulation; height:72px">🚀<br>던지기</button>
+        <div class="flex flex-col gap-1 shrink-0 mt-0.5">
+           <label class="cursor-pointer text-[18px] p-2 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 select-none flex justify-center items-center h-[38px]" title="사진 첨부" style="touch-action:manipulation">
+              📸<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
+           </label>
+           <button type="button" onclick="pasteInboxImageFromClipboard()" class="text-[14px] p-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 select-none flex justify-center items-center h-[32px]" title="클립보드 붙여넣기" style="touch-action:manipulation">📋</button>
+        </div>
+        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:74px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
+        <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 rounded-lg mt-0.5" style="touch-action:manipulation; height:74px">🚀<br>던지기</button>
       </div>
     </div>
   </div>
@@ -1404,7 +1397,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.7.0)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.8.0)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1602,14 +1595,25 @@ ${contextConstraint}`;
   }
   
   window.disconnectDoc = function(type) {
-    if (type === 'main1') {
+    let removedId = null;
+    if (type === 'main1' && connectedDoc1) {
+      removedId = connectedDoc1.id;
       connectedDoc1 = null;
       localStorage.removeItem('connected_doc1_' + currentRepo);
       renderConnectedDoc1();
-    } else if (type === 'main2') {
+    } else if (type === 'main2' && connectedDoc2) {
+      removedId = connectedDoc2.id;
       connectedDoc2 = null;
       localStorage.removeItem('connected_doc2_' + currentRepo);
       renderConnectedDoc2();
+    }
+    
+    if (removedId) {
+      let ignored = JSON.parse(localStorage.getItem('ignored_docs_' + currentRepo) || '[]');
+      if (!ignored.includes(removedId)) {
+        ignored.push(removedId);
+        localStorage.setItem('ignored_docs_' + currentRepo, JSON.stringify(ignored));
+      }
     }
     updateFullContextBox();
   };
@@ -1806,7 +1810,7 @@ ${contextConstraint}`;
     try {
       const q = `trashed=false and (mimeType='application/vnd.google-apps.document' or mimeType='application/json') and name contains '[${currentRepo}]'`;
       const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType)&pageSize=50`;
-      const res = await fetch(url, { headers: { Authorization: "Bearer " + accessToken } });
+      const res = await fetch(url, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
       if (!res.ok) return;
       const data = await res.json();
       if (!data.files || data.files.length === 0) return;
@@ -1820,13 +1824,13 @@ ${contextConstraint}`;
           ideaFileToRestore = file;
         } else if (file.mimeType === 'application/vnd.google-apps.document') {
           if (file.name.includes('업데이트 히스토리') || file.name.includes('메인1')) {
-            if (!connectedDoc1) {
+            if (!connectedDoc1 && !ignored.includes(file.id)) {
               connectedDoc1 = { id: file.id, title: file.name };
               localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
               restoredCount++;
             }
           } else if (file.name.includes('최신 소스코드') || file.name.includes('메인2')) {
-            if (!connectedDoc2) {
+            if (!connectedDoc2 && !ignored.includes(file.id)) {
               connectedDoc2 = { id: file.id, title: file.name };
               localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
               restoredCount++;
@@ -2140,7 +2144,7 @@ ${contextConstraint}`;
     let orderBy = tabType === 'recent' ? 'recency' : 'modifiedTime desc';
     const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=${encodeURIComponent(orderBy)}&pageSize=30&fields=files(id,name,mimeType,shortcutDetails)`;
     try {
-      const res = await fetch(url, { headers: { Authorization: "Bearer " + accessToken } });
+      const res = await fetch(url, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
       if (!res.ok) return [];
       const data = await res.json();
       return (data.files || []).map(f => {
@@ -2259,7 +2263,8 @@ ${contextConstraint}`;
       const cleanText = newText.replace(/\r\n/g, '\n').replace(/[\x00-\x08\x0B\x0C\x0E-\x1F]/g, '');
       
       const getRes = await fetch(`https://docs.googleapis.com/v1/documents/${docId}`, { 
-          headers: { Authorization: `Bearer ${accessToken}` } 
+          headers: { Authorization: `Bearer ${accessToken}` },
+          cache: 'no-cache'
       });
       
       if (!getRes.ok) {
@@ -2679,7 +2684,7 @@ ${contextConstraint}`;
     
     list.innerHTML = ideaInbox.map((idea, idx) => {
       const icon = idea.source === 'voice' ? '🎙️' : (idea.source === 'photo' ? '📸' : '✍️');
-      const imgHtml = idea.photo ? `<img src="${idea.photo}" class="mt-2 h-[60px] w-auto rounded-md border border-gray-200 shadow-sm object-cover">` : '';
+      const imgHtml = idea.photo ? `<img src="${idea.photo}" class="mt-2 h-[60px] w-auto rounded-md border border-gray-200 dark:border-gray-600 shadow-sm object-cover">` : '';
       return `
         <div class="p-3 border rounded-xl bg-white dark:bg-gray-800 shadow-sm relative">
           <button onclick="deleteInboxIdea(${idx})" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 font-bold">✕</button>
@@ -2891,16 +2896,14 @@ ${contextConstraint}`;
             statusMsg = '<span class="text-orange-600 font-bold">⚠️ 앱 매칭 오류 (이관 생략)</span>';
          }
          
-         // v7.5.3: 성공한 것만 삭제, 실패는 기타로
+         // 실패 시 '기타'로만 이관 (복구함 폐지)
          const isSuccess = repoOptions.includes(targetRepo) || targetRepo === '기타';
          if (isSuccess) {
            ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
          } else {
-           const recKey = 'repo_idea_복구함';
-           const existing = localStorage.getItem(recKey) || '';
-           localStorage.setItem(recKey, existing ? existing + '\n\n' + group.mergedText : group.mergedText);
-           const etc = localStorage.getItem('repo_idea_기타') || '';
-           localStorage.setItem('repo_idea_기타', etc ? etc + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
+           const etcKey = 'repo_idea_기타';
+           const etc = localStorage.getItem(etcKey) || '';
+           localStorage.setItem(etcKey, etc ? etc + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
          }
          
          resultHtml += `
@@ -2932,6 +2935,140 @@ ${contextConstraint}`;
     }
   };
   
+  // PWA 원클릭 자동 세팅 로직 (v7.8.0 신규)
+  window.setupPWA = async function() {
+    const pat = getGitHubPat();
+    if (!pat || pat.length < 10) return showToast('GitHub PAT가 필요합니다. (설정 탭에서 등록)', 'err');
+    
+    if (!confirm(`[${currentRepo}] 프로젝트에 PWA 필수 파일들을 자동 세팅하시겠습니까?\n(이미 존재하는 파일은 덮어씌워질 수 있으니 주의하세요!)`)) return;
+
+    log(`✨ [${currentRepo}] PWA 자동 세팅 시작...`, 'info');
+    
+    const pwaName = currentRepo;
+    const shortName = currentRepo.substring(0, 10);
+    
+    // 1. 임시 아이콘(Base64) 생성기 (Canvas)
+    const createIconBase64 = (size) => {
+        const cvs = document.createElement('canvas');
+        cvs.width = size; cvs.height = size;
+        const ctx = cvs.getContext('2d');
+        ctx.fillStyle = '#10b981'; // Emerald 테마색
+        ctx.fillRect(0, 0, size, size);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = `bold ${size/2}px sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(pwaName.charAt(0).toUpperCase(), size/2, size/2);
+        return cvs.toDataURL('image/png').split(',')[1];
+    };
+
+    // 2. GitHub 파일 단일 푸시 함수
+    const pushFile = async (path, content, isBase64 = false, message = 'PWA 자동 세팅 추가') => {
+        let encodedContent = content;
+        if (!isBase64) {
+            encodedContent = btoa(unescape(encodeURIComponent(content)));
+        }
+        const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+        let sha = null;
+        try {
+            const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path}`, { headers });
+            if (getRes.ok) sha = (await getRes.json()).sha;
+        } catch(e) {} // 404 Not Found는 무시 (새 파일)
+        
+        const payload = { message: message, content: encodedContent };
+        if (sha) payload.sha = sha;
+        
+        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
+        if (!putRes.ok) throw new Error(`${path} 푸시 실패`);
+        log(`✅ [${path}] 푸시 완료`, 'ok');
+    };
+
+    try {
+        // 아이콘 생성 & 푸시
+        showToast('PWA 세팅 중... (1/3) 아이콘 생성 중', 'info');
+        await pushFile('icon-192.png', createIconBase64(192), true, 'Add PWA icon 192x192');
+        await pushFile('icon-512.png', createIconBase64(512), true, 'Add PWA icon 512x512');
+        
+        // manifest.json 푸시
+        showToast('PWA 세팅 중... (2/3) manifest.json 푸시 중', 'info');
+        const manifest = {
+            name: pwaName,
+            short_name: shortName,
+            start_url: "./index.html",
+            display: "standalone",
+            background_color: "#ffffff",
+            theme_color: "#10b981",
+            icons: [
+                { src: "./icon-192.png", sizes: "192x192", type: "image/png" },
+                { src: "./icon-512.png", sizes: "512x512", type: "image/png" }
+            ]
+        };
+        await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false, 'Add manifest.json');
+        
+        // sw.js 푸시
+        showToast('PWA 세팅 중... (3/3) 서비스 워커 등록 중', 'info');
+        const sw = `self.addEventListener('install', e => { self.skipWaiting(); });\nself.addEventListener('activate', e => { e.waitUntil(clients.claim()); });\nself.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });`;
+        await pushFile('sw.js', sw, false, 'Add sw.js');
+        
+        // index.html 태그 자동 주입 처리
+        const editor = $('codeEditor');
+        let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
+        if (code && typeof code === 'string') {
+            let updated = false;
+            if (!code.includes('manifest.json')) {
+                code = code.replace('</head>', `  <link rel="manifest" href="./manifest.json">\n</head>`);
+                updated = true;
+            }
+            if (!code.includes('serviceWorker.register')) {
+                code = code.replace('</body>', `\n<script>\n  if ('serviceWorker' in navigator) {\n    navigator.serviceWorker.register('./sw.js');\n  }\n<\/script>\n</body>`);
+                updated = true;
+            }
+            if (updated) {
+                if (editor) editor.value = code;
+                saveDraftCustom(code, 'PWA 세팅 코드 주입');
+                log(`✅ [index.html] 에 PWA 필수 태그가 자동 삽입되었습니다.`, 'info');
+            }
+        }
+
+        showToast('✨ PWA 자동 세팅 완료! (최종 빌드를 잊지 마세요)', 'ok');
+        alert('🎉 PWA 세팅 완료!\n\n1. manifest.json, sw.js, 기본 아이콘이 레포지토리에 푸시되었습니다.\n2. 현재 화면의 코드에도 적용 코드가 삽입되었습니다.\n3. 앱빌드 탭에서 [🚀 최종 빌드 & 이중 백업]을 한 번 진행하셔야 완벽하게 마무리됩니다.');
+
+    } catch(e) {
+        log(`❌ PWA 세팅 실패: ${e.message}`, 'err');
+        showToast(`세팅 실패: ${e.message}`, 'err');
+    }
+  };
+
+  // 클립보드 이미지 인박스 붙여넣기 (v7.8.0 신규)
+  window.pasteInboxImageFromClipboard = async function() {
+    try {
+        if (!navigator.clipboard || !navigator.clipboard.read) {
+            return showToast('이 기기/브라우저는 클립보드 이미지 읽기를 지원하지 않습니다. 텍스트 창을 클릭하고 Ctrl+V를 눌러주세요.', 'err');
+        }
+        const items = await navigator.clipboard.read();
+        let hasImage = false;
+        for (const item of items) {
+            for (const type of item.types) {
+                if (type.startsWith('image/')) {
+                    const blob = await item.getType(type);
+                    const b64 = await processImageFileToBase64(blob);
+                    setPendingInboxPhoto(b64);
+                    hasImage = true;
+                    break;
+                }
+            }
+            if (hasImage) break;
+        }
+        if (hasImage) {
+            showToast('📸 클립보드 이미지가 성공적으로 첨부 대기 중입니다.', 'ok');
+        } else {
+            showToast('클립보드에 복사된 이미지가 없습니다.', 'info');
+        }
+    } catch(e) {
+        showToast('클립보드 권한 오류가 발생했습니다. (텍스트 창에서 Ctrl+V 권장)', 'err');
+    }
+  };
+
   function setupEventListeners() {
     initTheme();
     loadIdeaInbox();
@@ -2970,12 +3107,10 @@ ${contextConstraint}`;
         if(hintEl){
           if(inboxSel.value){
             hintEl.textContent = '→ '+inboxSel.value+' 로 저장';
-            hintEl.style.background = '#111111';
-            hintEl.style.color = '#ffffff';
+            hintEl.className = "text-[10px] font-normal px-2 py-0.5 rounded-full bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900"; 
           } else {
             hintEl.textContent = '선택 없으면 미분류';
-            hintEl.style.background = '#fef9c3';
-            hintEl.style.color = '#854d0e';
+            hintEl.className = "text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200";
           }
         }
         if(infoEl){
@@ -3013,11 +3148,7 @@ ${contextConstraint}`;
             showToast('음성 권한 없음 - 텍스트 입력 사용', 'err');
           }
         };
-        // 기존 리스너 제거하고 새로 등록을 위해 클론? 간단히 touchend 추가 + click도 같은 핸들러로
         voiceBtn.addEventListener('touchend', handleVoiceTap, {passive:false});
-        // click은 기존 로직이 있으나 중복 방지 위해 한 번 더 바인딩 (기존 유지)
-        // voiceBtn.addEventListener('click', handleVoiceTap);
-
       }
 
       // saveIdeaInbox 심플 오버라이드 - 미분류
@@ -3082,14 +3213,19 @@ ${contextConstraint}`;
     $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
     $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
     
+    // v7.8.0 빌드 확인 팝업 추가
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
-        if (c.trim()) { 
-            saveDraftCustom(c, '최종 빌드 전 저장'); 
-            await pushToGitHubRepository(); 
-        } else {
-            showToast('빌드할 소스 코드가 입력되지 않았습니다.', 'err');
+        if (!c.trim()) {
+            return showToast('빌드할 소스 코드가 입력되지 않았습니다.', 'err');
         }
+        
+        if (!confirm(`🚀 [${currentRepo}] 프로젝트의 최종 빌드 및 구글 문서 이중 백업을 진행하시겠습니까?`)) {
+            return;
+        }
+
+        saveDraftCustom(c, '최종 빌드 전 저장'); 
+        await pushToGitHubRepository(); 
     });
   
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
@@ -3177,7 +3313,7 @@ ${contextConstraint}`;
     
     // Web Speech API 활성화 버튼 (iOS 에러 방지 처리 추가)
     $('voiceRecordBtn')?.addEventListener('click', () => {
-      if(!recognition) return showToast('이 브라우저/기기에서는 음성 인식을 지원하지 않습니다. 텍스트나 사진(📸) 입력을 이용해주세요.', 'err');
+      if(!recognition) return showToast('이 기기에서는 음성 인식을 지원하지 않습니다. 텍스트나 사진(📸) 입력을 이용해주세요.', 'err');
       if(isRecording) { recognition.stop(); return; }
       
       try {
@@ -3196,46 +3332,6 @@ ${contextConstraint}`;
     });
 
     document.addEventListener('paste', handlePasteEvent);
-
-    // v7.5.3 복구 - 최소한의 터치 안전한 코드
-    try {
-      const recBtn = document.getElementById('recoverLostBtn');
-      const closeBtn = document.getElementById('closeRecoveryBannerBtn');
-      if (recBtn) {
-        recBtn.addEventListener('click', function() {
-          const hardcoded = [
-            {id: 'rec_' + Date.now() + '_1', text: '운행 알고리즘 전략 개선 - 모드2 복귀 경로가 핫플레이스를 경유해 승객을 태우며 복귀하도록 알고리즘을 개선하고, 전략 탭을 신설해 시간대별 추천 전략을 푸시로 제공', photo: null, createdAt: new Date().toISOString()},
-            {id: 'rec_' + Date.now() + '_2', text: '주간카드 텍스트 시인성 개선 - 주간카드의 노란색 텍스트 시인성이 떨어져 가독성이 좋은 색상으로 변경', photo: null, createdAt: new Date().toISOString()},
-            {id: 'rec_' + Date.now() + '_3', text: '가까운 화장실 찾기 추가 - 운행 중 편의를 위해 현재 위치에서 가장 가까운 화장실을 탐색하는 기능 추가', photo: null, createdAt: new Date().toISOString()}
-          ];
-          let inbox = [];
-          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) { inbox = []; }
-          const existing = new Set(inbox.map(i => i.text));
-          const toAdd = hardcoded.filter(x => !existing.has(x.text));
-          if (toAdd.length === 0) { showToast('이미 복구됨', 'info'); return; }
-          inbox.push(...toAdd);
-          localStorage.setItem('idea_inbox_global', JSON.stringify(inbox));
-          if (typeof renderIdeaInbox === 'function') renderIdeaInbox();
-          showToast('✅ ' + toAdd.length + '개 복구 완료!', 'ok');
-          const b = document.getElementById('recoveryBanner');
-          if (b) b.style.display = 'none';
-        });
-      }
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          const b = document.getElementById('recoveryBanner');
-          if (b) b.style.display = 'none';
-        });
-      }
-      setTimeout(function() {
-        try {
-          let inbox = [];
-          try { inbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) {}
-          const banner = document.getElementById('recoveryBanner');
-          if (banner && inbox.length === 0) banner.style.display = 'block';
-        } catch(e) {}
-      }, 800);
-    } catch(e) { console.log('recovery init err', e); }
   }
   
   function startApp() {
