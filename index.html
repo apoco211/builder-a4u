@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v7.8.1 - 멀티파일 스캔 & 이중 백업 빌더</title>
+  <title>Builder-a4u v8.0.0 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=7.8.1">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=7.8.1">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=7.8.1">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=7.8.1">
+  <link rel="manifest" href="./manifest.json?v=8.0.0">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.0">
   
   <style>
     @font-face {
@@ -540,7 +540,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v7.8.1</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.0</h1>
         <!-- 탭 아래에 있던 작업앱 배지를 상단 타이틀 영역으로 올려 공간 최적화 -->
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -559,7 +559,7 @@
     <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
     <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 & 맥락 복사</button>
-    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
+    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
@@ -568,7 +568,8 @@
   <div class="card">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
       <h2 class="font-bold text-[12px]">📌 작업 레포지토리 & 대상 파일 감지</h2>
-      <div class="flex gap-1">
+      <div class="flex gap-1 flex-wrap">
+        <button onclick="$('aiRepoModal').style.display='flex'" class="btn btn-sm text-[9px] py-1 px-2 shrink-0 btn-emerald animate-pulse shadow-md" title="AI가 아이콘과 레포를 자동 생성합니다">➕ 새 프로젝트 AI 자동 생성</button>
         <button onclick="setupPWA()" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" style="background:#fef3c7;color:#92400e;border-color:#fde68a" title="해당 레포지토리에 PWA 필수 파일 자동 푸시">✨ PWA 세팅</button>
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[9px] py-1 px-2 shrink-0" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 다운로드</button>
         <button id="refreshRepoBtn" class="btn btn-sm text-[9px] py-1 px-2 shrink-0">🔄 새로고침</button>
@@ -800,7 +801,7 @@
           <input id="githubPatInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="ghp_...">
         </div>
         <div class="col-span-1 md:col-span-2 mt-1">
-          <label class="text-[9.5px] font-bold text-purple-600 dark:text-purple-400">🤖 Gemini API Key (자동 분류용)</label>
+          <label class="text-[9.5px] font-bold text-purple-600 dark:text-purple-400">🤖 Gemini API Key (자동 분류 및 아이콘 생성용)</label>
           <input id="geminiApiKeyInput" class="input text-[9px] font-mono mt-0.5" type="password" placeholder="AIzaSy...">
         </div>
         <div class="col-span-1 md:col-span-2 mt-2">
@@ -904,6 +905,30 @@
   
     <div id="driveFileList" class="drive-modal-body">
       <div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
+    </div>
+  </div>
+</div>
+
+<!-- AI 레포 자동 생성 모달 (v8.0.0 신규) -->
+<div id="aiRepoModal" class="drive-modal" style="display:none;">
+  <div class="drive-modal-content" style="max-width: 500px;">
+    <div class="drive-modal-header border-b border-gray-200 dark:border-gray-700">
+      <div class="font-bold flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+        <span>✨</span> AI 프로젝트 자동 생성기
+      </div>
+      <button onclick="$('aiRepoModal').style.display='none'" class="btn text-[12px] py-1">✕ 닫기</button>
+    </div>
+    <div class="p-5 space-y-4">
+      <div>
+        <label class="text-[11px] font-bold block mb-1.5">1. 저장소(Repo) 이름 <span class="text-red-500">*</span></label>
+        <input id="aiRepoNameInput" class="input text-[13px]" placeholder="예: taxi-dj-v2 (영문, 숫자, 하이픈만 가능)">
+      </div>
+      <div>
+        <label class="text-[11px] font-bold block mb-1.5">2. 어떤 앱인가요? (기획 의도) <span class="text-red-500">*</span></label>
+        <textarea id="aiRepoDescInput" class="textarea h-[80px] text-[13px]" placeholder="예: 대전 지역 택시 기사님들을 위한 콜 알림 및 네비게이션 앱. 노란색 테마."></textarea>
+        <p class="text-[9.5px] opacity-60 mt-1.5">💡 작성하신 설명을 바탕으로 Gemini AI가 찰떡궁합 <b>배경색</b>과 <b>이모지</b>를 추출해 PWA 아이콘을 자동으로 디자인합니다!</p>
+      </div>
+      <button onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md">🚀 AI 아이콘 생성 & 자동 배포 원클릭 세팅</button>
     </div>
   </div>
 </div>
@@ -1141,7 +1166,7 @@
     try {
       const q = `trashed=false and name='${fileName}'`;
       const searchRes = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id)`, {
-        headers: { Authorization: "Bearer " + accessToken }
+        headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache'
       });
       const searchData = await searchRes.json();
       let fileId = searchData.files?.[0]?.id;
@@ -1397,7 +1422,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v7.8.1)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.0)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1729,7 +1754,7 @@ ${contextConstraint}`;
     return currentDraft || '';
   }
   
-  async function loadRepos() {
+  async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect');
     if (!select) return;
     const pat = getGitHubPat();
@@ -1742,7 +1767,7 @@ ${contextConstraint}`;
     }
     try {
       const res = await fetch('https://api.github.com/user/repos?per_page=100&sort=updated', {
-        headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' }
+        headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' }, cache: 'no-store'
       });
       if (res.ok) {
         const repos = await res.json();
@@ -1752,19 +1777,35 @@ ${contextConstraint}`;
             const opt = document.createElement('option');
             opt.value = r.name;
             opt.textContent = r.name + (r.private ? ' 🔒' : '');
-            if (r.name === currentRepo) opt.selected = true;
+            if (newRepoSelect && r.name === newRepoSelect) {
+                opt.selected = true;
+                currentRepo = newRepoSelect;
+            } else if (!newRepoSelect && r.name === currentRepo) {
+                opt.selected = true;
+            }
             select.appendChild(opt);
           });
-          if (!repos.some(r => r.name === currentRepo)) {
+          
+          if (!newRepoSelect && !repos.some(r => r.name === currentRepo)) {
             currentRepo = repos[0].name;
             select.value = currentRepo;
           }
+          localStorage.setItem('current_repo', currentRepo);
+          updateActiveRepoDisplay();
         }
       }
     } catch(e) {}
+    
+    // 모달을 통해 새 레포를 만든 직후라면 index.html 강제 할당
+    if (newRepoSelect) {
+        mainFile = 'index.html';
+        localStorage.setItem('main_file_' + currentRepo, mainFile);
+        if ($('mainFileInput')) $('mainFileInput').value = mainFile;
+    }
+
     loadRepoDocuments();
     scanRepoFileTree();
-    syncLatestSourceFromGithub();
+    syncLatestSourceFromGithub(Boolean(newRepoSelect)); // 새로 만들었으면 강제 페치
   }
   
   async function findExistingDocByName(title) {
@@ -2091,7 +2132,7 @@ ${contextConstraint}`;
     } else if (file.endsWith('.js')) {
       frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>JS Preview</title></head><body><div id="app"></div><script>${code}<\/script></body></html>`;
     } else {
-      frame.srcdoc = code;
+      frame.srcdoc = code.replace(/<\/script>/g, '<\\/script>');
     }
   
     box.classList.add('active');
@@ -2935,30 +2976,42 @@ ${contextConstraint}`;
     }
   };
   
-  // PWA 원클릭 자동 세팅 로직 (v7.8.0 신규)
-  window.setupPWA = async function() {
+  // PWA 원클릭 자동 세팅 로직 (v8.0.0 완전체)
+  window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
     const pat = getGitHubPat();
     if (!pat || pat.length < 10) return showToast('GitHub PAT가 필요합니다. (설정 탭에서 등록)', 'err');
     
-    if (!confirm(`[${currentRepo}] 프로젝트에 PWA 필수 파일들을 자동 세팅하시겠습니까?\n(이미 존재하는 파일은 덮어씌워질 수 있으니 주의하세요!)`)) return;
+    const targetPwaRepo = presetRepoName || currentRepo;
+    if (!presetRepoName) {
+        if (!confirm(`[${targetPwaRepo}] 프로젝트에 PWA 필수 파일들을 자동 세팅하시겠습니까?\n(이미 존재하는 파일은 덮어씌워질 수 있으니 주의하세요!)`)) return;
+    }
 
-    log(`✨ [${currentRepo}] PWA 자동 세팅 시작...`, 'info');
+    log(`✨ [${targetPwaRepo}] PWA 자동 세팅 시작...`, 'info');
+    showToast(`✨ [${targetPwaRepo}] PWA 뼈대 생성 중...`, 'info');
     
-    const pwaName = currentRepo;
-    const shortName = currentRepo.substring(0, 10);
+    const pwaName = targetPwaRepo;
+    const shortName = targetPwaRepo.substring(0, 10);
+    const themeColor = presetIconOptions?.color || '#10b981';
+    const centerEmoji = presetIconOptions?.emoji || targetPwaRepo.charAt(0).toUpperCase();
     
     // 1. 임시 아이콘(Base64) 생성기 (Canvas)
     const createIconBase64 = (size) => {
         const cvs = document.createElement('canvas');
         cvs.width = size; cvs.height = size;
         const ctx = cvs.getContext('2d');
-        ctx.fillStyle = '#10b981'; // Emerald 테마색
+        ctx.fillStyle = themeColor;
         ctx.fillRect(0, 0, size, size);
         ctx.fillStyle = '#ffffff';
-        ctx.font = `bold ${size/2}px sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(pwaName.charAt(0).toUpperCase(), size/2, size/2);
+        
+        if (presetIconOptions) {
+            ctx.font = `${size * 0.6}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+            ctx.fillText(centerEmoji, size/2, size/2 + (size*0.05));
+        } else {
+            ctx.font = `bold ${size/2}px sans-serif`;
+            ctx.fillText(centerEmoji, size/2, size/2);
+        }
         return cvs.toDataURL('image/png').split(',')[1];
     };
 
@@ -2971,33 +3024,31 @@ ${contextConstraint}`;
         const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
         let sha = null;
         try {
-            const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path}`, { headers });
+            const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers });
             if (getRes.ok) sha = (await getRes.json()).sha;
         } catch(e) {} // 404 Not Found는 무시 (새 파일)
         
         const payload = { message: message, content: encodedContent };
         if (sha) payload.sha = sha;
         
-        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
+        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
         if (!putRes.ok) throw new Error(`${path} 푸시 실패`);
         log(`✅ [${path}] 푸시 완료`, 'ok');
     };
 
     try {
         // 아이콘 생성 & 푸시
-        showToast('PWA 세팅 중... (1/3) 아이콘 생성 중', 'info');
         await pushFile('icon-192.png', createIconBase64(192), true, 'Add PWA icon 192x192');
         await pushFile('icon-512.png', createIconBase64(512), true, 'Add PWA icon 512x512');
         
         // manifest.json 푸시
-        showToast('PWA 세팅 중... (2/3) manifest.json 푸시 중', 'info');
         const manifest = {
             name: pwaName,
             short_name: shortName,
             start_url: "./index.html",
             display: "standalone",
             background_color: "#ffffff",
-            theme_color: "#10b981",
+            theme_color: themeColor,
             icons: [
                 { src: "./icon-192.png", sizes: "192x192", type: "image/png" },
                 { src: "./icon-512.png", sizes: "512x512", type: "image/png" }
@@ -3006,37 +3057,153 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false, 'Add manifest.json');
         
         // sw.js 푸시
-        showToast('PWA 세팅 중... (3/3) 서비스 워커 등록 중', 'info');
         const sw = `self.addEventListener('install', e => { self.skipWaiting(); });\nself.addEventListener('activate', e => { e.waitUntil(clients.claim()); });\nself.addEventListener('fetch', e => { e.respondWith(fetch(e.request).catch(() => caches.match(e.request))); });`;
         await pushFile('sw.js', sw, false, 'Add sw.js');
         
-        // index.html 태그 자동 주입 처리
-        const editor = $('codeEditor');
-        let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
-        if (code && typeof code === 'string') {
-            let updated = false;
-            if (!code.includes('manifest.json')) {
-                code = code.replace('</head>', `  <link rel="manifest" href="./manifest.json">\n</head>`);
-                updated = true;
+        // index.html 태그 자동 주입 처리 (AI 자동생성의 경우는 보일러플레이트로 바로 푸시)
+        if (presetRepoName) {
+            const initialHtml = `<!DOCTYPE html>\n<html lang="ko">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n  <title>${pwaName}</title>\n  <link rel="manifest" href="./manifest.json">\n</head>\n<body>\n  <div style="padding: 20px; font-family: sans-serif; text-align: center; margin-top: 50px;">\n    <h1 style="font-size: 80px; margin: 0;">${centerEmoji}</h1>\n    <h2>${pwaName}</h2>\n    <p>AI가 자동 생성한 뼈대 프로젝트입니다.</p>\n  </div>\n\n  <script>\n    if ('serviceWorker' in navigator) {\n      navigator.serviceWorker.register('./sw.js');\n    }\n  <\/script>\n</body>\n</html>`;
+            await pushFile('index.html', initialHtml, false, 'Init index.html with PWA tags');
+            
+            showToast('4/4 GitHub Pages 배포 설정 중...', 'info');
+            try {
+                // GitHub 내부 인덱싱 시간 확보
+                await new Promise(r => setTimeout(r, 2500)); 
+                let pagesRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/pages`, {
+                    method: 'POST',
+                    headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ source: { branch: 'main', path: '/' } })
+                });
+                if(!pagesRes.ok) {
+                     await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/pages`, {
+                        method: 'POST',
+                        headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ source: { branch: 'master', path: '/' } })
+                    });
+                }
+            } catch(e) {
+                console.log('Pages activation warning:', e);
             }
-            if (!code.includes('serviceWorker.register')) {
-                code = code.replace('</body>', `\n<script>\n  if ('serviceWorker' in navigator) {\n    navigator.serviceWorker.register('./sw.js');\n  }\n<\/script>\n</body>`);
-                updated = true;
+        } else {
+            const editor = $('codeEditor');
+            let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
+            if (code && typeof code === 'string') {
+                let updated = false;
+                if (!code.includes('manifest.json')) {
+                    code = code.replace('</head>', `  <link rel="manifest" href="./manifest.json">\n</head>`);
+                    updated = true;
+                }
+                if (!code.includes('serviceWorker.register')) {
+                    code = code.replace('</body>', `\n<script>\n  if ('serviceWorker' in navigator) {\n    navigator.serviceWorker.register('./sw.js');\n  }\n  <\/script>\n</body>`);
+                    updated = true;
+                }
+                if (updated) {
+                    if (editor) editor.value = code;
+                    saveDraftCustom(code, 'PWA 세팅 코드 주입');
+                    log(`✅ [index.html] 에 PWA 필수 태그가 자동 삽입되었습니다.`, 'info');
+                }
             }
-            if (updated) {
-                if (editor) editor.value = code;
-                saveDraftCustom(code, 'PWA 세팅 코드 주입');
-                log(`✅ [index.html] 에 PWA 필수 태그가 자동 삽입되었습니다.`, 'info');
-            }
+            alert('🎉 PWA 세팅 완료!\n\n1. manifest.json, sw.js, 기본 아이콘이 레포지토리에 푸시되었습니다.\n2. 현재 화면의 코드에도 적용 코드가 삽입되었습니다.\n3. 앱빌드 탭에서 [🚀 최종 빌드 & 이중 백업]을 한 번 진행하셔야 완벽하게 마무리됩니다.');
         }
 
-        showToast('✨ PWA 자동 세팅 완료! (최종 빌드를 잊지 마세요)', 'ok');
-        alert('🎉 PWA 세팅 완료!\n\n1. manifest.json, sw.js, 기본 아이콘이 레포지토리에 푸시되었습니다.\n2. 현재 화면의 코드에도 적용 코드가 삽입되었습니다.\n3. 앱빌드 탭에서 [🚀 최종 빌드 & 이중 백업]을 한 번 진행하셔야 완벽하게 마무리됩니다.');
+        if (presetRepoName) {
+            const appUrl = `https://${GITHUB_USER}.github.io/${targetPwaRepo}/`;
+            alert(`🎉 [${targetPwaRepo}] 프로젝트 AI 자동 생성 및 배포가 완료되었습니다!\n\n🌐 접속 주소:\n${appUrl}\n\n(※ GitHub 서버에서 사이트를 구워내는 데 약 1~2분이 소요되므로, 잠시 후 접속해 보세요!)`);
+            showToast(`🎉 프로젝트 구축 완벽 성공!`, 'ok');
+            loadRepos(presetRepoName); // 방금 만든 레포로 리스트 갱신 및 선택
+        }
 
     } catch(e) {
         log(`❌ PWA 세팅 실패: ${e.message}`, 'err');
         showToast(`세팅 실패: ${e.message}`, 'err');
     }
+  };
+
+  // AI 레포지토리 자동 생성 로직 (v8.0.0 완성형)
+  window.createNewProjectWithAI = async function() {
+      const repoName = $('aiRepoNameInput')?.value?.trim();
+      const repoDesc = $('aiRepoDescInput')?.value?.trim();
+      const pat = getGitHubPat();
+      const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
+
+      if (!repoName || !/^[a-zA-Z0-9-]+$/.test(repoName)) return showToast('레포지토리 이름은 영문, 숫자, 하이픈(-)만 가능합니다.', 'err');
+      if (!repoDesc) return showToast('어떤 앱을 기획하시는지 설명을 적어주세요.', 'err');
+      if (!pat) return showToast('GitHub PAT 토큰이 설정되어 있지 않습니다.', 'err');
+      if (!geminiKey) return showToast('Gemini API 키가 설정되어 있지 않습니다.', 'err');
+
+      $('aiRepoModal').style.display = 'none';
+      log(`🚀 [${repoName}] 신규 프로젝트 AI 구축 시작...`, 'info');
+      showToast('1/4 GitHub 레포지토리를 생성하는 중...', 'info');
+
+      // 1. GitHub Repo 생성
+      try {
+          const createRepoRes = await fetch('https://api.github.com/user/repos', {
+              method: 'POST',
+              headers: {
+                  'Authorization': 'Bearer ' + pat,
+                  'Accept': 'application/vnd.github.v3+json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  name: repoName,
+                  description: repoDesc,
+                  private: false,
+                  auto_init: true // 빈 브랜치를 만들지 않고 initial commit(README)을 함께 생성
+              })
+          });
+
+          if (!createRepoRes.ok) {
+              const err = await createRepoRes.json();
+              if (err.errors && err.errors[0]?.message.includes('already exists')) {
+                  throw new Error('이미 존재하는 레포지토리 이름입니다.');
+              }
+              throw new Error(err.message || 'GitHub 레포 생성 실패');
+          }
+      } catch(e) {
+          log(`❌ 레포지토리 생성 실패: ${e.message}`, 'err');
+          return showToast(`레포지토리 생성 실패: ${e.message}`, 'err');
+      }
+
+      // 2. Gemini API 호출하여 이모지 및 색상 추천받기
+      showToast('2/4 기획 의도를 분석해 아이콘을 디자인하는 중...', 'info');
+      let aiIconOptions = { color: '#10b981', emoji: '✨' }; // Fallback
+      
+      const prompt = `너는 앱 UI/UX 디자이너야. 다음 앱 기획 설명을 읽고, 이 앱의 아이콘으로 가장 잘 어울리는 '이모지 1개'와 '배경색(Hex 코드)'을 추천해줘.
+      앱 설명: ${repoDesc}
+      응답은 마크다운 없이 순수 JSON 형식으로만 해줘.
+      {"emoji": "🚕", "color": "#FBBF24"}`;
+
+      try {
+          const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
+          const geminiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${savedModel}:generateContent?key=${geminiKey}`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                  contents: [{ parts: [{ text: prompt }] }],
+                  generationConfig: { temperature: 0.2 }
+              })
+          });
+
+          if (geminiRes.ok) {
+              const data = await geminiRes.json();
+              let textRes = data.candidates[0].content.parts[0].text;
+              textRes = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
+              const parsed = JSON.parse(textRes);
+              if (parsed.emoji && parsed.color) {
+                  aiIconOptions = { color: parsed.color, emoji: parsed.emoji };
+                  log(`✨ AI 아이콘 조합 추출 성공: [${parsed.emoji} / ${parsed.color}]`, 'ok');
+              }
+          }
+      } catch (e) {
+          log(`⚠️ Gemini 추출 실패(기본값 사용): ${e.message}`, 'info');
+      }
+
+      // 3. PWA 세팅 및 기본 파일 생성 (setupPWA 함수 재사용)
+      showToast('3/4 PWA 필수 파일 및 뼈대 코드 생성 중...', 'info');
+      // 레포 생성 직후 딜레이를 주어 GitHub 서버에서 브랜치 준비가 완료될 시간을 확보
+      setTimeout(async () => {
+          await setupPWA(repoName, aiIconOptions);
+      }, 1500);
   };
 
   // 클립보드 이미지 인박스 붙여넣기 (v7.8.1 신규)
@@ -3073,6 +3240,7 @@ ${contextConstraint}`;
     initTheme();
     loadIdeaInbox();
 
+    // === v7.6.4 FIX: 터치 전체 먹통 수정 + 심플 분할 ===
     try {
       // 전체 버튼 터치 개선
       document.querySelectorAll('.btn, button, select, label').forEach(el=>{
@@ -3128,7 +3296,7 @@ ${contextConstraint}`;
         syncInboxProjectSelect();
       });
 
-      // 터치 먹통 원인 해결 (기존 유지)
+      // 터치 먹통 원인: 기존 click만 있고 passive 문제 - touchend 추가 + click도 유지
       const voiceBtn = document.getElementById('voiceRecordBtn');
       if(voiceBtn){
         const handleVoiceTap = (e)=>{
@@ -3224,7 +3392,7 @@ ${contextConstraint}`;
     $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
     $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
     
-    // v7.8.0 빌드 확인 팝업 추가
+    // v8.0.0 빌드 확인 팝업 유지
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
         if (!c.trim()) {
