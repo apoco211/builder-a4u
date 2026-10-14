@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.8 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.9 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -186,7 +186,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.8</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.9</h1>
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -309,19 +309,25 @@
       </button>
     </div>
     
-    <!-- v8.0.3 스마트 패치 패널 (숨김/펼침) -->
+    <!-- v8.0.9 스마트 패치 패널 (숨김/펼침) -->
     <div id="smartPatchPanel" class="hidden mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 border border-yellow-400 dark:border-yellow-600 rounded-xl shadow-inner">
-      <div class="flex justify-between items-center mb-2">
-        <div class="flex items-center gap-1.5">
-          <span class="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">⚡ 교체할 '부분 코드'만 붙여넣기</span>
+      <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">⚡ 교체할 '부분 코드' 붙여넣기</span>
           <button onclick="smartPasteToTarget($('patchInput'))" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a">📋 붙여넣기</button>
+          <button id="clearPatchInputBtn" onclick="if($('patchInput')) $('patchInput').value=''; showToast('🗑️ 부분 코드 입력창을 비웠습니다.','info');" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 지우기</button>
         </div>
         <button id="undoPatchBtn" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
       </div>
-      <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="AI가 작성해준 특정 함수, 변경 블록(SEARCH/REPLACE) 등 부분 코드만 붙여넣으세요."></textarea>
-      <button id="runSmartPatchBtn" class="btn btn-sm w-full mt-2 py-2.5 text-[11px] btn-emerald shadow-md">
-        🔍 기존 코드에서 위치 찾아서 자동 교체하기
-      </button>
+      <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="SEARCH/REPLACE 블록은 물론, 일반 줄글 설명이나 수정 코드 조각을 그대로 붙여넣어도 AI가 자동으로 포맷을 변환하여 패치합니다."></textarea>
+      <div class="flex gap-1.5 mt-2">
+        <button id="runSmartPatchBtn" class="btn btn-sm flex-1 py-2.5 text-[11px] btn-emerald shadow-md">
+          🔍 기존 코드에서 위치 찾아서 자동 교체하기
+        </button>
+        <button id="stopSmartPatchBtn" class="hidden btn btn-sm py-2.5 px-3 text-[11px] font-black shadow-md" style="background:#ef4444;color:#ffffff;border-color:#dc2626">
+          🛑 작동 중지
+        </button>
+      </div>
     </div>
 
     <div class="flex flex-col gap-2 mt-3">
@@ -480,7 +486,10 @@
     <div class="flex gap-2 mb-2 items-stretch" style="gap:8px">
       <div class="flex flex-col justify-between" style="flex:0.95; min-width:0">
         <div>
-          <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400 block mb-1">📁 프로젝트 선택</label>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">📁 프로젝트 선택</label>
+            <button type="button" onclick="reloadInboxProjectsAndIdeas()" class="btn btn-sm text-[9.5px] py-0.5 px-2 shadow-sm" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd;min-height:22px;">🔄 리로드</button>
+          </div>
           <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
             <option value="">미분류 (선택없음)</option>
           </select>
@@ -605,9 +614,12 @@
   let currentRepo = localStorage.getItem('current_repo') || 'builder-a4u';
   let mainFile = localStorage.getItem('main_file_' + currentRepo) || 'index.html';
   let connectedDoc1 = null, connectedDoc2 = null, extraDocs = [];
-  let tokenClient = null, accessToken = '', tokenExpiry = 0;
+  let tokenClient = null;
+  let accessToken = localStorage.getItem('google_access_token') || '';
+  let tokenExpiry = Number(localStorage.getItem('google_token_expiry') || 0);
   let activeDriveTargetSlot = 'main1', activeDriveTab = 'recent';
   let currentIdeaImages = [];
+  let currentPatchAbortController = null;
   
   // v8.0.3 스마트 패치 전용 백업 변수
   window.lastPrePatchCode = null;
@@ -676,7 +688,17 @@
     return '버전 미상';
   }
   
-  function isGoogleLoggedIn() { return Boolean(accessToken && Date.now() < tokenExpiry); }
+  function isGoogleLoggedIn() {
+    if (!accessToken || Date.now() >= tokenExpiry) {
+      if (accessToken) {
+        accessToken = ''; tokenExpiry = 0;
+        localStorage.removeItem('google_access_token');
+        localStorage.removeItem('google_token_expiry');
+      }
+      return false;
+    }
+    return true;
+  }
   
   window.downloadCodeAsTextDoc = function(autoMode = false) {
     const editor = $('codeEditor');
@@ -748,17 +770,19 @@
   function getGitHubPat() { return localStorage.getItem('github_pat') || $('githubPatInput')?.value || ''; }
   
   function updateGisStatus(msg) {
-    const el = $('googleStatus'); if (el) el.textContent = msg;
+    const el = $('googleStatus'); if (el && msg) el.textContent = msg;
     const topBadge = $('topGoogleStatusBadge');
     const bottomLoginBtn = $('bottomGoogleLoginBtn');
     if (isGoogleLoggedIn()) {
-      if (topBadge) { topBadge.style.background = '#10b981'; topBadge.style.color = '#ffffff'; topBadge.textContent = '🟢 로그인됨'; }
+      const remainMin = Math.max(1, Math.ceil((tokenExpiry - Date.now()) / 60000));
+      if (topBadge) { topBadge.style.background = '#10b981'; topBadge.style.color = '#ffffff'; topBadge.textContent = `🟢 로그인됨 (${remainMin}분)`; }
       if (bottomLoginBtn) bottomLoginBtn.style.display = 'none';
     } else {
       if (topBadge) { topBadge.style.background = '#64748b'; topBadge.style.color = '#ffffff'; topBadge.textContent = '⚪ 로그인 필요'; }
       if (bottomLoginBtn) bottomLoginBtn.style.display = 'inline-flex';
     }
   }
+  setInterval(() => { updateGisStatus(); }, 30000);
   
   window.handleTopBadgeClick = function() {
     if (isGoogleLoggedIn()) switchTab('settings');
@@ -1351,11 +1375,11 @@ ${contextConstraint}`;
     const created = await res.json(); return { id: created.id, title: created.name || title };
   }
   
-  async function autoRestoreDocsFromDrive() {
+  async function autoRestoreDocsFromDrive(forceSyncIdeas = false) {
     if (!isGoogleLoggedIn()) return;
     try {
       const q = `trashed=false and (mimeType='application/vnd.google-apps.document' or mimeType='application/json')`;
-      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name,mimeType)&pageSize=100`, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
+      const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=modifiedTime desc&fields=files(id,name,mimeType)&pageSize=100`, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
       if (!res.ok) return;
       const data = await res.json();
       if (!data.files) return;
@@ -1364,7 +1388,7 @@ ${contextConstraint}`;
       let ignored = JSON.parse(localStorage.getItem('ignored_docs_' + currentRepo) || '[]');
   
       data.files.forEach(file => {
-        if (file.mimeType === 'application/json' && file.name === `[${currentRepo}]_idea_backup.json`) ideaFileToRestore = file;
+        if (file.mimeType === 'application/json' && file.name === `[${currentRepo}]_idea_backup.json` && !ideaFileToRestore) ideaFileToRestore = file;
         
         if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') restoreBackupJSON(file, 'repo_idea_기타');
         if (file.mimeType === 'application/json' && file.name === '[inbox]_idea_backup.json') restoreBackupJSON(file, 'idea_inbox_global', true);
@@ -1385,7 +1409,9 @@ ${contextConstraint}`;
       if (restoredCount > 0) { renderConnectedDoc1(); renderConnectedDoc2(); renderExtraDocs(); updateFullContextBox(); }
       if (ideaFileToRestore) {
         const currentLocalText = localStorage.getItem(getIdeaKey());
-        if (!currentLocalText || currentLocalText.trim() === '') restoreBackupJSON(ideaFileToRestore, getIdeaKey(), false, getIdeaImagesKey());
+        if (forceSyncIdeas || !currentLocalText || currentLocalText.trim() === '') {
+          await restoreBackupJSON(ideaFileToRestore, getIdeaKey(), false, getIdeaImagesKey());
+        }
       }
     } catch(e) {}
   }
@@ -1440,14 +1466,28 @@ ${contextConstraint}`;
         scope: 'https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/documents https://www.googleapis.com/auth/drive.file openid email profile',
         callback: (resp) => {
           if (resp && resp.access_token) {
-            accessToken = resp.access_token; tokenExpiry = Date.now() + ((resp.expires_in || 3600) * 1000);
-            updateGisStatus('✅ Google 로그인 성공'); loadRepoDocuments(); autoRestoreDocsFromDrive();
+            accessToken = resp.access_token;
+            // 구글 토큰 기본 유효시간(1시간 = 3600초)을 localStorage에 영구 보존하여 새로고침 시에도 풀리지 않게 처리
+            const expiresInSec = Number(resp.expires_in) || 3600;
+            tokenExpiry = Date.now() + (expiresInSec * 1000);
+            localStorage.setItem('google_access_token', accessToken);
+            localStorage.setItem('google_token_expiry', String(tokenExpiry));
+            updateGisStatus('✅ Google 로그인 성공 (1시간 유지)');
+            loadRepoDocuments();
+            autoRestoreDocsFromDrive(true);
+            showToast('🟢 Google 로그인 완료! 1시간 동안 유지됩니다.', 'ok');
           } else if (resp && resp.error) {
-            accessToken = ''; tokenExpiry = 0; updateGisStatus('❌ 로그인 실패: ' + resp.error);
+            accessToken = ''; tokenExpiry = 0;
+            localStorage.removeItem('google_access_token');
+            localStorage.removeItem('google_token_expiry');
+            updateGisStatus('❌ 로그인 실패: ' + resp.error);
           }
         }
       });
-      if (isGoogleLoggedIn()) updateGisStatus('✅ Google 로그인 활성화 중');
+      if (isGoogleLoggedIn()) {
+        updateGisStatus('✅ Google 로그인 세션 유지 중');
+        autoRestoreDocsFromDrive(false);
+      }
       else updateGisStatus('🔓 로그인 준비 완료');
     } catch(e) { setTimeout(initGis, 2000); }
   }
@@ -1728,22 +1768,23 @@ ${contextConstraint}`;
     log(`↺ 드래프트 (${item.time}) 복원 완료`, 'info');
   };
 
-  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true) {
+  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null) {
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       
-      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-4-argon';
-      const MODEL_CANDIDATES = [savedModel, 'gemini-4-argon', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite'].filter((v,i,a)=>a.indexOf(v)===i);
+      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
+      const MODEL_CANDIDATES = [savedModel, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-4-argon', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash-lite'].filter((v,i,a)=>a.indexOf(v)===i);
       
-      async function fetchWithRetry(url, options, retries = 3) {
+      async function fetchWithRetry(url, options, retries = 2) {
           for (let i = 0; i < retries; i++) {
-              const res = await fetch(url, options);
+              if (abortSignal && abortSignal.aborted) throw new Error('사용자에 의해 작동이 중지되었습니다.');
+              const res = await fetch(url, { ...options, signal: abortSignal });
               if (res.ok) return res;
               const errData = await res.json().catch(()=>({}));
               const msg = errData.error?.message || '';
               if (msg.includes('high demand') || msg.includes('overloaded') || res.status === 429 || res.status === 503) {
                   const wait = Math.pow(2, i) * 1000 + Math.random()*500;
-                  showToast(`⏳ ${MODEL_CANDIDATES[0]} 폭주 중... ${i+1}차 재시도 (${Math.round(wait/1000)}초)`, 'info');
+                  showToast(`⏳ AI 서버 혼잡... ${i+1}차 재시도 중`, 'info');
                   await new Promise(r => setTimeout(r, wait));
                   continue;
               }
@@ -1754,14 +1795,18 @@ ${contextConstraint}`;
 
       let res = null, lastError = null;
       for (const model of MODEL_CANDIDATES) {
+          if (abortSignal && abortSignal.aborted) throw new Error('사용자에 의해 작동이 중지되었습니다.');
           try {
               const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
               res = await fetchWithRetry(url, {
                   method: 'POST', headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature } })
-              }, 3);
+              }, 2);
               if (res && res.ok) break;
-          } catch(e) { lastError = e; console.warn(`[API] ${model} fallback:`, e.message); }
+          } catch(e) {
+              if (e.name === 'AbortError' || e.message.includes('중지되었습니다')) throw new Error('사용자에 의해 작동이 중지되었습니다.');
+              lastError = e; console.warn(`[API] ${model} fallback:`, e.message);
+          }
       }
       
       if (!res || !res.ok) throw lastError || new Error('모든 모델 후보 실패');
@@ -1814,21 +1859,58 @@ ${contextConstraint}`;
           const key = 'repo_idea_' + targetRepo, imgKey = 'repo_idea_images_' + targetRepo;
           
           const existing = localStorage.getItem(key) || '';
-          safeSetLocalStorage(key, finalText ? (existing ? existing + '\n\n' + finalText : finalText) : existing);
+          const updatedText = finalText ? (existing ? existing + '\n\n' + finalText : finalText) : existing;
+          safeSetLocalStorage(key, updatedText);
           
+          let imgs = [];
+          try { imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs = []; } catch(e){ imgs = []; }
           if(pendingInboxPhoto) {
-              try {
-                  let imgs = JSON.parse(localStorage.getItem(imgKey)||'[]');
-                  imgs.push(pendingInboxPhoto); safeSetLocalStorage(imgKey, JSON.stringify(imgs));
-              } catch(e){}
+              imgs.push(pendingInboxPhoto);
+              safeSetLocalStorage(imgKey, JSON.stringify(imgs));
           }
           
-          showToast(`✅ [${targetRepo}] 로 바로 전송됨`, 'ok');
+          // 구글 드라이브 백업 및 연결된 메인1(히스토리) 문서가 있을 경우 동시 백업 지원
+          if (isGoogleLoggedIn()) {
+              saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs }).then(ok => {
+                  if (ok) log(`☁️ [${targetRepo}] 막던지기 아이디어 구글 드라이브 백업 완료`, 'ok');
+              });
+          }
+          
+          showToast(`✅ [${targetRepo}] 로 바로 전송 및 드라이브 백업됨!`, 'ok');
           if (currentRepo === targetRepo) loadRepoIdea();
       }
 
       if($('inboxTextInput')) $('inboxTextInput').value = '';
       removePendingInboxPhoto();
+  };
+
+  window.reloadInboxProjectsAndIdeas = async function() {
+      showToast('🔄 프로젝트 목록 및 구글 드라이브 아이디어를 리로드합니다...', 'info');
+      await loadRepos();
+      if (typeof syncInboxProjectSelect === 'function') syncInboxProjectSelect();
+      if (isGoogleLoggedIn()) {
+          await autoRestoreDocsFromDrive(true);
+          const selRepo = $('inboxProjectSelect')?.value;
+          if (selRepo) {
+              try {
+                  const q = `trashed=false and mimeType='application/json' and name='[${selRepo}]_idea_backup.json'`;
+                  const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=1`, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
+                  if (res.ok) {
+                      const data = await res.json();
+                      if (data.files && data.files[0]) {
+                          await restoreBackupJSON(data.files[0], 'repo_idea_' + selRepo, false, 'repo_idea_images_' + selRepo);
+                      }
+                  }
+              } catch(e) {}
+          }
+          loadIdeaInbox();
+          loadRepoIdea();
+          showToast('✅ 프로젝트 목록 및 드라이브 백업 리로드 완료!', 'ok');
+      } else {
+          loadIdeaInbox();
+          loadRepoIdea();
+          showToast('✅ 로컬 프로젝트 목록 리로드 완료! (드라이브 연동은 로그인 필요)', 'ok');
+      }
   };
 
   function renderIdeaInbox() {
@@ -1933,9 +2015,11 @@ ${contextConstraint}`;
             let existingImages = []; try { existingImages = JSON.parse(localStorage.getItem('repo_idea_images_' + targetRepo)); } catch(e){}
             if(!Array.isArray(existingImages)) existingImages = [];
             
-            safeSetLocalStorage('repo_idea_' + targetRepo, existingText ? existingText + '\n\n' + group.mergedText : group.mergedText);
+            const mergedRepoText = existingText ? existingText + '\n\n' + group.mergedText : group.mergedText;
+            safeSetLocalStorage('repo_idea_' + targetRepo, mergedRepoText);
             existingImages.push(...imagesToMove); safeSetLocalStorage('repo_idea_images_' + targetRepo, JSON.stringify(existingImages));
-            statusMsg = '<span class="text-emerald-600 font-bold">✅ 기존 앱으로 이관됨</span>';
+            if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: mergedRepoText, images: existingImages });
+            statusMsg = '<span class="text-emerald-600 font-bold">✅ 기존 앱으로 이관 및 드라이브 백업됨</span>';
          } else {
             const existingOther = localStorage.getItem('repo_idea_기타') || '';
             safeSetLocalStorage('repo_idea_기타', existingOther ? existingOther + '\n\n- ' + group.mergedText : '- ' + group.mergedText);
@@ -2106,13 +2190,14 @@ ${contextConstraint}`;
   }
 
   // ==========================================
-  // v8.0.3 스마트 패치(부분 코드 자동 교체) 엔진 
+  // v8.0.9 스마트 패치(부분 코드 자동 교체 & AI 자동 포맷터) 엔진 
   // ==========================================
   function applySearchReplaceMatch(original, patch) {
      let result = original;
-     const regex = /<<<<<<<\s*SEARCH\s*([\s\S]*?)\s*=======\s*([\s\S]*?)\s*>>>>>>>\s*REPLACE/g;
+     const regex = /<<<<<<<\s*SEARCH\r?\n([\s\S]*?)\r?\n=======\r?\n([\s\S]*?)\r?\n>>>>>>>\s*REPLACE/g;
      let match;
      let replacedCount = 0;
+     let failedCount = 0;
      while ((match = regex.exec(patch)) !== null) {
          const searchTarget = match[1];
          const replaceWith = match[2];
@@ -2120,10 +2205,19 @@ ${contextConstraint}`;
             if (result.includes(searchTarget)) {
                 result = result.replace(searchTarget, replaceWith);
                 replacedCount++;
-            } 
+            } else {
+                // 줄바꿈(CRLF/LF) 차이 보정 후 재시도
+                const normSearch = searchTarget.replace(/\r\n/g, '\n').trim();
+                if (normSearch && result.includes(normSearch)) {
+                    result = result.replace(normSearch, replaceWith.replace(/\r\n/g, '\n').trim());
+                    replacedCount++;
+                } else {
+                    failedCount++;
+                }
+            }
          }
      }
-     return replacedCount > 0 ? result : null;
+     return { result: replacedCount > 0 ? result : null, replacedCount, failedCount };
   }
 
   function applyPatchResult(newCode, msg) {
@@ -2160,6 +2254,15 @@ ${contextConstraint}`;
           }
       });
 
+      $('stopSmartPatchBtn')?.addEventListener('click', () => {
+          if (currentPatchAbortController) {
+              currentPatchAbortController.abort();
+              currentPatchAbortController = null;
+              showToast('🛑 스마트 패치 작동이 강제 중지되었습니다.', 'info');
+              log('🛑 사용자가 스마트 패치 작동을 중지했습니다.', 'info');
+          }
+      });
+
       $('runSmartPatchBtn')?.addEventListener('click', async () => {
           const patchText = $('patchInput')?.value?.trim();
           const editor = $('codeEditor');
@@ -2171,65 +2274,89 @@ ${contextConstraint}`;
           window.lastPrePatchCode = fullCode; // Undo용 백업
 
           const btn = $('runSmartPatchBtn');
+          const stopBtn = $('stopSmartPatchBtn');
           const originalBtnText = btn.innerHTML;
           btn.innerHTML = '⏳ 1/2 고속 패턴 매칭 분석 중...';
           btn.disabled = true;
+          if (stopBtn) stopBtn.classList.remove('hidden');
+
+          currentPatchAbortController = new AbortController();
+          const signal = currentPatchAbortController.signal;
 
           try {
               // 1단계: SEARCH / REPLACE 명시적 패턴 매칭
               if (patchText.includes('<<<<<<< SEARCH') && patchText.includes('=======')) {
-                  let matchedResult = applySearchReplaceMatch(fullCode, patchText);
-                  if (matchedResult) {
-                      applyPatchResult(matchedResult, 'SEARCH/REPLACE 블록 패턴 매칭 성공');
+                  const matchObj = applySearchReplaceMatch(fullCode, patchText);
+                  if (matchObj.result && matchObj.failedCount === 0) {
+                      applyPatchResult(matchObj.result, `SEARCH/REPLACE 블록 ${matchObj.replacedCount}건 즉시 매칭 성공!`);
+                      $('patchInput').value = '';
+                      return;
+                  } else if (matchObj.result && matchObj.failedCount > 0) {
+                      fullCode = matchObj.result;
+                      log(`⚠️ ${matchObj.replacedCount}건 성공, ${matchObj.failedCount}건 미스매치 → AI 자동 포맷터로 보정 시도`, 'info');
+                  }
+              }
+
+              // 2단계: 내장 Gemini AI 스마트 파서 (줄글/일반 코드/미스매치 블록을 정확한 SEARCH/REPLACE 포맷으로 자동 변환 후 적용)
+              btn.innerHTML = '🤖 2/2 AI 자동 포맷 변환 & 정밀 패치 중...';
+              showToast('🤖 AI가 문맥을 분석하여 SEARCH/REPLACE 포맷으로 자동 변환 중입니다...', 'info');
+              log('🤖 스마트 패치: AI 자동 포맷터(Smart Parser) 가동', 'info');
+
+              const autoFormatPrompt = `너는 Builder-a4u의 'AI 스마트 패치 자동 포맷터'야.
+사용자가 코드 수정을 위해 안내문(일반 마크다운, 줄글 설명, 함수 코드 조각, 혹은 약간 어긋난 SEARCH/REPLACE 블록)을 입력했어.
+아래 [원본 코드]를 정확히 참고하여, 사용자의 수정 의도를 완벽히 반영하는 표준 SEARCH/REPLACE 블록들로 변환해줘.
+
+[절대 규칙]
+1. <<<<<<< SEARCH 아래에는 [원본 코드]에 실제로 존재하는 문자열을 토씨 하나, 띄어쓰기 하나 틀리지 않고 그대로 복사해서 넣어야 해.
+2. ======= 아래에는 교체될 새로운 코드를 넣어.
+3. >>>>>>> REPLACE 로 블록을 닫아.
+4. 수정할 곳이 여러 군데라면 여러 개의 SEARCH/REPLACE 블록을 연속으로 출력해.
+5. 부연 설명이나 마크다운 코드펜스(\`\`\`) 없이 오직 SEARCH/REPLACE 블록들만 출력해.
+
+[원본 코드]
+${fullCode}
+
+[사용자 입력 수정 안내문 / 부분 코드]
+${patchText}`;
+
+              const aiFormattedPatch = await callGeminiAPI(autoFormatPrompt, 0.1, false, signal);
+              if (aiFormattedPatch && aiFormattedPatch.includes('<<<<<<< SEARCH')) {
+                  const secondMatch = applySearchReplaceMatch(fullCode, aiFormattedPatch);
+                  if (secondMatch.result) {
+                      applyPatchResult(secondMatch.result, `AI 자동 포맷 변환 및 패치 완료 (${secondMatch.replacedCount}개 블록 적용)`);
                       $('patchInput').value = '';
                       return;
                   }
               }
 
-              // 2단계: 내장 Gemini 활용 라인 번호 핀포인트 탐색
-              btn.innerHTML = '🤖 2/2 AI 정밀 라인 탐색 중...';
-              showToast('🤖 패턴 매칭 실패. AI가 정밀 위치를 찾는 중입니다...', 'info');
-              log('🤖 스마트 패치: AI 위치 탐색 엔진 가동', 'info');
-
+              // 3단계 폴백: 줄번호 기반 교체 시도
               const lines = fullCode.split('\n');
               let numberedCode = lines.map((l, i) => `${i + 1}| ${l}`).join('\n');
-
-              const prompt = `너는 코드 패치 전문 AI 엔진이야. 사용자가 원본 코드의 일부를 수정하기 위해 '부분 수정 코드'를 입력했어.
-[원본 코드 (줄번호 포함)]
+              const fallbackPrompt = `원본 코드에서 아래 수정 코드가 대체해야 할 시작 줄번호(startLine)와 끝 줄번호(endLine), 그리고 실제 삽입될 코드(newCode)를 순수 JSON으로만 답해.
+[원본 코드]
 ${numberedCode}
-
-[수정할 부분 코드]
+[수정 코드]
 ${patchText}
+출력 형식: {"startLine": 10, "endLine": 20, "newCode": "..."}`;
 
-[지시사항]
-1. '수정할 부분 코드'가 '원본 코드'의 어느 부분을 통째로 대체해야 하는지 찾아.
-2. 대체가 시작되는 줄 번호(startLine)와 끝나는 줄 번호(endLine)를 찾아내. (원본 코드의 번호 기준)
-3. '수정할 부분 코드'에서 설명 텍스트나 마크다운( \`\`\` )을 완전히 제거하고 오직 삽입될 실제 코드(newCode)만 남겨.
-4. 아래 JSON 형식으로만 응답해. 백틱( \`\`\` ) 없이 순수 JSON만 출력해.
-{
-"startLine": 10,
-"endLine": 25,
-"newCode": "실제 교체될 코드 텍스트 전체..."
-}`;
-              const res = await callGeminiAPI(prompt, 0.1, true); 
-              if (res && res.startLine && res.endLine && res.newCode) {
+              const res = await callGeminiAPI(fallbackPrompt, 0.1, true, signal);
+              if (res && res.startLine && res.endLine && typeof res.newCode === 'string') {
                   const startIdx = res.startLine - 1;
                   const endIdx = res.endLine - 1;
                   if (startIdx >= 0 && endIdx < lines.length && startIdx <= endIdx) {
                       lines.splice(startIdx, endIdx - startIdx + 1, res.newCode);
-                      const finalCode = lines.join('\n');
-                      applyPatchResult(finalCode, `AI 정밀 교체 성공 (기존 ${res.startLine}줄~${res.endLine}줄 대체됨)`);
+                      applyPatchResult(lines.join('\n'), `AI 줄번호 정밀 교체 성공 (${res.startLine}줄~${res.endLine}줄 대체)`);
                       $('patchInput').value = '';
-                  } else {
-                      throw new Error(`AI가 반환한 줄 번호(${res.startLine}~${res.endLine})가 유효하지 않습니다.`);
+                      return;
                   }
-              } else {
-                  throw new Error('AI가 올바른 JSON 위치 정보를 반환하지 못했습니다.');
               }
+              throw new Error('원본 코드에서 일치하는 교체 위치를 찾지 못했습니다.');
           } catch(e) {
               showToast('❌ 부분 교체 실패: ' + e.message, 'err');
               log('❌ 스마트 패치 실패: ' + e.message, 'err');
           } finally {
+              currentPatchAbortController = null;
+              if (stopBtn) stopBtn.classList.add('hidden');
               btn.innerHTML = originalBtnText;
               btn.disabled = false;
           }
