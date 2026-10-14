@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.8">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.8">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.8">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.8">
+  <link rel="manifest" href="./manifest.json?v=8.0.9">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.9">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.9">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.9">
   
   <style>
     @font-face {
@@ -2194,10 +2194,16 @@ ${contextConstraint}`;
   // ==========================================
   function applySearchReplaceMatch(original, patch) {
      let result = original;
-     const regex = /<<<<<<<\s*SEARCH\r?\n([\s\S]*?)\r?\n=======\r?\n([\s\S]*?)\r?\n>>>>>>>\s*REPLACE/g;
+     // SEARCH/REPLACE 태그 앞뒤의 줄바꿈 제약을 없애고 유연하게 허용 (\s*)
+     const regex = /<<<<<<<\s*SEARCH\s*([\s\S]*?)\s*=======\s*([\s\S]*?)\s*>>>>>>>\s*REPLACE/g;
      let match;
      let replacedCount = 0;
      let failedCount = 0;
+
+     function escapeRegExp(string) {
+       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+     }
+
      while ((match = regex.exec(patch)) !== null) {
          const searchTarget = match[1];
          const replaceWith = match[2];
@@ -2206,13 +2212,25 @@ ${contextConstraint}`;
                 result = result.replace(searchTarget, replaceWith);
                 replacedCount++;
             } else {
-                // 줄바꿈(CRLF/LF) 차이 보정 후 재시도
+                // 1차 보정: 앞뒤 공백 및 줄바꿈 보정 후 재시도
                 const normSearch = searchTarget.replace(/\r\n/g, '\n').trim();
                 if (normSearch && result.includes(normSearch)) {
                     result = result.replace(normSearch, replaceWith.replace(/\r\n/g, '\n').trim());
                     replacedCount++;
                 } else {
-                    failedCount++;
+                    // 2차 정밀 보정: 모든 들여쓰기, 스페이스, 탭, 줄바꿈의 미세한 차이를 무시하고 내용만으로 매칭 시도
+                    const flexRegexStr = escapeRegExp(searchTarget.trim()).replace(/(\\[sntr]|\\r\\n|\s)+/g, '\\s+');
+                    try {
+                        const flexRegex = new RegExp(flexRegexStr);
+                        if (flexRegex.test(result)) {
+                            result = result.replace(flexRegex, replaceWith);
+                            replacedCount++;
+                        } else {
+                            failedCount++;
+                        }
+                    } catch(e) {
+                        failedCount++;
+                    }
                 }
             }
          }
@@ -2418,7 +2436,7 @@ ${patchText}
     
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
-        if (!c.trim()) return showToast('빌드할 코드가 없습니다.', 'err');
+        if (!c.trim()) return showToast('빌드할 코 deployments 없습니다.', 'err');
         if (!confirm(`🚀 [${currentRepo}] 빌드 및 백업을 진행하시겠습니까?`)) return;
         saveDraftCustom(c, '최종 빌드 전 저장'); await pushToGitHubRepository(); 
     });
