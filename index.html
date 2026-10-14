@@ -312,7 +312,10 @@
     <!-- v8.0.3 스마트 패치 패널 (숨김/펼침) -->
     <div id="smartPatchPanel" class="hidden mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 border border-yellow-400 dark:border-yellow-600 rounded-xl shadow-inner">
       <div class="flex justify-between items-center mb-2">
-        <span class="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">⚡ 교체할 '부분 코드'만 붙여넣기</span>
+        <div class="flex items-center gap-1.5">
+          <span class="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">⚡ 교체할 '부분 코드'만 붙여넣기</span>
+          <button onclick="smartPasteToTarget($('patchInput'))" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a">📋 붙여넣기</button>
+        </div>
         <button id="undoPatchBtn" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
       </div>
       <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="AI가 작성해준 특정 함수, 변경 블록(SEARCH/REPLACE) 등 부분 코드만 붙여넣으세요."></textarea>
