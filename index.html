@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.13 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.16 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,10 +47,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.13">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.13">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.13">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.13">
+  <link rel="manifest" href="./manifest.json?v=8.0.16">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.16">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.16">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.16">
   
   <style>
     @font-face {
@@ -204,19 +204,20 @@
 <body>
   
 <div class="sticky-header">
-  <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
-    <div class="min-w-0 flex-1">
-      <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.13</h1>
-        <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
-          <span class="animate-pulse text-emerald-500">🟢</span> 
-          <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
-        </div>
+  <div class="flex justify-between items-center gap-2 px-1 md:px-2">
+    <div class="flex flex-col gap-1 min-w-0 flex-1">
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.0.16</h1>
+      <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
+        <span class="animate-pulse text-emerald-500">🟢</span> 
+        <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
       </div>
     </div>
     <div class="flex gap-1 items-center shrink-0">
-      <button id="themeToggle" class="btn w-[32px] h-[32px] sm:w-[36px] sm:h-[36px] md:w-[40px] md:h-[40px] p-0 flex items-center justify-center text-[14px] sm:text-[16px] md:text-[18px] rounded-full shrink-0" title="주야간 전환">🌙</button>
-      <span id="topGoogleStatusBadge" onclick="handleTopBadgeClick()" class="badge shrink-0 cursor-pointer transition-all duration-200 text-[9.5px] sm:text-[10px] md:text-[11px] px-2 sm:px-2.5 py-0.5 sm:py-1 shadow-sm" style="background:#64748b;color:#fff" title="클릭 시 Google 로그인 실행 / 설정">⚪ 로그인 필요</span>
+      <button id="themeToggle" class="btn w-[32px] h-[32px] p-0 flex items-center justify-center text-[15px] rounded-lg shrink-0" title="주야간 전환">🌙</button>
+      <div id="topGoogleStatusBadge" onclick="handleTopBadgeClick()" class="inline-flex flex-col items-center justify-center px-2 py-0.5 rounded-lg text-[8.5px] font-bold leading-tight cursor-pointer transition-all duration-200 shadow-sm shrink-0 min-w-[64px] min-h-[32px]" style="background:#64748b;color:#fff" title="클릭 시 Google 로그인 실행 / 설정">
+        <span class="badge-main">⚪ 로그인 필요</span>
+        <span class="badge-sub text-[7.5px] opacity-80 leading-none"></span>
+      </div>
     </div>
   </div>
     
@@ -815,12 +816,19 @@
     const el = $('googleStatus'); if (el && msg) el.textContent = msg;
     const topBadge = $('topGoogleStatusBadge');
     const bottomLoginBtn = $('bottomGoogleLoginBtn');
+    if (!topBadge) return;
+    const mainSpan = topBadge.querySelector('.badge-main');
+    const subSpan = topBadge.querySelector('.badge-sub');
     if (isGoogleLoggedIn()) {
       const remainMin = Math.max(1, Math.ceil((tokenExpiry - Date.now()) / 60000));
-      if (topBadge) { topBadge.style.background = '#10b981'; topBadge.style.color = '#ffffff'; topBadge.textContent = `🟢 로그인됨 (${remainMin}분)`; }
+      if (mainSpan) mainSpan.textContent = `🟢 로그인됨`;
+      if (subSpan) subSpan.textContent = `(${remainMin}분)`;
+      topBadge.style.background = '#10b981'; topBadge.style.color = '#ffffff';
       if (bottomLoginBtn) bottomLoginBtn.style.display = 'none';
     } else {
-      if (topBadge) { topBadge.style.background = '#64748b'; topBadge.style.color = '#ffffff'; topBadge.textContent = '⚪ 로그인 필요'; }
+      if (mainSpan) mainSpan.textContent = '⚪ 로그인 필요';
+      if (subSpan) subSpan.textContent = '';
+      topBadge.style.background = '#64748b'; topBadge.style.color = '#ffffff';
       if (bottomLoginBtn) bottomLoginBtn.style.display = 'inline-flex';
     }
   }
@@ -2231,22 +2239,38 @@ ${contextConstraint}`;
   }
 
   // ==========================================
-  // v8.0.13 스마트 패치(부분 코드 자동 교체 & AI 자동 포맷터) 엔진 - 안정화 리빌드
-  // - sanitize, permissive parser, context windowing, fuzzy matching 추가
+  // v8.0.16 스마트 패치(부분 코드 자동 교체 & AI 자동 포맷터) 엔진 - 오프라인 우선 리빌드
+  // - AI들 제각각 포맷 흡수: SEARCH:/<<<< /코드펜스/설명+코드 모두 로컬에서 처리
+  // - AI 서버 혼잡 시에도 로컬에서 90% 처리, AI는 최후 수단
   // ==========================================
   function sanitizePatchInput(text) {
      if (!text) return '';
      let t = text.replace(/\r\n/g, '\n');
-     // 코드펜스 제거: ```json, ```html, ``` 등
      t = t.replace(/```[a-zA-Z0-9_-]*\n?/gi, '').replace(/```/g, '');
-     // BOM 및 제로폭 제거
      t = t.replace(/\uFEFF/g, '').replace(/[\u200B-\u200D\u2060]/g, '');
      return t.trim();
   }
 
+  function extractCodeFences(text) {
+     const fences = [];
+     const fenceRegex = /```(?:html|js|javascript|css|jsx|tsx)?\n([\s\S]*?)\n```/gi;
+     let m;
+     while ((m = fenceRegex.exec(text)) !== null) {
+         if (m[1] && m[1].trim().length > 10) fences.push(m[1].trim());
+     }
+     // 펜스 없이 그냥 <div>...</div> 같은 코드만 있는 경우도 추출
+     if (fences.length === 0) {
+         // 3줄 이상 HTML/JS로 보이는 경우
+         const lines = text.split('\n').filter(l=>l.trim().length>0);
+         if (lines.length >= 3 && (text.includes('<div') || text.includes('function') || text.includes('const '))) {
+             fences.push(text.trim());
+         }
+     }
+     return fences;
+  }
+
   function extractSearchReplaceBlocks(patch) {
      const blocks = [];
-     // Format 1: 가장 관대한 <<< SEARCH 파서
      const permissiveRegex = /<{3,}[^\n]*SEARCH[^\n]*\n([\s\S]*?)\n={3,}[^\n]*\n([\s\S]*?)\n>{3,}[^\n]*REPLACE[^\n]*/gi;
      let match;
      while ((match = permissiveRegex.exec(patch)) !== null) {
@@ -2256,9 +2280,7 @@ ${contextConstraint}`;
              blocks.push({ search, replace, raw: match[0] });
          }
      }
-     // Format 2: SEARCH: / REPLACE: 콜론 형식 (사용자가 방금 쓴 형식)
      if (blocks.length === 0) {
-         // [블록 N] 헤더, SEARCH: , REPLACE: 가 반복되는 구조
          const colonRegex = /SEARCH\s*:\s*\n([\s\S]*?)\nREPLACE\s*:\s*\n([\s\S]*?)(?=\n\[블록|\nSEARCH\s*:|\n*\s*$)/gi;
          while ((match = colonRegex.exec(patch)) !== null) {
              const search = match[1] || '';
@@ -2268,14 +2290,12 @@ ${contextConstraint}`;
              }
          }
      }
-     // Format 3: SEARCH\n ... \n=======\n ... \nREPLACE (콜론 없이)
      if (blocks.length === 0) {
          const plainRegex = /SEARCH\s*\n([\s\S]*?)\n={3,}\s*\n([\s\S]*?)\n.*REPLACE/gi;
          while ((match = plainRegex.exec(patch)) !== null) {
              blocks.push({ search: match[1], replace: match[2], raw: match[0] });
          }
      }
-     // Format 4: 구형 <<< SEARCH === >>> 
      if (blocks.length === 0) {
          const legacyRegex = /<{3,}\s*SEARCH\s*([\s\S]*?)\s*={3,}\s*([\s\S]*?)\s*>{3,}\s*REPLACE/gi;
          while ((match = legacyRegex.exec(patch)) !== null) {
@@ -2296,23 +2316,18 @@ ${contextConstraint}`;
   function getRelevantContextForPatch(fullCode, patchText, maxLinesPerWindow = 140, maxWindows = 3, maxTotalChars = 22000) {
      const lines = fullCode.split('\n');
      if (fullCode.length <= maxTotalChars) return fullCode;
-
-     // 키워드 추출: id, class, 함수명, 변수명 등
      const keywordCandidates = new Set();
-     // id="xxx", class, 함수명 등
      const idRegex = /(?:id|class|function|const|let|var|def)\s*[=:]?\s*["']?([A-Za-z0-9_-]{3,})["']?/gi;
      let km;
      while ((km = idRegex.exec(patchText)) !== null) {
          if (km[1] && km[1].length >= 3) keywordCandidates.add(km[1]);
      }
-     // 일반 단어 3글자 이상도 추가 (너무 흔한 단어 제외)
      const commonStop = new Set(['the','and','for','with','this','that','from','have','function','return','const','let','var','div','span','class','style','color']);
      patchText.split(/[^A-Za-z0-9_-]+/).forEach(w => {
          if (w.length >= 4 && w.length <= 32 && !commonStop.has(w.toLowerCase())) {
              keywordCandidates.add(w);
          }
      });
-
      const hits = [];
      keywordCandidates.forEach(kw => {
          const esc = escapeRegExp(kw);
@@ -2320,7 +2335,6 @@ ${contextConstraint}`;
              const re = new RegExp(esc, 'g');
              let hm;
              while ((hm = re.exec(fullCode)) !== null) {
-                 // 해당 위치의 줄 번호 찾기
                  const pos = hm.index;
                  const lineIdx = fullCode.slice(0, pos).split('\n').length - 1;
                  hits.push({ kw, lineIdx });
@@ -2328,16 +2342,12 @@ ${contextConstraint}`;
              }
          } catch(e) {}
      });
-
      if (hits.length === 0) {
-         // 키워드 못찾으면 앞부분 + 뒷부분 잘라서 보내기
          const head = lines.slice(0, 180).join('\n');
          const tail = lines.slice(-80).join('\n');
          const combined = head + '\n\n... [중간 ' + (lines.length - 260) + '줄 생략] ...\n\n' + tail;
          return combined.length > maxTotalChars ? combined.slice(0, maxTotalChars) : combined;
      }
-
-     // 히트 주변 윈도우 만들기
      hits.sort((a,b) => a.lineIdx - b.lineIdx);
      const windows = [];
      let lastEnd = -9999;
@@ -2345,7 +2355,6 @@ ${contextConstraint}`;
          const start = Math.max(0, h.lineIdx - Math.floor(maxLinesPerWindow/2));
          const end = Math.min(lines.length, h.lineIdx + Math.floor(maxLinesPerWindow/2));
          if (start <= lastEnd + 20) {
-             // 겹치면 확장
              if (windows.length > 0) {
                  windows[windows.length-1].end = Math.max(windows[windows.length-1].end, end);
                  lastEnd = windows[windows.length-1].end;
@@ -2356,7 +2365,6 @@ ${contextConstraint}`;
          }
          if (windows.length >= maxWindows) break;
      }
-
      let resultParts = [];
      let totalChars = 0;
      windows.forEach((w, idx) => {
@@ -2367,43 +2375,32 @@ ${contextConstraint}`;
          resultParts.push(part);
          totalChars += part.length;
      });
-
      if (resultParts.length === 0) return fullCode.slice(0, maxTotalChars);
-     return resultParts.join('\n') + `\n\n// [참고: 전체 ${lines.length}줄 중 ${windows.length}개 구간만 표시, 생략된 부분은 ... 처리됨]`;
+     return resultParts.join('\n') + `\n\n// [참고: 전체 ${lines.length}줄 중 ${windows.length}개 구간만 표시]`;
   }
 
   function applySearchReplaceMatch(original, patch) {
      let result = normalizeLineEndings(original);
      const cleanPatch = sanitizePatchInput(patch);
      const blocks = extractSearchReplaceBlocks(cleanPatch);
-     
      if (blocks.length === 0) {
-         // 블록이 하나도 없으면 -> 일반 코드/설명일 가능성 높음 -> 실패로 처리해서 AI 단계로 넘김
          return { result: null, replacedCount: 0, failedCount: 0, blocks: [], reason: 'no_blocks_found' };
      }
-
      let replacedCount = 0;
      let failedCount = 0;
      const failedDetails = [];
-
      function tryReplaceOnce(src, search, replace) {
          const normSrc = normalizeLineEndings(src);
          const normSearch = normalizeLineEndings(search);
          const normReplace = normalizeLineEndings(replace);
-
-         // 1) Exact
          if (normSrc.includes(normSearch)) {
              return { ok: true, out: normSrc.replace(normSearch, normReplace), method: 'exact' };
          }
-         // 2) Trimmed exact
          const trimmedSearch = normSearch.trim();
-         const trimmedSrcIncludes = normSrc.includes(trimmedSearch);
-         if (trimmedSearch && trimmedSrcIncludes) {
+         if (trimmedSearch && normSrc.includes(trimmedSearch)) {
              return { ok: true, out: normSrc.replace(trimmedSearch, normReplace.trim()), method: 'trimmed' };
          }
-         // 3) Normalized whitespace flexible regex
          try {
-             // 검색 문자열을 이스케이프 후 \s+ 로 변환, 단 너무 길면(>2000자) 스킵
              if (trimmedSearch.length < 2500) {
                  const flexPattern = escapeRegExp(trimmedSearch).replace(/\s+/g, '\\s+');
                  const flexRegex = new RegExp(flexPattern);
@@ -2412,7 +2409,6 @@ ${contextConstraint}`;
                  }
              }
          } catch(e) {}
-         // 4) Line-based fuzzy: 첫 줄과 마지막 줄로 위치 추정
          try {
              const searchLines = trimmedSearch.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
              if (searchLines.length >= 2) {
@@ -2422,7 +2418,6 @@ ${contextConstraint}`;
                  let startIdx = -1, endIdx = -1;
                  for (let i=0;i<srcLines.length;i++) {
                      if (srcLines[i].includes(firstLine) || firstLine.includes(srcLines[i].trim())) {
-                         // 후보 시작
                          for (let j=i;j<Math.min(srcLines.length, i+searchLines.length+30);j++) {
                              if (srcLines[j].includes(lastLine) || lastLine.includes(srcLines[j].trim())) {
                                  startIdx = i; endIdx = j; break;
@@ -2432,20 +2427,15 @@ ${contextConstraint}`;
                      }
                  }
                  if (startIdx !== -1) {
-                     const srcSlice = srcLines.slice(startIdx, endIdx+1).join('\n');
-                     // 유사도 간단 체크: 길이 차이가 30% 이내이면 교체 허용
-                     if (Math.abs(srcSlice.length - trimmedSearch.length) / Math.max(srcSlice.length, trimmedSearch.length) < 0.6) {
-                         const before = srcLines.slice(0, startIdx).join('\n');
-                         const after = srcLines.slice(endIdx+1).join('\n');
-                         const out = before + (before? '\n' : '') + normReplace + (after? '\n' + after : '');
-                         return { ok: true, out, method: 'fuzzy_line' };
-                     }
+                     const before = srcLines.slice(0, startIdx).join('\n');
+                     const after = srcLines.slice(endIdx+1).join('\n');
+                     const out = before + (before? '\n' : '') + normReplace + (after? '\n' + after : '');
+                     return { ok: true, out, method: 'fuzzy_line' };
                  }
              }
          } catch(e) {}
          return { ok: false };
      }
-
      for (const b of blocks) {
          const attempt = tryReplaceOnce(result, b.search, b.replace);
          if (attempt.ok) {
@@ -2455,15 +2445,59 @@ ${contextConstraint}`;
          } else {
              failedCount++;
              failedDetails.push(b.search.slice(0,120));
-             log(`  ✗ 블록 매칭 실패 - 찾지 못함: ${b.search.slice(0,80).replace(/\n/g,' ')}...`, 'err');
+             log(`  ✗ 블록 매칭 실패 - ${b.search.slice(0,80).replace(/\n/g,' ')}...`, 'err');
          }
      }
-
      if (replacedCount === 0) {
          return { result: null, replacedCount, failedCount, failedDetails, blocks };
      }
-     // 일부만 성공해도 결과는 반환 (나머지는 AI가 보정)
      return { result, replacedCount, failedCount, failedDetails, blocks };
+  }
+
+  function tryOfflineFuzzyReplace(fullCode, newCode) {
+     // newCode가 그냥 새로운 코드 조각일 때, 원본에서 가장 비슷한 위치를 찾아 교체 (AI 없이)
+     const normFull = normalizeLineEndings(fullCode);
+     const normNew = normalizeLineEndings(newCode).trim();
+     if (normFull.includes(normNew)) return null; // 이미 존재
+     // id나 class 추출해서 해당 요소 찾아 교체
+     const idMatch = normNew.match(/id=["']([^"']+)["']/);
+     const classMatch = normNew.match(/class=["']([^"']+)["']/);
+     let targetId = idMatch ? idMatch[1] : null;
+     let targetClass = classMatch ? classMatch[1].split(' ')[0] : null;
+     const lines = normFull.split('\n');
+     const newLines = normNew.split('\n');
+     // 1) id로 찾기
+     if (targetId) {
+         for (let i=0;i<lines.length;i++) {
+             if (lines[i].includes(`id="${targetId}"`) || lines[i].includes(`id='${targetId}'`)) {
+                 // 해당 블록의 시작~끝 찾기 (간단히 같은 레벨의 닫는 태그까지)
+                 let start = i;
+                 // 위로 2줄, 아래로 newLines.length만큼 확장해서 교체 후보로
+                 let end = Math.min(lines.length-1, i + newLines.length + 5);
+                 // id가 포함된 div 전체를 찾아보기
+                 let depth = 0;
+                 for (let j=i;j<lines.length;j++) {
+                     if (lines[j].includes('<div') || lines[j].includes('<')) depth++;
+                     if (lines[j].includes('</div>')) {
+                         depth--;
+                         if (depth<=0) { end = j; break; }
+                     }
+                     if (j - i > 50) break;
+                 }
+                 return { startLine: start+1, endLine: end+1, newCode: normNew, method: 'id_match' };
+             }
+         }
+     }
+     // 2) 첫 줄로 찾기
+     const firstLine = newLines[0].trim();
+     if (firstLine.length > 10) {
+         for (let i=0;i<lines.length;i++) {
+             if (lines[i].trim().includes(firstLine.slice(0, 30)) || firstLine.includes(lines[i].trim().slice(0,30))) {
+                 return { startLine: i+1, endLine: i + newLines.length, newCode: normNew, method: 'first_line' };
+             }
+         }
+     }
+     return null;
   }
 
   function applyPatchResult(newCode, msg) {
@@ -2518,13 +2552,13 @@ ${contextConstraint}`;
           if (!patchText) return showToast('교체할 부분 코드를 붙여넣으세요.', 'err');
           if (!fullCode) return showToast('원본 코드가 없습니다. 원본 소스를 먼저 불러오세요.', 'err');
 
-          window.lastPrePatchCode = fullCode; // Undo용 백업
+          window.lastPrePatchCode = fullCode;
           fullCode = normalizeLineEndings(fullCode);
 
           const btn = $('runSmartPatchBtn');
           const stopBtn = $('stopSmartPatchBtn');
           const originalBtnText = btn.innerHTML;
-          btn.innerHTML = '⏳ 1/3 고속 패턴 매칭 분석 중...';
+          btn.innerHTML = '⏳ 1/3 로컬 포맷 분석 중...';
           btn.disabled = true;
           if (stopBtn) stopBtn.classList.remove('hidden');
 
@@ -2532,30 +2566,45 @@ ${contextConstraint}`;
           const signal = currentPatchAbortController.signal;
 
           try {
-              // 1단계: 로컬에서 먼저 permissive 파서로 시도 (AI 없이) - v8.0.13에서 SEARCH: 형식도 로컬 처리
-              if (patchText.includes('<<<<') || patchText.includes('SEARCH') || patchText.includes('REPLACE')) {
+              // ===== 1단계: 로컬 SEARCH/REPLACE 파서 (AI 없이) - 모든 포맷 지원 =====
+              const hasSearchMarker = patchText.includes('<<<<') || patchText.includes('SEARCH') || patchText.includes('REPLACE');
+              if (hasSearchMarker) {
                   const matchObj = applySearchReplaceMatch(fullCode, patchText);
-                  if (matchObj.result && matchObj.failedCount === 0) {
-                      applyPatchResult(matchObj.result, `SEARCH/REPLACE 블록 ${matchObj.replacedCount}건 즉시 매칭 성공!`);
+                  if (matchObj.result && matchObj.replacedCount > 0) {
+                      // v8.0.16: 부분 성공도 적용! 실패한 블록만 로그 남기고 AI로 안 넘어감
+                      if (matchObj.failedCount === 0) {
+                          applyPatchResult(matchObj.result, `로컬 즉시 매칭 성공! ${matchObj.replacedCount}개 블록 적용 (AI 호출 없음)`);
+                      } else {
+                          applyPatchResult(matchObj.result, `로컬 부분 적용: ${matchObj.replacedCount}성공 / ${matchObj.failedCount}실패 - 나머지는 수동 확인`);
+                          log(`  ⚠️ 실패한 블록 ${matchObj.failedCount}개는 AI 없이 스킵됨`, 'err');
+                      }
                       $('patchInput').value = '';
                       return;
-                  } else if (matchObj.result && matchObj.failedCount > 0 && matchObj.replacedCount > 0) {
-                      // 부분 성공: 성공한 부분은 적용하고, 남은 실패 블록만 AI로 넘기기 위해 fullCode 업데이트는 하지 않고 로그만 남김
-                      // v8.0.13에서는 부분 오염 방지 - 원본 유지하고 AI로 전체 재시도
-                      log(`⚠️ ${matchObj.replacedCount}건 성공, ${matchObj.failedCount}건 미스매치 → AI 보정으로 전체 재시도`, 'info');
-                      // 실패 상세 로그
-                      if (matchObj.failedDetails) {
-                          log(`  실패한 SEARCH 미리보기: ${matchObj.failedDetails.map(s=>s.slice(0,40)).join(' | ')}`, 'err');
-                      }
-                  } else if (matchObj.reason === 'no_blocks_found') {
-                      log('ℹ️ SEARCH 블록 없음 - 줄글/일반 코드로 판단하여 AI 포맷터로 직행', 'info');
                   }
               }
 
-              // 2단계: AI 스마트 파서 (컨텍스트 윈도잉 적용)
-              btn.innerHTML = '🤖 2/3 AI 자동 포맷 변환 & 정밀 패치 중...';
-              showToast('🤖 AI가 문맥을 분석하여 SEARCH/REPLACE 포맷으로 자동 변환 중입니다...', 'info');
-              log('🤖 스마트 패치: AI 자동 포맷터 가동 - 컨텍스트 윈도잉 적용 (약 10~20초)', 'info');
+              // ===== 2단계: 코드펜스/순수 코드 조각을 오프라인 fuzzy로 교체 (AI 없이) =====
+              btn.innerHTML = '🔍 2/3 오프라인 퍼지 매칭 중...';
+              const fences = extractCodeFences(rawPatchText);
+              for (const fenceCode of fences) {
+                  const fuzzy = tryOfflineFuzzyReplace(fullCode, fenceCode);
+                  if (fuzzy) {
+                      const lines = fullCode.split('\n');
+                      const s = Math.max(0, fuzzy.startLine - 1);
+                      const e = Math.min(lines.length - 1, fuzzy.endLine - 1);
+                      if (s <= e) {
+                          lines.splice(s, e - s + 1, fuzzy.newCode);
+                          applyPatchResult(lines.join('\n'), `오프라인 퍼지 교체 성공 (${fuzzy.method}) - ${fuzzy.startLine}~${fuzzy.endLine}줄`);
+                          $('patchInput').value = '';
+                          return;
+                      }
+                  }
+              }
+
+              // ===== 3단계: AI 자동 포맷터 - 최후 수단, 서버 혼잡 시 재시도 =====
+              btn.innerHTML = '🤖 3/3 AI 자동 포맷 변환 시도 중...';
+              showToast('🤖 로컬에서 못 찾아 AI가 포맷 변환 중입니다... (혼잡 시 오프라인으로 폴백)', 'info');
+              log('🤖 스마트 패치: AI 자동 포맷터 가동 - 로컬 실패로 최후 수단', 'info');
 
               const relevantContext = getRelevantContextForPatch(fullCode, patchText);
 
@@ -2590,8 +2639,12 @@ ${patchText}
                   aiFormattedPatch = sanitizePatchInput(aiFormattedPatch);
                   log(`🤖 AI 포맷터 응답 수신 (${aiFormattedPatch.length}자)`, 'info');
               } catch(aiErr) {
-                  log(`⚠️ AI 포맷터 1차 실패: ${aiErr.message} - 재시도`, 'err');
-                  // 재시도: 더 작은 컨텍스트로
+                  if (aiErr.message.includes('high demand') || aiErr.message.includes('overloaded') || aiErr.message.includes('429')) {
+                      log(`⚠️ AI 서버 혼잡으로 AI 단계 스킵 - 오프라인으로 폴백`, 'err');
+                      showToast('⚠️ AI 서버 혼잡 - AI 없이 로컬에서 최대한 적용했습니다. 줄글 설명이면 나중에 다시 시도해주세요.', 'err');
+                      throw new Error('AI 서버 혼잡으로 변환 실패 - 로컬에서 처리할 수 없는 형식입니다. SEARCH/REPLACE 형식으로 다시 붙여넣거나 잠시 후 재시도해주세요.');
+                  }
+                  log(`⚠️ AI 포맷터 1차 실패: ${aiErr.message} - 더 작은 컨텍스트로 재시도`, 'err');
                   const smallerContext = getRelevantContextForPatch(fullCode, patchText, 80, 2, 12000);
                   const retryPrompt = autoFormatPrompt.replace(relevantContext, smallerContext);
                   aiFormattedPatch = await callGeminiAPI(retryPrompt, 0.2, false, signal);
@@ -2601,42 +2654,25 @@ ${patchText}
               if (aiFormattedPatch && (aiFormattedPatch.includes('<<<<') || aiFormattedPatch.includes('SEARCH'))) {
                   const secondMatch = applySearchReplaceMatch(fullCode, aiFormattedPatch);
                   if (secondMatch.result && secondMatch.replacedCount > 0) {
-                      if (secondMatch.failedCount === 0) {
-                          applyPatchResult(secondMatch.result, `AI 자동 포맷 변환 및 패치 완료 (${secondMatch.replacedCount}개 블록 적용)`);
-                          $('patchInput').value = '';
-                          return;
-                      } else {
-                          // 부분 성공이라도 적용 (v8.0.13 개선: 부분 성공도 사용자에게 알리고 적용)
-                          applyPatchResult(secondMatch.result, `AI 부분 적용: ${secondMatch.replacedCount}성공 / ${secondMatch.failedCount}실패 - 로그 확인`);
-                          if (secondMatch.failedDetails) {
-                              log(`  남은 실패 블록: ${secondMatch.failedDetails.join(' | ')}`, 'err');
-                          }
-                          $('patchInput').value = '';
-                          return;
-                      }
-                  } else {
-                      log(`⚠️ AI가 생성한 블록이 원본과 매칭되지 않음 - 줄번호 방식으로 폴백`, 'info');
+                      applyPatchResult(secondMatch.result, `AI 자동 포맷 변환 및 패치 완료 (${secondMatch.replacedCount}개 블록)`);
+                      $('patchInput').value = '';
+                      return;
                   }
               }
 
-              // 3단계 폴백: 줄번호 기반 교체 시도 (컨텍스트 윈도잉 적용)
+              // 최후 폴백: 줄번호 기반
               btn.innerHTML = '🤖 3/3 줄번호 정밀 교체 시도 중...';
               const lines = fullCode.split('\n');
               let numberedCode = lines.map((l, i) => `${i + 1}| ${l}`).join('\n');
-              // 너무 길면 잘라서 보내기
               if (numberedCode.length > 20000) {
                   numberedCode = getRelevantContextForPatch(fullCode, patchText, 100, 3, 20000);
-                  // 줄번호 포맷 유지 위해 다시 매핑
-                  const relevantLines = numberedCode.split('\n').filter(l=> /^\d+\|/.test(l) || l.includes('Context Window'));
-                  numberedCode = relevantLines.join('\n').slice(0, 20000);
               }
-
               const fallbackPrompt = `원본 코드에서 아래 수정 코드가 대체해야 할 시작 줄번호(startLine)와 끝 줄번호(endLine), 그리고 실제 삽입될 코드(newCode)를 순수 JSON으로만 답해.
 [원본 코드 - 줄번호 포함]
 ${numberedCode}
 [수정 코드 / 설명]
 ${patchText}
-출력 형식: {"startLine": 10, "endLine": 20, "newCode": "..."} - JSON만 출력, 다른 말 금지`;
+출력 형식: {"startLine": 10, "endLine": 20, "newCode": "..."} - JSON만 출력`;
 
               const res = await callGeminiAPI(fallbackPrompt, 0.1, true, signal);
               if (res && res.startLine && res.endLine && typeof res.newCode === 'string') {
@@ -2644,17 +2680,22 @@ ${patchText}
                   const endIdx = res.endLine - 1;
                   if (startIdx >= 0 && endIdx < lines.length && startIdx <= endIdx) {
                       lines.splice(startIdx, endIdx - startIdx + 1, normalizeLineEndings(res.newCode));
-                      applyPatchResult(lines.join('\n'), `AI 줄번호 정밀 교체 성공 (${res.startLine}줄~${res.endLine}줄 대체)`);
+                      applyPatchResult(lines.join('\n'), `AI 줄번호 정밀 교체 성공 (${res.startLine}~${res.endLine})`);
                       $('patchInput').value = '';
                       return;
                   }
               }
-              throw new Error('원본 코드에서 일치하는 교체 위치를 찾지 못했습니다. 로그에서 실패한 SEARCH를 확인하거나, 더 정확한 원본 조각을 포함해 다시 시도해주세요.');
+              throw new Error('원본 코드에서 일치하는 교체 위치를 찾지 못했습니다. SEARCH/REPLACE 형식으로 다시 붙여넣어주세요.');
           } catch(e) {
               if (e.message !== '사용자에 의해 작동이 중지되었습니다.' && e.name !== 'AbortError') {
-                  showToast('❌ 부분 교체 실패: ' + e.message, 'err');
+                  const isCongestion = e.message.includes('혼잡') || e.message.includes('high demand') || e.message.includes('overloaded') || e.message.includes('429');
+                  if (!isCongestion) {
+                      showToast('❌ 부분 교체 실패: ' + e.message, 'err');
+                  }
                   log('❌ 스마트 패치 실패: ' + e.message, 'err');
-                  log('💡 팁: SEARCH 블록에는 원본에 존재하는 코드를 정확히 복사해야 합니다. AI가 생성한 블록이라도 원본과 공백이 다르면 실패할 수 있습니다.', 'info');
+                  if (!isCongestion) {
+                      log('💡 팁: SEARCH 블록에는 원본에 존재하는 코드를 정확히 복사해야 합니다.', 'info');
+                  }
               }
           } finally {
               currentPatchAbortController = null;
@@ -2666,6 +2707,7 @@ ${patchText}
   }
 
   function setupEventListeners() {
+
 
     initTheme(); loadIdeaInbox(); detectGithubUser(); initSmartPatchEvents();
     
