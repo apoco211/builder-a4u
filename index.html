@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.2 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.3 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.2">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.2">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.2">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.2">
+  <link rel="manifest" href="./manifest.json?v=8.0.3">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.3">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.3">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.3">
   
   <style>
     @font-face {
@@ -186,7 +186,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.2</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.3</h1>
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -288,18 +288,38 @@
   
   <div class="card" style="border:2px solid #10b981">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 소스코드 붙여넣기 & 실시간 미리보기</h2>
+      <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 소스코드 편집기 & 실시간 미리보기</h2>
       <span id="draftStatus" class="text-[9.5px] opacity-60">대기중</span>
     </div>
     <div class="flex justify-between items-center mb-2 gap-1.5">
-      <p class="text-[10px] opacity-70 truncate">대화창에서 복사한 전체 코드를 붙여넣어 주세요.</p>
+      <p class="text-[10px] opacity-70 truncate">전체 코드를 붙여넣거나, AI 스마트 패치를 이용하세요.</p>
       <div class="flex gap-1 shrink-0">
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 다운로드</button>
-        <button id="clearCodeBtn" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 지우기</button>
-        <button id="pasteClipboardBtn" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 붙여넣기</button>
+        <button id="clearCodeBtn" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 비우기</button>
+        <button id="pasteClipboardBtn" class="btn btn-sm py-1 px-2.5 text-[10px]" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 전체붙여넣기</button>
       </div>
     </div>
-    <textarea id="codeEditor" class="textarea h-[120px] font-mono text-[12px]" placeholder="전체 코드(index.html, App.jsx 등)를 여기에 붙여넣으세요."></textarea>
+    <textarea id="codeEditor" class="textarea h-[120px] font-mono text-[12px]" placeholder="전체 코드(index.html, App.jsx 등)가 위치하는 곳입니다."></textarea>
+    
+    <!-- v8.0.3 스마트 패치 패널 토글 버튼 -->
+    <div class="flex gap-1.5 mt-2 w-full">
+      <button id="togglePatchPanelBtn" class="btn btn-sm text-[11px] py-2 px-2 flex-1 shadow-sm border border-yellow-300 dark:border-yellow-700 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+        ⚡ AI 부분 코드 스마트 교체 (패치) 열기/닫기
+      </button>
+    </div>
+    
+    <!-- v8.0.3 스마트 패치 패널 (숨김/펼침) -->
+    <div id="smartPatchPanel" class="hidden mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 border border-yellow-400 dark:border-yellow-600 rounded-xl shadow-inner">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-[11px] font-bold text-yellow-700 dark:text-yellow-400">⚡ 교체할 '부분 코드'만 붙여넣기</span>
+        <button id="undoPatchBtn" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
+      </div>
+      <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="AI가 작성해준 특정 함수, 변경 블록(SEARCH/REPLACE) 등 부분 코드만 붙여넣으세요."></textarea>
+      <button id="runSmartPatchBtn" class="btn btn-sm w-full mt-2 py-2.5 text-[11px] btn-emerald shadow-md">
+        🔍 기존 코드에서 위치 찾아서 자동 교체하기
+      </button>
+    </div>
+
     <div class="flex flex-col gap-2 mt-3">
       <button id="previewCheckBtn" class="btn py-3 text-[11px] font-bold" style="background:#f0fdf4;border:2px solid #10b981;color:#065f46">👁️ 미리보기 확정</button>
       <div class="flex gap-1.5 w-full">
@@ -308,12 +328,12 @@
       </div>
       <div class="flex gap-1.5 w-full">
         <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[11px] hidden">🔑 구글 연동(로그인)</button>
-        <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[11px]">🚀 최종 빌드 & 이중 백업</button>
+        <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 & 이중 백업</button>
       </div>
     </div>
   </div>
   
-  <div id="livePreviewBox" class="live-preview-box active mb-4">
+  <div id="livePreviewBox" class="live-preview-box active mb-4 shadow-lg">
     <div class="live-preview-header">
       <span id="previewTitle" class="flex items-center gap-1.5">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
@@ -337,12 +357,12 @@
         <div class="text-[10px] text-gray-400 p-3 text-center">버튼을 눌러 과거 기록을 조회하세요</div>
       </div>
     </div>
-    <div class="card mb-0">
+    <div class="card mb-0 bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-700">
       <div class="flex justify-between items-center mb-1">
-        <h2 class="font-bold text-[11px]">📡 실시간 빌드 로그</h2>
-        <button id="clearLogBtn" class="btn text-[8px] py-0.5 px-1.5">clear</button>
+        <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
+        <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px]"></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"></div>
     </div>
   </div>
 </div>
@@ -356,7 +376,14 @@
         <button onclick="copyFullContext()" class="btn btn-sm py-1.5 px-3 text-[10px] btn-primary">📋 맥락만 복사</button>
       </div>
     </div>
-    <p class="text-[10.5px] opacity-70 mb-2">원버튼 실행 시 <b>[맥락 + 아이디어 + 지시사항]</b>이 복사되며, <b>현재 소스코드</b>가 자동 다운로드됩니다.</p>
+    <p class="text-[10px] opacity-70 mb-2">원버튼 실행 시 <b>[맥락 + 아이디어 + 지시사항]</b>이 복사되며, <b>현재 소스코드</b>가 자동 다운로드됩니다.</p>
+    
+    <!-- v8.0.3 패치 전용 모드 토글 -->
+    <label class="flex items-center gap-1.5 mb-2 p-2 rounded bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
+      <input type="checkbox" id="promptPatchMode" class="w-3.5 h-3.5 text-emerald-600 rounded focus:ring-emerald-500">
+      <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🛠️ 부분 수정(패치) 전용 모드 켜기 (전체 코드 재생성 금지 지시)</span>
+    </label>
+    
     <textarea id="fullContextBox" class="textarea h-[180px] text-[11px] font-mono" readonly></textarea>
   </div>
   
@@ -577,6 +604,9 @@
   let activeDriveTargetSlot = 'main1', activeDriveTab = 'recent';
   let currentIdeaImages = [];
   
+  // v8.0.3 스마트 패치 전용 백업 변수
+  window.lastPrePatchCode = null;
+  
   window.aiIconOptions = { color: '#10b981', emoji: '✨' };
   
   function safeSetLocalStorage(key, value) {
@@ -702,11 +732,11 @@
   function log(msg, type = 'info') {
     const logArea = $('logArea'); if (!logArea) return;
     const time = new Date().toLocaleTimeString();
-    let color = 'text-gray-600 dark:text-gray-400';
+    let color = 'text-gray-700 dark:text-gray-300';
     if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
     if (type === 'err') color = 'text-red-500 font-bold';
-    if (type === 'info') color = 'text-blue-500';
-    logArea.innerHTML += `<div class="${color}">[${time}] ${msg}</div>`;
+    if (type === 'info') color = 'text-blue-600 dark:text-blue-400 font-semibold';
+    logArea.innerHTML += `<div class="${color} mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[${time}] ${msg}</div>`;
     logArea.scrollTop = logArea.scrollHeight;
   }
   
@@ -952,7 +982,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.2)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.3)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -976,7 +1006,14 @@ ${contextConstraint}`;
   window.generateSmartPrompt = async function() {
     const context = getFullContextText();
     const idea = localStorage.getItem('repo_idea_' + currentRepo) || '';
-    const promptText = `${context}\n\n[업데이트 아이디어]\n${idea ? idea : '기재된 업데이트 아이디어가 없습니다.'}\n\n=========================\n🤖 [AI 전용 지시사항: 즉시 코딩 금지]\n방금 첨부한 현재 버전의 소스코드(.txt)와 위의 [작업 맥락], 그리고 [업데이트 아이디어]를 확인해줘. (사진이 추가로 첨부되었다면 함께 참고해줘.)\n\n⚠️ 주의: 지금 당장 완성된 코드를 작성하거나 빌드하지 마!\n1. 내가 제시한 업데이트 아이디어와 요구사항을 어떻게 구현할지 방향성을 먼저 제시해줘.\n2. 예상되는 문제점이나 더 나은 UI/UX 개선점이 있다면 나에게 역으로 질문하거나 제안해줘.\n3. 우리가 충분히 대화하고 방향성에 합의한 뒤, 내가 명시적으로 "이제 전체 코드 빌드해줘"라고 요청할 때만 전체 완성 코드를 단일 파일로 제공해줘.\n=========================`;
+    const isPatchMode = $('promptPatchMode')?.checked;
+    
+    let instruction = isPatchMode
+        ? `⚠️ 주의: 지금 당장 전체 완성된 코드를 출력하지 마! (브라우저 뻗음 방지)\n1. 업데이트 아이디어를 어떻게 구현할지 방향성을 먼저 제시해줘.\n2. 내가 "코드 수정해줘"라고 요청하면, 절대 전체 코드를 다시 출력하지 말고 수정이 필요한 특정 함수나 블록만 '부분 코드' 형태로 제공해줘.\n3. 부분 코드를 제공할 때는 내가 쉽게 복사해서 끼워 넣을 수 있도록 기존 코드의 어떤 부분을 어떻게 바꿀지 명확한 블록 단위(SEARCH/REPLACE 형태 또는 함수 전체)로 줘.`
+        : `⚠️ 주의: 지금 당장 완성된 코드를 작성하거나 빌드하지 마!\n1. 내가 제시한 업데이트 아이디어와 요구사항을 어떻게 구현할지 방향성을 먼저 제시해줘.\n2. 예상되는 문제점이나 더 나은 UI/UX 개선점이 있다면 나에게 역으로 질문하거나 제안해줘.\n3. 우리가 충분히 대화하고 방향성에 합의한 뒤, 내가 명시적으로 "이제 전체 코드 빌드해줘"라고 요청할 때만 전체 완성 코드를 단일 파일로 제공해줘.`;
+
+    const promptText = `${context}\n\n[업데이트 아이디어]\n${idea ? idea : '기재된 업데이트 아이디어가 없습니다.'}\n\n=========================\n🤖 [AI 전용 지시사항: 즉시 코딩 금지]\n방금 첨부한 현재 버전의 소스코드(.txt)와 위의 [작업 맥락], 그리고 [업데이트 아이디어]를 확인해줘. (사진이 추가로 첨부되었다면 함께 참고해줘.)\n\n${instruction}\n=========================`;
+    
     try {
       await navigator.clipboard.writeText(promptText);
       const downloadSuccess = downloadCodeAsTextDoc(true);
@@ -1332,7 +1369,6 @@ ${contextConstraint}`;
     } catch(e) { log('드래프트 저장 실패', 'err'); }
   }
   
-  // v8.0.2: 통합 미리보기 엔진 (정규식 치환 버그 수정 완료)
   function showLivePreviewCurrent(customCode = null, customTitle = null) {
     const editor = $('codeEditor');
     let code = customCode !== null ? customCode : (editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey()));
@@ -1363,7 +1399,6 @@ ${contextConstraint}`;
     } else if (file.endsWith('.js')) {
       frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body><div id="app"></div><script>${code}<\/script></body></html>`;
     } else {
-      // v8.0.2 FIX: 불필요한 .replace(/<\/script>/g, '<\/script>') 정규식 제거하여 iframe 내부 스크립트 렌더링 정상화
       frame.srcdoc = code;
     }
   
@@ -1390,9 +1425,13 @@ ${contextConstraint}`;
     } catch(e) { showToast('캡처 오류', 'err'); }
   };
   
+  // v8.0.3: 실시간 빌드 로그 중계 대폭 강화
   async function pushToGitHubRepository() {
     const pat = getGitHubPat();
-    if (!pat || pat.length < 10) return showToast('GitHub PAT가 설정되지 않았습니다.', 'err');
+    if (!pat || pat.length < 10) { log('❌ GitHub PAT가 설정되지 않았습니다.', 'err'); return showToast('GitHub PAT가 설정되지 않았습니다.', 'err'); }
+    
+    log(`🚀 [빌드 시작] ${currentRepo} 리포지토리 푸시를 준비합니다...`, 'info');
+    
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const editor = $('codeEditor'); const version = getTargetAppVersion();
     let userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
@@ -1405,8 +1444,9 @@ ${contextConstraint}`;
     if (!codeToPush || codeToPush.trim() === '') codeToPush = await syncLatestSourceFromGithub();
     
     let base64Content = '';
-    try { base64Content = window.btoa(unescape(encodeURIComponent(codeToPush))); } 
-    catch(e) {
+    try { 
+        base64Content = window.btoa(unescape(encodeURIComponent(codeToPush)));
+    } catch(e) {
       const bytes = new TextEncoder().encode(codeToPush); let binary = '';
       for (let i = 0; i < bytes.byteLength; i += 1024) binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 1024, bytes.byteLength)));
       base64Content = window.btoa(binary);
@@ -1416,29 +1456,58 @@ ${contextConstraint}`;
     let commitSha = null;
     try {
       let fileSha = null;
+      log(`🔍 1/3 GitHub에서 기존 파일(${targetFile}) 상태를 확인합니다...`, 'info');
       const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
-      if (getRes.ok) fileSha = (await getRes.json()).sha;
+      if (getRes.ok) {
+          fileSha = (await getRes.json()).sha;
+          log(`  └ 기존 파일 감지 완료 (SHA: ${fileSha.slice(0,7)})`, 'info');
+      } else {
+          log(`  └ 기존 파일이 없습니다. 새 파일로 생성합니다.`, 'info');
+      }
+      
       const payload = { message: `${finalCommitMsg} (${new Date().toLocaleString()})`, content: base64Content };
       if (fileSha) payload.sha = fileSha;
+      
+      log(`📤 2/3 GitHub로 코드를 푸시합니다...`, 'info');
       const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
       if (!putRes.ok) throw new Error(`HTTP ${putRes.status}`);
       commitSha = (await putRes.json()).commit?.sha?.slice(0, 7) || '완료';
-    } catch(e) { return showToast('푸시 실패: ' + e.message, 'err'); }
+      log(`✅ GitHub 푸시 성공! (Commit: #${commitSha})`, 'ok');
+    } catch(e) { 
+        log(`❌ GitHub 푸시 실패: ${e.message}`, 'err');
+        return showToast('푸시 실패: ' + e.message, 'err'); 
+    }
   
+    log(`☁️ 3/3 구글 문서 이중 백업을 진행합니다...`, 'info');
     let doc1Success = true, doc2Success = true;
     try {
       if (connectedDoc1 && connectedDoc1.id) {
+        log(`  └ 메인1(히스토리) 기록 중...`, 'info');
         const logText = `==================================================\n📌 [${currentRepo} 빌드 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n📁 파일: ${targetFile}\n📝 업데이트 내용:\n${userNote}\n==================================================\n`;
         doc1Success = await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+        log(doc1Success ? `  ✅ 메인1(히스토리) 백업 완료` : `  ⚠️ 메인1 백업 실패`, doc1Success ? 'ok' : 'err');
+      } else {
+        log(`  💡 연결된 히스토리 문서가 없습니다. (패스)`, 'info');
       }
       if (connectedDoc2 && connectedDoc2.id) {
+        log(`  └ 메인2(최신 소스) 덮어쓰기 중...`, 'info');
         const srcText = `[${currentRepo} 소스 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n\n${codeToPush}`;
         doc2Success = await writeOrAppendToGoogleDoc(connectedDoc2.id, srcText, 'overwrite');
+        log(doc2Success ? `  ✅ 메인2(최신 소스) 백업 완료` : `  ⚠️ 메인2 백업 실패`, doc2Success ? 'ok' : 'err');
+      } else {
+        log(`  💡 연결된 소스코드 문서가 없습니다. (패스)`, 'info');
       }
-    } catch(docErr) {}
+    } catch(docErr) {
+        log(`❌ 문서 백업 중 에러 발생: ${docErr.message}`, 'err');
+    }
     
-    if ((connectedDoc1 && !doc1Success) || (connectedDoc2 && !doc2Success)) showToast('⚠️ Github 푸시는 완료, 구글 문서 백업 실패', 'err');
-    else showToast(`🚀 Github 푸시 및 이중 백업 완료! (#${commitSha})`, 'ok');
+    if ((connectedDoc1 && !doc1Success) || (connectedDoc2 && !doc2Success)) {
+        showToast('⚠️ Github 푸시는 완료, 구글 문서 백업 일부 실패', 'err');
+        log(`🏁 빌드 완료 (경고 포함)`, 'info');
+    } else { 
+        showToast(`🚀 Github 푸시 및 이중 백업 완료! (#${commitSha})`, 'ok');
+        log(`🏁 [최종 완료] 빌드 및 모든 백업이 성공적으로 끝났습니다.`, 'ok');
+    }
     return true;
   }
   
@@ -1496,6 +1565,7 @@ ${contextConstraint}`;
         </div>`;
       });
       box.innerHTML = html;
+      log(`🐙 GitHub 커밋 기록 불러오기 완료`, 'info');
     } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류: ${e.message}</div>`; }
   }
   
@@ -1519,6 +1589,7 @@ ${contextConstraint}`;
       const code = await fetchGitHubCommitContent(sha); safeSetLocalStorage(getDraftCodeKey(), code);
       if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent();
       showToast(`↺ #${shortSha} 코드가 복원됨!`, 'ok');
+      log(`↺ GitHub 커밋 #${shortSha} 복원 완료`, 'ok');
     } catch(e) { showToast('롤백 실패', 'err'); }
   };
   
@@ -1549,6 +1620,7 @@ ${contextConstraint}`;
     if ($('codeEditor')) $('codeEditor').value = item.code;
     showLivePreviewCurrent();
     showToast(`↺ 드래프트 코드가 복원되었습니다!`, 'ok');
+    log(`↺ 드래프트 (${item.time}) 복원 완료`, 'info');
   };
 
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true) {
@@ -1750,6 +1822,8 @@ ${contextConstraint}`;
     if (!presetRepoName && !confirm(`[${targetPwaRepo}] 프로젝트에 PWA 파일 자동 세팅하시겠습니까?`)) return;
 
     showToast(`✨ [${targetPwaRepo}] PWA 세팅 중...`, 'info');
+    log(`✨ [${targetPwaRepo}] PWA 파일 자동 세팅 진행`, 'info');
+    
     const pwaName = targetPwaRepo, shortName = targetPwaRepo.substring(0, 10);
     const themeColor = presetIconOptions?.color || '#10b981', centerEmoji = presetIconOptions?.emoji || targetPwaRepo.charAt(0).toUpperCase();
     
@@ -1800,7 +1874,11 @@ ${contextConstraint}`;
             alert(`🎉 [${targetPwaRepo}] 자동 생성 완료!\n주소: https://${GITHUB_USER}.github.io/${targetPwaRepo}/`);
             loadRepos(presetRepoName);
         }
-    } catch(e) { showToast(`세팅 실패: ${e.message}`, 'err'); }
+        log(`✅ PWA 세팅 완료`, 'ok');
+    } catch(e) { 
+        showToast(`세팅 실패: ${e.message}`, 'err'); 
+        log(`❌ PWA 세팅 오류: ${e.message}`, 'err');
+    }
   };
 
   window.recommendAIAttributes = async function() {
@@ -1882,9 +1960,140 @@ ${contextConstraint}`;
       $('geminiModelSelect').addEventListener('change', e => { localStorage.setItem('builder_gemini_model', e.target.value); showToast(`🧠 모델 변경됨`, 'ok'); });
     }
   }
-  
+
+  // ==========================================
+  // v8.0.3 스마트 패치(부분 코드 자동 교체) 엔진 
+  // ==========================================
+  function applySearchReplaceMatch(original, patch) {
+     let result = original;
+     const regex = /<<<<<<<\s*SEARCH\s*([\s\S]*?)\s*=======\s*([\s\S]*?)\s*>>>>>>>\s*REPLACE/g;
+     let match;
+     let replacedCount = 0;
+     while ((match = regex.exec(patch)) !== null) {
+         const searchTarget = match[1];
+         const replaceWith = match[2];
+         if (searchTarget.trim()) {
+            if (result.includes(searchTarget)) {
+                result = result.replace(searchTarget, replaceWith);
+                replacedCount++;
+            } 
+         }
+     }
+     return replacedCount > 0 ? result : null;
+  }
+
+  function applyPatchResult(newCode, msg) {
+      const editor = $('codeEditor');
+      if (editor) editor.value = newCode;
+      showLivePreviewCurrent(newCode);
+      saveDraftCustom(newCode, '⚡ 스마트 패치 교체 완료');
+      showToast(`✅ ${msg}`, 'ok');
+      log(`✅ 스마트 패치 적용 완료: ${msg}`, 'ok');
+      $('undoPatchBtn')?.classList.remove('hidden');
+  }
+
+  function initSmartPatchEvents() {
+      $('togglePatchPanelBtn')?.addEventListener('click', () => {
+          const panel = $('smartPatchPanel');
+          if (panel.classList.contains('hidden')) {
+              panel.classList.remove('hidden');
+              $('patchInput').focus();
+          } else {
+              panel.classList.add('hidden');
+          }
+      });
+
+      $('undoPatchBtn')?.addEventListener('click', () => {
+          if (window.lastPrePatchCode) {
+              const editor = $('codeEditor');
+              if (editor) editor.value = window.lastPrePatchCode;
+              showLivePreviewCurrent(window.lastPrePatchCode);
+              saveDraftCustom(window.lastPrePatchCode, '패치 실행 취소');
+              showToast('↩️ 이전 코드로 원상복구 되었습니다.', 'ok');
+              $('undoPatchBtn').classList.add('hidden');
+              log('↩️ AI 스마트 패치 실행 취소 완료', 'info');
+              window.lastPrePatchCode = null;
+          }
+      });
+
+      $('runSmartPatchBtn')?.addEventListener('click', async () => {
+          const patchText = $('patchInput')?.value?.trim();
+          const editor = $('codeEditor');
+          let fullCode = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
+
+          if (!patchText) return showToast('교체할 부분 코드를 붙여넣으세요.', 'err');
+          if (!fullCode) return showToast('원본 코드가 없습니다. 원본 소스를 먼저 불러오세요.', 'err');
+
+          window.lastPrePatchCode = fullCode; // Undo용 백업
+
+          const btn = $('runSmartPatchBtn');
+          const originalBtnText = btn.innerHTML;
+          btn.innerHTML = '⏳ 1/2 고속 패턴 매칭 분석 중...';
+          btn.disabled = true;
+
+          try {
+              // 1단계: SEARCH / REPLACE 명시적 패턴 매칭
+              if (patchText.includes('<<<<<<< SEARCH') && patchText.includes('=======')) {
+                  let matchedResult = applySearchReplaceMatch(fullCode, patchText);
+                  if (matchedResult) {
+                      applyPatchResult(matchedResult, 'SEARCH/REPLACE 블록 패턴 매칭 성공');
+                      $('patchInput').value = '';
+                      return;
+                  }
+              }
+
+              // 2단계: 내장 Gemini 활용 라인 번호 핀포인트 탐색
+              btn.innerHTML = '🤖 2/2 AI 정밀 라인 탐색 중...';
+              showToast('🤖 패턴 매칭 실패. AI가 정밀 위치를 찾는 중입니다...', 'info');
+              log('🤖 스마트 패치: AI 위치 탐색 엔진 가동', 'info');
+
+              const lines = fullCode.split('\n');
+              let numberedCode = lines.map((l, i) => `${i + 1}| ${l}`).join('\n');
+
+              const prompt = `너는 코드 패치 전문 AI 엔진이야. 사용자가 원본 코드의 일부를 수정하기 위해 '부분 수정 코드'를 입력했어.
+[원본 코드 (줄번호 포함)]
+${numberedCode}
+
+[수정할 부분 코드]
+${patchText}
+
+[지시사항]
+1. '수정할 부분 코드'가 '원본 코드'의 어느 부분을 통째로 대체해야 하는지 찾아.
+2. 대체가 시작되는 줄 번호(startLine)와 끝나는 줄 번호(endLine)를 찾아내. (원본 코드의 번호 기준)
+3. '수정할 부분 코드'에서 설명 텍스트나 마크다운( \`\`\` )을 완전히 제거하고 오직 삽입될 실제 코드(newCode)만 남겨.
+4. 아래 JSON 형식으로만 응답해. 백틱( \`\`\` ) 없이 순수 JSON만 출력해.
+{
+"startLine": 10,
+"endLine": 25,
+"newCode": "실제 교체될 코드 텍스트 전체..."
+}`;
+              const res = await callGeminiAPI(prompt, 0.1, true); 
+              if (res && res.startLine && res.endLine && res.newCode) {
+                  const startIdx = res.startLine - 1;
+                  const endIdx = res.endLine - 1;
+                  if (startIdx >= 0 && endIdx < lines.length && startIdx <= endIdx) {
+                      lines.splice(startIdx, endIdx - startIdx + 1, res.newCode);
+                      const finalCode = lines.join('\n');
+                      applyPatchResult(finalCode, `AI 정밀 교체 성공 (기존 ${res.startLine}줄~${res.endLine}줄 대체됨)`);
+                      $('patchInput').value = '';
+                  } else {
+                      throw new Error(`AI가 반환한 줄 번호(${res.startLine}~${res.endLine})가 유효하지 않습니다.`);
+                  }
+              } else {
+                  throw new Error('AI가 올바른 JSON 위치 정보를 반환하지 못했습니다.');
+              }
+          } catch(e) {
+              showToast('❌ 부분 교체 실패: ' + e.message, 'err');
+              log('❌ 스마트 패치 실패: ' + e.message, 'err');
+          } finally {
+              btn.innerHTML = originalBtnText;
+              btn.disabled = false;
+          }
+      });
+  }
+
   function setupEventListeners() {
-    initTheme(); loadIdeaInbox(); detectGithubUser();
+    initTheme(); loadIdeaInbox(); detectGithubUser(); initSmartPatchEvents();
     
     try {
       document.querySelectorAll('.btn, button, select, label').forEach(el => {
@@ -1934,7 +2143,7 @@ ${contextConstraint}`;
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
     $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);
     $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
-    $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
+    $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; log('🧹 실시간 빌드 로그를 비웠습니다.', 'info'); });
     
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
