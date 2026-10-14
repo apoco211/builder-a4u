@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.12 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.13 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,10 +47,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.12">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.12">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.12">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.12">
+  <link rel="manifest" href="./manifest.json?v=8.0.13">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.13">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.13">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.13">
   
   <style>
     @font-face {
@@ -207,7 +207,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.12</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.13</h1>
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -2231,7 +2231,7 @@ ${contextConstraint}`;
   }
 
   // ==========================================
-  // v8.0.12 스마트 패치(부분 코드 자동 교체 & AI 자동 포맷터) 엔진 - 안정화 리빌드
+  // v8.0.13 스마트 패치(부분 코드 자동 교체 & AI 자동 포맷터) 엔진 - 안정화 리빌드
   // - sanitize, permissive parser, context windowing, fuzzy matching 추가
   // ==========================================
   function sanitizePatchInput(text) {
@@ -2246,8 +2246,7 @@ ${contextConstraint}`;
 
   function extractSearchReplaceBlocks(patch) {
      const blocks = [];
-     // 가장 관대한 파서: <<< ... SEARCH ... \n SEARCH \n === ... \n REPLACE ... >>> ... REPLACE
-     // 허용: <<< SEARCH, <<<<<< SEARCH, <<<<<<< SEARCH 등, ===, =======, >>> REPLACE 등 변형
+     // Format 1: 가장 관대한 <<< SEARCH 파서
      const permissiveRegex = /<{3,}[^\n]*SEARCH[^\n]*\n([\s\S]*?)\n={3,}[^\n]*\n([\s\S]*?)\n>{3,}[^\n]*REPLACE[^\n]*/gi;
      let match;
      while ((match = permissiveRegex.exec(patch)) !== null) {
@@ -2257,7 +2256,26 @@ ${contextConstraint}`;
              blocks.push({ search, replace, raw: match[0] });
          }
      }
-     // fallback: 구분자가 없는 경우를 대비해 구형 정규식도 한번 더 시도
+     // Format 2: SEARCH: / REPLACE: 콜론 형식 (사용자가 방금 쓴 형식)
+     if (blocks.length === 0) {
+         // [블록 N] 헤더, SEARCH: , REPLACE: 가 반복되는 구조
+         const colonRegex = /SEARCH\s*:\s*\n([\s\S]*?)\nREPLACE\s*:\s*\n([\s\S]*?)(?=\n\[블록|\nSEARCH\s*:|\n*\s*$)/gi;
+         while ((match = colonRegex.exec(patch)) !== null) {
+             const search = match[1] || '';
+             const replace = match[2] || '';
+             if (search.trim().length > 0) {
+                 blocks.push({ search, replace, raw: match[0] });
+             }
+         }
+     }
+     // Format 3: SEARCH\n ... \n=======\n ... \nREPLACE (콜론 없이)
+     if (blocks.length === 0) {
+         const plainRegex = /SEARCH\s*\n([\s\S]*?)\n={3,}\s*\n([\s\S]*?)\n.*REPLACE/gi;
+         while ((match = plainRegex.exec(patch)) !== null) {
+             blocks.push({ search: match[1], replace: match[2], raw: match[0] });
+         }
+     }
+     // Format 4: 구형 <<< SEARCH === >>> 
      if (blocks.length === 0) {
          const legacyRegex = /<{3,}\s*SEARCH\s*([\s\S]*?)\s*={3,}\s*([\s\S]*?)\s*>{3,}\s*REPLACE/gi;
          while ((match = legacyRegex.exec(patch)) !== null) {
@@ -2514,8 +2532,8 @@ ${contextConstraint}`;
           const signal = currentPatchAbortController.signal;
 
           try {
-              // 1단계: 로컬에서 먼저 permissive 파서로 시도 (AI 없이)
-              if (patchText.includes('<<<<') || patchText.includes('SEARCH')) {
+              // 1단계: 로컬에서 먼저 permissive 파서로 시도 (AI 없이) - v8.0.13에서 SEARCH: 형식도 로컬 처리
+              if (patchText.includes('<<<<') || patchText.includes('SEARCH') || patchText.includes('REPLACE')) {
                   const matchObj = applySearchReplaceMatch(fullCode, patchText);
                   if (matchObj.result && matchObj.failedCount === 0) {
                       applyPatchResult(matchObj.result, `SEARCH/REPLACE 블록 ${matchObj.replacedCount}건 즉시 매칭 성공!`);
@@ -2523,7 +2541,7 @@ ${contextConstraint}`;
                       return;
                   } else if (matchObj.result && matchObj.failedCount > 0 && matchObj.replacedCount > 0) {
                       // 부분 성공: 성공한 부분은 적용하고, 남은 실패 블록만 AI로 넘기기 위해 fullCode 업데이트는 하지 않고 로그만 남김
-                      // v8.0.12에서는 부분 오염 방지 - 원본 유지하고 AI로 전체 재시도
+                      // v8.0.13에서는 부분 오염 방지 - 원본 유지하고 AI로 전체 재시도
                       log(`⚠️ ${matchObj.replacedCount}건 성공, ${matchObj.failedCount}건 미스매치 → AI 보정으로 전체 재시도`, 'info');
                       // 실패 상세 로그
                       if (matchObj.failedDetails) {
@@ -2588,7 +2606,7 @@ ${patchText}
                           $('patchInput').value = '';
                           return;
                       } else {
-                          // 부분 성공이라도 적용 (v8.0.12 개선: 부분 성공도 사용자에게 알리고 적용)
+                          // 부분 성공이라도 적용 (v8.0.13 개선: 부분 성공도 사용자에게 알리고 적용)
                           applyPatchResult(secondMatch.result, `AI 부분 적용: ${secondMatch.replacedCount}성공 / ${secondMatch.failedCount}실패 - 로그 확인`);
                           if (secondMatch.failedDetails) {
                               log(`  남은 실패 블록: ${secondMatch.failedDetails.join(' | ')}`, 'err');
