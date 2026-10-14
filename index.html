@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.3 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.4 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.3">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.3">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.3">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.3">
+  <link rel="manifest" href="./manifest.json?v=8.0.4">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.4">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.4">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.4">
   
   <style>
     @font-face {
@@ -186,7 +186,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.3</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.4</h1>
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -215,6 +215,7 @@
       <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 w-full">
         <button onclick="$('aiRepoModal').style.display='flex'" class="btn btn-sm text-[10px] py-1 px-2 btn-emerald animate-pulse shadow-md w-full sm:w-auto">➕ 새 프로젝트 AI</button>
         <button id="openLiveSiteBtn" onclick="openLiveSite()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">🌐 라이브 오픈</button>
+        <button onclick="copyLiveSiteUrl()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🔗 주소 복사</button>
         <button onclick="setupPWA()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅</button>
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 다운</button>
         <button id="refreshRepoBtn" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto col-span-2 sm:col-span-1">🔄 새로고침</button>
@@ -982,7 +983,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.3)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.4)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1117,6 +1118,94 @@ ${contextConstraint}`;
       renderExtraDocs(); updateFullContextBox();
     }
   };
+
+  // --- 구글 Drive 문서 선택 모달 로직 ---
+  window.openDriveModal = function(slot) {
+      if (!isGoogleLoggedIn()) return showToast('Google 로그인이 필요합니다.', 'err');
+      activeDriveTargetSlot = slot;
+      $('driveModal').style.display = 'flex';
+      loadDriveFiles('recent');
+  };
+
+  async function loadDriveFiles(tab, query = '') {
+      const listEl = $('driveFileList');
+      listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...</div>';
+      activeDriveTab = tab;
+      
+      // 탭 버튼 스타일 업데이트
+      ['Recent', 'My', 'Shared'].forEach(t => {
+          const btn = $('driveTab' + t);
+          if(btn) {
+              if (t.toLowerCase() === tab) btn.classList.add('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
+              else btn.classList.remove('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
+          }
+      });
+
+      try {
+          let q = "trashed=false and mimeType='application/vnd.google-apps.document'";
+          if (query) q += ` and name contains '${query}'`;
+          else if (tab === 'my') q += " and 'me' in owners";
+          else if (tab === 'shared') q += " and sharedWithMe = true";
+
+          const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=recency desc&fields=files(id,name,modifiedTime)&pageSize=30`, {
+              headers: { Authorization: "Bearer " + accessToken }
+          });
+          
+          if (!res.ok) throw new Error('API 오류');
+          const data = await res.json();
+          
+          if (!data.files || data.files.length === 0) {
+              listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">결과가 없습니다.</div>';
+              return;
+          }
+
+          let html = '';
+          data.files.forEach(file => {
+              const dateStr = new Date(file.modifiedTime).toLocaleDateString();
+              const safeTitle = (file.name || '제목 없음').replace(/'/g, "\\'");
+              html += `<div class="drive-file" onclick="selectDriveFile('${file.id}', '${safeTitle}')">
+                  <div class="text-[18px]">📄</div>
+                  <div class="flex-1 min-w-0">
+                      <div class="text-[12px] font-bold truncate">${file.name}</div>
+                      <div class="text-[10px] text-gray-500">${dateStr}</div>
+                  </div>
+              </div>`;
+          });
+          listEl.innerHTML = html;
+      } catch (e) {
+          listEl.innerHTML = `<div style="text-align:center;padding:40px;color:red;opacity:0.8;">오류 발생: ${e.message}</div>`;
+      }
+  }
+
+  window.selectDriveFile = function(id, title) {
+      const docInfo = { id, title };
+      if (activeDriveTargetSlot === 'main1') {
+          connectedDoc1 = docInfo;
+          localStorage.setItem('connected_doc1_' + currentRepo, JSON.stringify(connectedDoc1));
+          renderConnectedDoc1();
+      } else if (activeDriveTargetSlot === 'main2') {
+          connectedDoc2 = docInfo;
+          localStorage.setItem('connected_doc2_' + currentRepo, JSON.stringify(connectedDoc2));
+          renderConnectedDoc2();
+      } else if (activeDriveTargetSlot === 'extra') {
+          if (!extraDocs) extraDocs = [];
+          if (!extraDocs.some(d => d.id === id)) {
+              extraDocs.push(docInfo);
+              localStorage.setItem('extra_docs_' + currentRepo, JSON.stringify(extraDocs));
+              renderExtraDocs();
+          } else {
+              return showToast('이미 추가된 문서입니다.', 'info');
+          }
+      }
+      
+      let ignored = JSON.parse(localStorage.getItem('ignored_docs_' + currentRepo) || '[]');
+      ignored = ignored.filter(docId => docId !== id);
+      localStorage.setItem('ignored_docs_' + currentRepo, JSON.stringify(ignored));
+      
+      updateFullContextBox();
+      $('driveModal').style.display = 'none';
+      showToast('✅ 문서가 연결되었습니다!', 'ok');
+  };
   
   async function scanRepoFileTree() {
     const select = $('fileTreeSelect'); if (!select) return;
@@ -1217,6 +1306,17 @@ ${contextConstraint}`;
   window.openLiveSite = function() {
       if (!currentRepo) return;
       window.open(`https://${GITHUB_USER}.github.io/${currentRepo}/`, '_blank');
+  };
+
+  window.copyLiveSiteUrl = async function() {
+      if (!currentRepo) return;
+      const url = `https://${GITHUB_USER}.github.io/${currentRepo}/`;
+      try {
+          await navigator.clipboard.writeText(url);
+          showToast('🔗 배포된 라이브 주소가 복사되었습니다!', 'ok');
+      } catch (e) {
+          showToast('❌ 주소 복사 실패', 'err');
+      }
   };
   
   async function findExistingDocByName(title) {
