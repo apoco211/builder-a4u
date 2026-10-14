@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.0.6 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.0.7 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -26,10 +26,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.0.6">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.6">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.6">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.6">
+  <link rel="manifest" href="./manifest.json?v=8.0.7">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.0.7">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.0.7">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.0.7">
   
   <style>
     @font-face {
@@ -186,7 +186,7 @@
   <div class="flex justify-between items-center mb-2.5 gap-1.5 px-1 md:px-2">
     <div class="min-w-0 flex-1">
       <div class="flex items-center gap-1.5 flex-wrap">
-        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.6</h1>
+        <h1 class="text-[15px] sm:text-[17px] md:text-[19px] font-black tracking-tight whitespace-nowrap">Builder-a4u v8.0.7</h1>
         <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9.5px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm shrink-0" style="border-color:var(--line)">
           <span class="animate-pulse text-emerald-500">🟢</span> 
           <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -986,7 +986,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
   
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.6)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.0.7)]
 📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1130,14 +1130,15 @@ ${contextConstraint}`;
       loadDriveFiles('recent');
   };
 
-  async function loadDriveFiles(tab, query = '') {
+  window.loadDriveFiles = async function(tab, query = '') {
       const listEl = $('driveFileList');
+      if (!listEl) return;
       listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...</div>';
       activeDriveTab = tab;
       
       // 탭 버튼 스타일 업데이트
       ['Recent', 'My', 'Shared'].forEach(t => {
-          const btn = $('driveTab' + t);
+          const btn = $('driveTab' + t + 'Btn');
           if(btn) {
               if (t.toLowerCase() === tab) btn.classList.add('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
               else btn.classList.remove('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
@@ -1150,7 +1151,7 @@ ${contextConstraint}`;
           else if (tab === 'my') q += " and 'me' in owners";
           else if (tab === 'shared') q += " and sharedWithMe = true";
 
-          const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=recency desc&fields=files(id,name,modifiedTime)&pageSize=30`, {
+          const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=modifiedTime desc&fields=files(id,name,modifiedTime)&pageSize=30`, {
               headers: { Authorization: "Bearer " + accessToken }
           });
           
@@ -1850,6 +1851,28 @@ ${contextConstraint}`;
   window.deleteInboxIdea = function(idx) {
     ideaInbox.splice(idx, 1); safeSetLocalStorage('idea_inbox_global', JSON.stringify(ideaInbox)); renderIdeaInbox();
     if(isGoogleLoggedIn()) saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
+  };
+
+  window.pasteInboxImageFromClipboard = async function() {
+      try {
+          if (!navigator.clipboard || !navigator.clipboard.read) return showToast('Ctrl+V를 사용하여 이미지를 붙여넣어 주세요.', 'info');
+          const items = await navigator.clipboard.read();
+          let hasImage = false;
+          for (const item of items) {
+              for (const type of item.types) {
+                  if (type.startsWith('image/')) {
+                      const blob = await item.getType(type);
+                      const b64 = await processImageFileToBase64(blob);
+                      setPendingInboxPhoto(b64);
+                      hasImage = true;
+                      break;
+                  }
+              }
+              if (hasImage) break;
+          }
+          if (hasImage) { showToast('📸 클립보드에서 인박스로 사진이 추가되었습니다!', 'ok'); } 
+          else { showToast('복사된 이미지가 없습니다.', 'err'); }
+      } catch (e) { showToast('클립보드 권한 오류 (Ctrl+V 권장)', 'err'); }
   };
 
   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
