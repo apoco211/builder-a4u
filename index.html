@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.3 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.1.4 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -206,7 +206,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.3</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.4</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1173,7 +1173,7 @@
   
       const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-        return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.3)]
+        return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.4)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1648,19 +1648,36 @@ ${contextConstraint}`;
   window.clearGoogleToken = clearGoogleToken;
 
   function forceResetGoogleSession() {
-    clearGoogleToken(true);
-    log('🔄 토큰 꼬임 자동 풀기 실행 - 다른 앱 세션 충돌 해결 시도', 'info');
-    showToast('🔄 토큰 꼬임 자동 풀기 실행 - 계정 선택창을 기다려주세요', 'info');
-    setTimeout(()=>{ 
-      initGis(); 
-      setTimeout(()=>{ 
-        if(tokenClient){ 
-          try{ tokenClient.requestAccessToken({ prompt: 'consent', hint: '' }); }catch(e){ 
-            try{ tokenClient.requestAccessToken({ prompt: 'select_account' }); }catch(e2){} 
-          } 
-        } 
-      }, 800);
-    }, 300);
+    try {
+      clearGoogleToken(true);
+      log('🔄 토큰 꼬임 자동 풀기 실행 - 팝업 직접 호출 모드', 'info');
+      showToast('🔄 계정 선택창 여는 중... 팝업 차단 해제해주세요', 'info');
+      if (!tokenClient) {
+        initGis();
+        // tokenClient가 아직 없으면 0.6초 뒤 재시도 (GIS 로딩 대기)
+        setTimeout(() => {
+          if (tokenClient) {
+            try { tokenClient.requestAccessToken({ prompt: 'select_account' }); } catch(e) {
+              try { tokenClient.requestAccessToken({ prompt: 'consent' }); } catch(e2) {}
+            }
+          } else {
+            showToast('⚠️ GIS 로딩 중... 1초 뒤 버튼을 한 번 더 눌러주세요', 'err');
+          }
+        }, 600);
+        return;
+      }
+      // ★ 핵심 수정: setTimeout 없이 사용자 클릭 제스처 안에서 바로 호출해야 팝업이 차단 안 됨
+      try {
+        tokenClient.requestAccessToken({ prompt: 'select_account' });
+      } catch(e) {
+        try { tokenClient.requestAccessToken({ prompt: 'consent' }); } catch(e2) {
+          tokenClient.requestAccessToken({ prompt: '' });
+        }
+      }
+    } catch(err) {
+      showToast('❌ 자동 풀기 실패: ' + err.message, 'err');
+      log('❌ 자동 풀기 실패: ' + err.message, 'err');
+    }
   }
   window.forceResetGoogleSession = forceResetGoogleSession;
   window.autoFixTokenEntanglement = forceResetGoogleSession;
