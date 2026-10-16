@@ -27,7 +27,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.5 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.1.6 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,10 +48,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.1.5">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.5">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.5">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.1.5">
+  <link rel="manifest" href="./manifest.json?v=8.1.6">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.6">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.6">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.1.6">
   
   <style>
     :root {
@@ -188,7 +188,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.5</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.6</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -455,7 +455,7 @@
         </label>
       </div>
       <div class="border-t pt-3" style="border-color:var(--line)">
-        <h3 class="font-bold text-[11px] mb-1">🔑 GOOGLE & YOUTUBE 인증</h3>
+        <h3 class="font-bold text-[11px] mb-1">🔑 GOOGLE 인증</h3>
         <div class="flex gap-1.5">
           <button id="googleLoginBtn" class="btn btn-primary flex-1 text-[11px] py-2">🔑 Google 로그인</button>
           <button id="youtubeLoginBtn" class="btn flex-1 text-[11px] py-2" style="background:#ef4444;color:#ffffff;border-color:#dc2626">📺 YouTube 연동</button>
@@ -634,7 +634,7 @@
   let mainFile = localStorage.getItem('main_file_' + currentRepo) || 'index.html';
   let connectedDoc1 = null, connectedDoc2 = null, extraDocs = [];
   let tokenClient = null;
-  let youtubeTokenClient = null; // ✅ 유튜브 전용 클라이언트 변수 추가
+  let youtubeTokenClient = null;
   let accessToken = localStorage.getItem('google_access_token') || '';
   let tokenExpiry = Number(localStorage.getItem('google_token_expiry') || 0);
   let activeDriveTargetSlot = 'main1', activeDriveTab = 'recent';
@@ -829,7 +829,7 @@
     const logArea = $('logArea'); if (!logArea) return;
     const time = new Date().toLocaleTimeString();
     let color = 'text-gray-700 dark:text-gray-300';
-    if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
+    if (type === 'ok') color = 'textemerald-600 dark:text-emerald-400 font-bold';
     if (type === 'err') color = 'text-red-500 font-bold';
     if (type === 'info') color = 'text-blue-600 dark:text-blue-400 font-semibold';
     logArea.innerHTML += `<div class="${color} mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[${time}] ${msg}</div>`;
@@ -1159,7 +1159,7 @@
   
       const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-        return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.5)]
+        return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.6)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1679,6 +1679,7 @@ ${contextConstraint}`;
         client_id: getGoogleClientId(),
         scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
         prompt: '',
+        include_granted_scopes: false, // 👈 핵심 추가: 기존 권한(유튜브 등)과 자동 병합되는 것을 강제 차단
         callback: (resp) => {
           if (resp && resp.access_token) {
             accessToken = resp.access_token;
@@ -1724,6 +1725,7 @@ ${contextConstraint}`;
       youtubeTokenClient = google.accounts.oauth2.initTokenClient({
         client_id: getGoogleClientId(),
         scope: 'https://www.googleapis.com/auth/youtube.readonly',
+        include_granted_scopes: false, // 👈 핵심 추가: 기존 권한(드라이브 등)과 자동 병합되는 것을 강제 차단
         callback: (resp) => {
           if (resp && resp.access_token) {
             localStorage.setItem('youtube_access_token', resp.access_token);
