@@ -26,7 +26,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.7 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.1.8 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,9 +47,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.1.7">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.7">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.7">
+  <link rel="manifest" href="./manifest.json?v=8.1.8">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.8">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.8">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -217,7 +217,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.7</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.8</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1263,7 +1263,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.7)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.8)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1791,15 +1791,19 @@ ${contextConstraint}`;
 
   function forceResetGoogleSession() {
     try {
+      const prevToken = accessToken || localStorage.getItem('google_access_token');
+      if (prevToken && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2 && google.accounts.oauth2.revoke) {
+        try { google.accounts.oauth2.revoke(prevToken, () => { log('🔓 기존 구글 권한 연결(Revoke) 해제 완료', 'info'); }); } catch(e) {}
+      }
       clearGoogleToken(true);
-      log('🔄 토큰 꼬임 자동 풀기 실행 - 팝업 직접 호출 모드', 'info');
-      showToast('🔄 계정 선택창 여는 중... 팝업 차단 해제해주세요', 'info');
+      log('🔄 토큰 꼬임 자동 풀기 실행 - 타 앱 권한(youtube 등) 병합 차단 모드', 'info');
+      showToast('🔄 계정 선택창 여는 중... (타 앱 권한 분리 적용)', 'info');
       if (!tokenClient) {
         initGis();
         setTimeout(() => {
           if (tokenClient) {
-            try { tokenClient.requestAccessToken({ prompt: 'select_account' }); } catch(e) {
-              try { tokenClient.requestAccessToken({ prompt: 'consent' }); } catch(e2) {}
+            try { tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); } catch(e) {
+              try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e2) {}
             }
           } else {
             showToast('⚠️ GIS 로딩 중... 1초 뒤 버튼을 한 번 더 눌러주세요', 'err');
@@ -1808,10 +1812,10 @@ ${contextConstraint}`;
         return;
       }
       try {
-        tokenClient.requestAccessToken({ prompt: 'select_account' });
+        tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false });
       } catch(e) {
-        try { tokenClient.requestAccessToken({ prompt: 'consent' }); } catch(e2) {
-          tokenClient.requestAccessToken({ prompt: '' });
+        try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e2) {
+          tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: false });
         }
       }
     } catch(err) {
@@ -1830,6 +1834,7 @@ ${contextConstraint}`;
       tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: getGoogleClientId(),
         scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/documents openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+        include_granted_scopes: false,
         prompt: '',
         callback: (resp) => {
           if (resp && resp.access_token) {
@@ -1842,7 +1847,7 @@ ${contextConstraint}`;
             loadRepoDocuments();
             autoRestoreDocsFromDrive(true);
             showToast('🟢 Google 로그인 완료! 1시간 동안 유지됩니다.', 'ok');
-            log('✅ Google 로그인 성공 - 토큰 꼬임 없음', 'ok');
+            log('✅ Google 로그인 성공 - 타 앱 권한(youtube 등) 분리 완료', 'ok');
           } else if (resp && resp.error) {
             const errStr = (resp.error || '').toString().toLowerCase();
             const isInvalid = errStr.includes('invalid_request') || errStr.includes('access_denied') || errStr.includes('unauthorized') || errStr.includes('popup_closed') || errStr.includes('unverified');
@@ -1853,7 +1858,6 @@ ${contextConstraint}`;
               updateGisStatus('🚫 승인 오류 - 내 Client ID 필요');
               showToast('🚫 승인 오류: 기본 ID가 차단됨. 설정에서 내 Client ID 만들기를 권장', 'err');
               log('🚫 승인 오류: 기본 Client ID가 Google 미검증 앱으로 차단됨. 내 Client ID 생성을 권장', 'err');
-              log('💡 해결: console.cloud.google.com → OAuth 동의화면 → 테스트 사용자에 본인 Gmail 추가 → 사용자 인증 정보 → 웹 클라이언트 ID 생성 → 승인된 원본에 https://apoco211.github.io 추가', 'info');
             } else if(isInvalid) {
               updateGisStatus('⚠️ 토큰 꼬임 감지 - 자동 풀기 버튼을 눌러주세요');
               showToast('⚠️ 세션 충돌! [토큰 꼬임 자동 풀기] 버튼을 눌러주세요.', 'err');
@@ -1887,21 +1891,21 @@ ${contextConstraint}`;
       initGis(); 
       setTimeout(() => { 
         if (tokenClient) {
-          try{ tokenClient.requestAccessToken({ prompt: '', hint: '' }); }catch(e){
-            try{ tokenClient.requestAccessToken({ prompt: 'consent' }); }catch(e2){}
+          try{ tokenClient.requestAccessToken({ prompt: '', hint: '', include_granted_scopes: false }); }catch(e){
+            try{ tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); }catch(e2){}
           }
         }
       }, 1000); 
       return; 
     }
     try { 
-      tokenClient.requestAccessToken({ prompt: '', hint: '' }); 
+      tokenClient.requestAccessToken({ prompt: '', hint: '', include_granted_scopes: false }); 
     } catch(e) {
       try{
-        tokenClient.requestAccessToken({ prompt: 'consent' }); 
+        tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); 
       } catch(e2) {
         try{
-          tokenClient.requestAccessToken({ prompt: 'select_account' });
+          tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false });
         } catch(e3){}
       }
     }
