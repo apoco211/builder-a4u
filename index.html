@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head><style>
+<head>
+<style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -26,7 +27,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.8 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.1.9 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -47,31 +48,12 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.1.8">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.8">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.8">
+  <link rel="manifest" href="./manifest.json?v=8.1.9">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.9">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.9">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
-    @font-face {
-      font-family: "Optimistic";
-      font-style: normal;
-      font-weight: 400 600;
-      font-display: swap;
-      src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-    }
-    
-    @font-face {
-      font-family: "Optimistic Mono";
-      font-style: normal;
-      font-weight: 400;
-      font-display: swap;
-      src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-    }
-    
-    :where(html) { font-family: "Optimistic", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    :where(code, pre, kbd, samp) { font-family: "Optimistic Mono", ui-monospace, monospace; }
-  
     :root {
       --bg: #f8fafc; --card: #ffffff; --line: #e2e8f0;
       --txt: #0f172a; --muted: #64748b; --accent: #FFC800;
@@ -80,7 +62,6 @@
       --bg: #0f1115; --card: #1a1d24; --line: #2a2f3a;
       --txt: #e2e8f0; --muted: #94a3b8;
     }
-  
     html { background: var(--bg); -webkit-text-size-adjust: 100%; text-size-adjust: 100%; } 
     body {
       background: var(--bg); color: var(--txt);
@@ -88,7 +69,6 @@
       padding: 14px 14px 100px 14px; min-height: 100vh;
       transition: background 0.2s, color 0.2s; font-size: 15px; line-height: 1.5;
     }
-  
     .sticky-header {
       position: sticky; top: 0; z-index: 99;
       background: var(--bg); margin: -14px -14px 14px -14px;
@@ -96,13 +76,11 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: background 0.2s, border-color 0.2s;
     }
     .dark .sticky-header { box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-  
     .card {
       background: var(--card); border: 1px solid var(--line);
       border-radius: 16px; padding: 16px; margin-bottom: 14px;
       transition: background 0.2s, border-color 0.2s;
     }
-  
     .btn {
       border-radius: 12px; padding: 10px 14px; font-weight: 700;
       font-size: 13px; cursor: pointer; border: 1px solid var(--line);
@@ -116,7 +94,6 @@
     .btn-emerald { background: #10b981 !important; color: #ffffff !important; border-color: #059669 !important; font-weight: 800; }
     .btn-sm { padding: 6px 10px; font-size: 11px; min-height: 30px; border-radius: 8px; white-space: nowrap; }
     .btn:active { transform: scale(0.97); }
-  
     .input {
       width: 100%; border: 1px solid var(--line); border-radius: 12px;
       padding: 12px 14px; background: var(--card); color: var(--txt);
@@ -128,18 +105,15 @@
       font-size: 13.5px; line-height: 1.6; outline: none; resize: vertical;
       word-break: break-all; white-space: pre-wrap;
     }
-  
     .badge {
       display: inline-flex; align-items: center; justify-content: center;
       padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 800; border: 1px solid var(--line);
     }
-  
     .log {
       font-family: monospace; font-size: 12px; line-height: 1.6;
       max-height: 220px; overflow-y: auto; background: var(--bg);
       border: 1px solid var(--line); border-radius: 12px; padding: 12px;
     }
-  
     .dark .btn { background: #252a36 !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
@@ -147,7 +121,6 @@
     .dark .input, .dark .textarea { background: #1e222e !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .card { border-color: #2a2f3a !important; }
     .dark .log { background: #0f1115 !important; color: #cbd5e1 !important; border-color: #2a2f3a !important; }
-  
     .tab-btn {
       padding: 10px 12px; font-weight: 800; font-size: 13px; border-radius: 12px;
       border: 1px solid var(--line); background: var(--card); color: var(--muted);
@@ -156,50 +129,6 @@
     }
     .tab-btn.active { background: #111111 !important; color: #ffffff !important; border-color: #111111 !important; }
     .dark .tab-btn.active { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
-  
-    @media (max-width: 768px) {
-      body { padding: 8px 8px 100px 8px; font-size: 14px; }
-      .sticky-header { margin: -8px -8px 12px -8px; padding: 8px 8px 8px 8px; }
-      .card { padding: 12px; border-radius: 14px; }
-      .btn { font-size: 12.5px; padding: 8px 10px; min-height: 38px; }
-      .btn-sm { font-size: 10px; padding: 4px 8px; min-height: 28px; }
-      .input { font-size: 15px !important; padding: 10px 12px; min-height: 42px; }
-      .textarea { font-size: 13px !important; }
-      h1 { font-size: 15px !important; }
-      h2 { font-size: 12.5px !important; }
-      .log { font-size: 10.5px; }
-      .badge { font-size: 9px; }
-      .tab-btn { font-size: 11.5px !important; padding: 9px 6px !important; }
-      .card-header-mobile-col { flex-direction: column; align-items: flex-start !important; gap: 8px; }
-      .card-header-mobile-col .flex { width: 100%; justify-content: flex-start; flex-wrap: wrap; }
-      .card-header-mobile-col h2 { white-space: normal; line-height: 1.3; }
-    }
-  
-    .live-preview-box { border: 2px solid #10b981; border-radius: 16px; overflow: hidden; margin-top: 12px; background: #ffffff; display: none; }
-    .live-preview-box.active { display: block; }
-    .live-preview-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 800; }
-    .dark .live-preview-header { background: #1e222e !important; color: #e2e8f0 !important; }
-    .live-preview-iframe { width: 100%; height: 480px; border: 0; background: #ffffff; }
-    @media (min-width: 1024px) { .live-preview-iframe { height: 600px; } }
-  
-    .version-history { max-height: 280px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; padding: 6px; background: var(--bg); }
-    .version-item { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); cursor: pointer; margin-bottom: 6px; background: var(--card); font-size: 11px; }
-    @media (min-width: 640px) { .version-item { flex-direction: row; align-items: center; justify-content: space-between; } }
-  
-    .drive-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; }
-    .drive-modal-content { background: #ffffff; border-radius: 16px; max-width: 800px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); }
-    .dark .drive-modal-content { background: #1e222f; color: #ffffff; }
-    .drive-modal-header { padding: 16px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; }
-    .dark .drive-modal-header { border-color: #333333; }
-    .drive-modal-body { flex: 1; overflow-y: auto; padding: 12px; }
-    .drive-file { padding: 10px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: 1px solid transparent; transition: background 0.15s ease; }
-    .drive-file:hover { background: #f5f5f5; border-color: #dddddd; }
-    .dark .drive-file:hover { background: #2a2f3f; }
-  
-    .idea-img-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .idea-img-thumb { position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid var(--line); background-size: cover; background-position: center; }
-    .idea-img-remove { position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-
     .ai-chip {
       display: inline-flex; align-items: center; gap: 4px;
       padding: 5px 10px; border-radius: 999px; font-size: 10.5px; font-weight: 800;
@@ -210,6 +139,24 @@
       background: #10b981 !important; color: #ffffff !important; border-color: #059669 !important;
       box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
     }
+    .live-preview-box { border: 2px solid #10b981; border-radius: 16px; overflow: hidden; margin-top: 12px; background: #ffffff; display: none; }
+    .live-preview-box.active { display: block; }
+    .live-preview-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 800; }
+    .dark .live-preview-header { background: #1e222e !important; color: #e2e8f0 !important; }
+    .live-preview-iframe { width: 100%; height: 480px; border: 0; background: #ffffff; }
+    .version-history { max-height: 280px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; padding: 6px; background: var(--bg); }
+    .version-item { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); cursor: pointer; margin-bottom: 6px; background: var(--card); font-size: 11px; }
+    @media (min-width: 640px) { .version-item { flex-direction: row; align-items: center; justify-content: space-between; } }
+    .drive-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; }
+    .drive-modal-content { background: #ffffff; border-radius: 16px; max-width: 800px; width: 100%; max-height: 80vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); }
+    .dark .drive-modal-content { background: #1e222f; color: #ffffff; }
+    .drive-modal-header { padding: 16px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; }
+    .drive-file { padding: 10px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: 1px solid transparent; transition: background 0.15s ease; }
+    .drive-file:hover { background: #f5f5f5; border-color: #dddddd; }
+    .dark .drive-file:hover { background: #2a2f3f; }
+    .idea-img-container { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .idea-img-thumb { position: relative; width: 60px; height: 60px; border-radius: 8px; border: 1px solid var(--line); background-size: cover; background-position: center; }
+    .idea-img-remove { position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
@@ -217,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.8</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.9</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -340,7 +287,6 @@
       </button>
     </div>
     
-    <!-- 스마트 패치 패널 -->
     <div id="smartPatchPanel" class="hidden mt-2 p-3 bg-gray-50 dark:bg-gray-800/50 border border-yellow-400 dark:border-yellow-600 rounded-xl shadow-inner">
       <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <div class="flex items-center gap-1.5 flex-wrap">
@@ -419,7 +365,6 @@
       </div>
     </div>
 
-    <!-- v8.1.7 타겟 AI 멀티 선택기 -->
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-1.5 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
@@ -430,7 +375,7 @@
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
       • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[코드.txt]</b> 자동 다운로드 + 선택 AI 새 창 오픈<br>
-      • <b>사진 있을 때 (역발상 원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 1개 자동 다운로드 + 선택 AI 새 창 오픈 (AI 창에서 <b>붙여넣기</b> 하면 사진이 들어가고 <b>파일 1개만 첨부</b>하면 끝!)
+      • <b>사진 있을 때 (역발상 원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 1개 자동 다운로드 + 선택 AI 새 창 오픈
     </p>
     
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -628,7 +573,6 @@
       <button onclick="$('aiRepoModal').style.display='none'" class="btn text-[12px] py-1">✕</button>
     </div>
     <div class="p-5 space-y-4">
-      <!-- 1단계: 기획 입력 -->
       <div>
         <label class="text-[11px] font-bold block mb-1.5 text-purple-600">1. 어떤 앱을 만들고 싶으신가요? (기획 의도) <span class="text-red-500">*</span></label>
         <textarea id="aiRepoDescInput" class="textarea h-[70px] text-[13px]" placeholder="예: 택시 기사님들을 위한 콜 알림 앱. 노란색 테마."></textarea>
@@ -636,8 +580,6 @@
           🤖 AI 네이밍 & 아이콘 추천받기
         </button>
       </div>
-      
-      <!-- 2단계: AI 추천 결과 (동적 표출) -->
       <div id="aiRepoSuggestions" class="hidden p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-3">
          <div>
             <label class="text-[10px] font-bold block mb-1.5 text-gray-700 dark:text-gray-300">2. 추천 레포지 이름 (터치하여 선택)</label>
@@ -654,8 +596,6 @@
             </div>
          </div>
       </div>
-      
-      <!-- 3단계: 최종 생성 -->
       <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 & 자동 배포</button>
     </div>
   </div>
@@ -681,7 +621,6 @@
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
 
-  // v8.1.7: 타겟 AI 목록 및 선택 상태 관리
   const AI_TARGETS = [
     { id: 'gemini', name: '♊ Gemini', url: 'https://gemini.google.com/app' },
     { id: 'meta', name: '♾️ Meta AI', url: 'https://www.meta.ai/' },
@@ -733,20 +672,6 @@
     }
   }
 
-  function openSelectedAITabs() {
-    const selected = getSelectedAITargets();
-    if (!selected || selected.length === 0) return 0;
-    let opened = 0;
-    selected.forEach(id => {
-      const target = AI_TARGETS.find(a => a.id === id);
-      if (target) {
-        window.open(target.url, '_blank');
-        opened++;
-      }
-    });
-    return opened;
-  }
-
   function autoResizeTextarea(el) {
     el.style.height = 'auto';
     el.style.height = (el.scrollHeight) + 'px';
@@ -777,12 +702,8 @@
           localStorage.setItem(key, value);
       } catch (e) {
           if (e.name === 'QuotaExceededError' || e.code === 22 || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-              showToast('⚠️ 브라우저 저장 용량 초과 감지: 오래된 드래프트 기록을 정리합니다.', 'info');
               cleanUpOldestDrafts();
-              try { localStorage.setItem(key, value); }
-              catch(err) { console.error("Still exceeding quota after cleanup", err); }
-          } else {
-              console.error(e);
+              try { localStorage.setItem(key, value); } catch(err) {}
           }
       }
   }
@@ -810,10 +731,9 @@
               if (data.login && data.login !== GITHUB_USER) {
                   GITHUB_USER = data.login;
                   localStorage.setItem('github_user', GITHUB_USER);
-                  console.log("GitHub User auto-detected:", GITHUB_USER);
               }
           }
-      } catch(e) { console.warn("Failed to detect GitHub user", e); }
+      } catch(e) {}
   }
 
   function updateActiveRepoDisplay() {
@@ -832,22 +752,7 @@
     if (m) return 'v' + m[1];
     m = code.match(/Builder-a4u\s+v?(\d+\.\d+(?:\.\d+)?)/i);
     if (m) return 'v' + m[1];
-    m = code.match(/suda[^\n]{0,20}v?(\d+\.\d+(?:\.\d+)?)/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/<!--[^>]*?v?(\d+\.\d+(?:\.\d+)?)[^>]*?-->/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/(?:APP_)?VERSION\s*[:=]\s*["']v?(\d+\.\d+(?:\.\d+)?)["']/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/["']version["']\s*:\s*["']v?(\d+\.\d+(?:\.\d+)?)["']/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/<meta[^>]*name=["']version["'][^>]*content=["']v?(\d+\.\d+(?:\.\d+)?)["'][^>]*>/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/data-version=["']v?(\d+\.\d+(?:\.\d+)?)["']/i);
-    if (m) return 'v' + m[1];
     m = code.match(/v(\d+\.\d+(?:\.\d+)?)/);
-    if (m) return 'v' + m[1];
-    const head = code.slice(0, 4000);
-    m = head.match(/(\d+\.\d+\.\d+)/);
     if (m) return 'v' + m[1];
     return '버전 미상';
   }
@@ -871,7 +776,9 @@
       const a = document.createElement('a');
       a.href = url;
       a.download = customFileName.endsWith('.txt') || customFileName.endsWith('.html') ? customFileName : customFileName + '.txt';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      document.body.appendChild(a); 
+      a.click(); 
+      document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       return true;
     } catch (e) { return false; }
@@ -997,7 +904,7 @@
               });
               return updateRes.ok;
           }
-      } catch(e) { console.error('Drive Backup Error:', e); }
+      } catch(e) {}
       return false;
   }
 
@@ -1062,7 +969,6 @@
     if(isGoogleLoggedIn()) {
       saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: stringifyIdeasData(targetIdeas), images: JSON.parse(localStorage.getItem('repo_idea_images_' + targetRepo) || '[]') });
     }
-    
     if (currentRepo === targetRepo) loadRepoIdea();
     showToast(`🚀 [${targetRepo}] 레포로 이동 완료!`, 'ok');
   };
@@ -1119,7 +1025,7 @@
           showToast(`☁️ 구글 드라이브(백업 파일)에도 안전하게 동기화되었습니다!`, 'ok');
           log(`☁️ [${currentRepo}] 아이디어 드라이브 영구 백업 완료`, 'ok');
         }
-      } else { showToast('⚠️ 구글 로그인 시 드라이브에도 영구 저장(동기화)됩니다.', 'info'); }
+      }
     }
   };
   
@@ -1144,7 +1050,7 @@
   window.copyRepoIdea = async function() {
     const checked = currentRepoIdeas.filter(i => i.checked).map(i => '- ' + i.text).join('\n');
     if (!checked) return showToast('복사할 체크된 항목 내용이 없습니다.', 'err');
-    try { await navigator.clipboard.writeText(checked); showToast('📋 선택된 아이디어 복사 완료!', 'ok'); } catch (e) { showToast('복사 실패: ' + e.message, 'err'); }
+    try { await navigator.clipboard.writeText(checked); showToast('📋 선택된 아이디어 복사 완료!', 'ok'); } catch (e) {}
   };
   
   window.pasteIdeaImageFromClipboard = async function() {
@@ -1263,7 +1169,7 @@
   
     const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.8)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.9)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1299,47 +1205,39 @@ ${contextConstraint}`;
   
   window.copyFullContext = async function() {
     try { await navigator.clipboard.writeText(getActualContextText()); showToast('📋 텍스트 복사 완료!', 'ok'); } 
-    catch (e) { showToast('❌ 복사 실패: ' + e.message, 'err'); }
+    catch (e) {}
   };
 
-  // v8.1.7: 병합 이미지를 Blob으로 생성하는 헬퍼 (Safari ClipboardItem 호환)
-  async function createMergedImagesBlob() {
+  function createMergedImagesBlob() {
     if (!currentIdeaImages || currentIdeaImages.length === 0) return null;
-    const itemsToDraw = []; let totalHeight = 0; const CANVAS_WIDTH = 800; 
-  
-    for (let j = 0; j < currentIdeaImages.length; j++) {
-      const img = new Image(); img.src = currentIdeaImages[j];
-      await new Promise(resolve => { img.onload = resolve; img.onerror = resolve; });
-      const scale = Math.min(1, (CANVAS_WIDTH - 40) / (img.width || 400));
-      const drawWidth = (img.width || 400) * scale; const drawHeight = (img.height || 300) * scale;
-      itemsToDraw.push({ label: `[아이디어 사진 ${j + 1}]`, img: img, width: drawWidth, height: drawHeight });
-      totalHeight += drawHeight + 60; 
-    }
-  
-    const canvas = document.createElement('canvas'); canvas.width = CANVAS_WIDTH; canvas.height = totalHeight + 20;
-    const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
-    let currentY = 30;
-    itemsToDraw.forEach(item => {
-      ctx.fillStyle = '#111111'; ctx.font = 'bold 18px "Optimistic", sans-serif';
-      ctx.fillText(item.label, 20, currentY); currentY += 15;
-      const xPos = (CANVAS_WIDTH - item.width) / 2;
-      ctx.drawImage(item.img, xPos, currentY, item.width, item.height); currentY += item.height + 40;
-    });
-
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
+      const itemsToDraw = []; let totalHeight = 0; const CANVAS_WIDTH = 800; 
+      for (let j = 0; j < currentIdeaImages.length; j++) {
+        const img = new Image(); img.src = currentIdeaImages[j];
+        await new Promise(r => { img.onload = r; img.onerror = r; });
+        const scale = Math.min(1, (CANVAS_WIDTH - 40) / (img.width || 400));
+        const drawWidth = (img.width || 400) * scale; const drawHeight = (img.height || 300) * scale;
+        itemsToDraw.push({ label: `[아이디어 사진 ${j + 1}]`, img: img, width: drawWidth, height: drawHeight });
+        totalHeight += drawHeight + 60; 
+      }
+      const canvas = document.createElement('canvas'); canvas.width = CANVAS_WIDTH; canvas.height = totalHeight + 20;
+      const ctx = canvas.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      let currentY = 30;
+      itemsToDraw.forEach(item => {
+        ctx.fillStyle = '#111111'; ctx.font = 'bold 18px "Optimistic", sans-serif';
+        ctx.fillText(item.label, 20, currentY); currentY += 15;
+        const xPos = (CANVAS_WIDTH - item.width) / 2;
+        ctx.drawImage(item.img, xPos, currentY, item.width, item.height); currentY += item.height + 40;
+      });
       canvas.toBlob(blob => resolve(blob), 'image/png');
     });
   }
 
-  // v8.1.7: 역발상 원클릭 패키징 + 체크 누락 방지 + 타겟 AI 새 창 자동 오픈
   window.generateSmartPrompt = async function() {
-    const context = getActualContextText();
     let ideasArr = parseIdeasData(localStorage.getItem('repo_idea_' + currentRepo) || '');
     const nonEmptyIdeas = ideasArr.filter(i => i.text && i.text.trim().length > 0);
     let checkedIdeas = nonEmptyIdeas.filter(i => i.checked);
 
-    // 3번 안전장치: 작성된 아이디어는 있는데 체크된 게 하나도 없을 때
     if (nonEmptyIdeas.length > 0 && checkedIdeas.length === 0) {
       const includeAll = confirm(`💡 체크된 아이디어가 없습니다.\n작성된 아이디어 전체(${nonEmptyIdeas.length}개)를 모두 포함해서 보낼까요?`);
       if (includeAll) {
@@ -1350,6 +1248,7 @@ ${contextConstraint}`;
       }
     }
 
+    const context = getActualContextText();
     const idea = checkedIdeas.map(i => '- ' + i.text.trim()).join('\n');
     const isPatchMode = $('promptPatchMode')?.checked;
     
@@ -1367,34 +1266,57 @@ ${contextConstraint}`;
 
     try {
       if (hasImages) {
-        // [방식 1: 역발상 모드]
-        // 1) 클립보드에는 통합 이미지 복사 (Safari 호환을 위해 ClipboardItem에 Promise 전달)
         if (navigator.clipboard && window.ClipboardItem) {
-          const item = new ClipboardItem({ 'image/png': createMergedImagesBlob() });
-          await navigator.clipboard.write([item]);
+          const mergedBlob = await createMergedImagesBlob();
+          if (mergedBlob) {
+            const item = new ClipboardItem({ 'image/png': mergedBlob });
+            await navigator.clipboard.write([item]);
+          }
         }
-        // 2) 파일 다운로드: [프롬프트 + 전체 소스코드]를 합친 올인원 .txt 1개 다운로드
         const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
         const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
+        
+        // 1. 먼저 파일 다운로드 확실히 트리거
         downloadTextPayload(combinedPayload, combinedFileName);
 
-        // 3) 선택한 AI 새 창 오픈
-        const openedCount = openSelectedAITabs();
-        showToast(`📸 클립보드에 [통합 사진] 복사 & [통합 프롬프트+코드.txt] 다운로드 완료! (${openedCount}개 AI 오픈)`, 'ok');
-        log(`🚀 [역발상 패키지 출격] 클립보드=통합사진(${currentIdeaImages.length}장), 다운로드=${combinedFileName}`, 'ok');
+        // 2. 사파리에서 다운로드 창이 밀리지 않도록 0.4초 딜레이 후 AI 탭 오픈
+        setTimeout(() => {
+          const selected = getSelectedAITargets();
+          selected.forEach((id, index) => {
+            const target = AI_TARGETS.find(a => a.id === id);
+            if (target) {
+              setTimeout(() => {
+                window.open(target.url, '_blank');
+              }, index * 400);
+            }
+          });
+        }, 400);
+
+        showToast(`📸 클립보드 [통합 사진] 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
       } else {
-        // [사진 없을 때: 기본 고속 모드]
         await navigator.clipboard.writeText(promptText);
         const codeFileName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
+        
+        // 1. 먼저 코드 파일 다운로드 트리거
         downloadTextPayload(code, codeFileName);
 
-        const openedCount = openSelectedAITabs();
-        showToast(`📋 클립보드에 [프롬프트] 복사 & [코드.txt] 다운로드 완료! (${openedCount}개 AI 오픈)`, 'ok');
-        log(`🚀 [기본 패키지 출격] 클립보드=프롬프트 텍스트, 다운로드=${codeFileName}`, 'ok');
+        // 2. 0.4초 딜레이 후 AI 탭 순차 오픈
+        setTimeout(() => {
+          const selected = getSelectedAITargets();
+          selected.forEach((id, index) => {
+            const target = AI_TARGETS.find(a => a.id === id);
+            if (target) {
+              setTimeout(() => {
+                window.open(target.url, '_blank');
+              }, index * 400);
+            }
+          });
+        }, 400);
+
+        showToast(`📋 클립보드 복사 & [코드.txt] 다운로드 완료!`, 'ok');
       }
     } catch (e) {
-      showToast('❌ 패키징 중 일부 권한 오류: ' + e.message, 'err');
-      openSelectedAITabs();
+      showToast('❌ 패키징 중 오류: ' + e.message, 'err');
     }
   };
   
@@ -1403,13 +1325,14 @@ ${contextConstraint}`;
     showToast('🖼️ 이미지 병합 중...', 'info');
     try {
       if (navigator.clipboard && window.ClipboardItem) {
-        const item = new ClipboardItem({ 'image/png': createMergedImagesBlob() });
-        await navigator.clipboard.write([item]);
-        alert('🖼️ 첨부 사진 통합본이 복사되었습니다!\nAI 채팅창에 붙여넣기(Ctrl+V) 하세요.');
-      } else {
-        showToast('이 브라우저는 클립보드 이미지 복사를 지원하지 않습니다.', 'err');
+        const blob = await createMergedImagesBlob();
+        if (blob) {
+          const item = new ClipboardItem({ 'image/png': blob });
+          await navigator.clipboard.write([item]);
+          alert('🖼️ 첨부 사진 통합본이 복사되었습니다!\nAI 채팅창에 붙여넣기(Ctrl+V) 하세요.');
+        }
       }
-    } catch (error) { showToast('복사 실패: ' + error.message, 'err'); }
+    } catch (error) { showToast('복사 실패', 'err'); }
   };
   
   window.copyCurrentCode = async function() {
@@ -1417,7 +1340,7 @@ ${contextConstraint}`;
       const code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
       if (!code || code.trim() === '') return showToast('복사할 코드가 없습니다.', 'err');
       try { await navigator.clipboard.writeText(code); showToast('📋 클립보드 복사 완료!', 'ok'); } 
-      catch(e) { showToast('복사 실패', 'err'); }
+      catch(e) {}
   };
 
   function loadRepoDocuments() {
@@ -1484,15 +1407,6 @@ ${contextConstraint}`;
       if (!listEl) return;
       listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...</div>';
       activeDriveTab = tab;
-      
-      ['Recent', 'My', 'Shared'].forEach(t => {
-          const btn = $('driveTab' + t + 'Btn');
-          if(btn) {
-              if (t.toLowerCase() === tab) btn.classList.add('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
-              else btn.classList.remove('bg-white', 'dark:bg-gray-700', 'font-bold', 'border-black');
-          }
-      });
-
       try {
           let q = "trashed=false and mimeType='application/vnd.google-apps.document'";
           if (query) q += ` and name contains '${query}'`;
@@ -1502,15 +1416,12 @@ ${contextConstraint}`;
           const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&orderBy=modifiedTime desc&fields=files(id,name,modifiedTime)&pageSize=30`, {
               headers: { Authorization: "Bearer " + accessToken }
           });
-          
           if (!res.ok) throw new Error('API 오류');
           const data = await res.json();
-          
           if (!data.files || data.files.length === 0) {
               listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">결과가 없습니다.</div>';
               return;
           }
-
           let html = '';
           data.files.forEach(file => {
               const dateStr = new Date(file.modifiedTime).toLocaleDateString();
@@ -1527,7 +1438,7 @@ ${contextConstraint}`;
       } catch (e) {
           listEl.innerHTML = `<div style="text-align:center;padding:40px;color:red;opacity:0.8;">오류 발생: ${e.message}</div>`;
       }
-  }
+  };
 
   window.selectDriveFile = function(id, title) {
       const docInfo = { id, title };
@@ -1549,11 +1460,9 @@ ${contextConstraint}`;
               return showToast('이미 추가된 문서입니다.', 'info');
           }
       }
-      
       let ignored = JSON.parse(localStorage.getItem('ignored_docs_' + currentRepo) || '[]');
       ignored = ignored.filter(docId => docId !== id);
       localStorage.setItem('ignored_docs_' + currentRepo, JSON.stringify(ignored));
-      
       updateFullContextBox();
       $('driveModal').style.display = 'none';
       showToast('✅ 문서가 연결되었습니다!', 'ok');
@@ -1619,7 +1528,7 @@ ${contextConstraint}`;
         const code = await res.text();
         if (code) { safeSetLocalStorage(draftKey, code); if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent(); return code; }
       }
-    } catch (e) { log(`⚠️ 로컬 저장 모드`, 'info'); }
+    } catch (e) {}
     return currentDraft || '';
   }
   
@@ -1647,7 +1556,6 @@ ${contextConstraint}`;
         }
       }
     } catch(e) {}
-    
     if (newRepoSelect) {
         mainFile = 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
         if ($('mainFileInput')) $('mainFileInput').value = mainFile;
@@ -1666,9 +1574,7 @@ ${contextConstraint}`;
       try {
           await navigator.clipboard.writeText(url);
           showToast('🔗 배포된 라이브 주소가 복사되었습니다!', 'ok');
-      } catch (e) {
-          showToast('❌ 주소 복사 실패', 'err');
-      }
+      } catch (e) {}
   };
   
   async function findExistingDocByName(title) {
@@ -1712,7 +1618,6 @@ ${contextConstraint}`;
   
       data.files.forEach(file => {
         if (file.mimeType === 'application/json' && file.name === `[${currentRepo}]_idea_backup.json` && !ideaFileToRestore) ideaFileToRestore = file;
-        
         if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') restoreBackupJSON(file, 'repo_idea_기타');
         if (file.mimeType === 'application/json' && file.name === '[inbox]_idea_backup.json') restoreBackupJSON(file, 'idea_inbox_global', true);
 
@@ -1727,7 +1632,6 @@ ${contextConstraint}`;
           }
         }
       });
-  
       if (extraDocs && extraDocs.length > 0) localStorage.setItem('extra_docs_' + currentRepo, JSON.stringify(extraDocs));
       if (restoredCount > 0) { renderConnectedDoc1(); renderConnectedDoc2(); renderExtraDocs(); updateFullContextBox(); }
       if (ideaFileToRestore) {
@@ -1745,7 +1649,7 @@ ${contextConstraint}`;
           if (res.ok) {
               const data = await res.json();
               if (data && typeof data.text !== 'undefined') {
-                  safeSetLocalStorage(textKey, isArray ? data.text : data.text);
+                  safeSetLocalStorage(textKey, data.text);
                   if (imgKey && data.images) safeSetLocalStorage(imgKey, JSON.stringify(data.images));
                   if (textKey === 'idea_inbox_global') loadIdeaInbox();
                   if (textKey.startsWith('repo_idea_')) loadRepoIdea();
@@ -1761,7 +1665,6 @@ ${contextConstraint}`;
       await autoRestoreDocsFromDrive();
       const title1 = `[${currentRepo}] 업데이트 히스토리 기록`, title2 = `[${currentRepo}] 최신 소스코드 백업`;
       let createdCount = 0, restoredCount = 0;
-  
       if (!connectedDoc1) {
         const existing1 = await findExistingDocByName(title1);
         if (existing1) { connectedDoc1 = { id: existing1.id, title: existing1.name }; restoredCount++; } 
@@ -1785,46 +1688,32 @@ ${contextConstraint}`;
     localStorage.removeItem('google_token_expiry');
     updateGisStatus('🔓 토큰 초기화됨 - 재로그인 필요');
     if(!silent) { showToast('🗑️ 구글 토큰 초기화 완료! 다시 로그인해주세요.', 'info'); }
-    log('🗑️ 구글 토큰 꼬임 해제 - 초기화 완료 (다른 앱 세션 충돌 해결)', 'info');
   }
   window.clearGoogleToken = clearGoogleToken;
 
   function forceResetGoogleSession() {
     try {
-      const prevToken = accessToken || localStorage.getItem('google_access_token');
-      if (prevToken && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2 && google.accounts.oauth2.revoke) {
-        try { google.accounts.oauth2.revoke(prevToken, () => { log('🔓 기존 구글 권한 연결(Revoke) 해제 완료', 'info'); }); } catch(e) {}
-      }
       clearGoogleToken(true);
-      log('🔄 토큰 꼬임 자동 풀기 실행 - 타 앱 권한(youtube 등) 병합 차단 모드', 'info');
-      showToast('🔄 계정 선택창 여는 중... (타 앱 권한 분리 적용)', 'info');
+      showToast('🔄 계정 선택창 여는 중... 팝업 차단 해제해주세요', 'info');
       if (!tokenClient) {
         initGis();
         setTimeout(() => {
           if (tokenClient) {
-            try { tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); } catch(e) {
-              try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e2) {}
-            }
-          } else {
-            showToast('⚠️ GIS 로딩 중... 1초 뒤 버튼을 한 번 더 눌러주세요', 'err');
+            try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e) {}
           }
         }, 600);
         return;
       }
       try {
-        tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false });
+        tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false });
       } catch(e) {
-        try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e2) {
-          tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: false });
-        }
+        try { tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); } catch(e2) {}
       }
     } catch(err) {
       showToast('❌ 자동 풀기 실패: ' + err.message, 'err');
-      log('❌ 자동 풀기 실패: ' + err.message, 'err');
     }
   }
   window.forceResetGoogleSession = forceResetGoogleSession;
-  window.autoFixTokenEntanglement = forceResetGoogleSession;
 
   function initGis() {
     try {
@@ -1846,54 +1735,31 @@ ${contextConstraint}`;
             updateGisStatus('✅ Google 로그인 성공 (1시간 유지)');
             loadRepoDocuments();
             autoRestoreDocsFromDrive(true);
-            showToast('🟢 Google 로그인 완료! 1시간 동안 유지됩니다.', 'ok');
-            log('✅ Google 로그인 성공 - 타 앱 권한(youtube 등) 분리 완료', 'ok');
+            showToast('🟢 Google 로그인 완료!', 'ok');
           } else if (resp && resp.error) {
-            const errStr = (resp.error || '').toString().toLowerCase();
-            const isInvalid = errStr.includes('invalid_request') || errStr.includes('access_denied') || errStr.includes('unauthorized') || errStr.includes('popup_closed') || errStr.includes('unverified');
             accessToken = ''; tokenExpiry = 0;
             localStorage.removeItem('google_access_token');
             localStorage.removeItem('google_token_expiry');
-            if(errStr.includes('access_denied') || errStr.includes('unverified') || errStr.includes('not_verified')) {
-              updateGisStatus('🚫 승인 오류 - 내 Client ID 필요');
-              showToast('🚫 승인 오류: 기본 ID가 차단됨. 설정에서 내 Client ID 만들기를 권장', 'err');
-              log('🚫 승인 오류: 기본 Client ID가 Google 미검증 앱으로 차단됨. 내 Client ID 생성을 권장', 'err');
-            } else if(isInvalid) {
-              updateGisStatus('⚠️ 토큰 꼬임 감지 - 자동 풀기 버튼을 눌러주세요');
-              showToast('⚠️ 세션 충돌! [토큰 꼬임 자동 풀기] 버튼을 눌러주세요.', 'err');
-              log('❌ 토큰 꼬임 감지: ' + resp.error, 'err');
-            } else {
-              updateGisStatus('❌ 로그인 실패: ' + resp.error);
-              showToast('❌ 로그인 실패: ' + resp.error, 'err');
-            }
+            updateGisStatus('⚠️ 로그인 오류 - 토큰 꼬임 자동 풀기 사용');
           }
         },
-        error_callback: (err) => {
-          log('❌ GIS error_callback: ' + (err.type || err.message || JSON.stringify(err)), 'err');
-          if(err.type === 'popup_failed_to_open' || err.type === 'popup_closed') {
-            showToast('⚠️ 팝업 차단됨 - 사파리 팝업 허용 후 다시 시도', 'err');
-          }
-        }
+        error_callback: (err) => {}
       });
       if (isGoogleLoggedIn()) {
         updateGisStatus('✅ Google 로그인 세션 유지 중');
         autoRestoreDocsFromDrive(false);
       }
       else updateGisStatus('🔓 로그인 준비 완료');
-    } catch(e) { setTimeout(initGis, 2000); log('⚠️ GIS 초기화 재시도: ' + e.message, 'info'); }
+    } catch(e) { setTimeout(initGis, 2000); }
   }
   
   function handleGoogleLogin() {
-    if (!isGoogleLoggedIn() && accessToken) {
-      clearGoogleToken(true);
-    }
+    if (!isGoogleLoggedIn() && accessToken) clearGoogleToken(true);
     if (!tokenClient) { 
       initGis(); 
       setTimeout(() => { 
         if (tokenClient) {
-          try{ tokenClient.requestAccessToken({ prompt: '', hint: '', include_granted_scopes: false }); }catch(e){
-            try{ tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); }catch(e2){}
-          }
+          try{ tokenClient.requestAccessToken({ prompt: '', hint: '', include_granted_scopes: false }); }catch(e){}
         }
       }, 1000); 
       return; 
@@ -1901,13 +1767,7 @@ ${contextConstraint}`;
     try { 
       tokenClient.requestAccessToken({ prompt: '', hint: '', include_granted_scopes: false }); 
     } catch(e) {
-      try{
-        tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); 
-      } catch(e2) {
-        try{
-          tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false });
-        } catch(e3){}
-      }
+      try{ tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); } catch(e2) {}
     }
   }
   
@@ -1920,153 +1780,87 @@ ${contextConstraint}`;
       let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
       const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
       history.unshift(newEntry);
-      
       if (history.length > 8) history = history.slice(0, 8);
       safeSetLocalStorage(getDraftHistoryKey(), JSON.stringify(history));
-      
       const status = $('draftStatus'); if (status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
-    } catch(e) { log('드래프트 저장 실패', 'err'); }
+    } catch(e) {}
   }
   
   function showLivePreviewCurrent(customCode = null, customTitle = null) {
     const editor = $('codeEditor');
     let code = customCode !== null ? customCode : (editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey()));
     if (!code || code.trim() === '') return;
-    
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
-  
-    const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'") || code.includes('from "react"')));
-  
+    const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
     if (isReactJsx) {
       let compName = 'App';
       const defaultFnMatch = code.match(/export\s+default\s+function\s+([A-Za-z0-9_]+)/);
-      const defaultVarMatch = code.match(/export\s+default\s+([A-Za-z0-9_]+);/);
-      if (defaultFnMatch) compName = defaultFnMatch[1]; else if (defaultVarMatch) compName = defaultVarMatch[1];
-      let transformedCode = code.replace(/import\s+['"][^'"]+\.css['"];?/g, '// [css import skipped]');
-      const importsMap = {
-        "react": "https://esm.sh/react@18.2.0", "react-dom": "https://esm.sh/react-dom@18.2.0",
-        "react-dom/client": "https://esm.sh/react-dom@18.2.0/client", "react/jsx-runtime": "https://esm.sh/react@18.2.0/jsx-runtime"
-      };
-      const pkgRegex1 = /from\s+['"]([^'"\.\/][^'"]*)['"]/g; const pkgRegex2 = /import\s+['"]([^'"\.\/][^'"]*)['"]/g;
-      let match;
-      while ((match = pkgRegex1.exec(transformedCode)) !== null) if (!importsMap[match[1]] && !match[1].endsWith('.css')) importsMap[match[1]] = `https://esm.sh/${match[1]}?deps=react@18.2.0,react-dom@18.2.0`;
-      while ((match = pkgRegex2.exec(transformedCode)) !== null) if (!importsMap[match[1]] && !match[1].endsWith('.css')) importsMap[match[1]] = `https://esm.sh/${match[1]}?deps=react@18.2.0,react-dom@18.2.0`;
-  
-      frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><title>React Preview</title><script src="https://cdn.tailwindcss.com"><\/script><script type="importmap">{"imports": ${JSON.stringify(importsMap)}}<\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script><style>body { margin: 0; padding: 0; } #runtime-error-msg { display: none; background: #fee2e2; color: #991b1b; padding: 12px; font-size: 12px; }</style></head><body><div id="runtime-error-msg"></div><div id="root"></div><script>window.addEventListener('error', function(e) { const errBox = document.getElementById('runtime-error-msg'); if (errBox) { errBox.style.display = 'block'; errBox.textContent = '❌ 실행 오류: ' + (e.message || e); }});<\/script><script type="text/babel" data-type="module">import React from 'react'; import ReactDOM from 'react-dom/client'; ${transformedCode} try { const rootEl = document.getElementById('root'); if (rootEl && typeof ${compName} !== 'undefined') { const root = ReactDOM.createRoot(rootEl); root.render(React.createElement(${compName})); } } catch (err) { const errBox = document.getElementById('runtime-error-msg'); if (errBox) { errBox.style.display = 'block'; errBox.textContent = '❌ 렌더링 실패: ' + err.message; } }<\/script></body></html>`;
-    } else if (file.endsWith('.js')) {
-      frame.srcdoc = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body><div id="app"></div><script>${code}<\/script></body></html>`;
+      if (defaultFnMatch) compName = defaultFnMatch[1];
+      frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body><div id="root"></div><script type="text/babel" data-type="module">${code}<\/script></body></html>`;
     } else {
       frame.srcdoc = code;
     }
-  
     box.classList.add('active');
     const titleObj = $('previewTitle');
-    const displayTitle = customTitle ? customTitle : `👁️ 실시간 미리보기 화면 (${file})`;
-    if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${displayTitle}`;
+    if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 실시간 미리보기 화면 (${file})`}`;
   }
   
   function hideLivePreviewBox() { const box = $('livePreviewBox'); if (box) box.classList.remove('active'); }
   
   window.capturePreviewScreen = async function() {
     const frame = $('livePreviewFrame');
-    if (!frame || !frame.contentDocument || !frame.contentDocument.body) return showToast('미리보기 화면이 준비되지 않았습니다.', 'err');
+    if (!frame || !frame.contentDocument || !frame.contentDocument.body) return showToast('미리보기 준비 안됨', 'err');
     try {
-      const doc = frame.contentDocument;
-      const canvas = await html2canvas(doc.body, { useCORS: true, allowTaint: true, scale: 2, backgroundColor: '#ffffff' });
+      const canvas = await html2canvas(frame.contentDocument.body, { useCORS: true, allowTaint: true, scale: 2, backgroundColor: '#ffffff' });
       canvas.toBlob(async (blob) => {
         if (blob && navigator.clipboard && window.ClipboardItem) {
           await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-          showToast('📸 화면 캡처 클립보드 복사 완료!', 'ok');
+          showToast('📸 캡처 복사 완료!', 'ok');
         }
       }, 'image/png');
-    } catch(e) { showToast('캡처 오류', 'err'); }
+    } catch(e) {}
   };
   
   async function pushToGitHubRepository() {
     const pat = getGitHubPat();
-    if (!pat || pat.length < 10) { log('❌ GitHub PAT가 설정되지 않았습니다.', 'err'); return showToast('GitHub PAT가 설정되지 않았습니다.', 'err'); }
-    
-    log(`🚀 [빌드 시작] ${currentRepo} 리포지토리 푸시를 준비합니다...`, 'info');
-    
+    if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
+    log(`🚀 [빌드 시작] ${currentRepo} 리포지토리 푸시 준비...`, 'info');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const editor = $('codeEditor'); const version = getTargetAppVersion();
     let userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
-    
-    let commitPrefix = version && version !== '버전 미상' ? `[${version}] ` : '';
-    let finalCommitMsg = userNote;
-    if (version && version !== '버전 미상' && !finalCommitMsg.includes(version)) finalCommitMsg = commitPrefix + finalCommitMsg;
-  
     let codeToPush = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
-    if (!codeToPush || codeToPush.trim() === '') codeToPush = await syncLatestSourceFromGithub();
+    if (!codeToPush) codeToPush = await syncLatestSourceFromGithub();
     
     let base64Content = '';
-    try { 
-        base64Content = window.btoa(unescape(encodeURIComponent(codeToPush)));
-    } catch(e) {
+    try { base64Content = window.btoa(unescape(encodeURIComponent(codeToPush))); } catch(e) {
       const bytes = new TextEncoder().encode(codeToPush); let binary = '';
       for (let i = 0; i < bytes.byteLength; i += 1024) binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 1024, bytes.byteLength)));
       base64Content = window.btoa(binary);
     }
-  
     const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
     let commitSha = null;
     try {
       let fileSha = null;
-      log(`🔍 1/3 GitHub에서 기존 파일(${targetFile}) 상태를 확인합니다...`, 'info');
       const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
-      if (getRes.ok) {
-          fileSha = (await getRes.json()).sha;
-          log(`  └ 기존 파일 감지 완료 (SHA: ${fileSha.slice(0,7)})`, 'info');
-      } else {
-          log(`  └ 기존 파일이 없습니다. 새 파일로 생성합니다.`, 'info');
-      }
-      
-      const payload = { message: `${finalCommitMsg} (${new Date().toLocaleString()})`, content: base64Content };
+      if (getRes.ok) fileSha = (await getRes.json()).sha;
+      const payload = { message: `${userNote} (${new Date().toLocaleString()})`, content: base64Content };
       if (fileSha) payload.sha = fileSha;
-      
-      log(`📤 2/3 GitHub로 코드를 푸시합니다...`, 'info');
       const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
       if (!putRes.ok) throw new Error(`HTTP ${putRes.status}`);
       commitSha = (await putRes.json()).commit?.sha?.slice(0, 7) || '완료';
-      log(`✅ GitHub 푸시 성공! (Commit: #${commitSha})`, 'ok');
-    } catch(e) { 
-        log(`❌ GitHub 푸시 실패: ${e.message}`, 'err');
-        return showToast('푸시 실패: ' + e.message, 'err'); 
-    }
-  
-    log(`☁️ 3/3 구글 문서 이중 백업을 진행합니다...`, 'info');
-    let doc1Success = true, doc2Success = true;
-    try {
-      if (connectedDoc1 && connectedDoc1.id) {
-        log(`  └ 메인1(히스토리) 기록 중...`, 'info');
-        const logText = `==================================================\n📌 [${currentRepo} 빌드 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n📁 파일: ${targetFile}\n📝 업데이트 내용:\n${userNote}\n==================================================\n`;
-        doc1Success = await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
-        log(doc1Success ? `  ✅ 메인1(히스토리) 백업 완료` : `  ⚠️ 메인1 백업 실패`, doc1Success ? 'ok' : 'err');
-      } else {
-        log(`  💡 연결된 히스토리 문서가 없습니다. (패스)`, 'info');
-      }
-      if (connectedDoc2 && connectedDoc2.id) {
-        log(`  └ 메인2(최신 소스) 덮어쓰기 중...`, 'info');
-        const srcText = `[${currentRepo} 소스 백업]\n⏰ ${new Date().toLocaleString()} (#${commitSha})\n\n${codeToPush}`;
-        doc2Success = await writeOrAppendToGoogleDoc(connectedDoc2.id, srcText, 'overwrite');
-        log(doc2Success ? `  ✅ 메인2(최신 소스) 백업 완료` : `  ⚠️ 메인2 백업 실패`, doc2Success ? 'ok' : 'err');
-      } else {
-        log(`  💡 연결된 소스코드 문서가 없습니다. (패스)`, 'info');
-      }
-    } catch(docErr) {
-        log(`❌ 문서 백업 중 에러 발생: ${docErr.message}`, 'err');
-    }
+      log(`✅ GitHub 푸시 성공! (#${commitSha})`, 'ok');
+    } catch(e) { return showToast('푸시 실패: ' + e.message, 'err'); }
     
-    if ((connectedDoc1 && !doc1Success) || (connectedDoc2 && !doc2Success)) {
-        showToast('⚠️ Github 푸시는 완료, 구글 문서 백업 일부 실패', 'err');
-        log(`🏁 빌드 완료 (경고 포함)`, 'info');
-    } else { 
-        showToast(`🚀 Github 푸시 및 이중 백업 완료! (#${commitSha})`, 'ok');
-        log(`🏁 [최종 완료] 빌드 및 모든 백업이 성공적으로 끝났습니다.`, 'ok');
+    if (connectedDoc1 && connectedDoc1.id) {
+      const logText = `[${currentRepo} 빌드] ⏰ ${new Date().toLocaleString()} (#${commitSha})\n내용: ${userNote}\n\n`;
+      await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
     }
-    return true;
+    if (connectedDoc2 && connectedDoc2.id) {
+      await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
+    }
+    showToast(`🚀 빌드 및 백업 완료!`, 'ok');
   }
   
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
@@ -2078,7 +1872,6 @@ ${contextConstraint}`;
       const docData = await getRes.json();
       const content = docData.body?.content || [];
       const endIndex = content.length > 0 ? content[content.length - 1].endIndex : 2;
-      
       const requests = [];
       if (mode === 'overwrite') {
         if (endIndex > 2) requests.push({ deleteContentRange: { range: { startIndex: 1, endIndex: endIndex - 1 } } });
@@ -2096,7 +1889,7 @@ ${contextConstraint}`;
   async function loadGitHubCommitHistory() {
     const box = $('versionHistoryBox'); if (!box) return;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">🐙 [${currentRepo}] 커밋 기록 로드 중...</div>`;
+    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">로드 중...</div>`;
     const pat = getGitHubPat(); const headers = { 'Accept': 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
     try {
@@ -2106,25 +1899,14 @@ ${contextConstraint}`;
       let html = '';
       commits.forEach((c) => {
         const sha = c.sha, shortSha = sha.slice(0, 7);
-        const msg = c.commit?.message?.split('\n')[0] || 'Commit ' + shortSha;
-        const dateStr = c.commit?.committer?.date ? new Date(c.commit.committer.date).toLocaleString() : '';
-        const verMatch = msg.match(/v\d+\.\d+\.\d+/);
-        let versionBadge = verMatch ? `<span class="badge text-[8.5px] py-0.5 px-1.5 shrink-0 rounded-[4px]" style="background:#dbeafe;color:#1e40af">${verMatch[0]}</span>` : '';
-  
+        const msg = c.commit?.message?.split('\n')[0] || '';
         html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-          <div class="flex flex-col min-w-0 flex-1 pr-1">
-            <div class="flex items-center gap-1.5 flex-wrap mb-1"><span class="badge text-[8.5px] py-0.5 px-1.5 shrink-0 rounded-[4px]" style="background:#f1f5f9;color:#0f172a">#${shortSha}</span>${versionBadge}<span class="font-bold text-[11px] break-words leading-tight">${msg}</span></div>
-            <span class="text-[8.5px] opacity-60">${dateStr}</span>
-          </div>
-          <div class="flex gap-1 shrink-0 mt-1 sm:mt-0 justify-end">
-            <button onclick="previewGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">👁️ 미리보기</button>
-            <button onclick="rollbackGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button>
-          </div>
+          <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px] truncate">${msg}</span></div>
+          <div class="flex gap-1 shrink-0"><button onclick="previewGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">👁️ 보기</button><button onclick="rollbackGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button></div>
         </div>`;
       });
       box.innerHTML = html;
-      log(`🐙 GitHub 커밋 기록 불러오기 완료`, 'info');
-    } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류: ${e.message}</div>`; }
+    } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류</div>`; }
   }
   
   async function fetchGitHubCommitContent(sha) {
@@ -2140,15 +1922,14 @@ ${contextConstraint}`;
   }
   
   window.previewGitHubCommit = async function(sha, shortSha) {
-    try { showLivePreviewCurrent(await fetchGitHubCommitContent(sha), `👁️ 과거 커밋 미리보기 (#${shortSha})`); } catch(e) {}
+    try { showLivePreviewCurrent(await fetchGitHubCommitContent(sha), `👁️ 미리보기 (#${shortSha})`); } catch(e) {}
   };
   window.rollbackGitHubCommit = async function(sha, shortSha) {
     try {
       const code = await fetchGitHubCommitContent(sha); safeSetLocalStorage(getDraftCodeKey(), code);
       if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent();
-      showToast(`↺ #${shortSha} 코드가 복원됨!`, 'ok');
-      log(`↺ GitHub 커밋 #${shortSha} 복원 완료`, 'ok');
-    } catch(e) { showToast('롤백 실패', 'err'); }
+      showToast(`↺ #${shortSha} 복원됨`, 'ok');
+    } catch(e) {}
   };
   
   function loadDraftHistory() {
@@ -2158,75 +1939,43 @@ ${contextConstraint}`;
     let html = '';
     history.forEach((item) => {
       html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-        <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px] break-words leading-tight">${item.note || '드래프트'}</span><span class="text-[8.5px] opacity-60 mt-0.5">${item.time}</span></div>
-        <div class="flex gap-1 shrink-0 mt-1 sm:mt-0 justify-end">
-          <button onclick="previewDraftVersion(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">👁️ 미리보기</button>
-          <button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#fef3c7;color:#92400e;border-color:#fde68a">↺ 롤백</button>
-        </div></div>`;
+        <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px]">${item.note}</span><span class="text-[8.5px] opacity-60">${item.time}</span></div>
+        <div class="flex gap-1 shrink-0"><button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button></div></div>`;
     });
     box.innerHTML = html;
   }
   
-  window.previewDraftVersion = function(id) {
-    const item = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]').find(h => h.id === id);
-    if (item && item.code) showLivePreviewCurrent(item.code, `👁️ 과거 드래프트 미리보기 (${item.time})`);
-  };
   window.rollbackToVersionHistory = function(id) {
     const item = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]').find(h => h.id === id);
     if (!item) return;
     safeSetLocalStorage(getDraftCodeKey(), item.code);
     if ($('codeEditor')) $('codeEditor').value = item.code;
     showLivePreviewCurrent();
-    showToast(`↺ 드래프트 코드가 복원되었습니다!`, 'ok');
-    log(`↺ 드래프트 (${item.time}) 복원 완료`, 'info');
+    showToast(`↺ 복원 완료`, 'ok');
   };
 
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null) {
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
+      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
+      const MODEL_CANDIDATES = [savedModel, 'gemini-3.8-flash', 'gemini-4-argon', 'gemini-3.5-flash', 'gemini-2.5-flash'].filter((v,i,a)=>a.indexOf(v)===i);
       
-      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      const MODEL_CANDIDATES = [savedModel, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-4-argon', 'gemini-3.8-flash', 'gemini-3.5-flash', 'gemini-2.5-flash-lite'].filter((v,i,a)=>a.indexOf(v)===i);
-      
-      async function fetchWithRetry(url, options, retries = 2) {
-          for (let i = 0; i < retries; i++) {
-              if (abortSignal && abortSignal.aborted) throw new Error('사용자에 의해 작동이 중지되었습니다.');
-              const res = await fetch(url, { ...options, signal: abortSignal });
-              if (res.ok) return res;
-              const errData = await res.json().catch(()=>({}));
-              const msg = errData.error?.message || '';
-              if (msg.includes('high demand') || msg.includes('overloaded') || res.status === 429 || res.status === 503) {
-                  const wait = Math.pow(2, i) * 1000 + Math.random()*500;
-                  showToast(`⏳ AI 서버 혼잡... ${i+1}차 재시도 중`, 'info');
-                  await new Promise(r => setTimeout(r, wait));
-                  continue;
-              }
-              throw new Error(`API 실패: ${msg || `HTTP ${res.status}`}`);
-          }
-          throw new Error('This model is currently experiencing high demand. Please try again later.');
-      }
-
       let res = null, lastError = null;
       for (const model of MODEL_CANDIDATES) {
-          if (abortSignal && abortSignal.aborted) throw new Error('사용자에 의해 작동이 중지되었습니다.');
+          if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
           try {
               const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
-              res = await fetchWithRetry(url, {
+              res = await fetch(url, {
                   method: 'POST', headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature } })
-              }, 2);
+                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature } }),
+                  signal: abortSignal
+              });
               if (res && res.ok) break;
-          } catch(e) {
-              if (e.name === 'AbortError' || e.message.includes('중지되었습니다')) throw new Error('사용자에 의해 작동이 중지되었습니다.');
-              lastError = e; console.warn(`[API] ${model} fallback:`, e.message);
-          }
+          } catch(e) { lastError = e; }
       }
-      
-      if (!res || !res.ok) throw lastError || new Error('모든 모델 후보 실패');
-      
+      if (!res || !res.ok) throw lastError || new Error('API 호출 실패');
       const data = await res.json();
       let textRes = data.candidates[0].content.parts[0].text;
-      
       if (parseJSON) {
           textRes = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
           return JSON.parse(textRes);
@@ -2251,11 +2000,10 @@ ${contextConstraint}`;
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
-      const inboxSel = document.getElementById('inboxProjectSelect');
+      const inboxSel = $('inboxProjectSelect');
       const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
-      
       let text = textData || $('inboxTextInput')?.value?.trim();
-      if (!text && !pendingInboxPhoto) return showToast('내용이나 사진을 입력해주세요.', 'info');
+      if (!text && !pendingInboxPhoto) return showToast('내용을 입력해주세요.', 'info');
       let finalSource = type;
       if (type === 'text' && pendingInboxPhoto) finalSource = 'photo';
 
@@ -2264,81 +2012,46 @@ ${contextConstraint}`;
           ideaInbox.unshift(newIdea);
           safeSetLocalStorage('idea_inbox_global', JSON.stringify(ideaInbox));
           if (isGoogleLoggedIn()) await saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
-          
           renderIdeaInbox();
-          showToast('📥 인박스에 킵! (미분류)', 'ok');
+          showToast('📥 인박스 저장 완료', 'ok');
       } else {
           let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
           const key = 'repo_idea_' + targetRepo, imgKey = 'repo_idea_images_' + targetRepo;
-          
           const existingArr = parseIdeasData(localStorage.getItem(key) || '');
           if (finalText) existingArr.push({ id: Date.now(), text: finalText, checked: false });
           const updatedText = stringifyIdeasData(existingArr);
           safeSetLocalStorage(key, updatedText);
-          
           let imgs = [];
           try { imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs = []; } catch(e){ imgs = []; }
-          if(pendingInboxPhoto) {
-              imgs.push(pendingInboxPhoto);
-              safeSetLocalStorage(imgKey, JSON.stringify(imgs));
-          }
-          
-          if (isGoogleLoggedIn()) {
-              saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs }).then(ok => {
-                  if (ok) log(`☁️ [${targetRepo}] 막던지기 아이디어 구글 드라이브 백업 완료`, 'ok');
-              });
-          }
-          
-          showToast(`✅ [${targetRepo}] 로 바로 전송 및 드라이브 백업됨!`, 'ok');
+          if(pendingInboxPhoto) { imgs.push(pendingInboxPhoto); safeSetLocalStorage(imgKey, JSON.stringify(imgs)); }
+          if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs });
+          showToast(`✅ [${targetRepo}] 전송 완료!`, 'ok');
           if (currentRepo === targetRepo) loadRepoIdea();
       }
-
       if($('inboxTextInput')) $('inboxTextInput').value = '';
       removePendingInboxPhoto();
   };
 
   window.reloadInboxProjectsAndIdeas = async function() {
-      showToast('🔄 프로젝트 목록 및 구글 드라이브 아이디어를 리로드합니다...', 'info');
+      showToast('🔄 리로드 중...', 'info');
       await loadRepos();
-      if (typeof syncInboxProjectSelect === 'function') syncInboxProjectSelect();
-      if (isGoogleLoggedIn()) {
-          await autoRestoreDocsFromDrive(true);
-          const selRepo = $('inboxProjectSelect')?.value;
-          if (selRepo) {
-              try {
-                  const q = `trashed=false and mimeType='application/json' and name='[${selRepo}]_idea_backup.json'`;
-                  const res = await fetch(`https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(q)}&fields=files(id,name)&pageSize=1`, { headers: { Authorization: "Bearer " + accessToken }, cache: 'no-cache' });
-                  if (res.ok) {
-                      const data = await res.json();
-                      if (data.files && data.files[0]) {
-                          await restoreBackupJSON(data.files[0], 'repo_idea_' + selRepo, false, 'repo_idea_images_' + selRepo);
-                      }
-                  }
-              } catch(e) {}
-          }
-          loadIdeaInbox();
-          loadRepoIdea();
-          showToast('✅ 프로젝트 목록 및 드라이브 백업 리로드 완료!', 'ok');
-      } else {
-          loadIdeaInbox();
-          loadRepoIdea();
-          showToast('✅ 로컬 프로젝트 목록 리로드 완료! (드라이브 연동은 로그인 필요)', 'ok');
-      }
+      if (isGoogleLoggedIn()) await autoRestoreDocsFromDrive(true);
+      loadIdeaInbox(); loadRepoIdea();
+      showToast('✅ 리로드 완료!', 'ok');
   };
 
   function renderIdeaInbox() {
     const list = $('ideaInboxList'); const count = $('inboxCount');
     if(!list || !count) return;
     count.textContent = ideaInbox.length;
-    if(ideaInbox.length === 0) return list.innerHTML = '<div class="text-[11px] text-gray-400 text-center py-4">아이디어가 없습니다. 2초 만에 던져보세요!</div>';
-    
+    if(ideaInbox.length === 0) return list.innerHTML = '<div class="text-[11px] text-gray-400 text-center py-4">아이디어가 없습니다.</div>';
     list.innerHTML = ideaInbox.map((idea, idx) => {
       const icon = idea.source === 'voice' ? '🎙️' : (idea.source === 'photo' ? '📸' : '✍️');
-      const imgHtml = idea.photo ? `<img src="${idea.photo}" class="mt-2 h-[60px] w-auto rounded-md border border-gray-200 dark:border-gray-600 shadow-sm object-cover">` : '';
+      const imgHtml = idea.photo ? `<img src="${idea.photo}" class="mt-2 h-[60px] w-auto rounded-md border object-cover">` : '';
       return `<div class="p-3 border rounded-xl bg-white dark:bg-gray-800 shadow-sm relative">
           <button onclick="deleteInboxIdea(${idx})" class="absolute top-2 right-2 text-gray-300 hover:text-red-500 font-bold">✕</button>
-          <div class="flex items-start gap-2 pr-6"><span class="text-[14px] mt-0.5">${icon}</span>
-            <div class="flex-1 min-w-0"><p class="text-[12.5px] font-bold text-gray-800 dark:text-gray-200 break-words leading-snug">${idea.text || '<span class="text-gray-400 italic">(텍스트 없음)</span>'}</p>${imgHtml}<span class="text-[9px] text-gray-400 mt-1.5 block">${idea.createdAt}</span></div>
+          <div class="flex items-start gap-2 pr-6"><span class="text-[14px]">${icon}</span>
+            <div class="flex-1 min-w-0"><p class="text-[12.5px] font-bold">${idea.text || '(내용 없음)'}</p>${imgHtml}<span class="text-[9px] text-gray-400 mt-1 block">${idea.createdAt}</span></div>
           </div>
         </div>`;
     }).join('');
@@ -2349,244 +2062,72 @@ ${contextConstraint}`;
     if(isGoogleLoggedIn()) saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
   };
 
-  window.pasteInboxTextFromClipboard = async function() {
-      try {
-          if (!navigator.clipboard || !navigator.clipboard.readText) return showToast('텍스트 붙여넣기를 지원하지 않습니다 (Ctrl+V 권장).', 'info');
-          const text = await navigator.clipboard.readText();
-          if (text && text.trim()) {
-              const input = $('inboxTextInput');
-              if (input) {
-                  input.value = input.value ? input.value + '\n' + text : text;
-                  showToast('📝 텍스트가 붙여넣기 되었습니다!', 'ok');
-                  input.focus();
-              }
-          } else {
-              showToast('클립보드에 텍스트가 없습니다.', 'err');
-          }
-      } catch (e) { showToast('클립보드 권한 오류 (Ctrl+V 권장)', 'err'); }
-  };
-
-  window.pasteInboxImageFromClipboard = async function() {
-      try {
-          if (!navigator.clipboard || !navigator.clipboard.read) return showToast('Ctrl+V를 사용하여 이미지를 붙여넣어 주세요.', 'info');
-          const items = await navigator.clipboard.read();
-          let hasImage = false;
-          for (const item of items) {
-              for (const type of item.types) {
-                  if (type.startsWith('image/')) {
-                      const blob = await item.getType(type);
-                      const b64 = await processImageFileToBase64(blob);
-                      setPendingInboxPhoto(b64);
-                      hasImage = true;
-                      break;
-                  }
-              }
-              if (hasImage) break;
-          }
-          if (hasImage) { showToast('📸 클립보드에서 인박스로 사진이 추가되었습니다!', 'ok'); } 
-          else { showToast('복사된 이미지가 없습니다.', 'err'); }
-      } catch (e) { showToast('클립보드 권한 오류 (Ctrl+V 권장)', 'err'); }
-  };
-
-  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognition = new SpeechRec(); recognition.lang = 'ko-KR'; recognition.interimResults = false;
-    recognition.onresult = function(event) { saveIdeaInbox('voice', event.results[0][0].transcript); resetVoiceBtn(); };
-    recognition.onerror = function() { resetVoiceBtn(); showToast('음성 감지 실패. 텍스트를 이용해주세요.', 'err'); };
-    recognition.onend = function() { resetVoiceBtn(); };
-  }
-  function resetVoiceBtn() {
-    isRecording = false; const btn = $('voiceRecordBtn');
-    if(btn) { btn.innerHTML = '<span class="text-[28px] mb-0.5">🎙️</span><span class="font-bold text-[12px] leading-tight">크게 말하기</span><span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span><span id="voiceRecStatus" class="text-[9px] mt-1 hidden">● 녹음중...</span>'; btn.style.background = '#ef4444'; btn.classList.remove('animate-pulse'); }
-  }
-
-  window.runClassificationAgent = async function() {
-    if(ideaInbox.length === 0) return showToast('분류할 아이디어가 없습니다.', 'err');
-    $('agentResultArea').classList.remove('hidden');
-    $('agentResultList').innerHTML = '<div class="text-[12px] text-blue-500 font-bold animate-pulse py-6 text-center">🤖 Gemini AI가 프로젝트별로 이관하는 중...<br><span class="text-[9.5px] opacity-70 mt-1 block">(약 5~10초 소요)</span></div>';
-    
-    const repoOptions = Array.from($('repoSelect').options).map(o => o.value);
-    const prompt = `너는 아이디어 분류 에이전트야. 사용자가 막 던진 아이디어들을 적절한 앱에 매핑하고, 비슷한 주제는 묶어줘.
-사용자 앱 목록: [${repoOptions.join(', ')}, "기타"]
-던져진 아이디어: ${JSON.stringify(ideaInbox.map(i => ({ id: i.id, text: i.text || '(사진만 첨부됨)' })))}
-출력은 마크다운 백틱 없는 순수 JSON 배열만 반환.
-[{ "app": "앱이름", "summary": "15자요약", "ids": [id1, id2], "mergedText": "병합된 1~2문장" }]`;
-
-    try {
-      const classified = await callGeminiAPI(prompt, 0.1);
-      let resultHtml = '';
-      
-      classified.forEach(group => {
-         let targetRepo = repoOptions.includes(group.app) ? group.app : '기타';
-         let statusMsg = '';
-         
-         const imagesToMove = [];
-         group.ids.forEach(id => { const item = ideaInbox.find(i => i.id === id); if(item && item.photo) imagesToMove.push(item.photo); });
-         
-         if(targetRepo !== '기타') {
-            const existingIdeas = parseIdeasData(localStorage.getItem('repo_idea_' + targetRepo) || '');
-            existingIdeas.push({ id: Date.now()+Math.random(), text: group.mergedText, checked: false });
-            
-            let existingImages = []; try { existingImages = JSON.parse(localStorage.getItem('repo_idea_images_' + targetRepo)); } catch(e){}
-            if(!Array.isArray(existingImages)) existingImages = [];
-            existingImages.push(...imagesToMove);
-            
-            const mergedRepoText = stringifyIdeasData(existingIdeas);
-            safeSetLocalStorage('repo_idea_' + targetRepo, mergedRepoText);
-            safeSetLocalStorage('repo_idea_images_' + targetRepo, JSON.stringify(existingImages));
-            if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: mergedRepoText, images: existingImages });
-            statusMsg = '<span class="text-emerald-600 font-bold">✅ 기존 앱으로 이관 및 드라이브 백업됨</span>';
-         } else {
-            const existingOtherIdeas = parseIdeasData(localStorage.getItem('repo_idea_기타') || '');
-            existingOtherIdeas.push({ id: Date.now()+Math.random(), text: group.mergedText, checked: false });
-            
-            const mergedOtherText = stringifyIdeasData(existingOtherIdeas);
-            safeSetLocalStorage('repo_idea_기타', mergedOtherText);
-            statusMsg = '<span class="text-purple-600 font-bold">🌟 기타/신규 보관소로 이동</span>';
-            if (isGoogleLoggedIn()) saveDataToDrive('[기타]_idea_backup.json', { text: mergedOtherText, images: [] });
-         }
-         
-         ideaInbox = ideaInbox.filter(item => !group.ids.includes(item.id));
-         
-         resultHtml += `<div class="p-3 border rounded-xl bg-gray-50 border-gray-200">
-            <div class="flex justify-between items-center mb-1.5"><span class="badge bg-blue-100 text-blue-800 text-[10px] border-blue-200">📂 ${targetRepo}</span><span class="text-[10px] font-bold text-gray-500">${group.ids.length}개 묶음</span></div>
-            <h3 class="font-bold text-[13px] text-gray-900 mb-1">${group.summary}</h3><p class="text-[11px] text-gray-700 leading-tight">${group.mergedText}</p><p class="text-[10px] mt-2">${statusMsg}</p>
-           </div>`;
-      });
-      
-      safeSetLocalStorage('idea_inbox_global', JSON.stringify(ideaInbox));
-      if (isGoogleLoggedIn()) saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
-      
-      renderIdeaInbox(); loadRepoIdea(); updateFullContextBox();
-      $('agentResultList').innerHTML = resultHtml;
-      showToast('🤖 AI 분류 완료!', 'ok');
-    } catch(err) { $('agentResultList').innerHTML = `<div class="text-[11px] text-red-500 p-3 bg-red-50 rounded-lg">❌ 오류: ${err.message}</div>`; }
-  };
-  
   window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
     const pat = getGitHubPat(); if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
     const targetPwaRepo = presetRepoName || currentRepo;
-    if (!presetRepoName && !confirm(`[${targetPwaRepo}] 프로젝트에 PWA 파일 자동 세팅하시겠습니까?`)) return;
-
-    showToast(`✨ [${targetPwaRepo}] PWA 세팅 중...`, 'info');
-    log(`✨ [${targetPwaRepo}] PWA 파일 자동 세팅 진행`, 'info');
-    
+    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?`)) return;
+    showToast(`✨ PWA 세팅 중...`, 'info');
     const pwaName = targetPwaRepo, shortName = targetPwaRepo.substring(0, 10);
-    const themeColor = presetIconOptions?.color || '#10b981', centerEmoji = presetIconOptions?.emoji || targetPwaRepo.charAt(0).toUpperCase();
-    
+    const themeColor = presetIconOptions?.color || '#10b981', centerEmoji = presetIconOptions?.emoji || '✨';
     const createIconBase64 = (size) => {
         const cvs = document.createElement('canvas'); cvs.width = size; cvs.height = size;
         const ctx = cvs.getContext('2d'); ctx.fillStyle = themeColor; ctx.fillRect(0, 0, size, size);
         ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        if (presetIconOptions) { ctx.font = `${size * 0.6}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`; ctx.fillText(centerEmoji, size/2, size/2 + (size*0.05)); } 
-        else { ctx.font = `bold ${size/2}px sans-serif`; ctx.fillText(centerEmoji, size/2, size/2); }
+        ctx.font = `bold ${size/2}px sans-serif`; ctx.fillText(centerEmoji, size/2, size/2);
         return cvs.toDataURL('image/png').split(',')[1];
     };
-
-    const pushFile = async (path, content, isBase64 = false, msg = 'PWA') => {
+    const pushFile = async (path, content, isBase64 = false) => {
         let encodedContent = isBase64 ? content : btoa(unescape(encodeURIComponent(content)));
         const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
         let sha = null;
         try { const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers }); if (res.ok) sha = (await res.json()).sha; } catch(e) {}
-        const payload = { message: msg, content: encodedContent }; if (sha) payload.sha = sha;
-        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
-        if (!putRes.ok) throw new Error(`${path} 푸시 실패`);
+        const payload = { message: 'PWA', content: encodedContent }; if (sha) payload.sha = sha;
+        await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
     };
-
     try {
         await pushFile('icon-192.png', createIconBase64(192), true); await pushFile('icon-512.png', createIconBase64(512), true);
         const manifest = { name: pwaName, short_name: shortName, start_url: "./index.html", display: "standalone", background_color: "#ffffff", theme_color: themeColor, icons: [{ src: "./icon-192.png", sizes: "192x192", type: "image/png" }, { src: "./icon-512.png", sizes: "512x512", type: "image/png" }] };
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
-        await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('activate', e => e.waitUntil(clients.claim())); self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`, false);
-        
+        await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html>\n<html lang="ko">\n<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>${pwaName}</title><link rel="manifest" href="./manifest.json"></head><body><div style="padding:20px;text-align:center;margin-top:50px;"><h1 style="font-size:80px;margin:0;">${centerEmoji}</h1><h2>${pwaName}</h2><p>AI가 자동 생성한 뼈대 프로젝트입니다.</p></div><script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');<\/script></body></html>`, false);
-            setTimeout(async () => {
-                try {
-                    let pRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/pages`, { method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' }, body: JSON.stringify({ source: { branch: 'main', path: '/' } }) });
-                    if(!pRes.ok) await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/pages`, { method: 'POST', headers: { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' }, body: JSON.stringify({ source: { branch: 'master', path: '/' } }) });
-                } catch(e) {}
-            }, 2500);
-        } else {
-            const editor = $('codeEditor'); let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
-            if (code && typeof code === 'string') {
-                if (!code.includes('manifest.json')) code = code.replace('</head>', `  <link rel="manifest" href="./manifest.json">\n</head>`);
-                if (!code.includes('serviceWorker.register')) code = code.replace('</body>', `\n<script>\n  if ('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');\n  <\/script>\n</body>`);
-                if (editor) editor.value = code; saveDraftCustom(code, 'PWA 세팅 추가');
-            }
-            alert('🎉 PWA 세팅 완료! 빌드 버튼을 눌러 확정하세요.');
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>${pwaName}</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
-
-        if (presetRepoName) {
-            alert(`🎉 [${targetPwaRepo}] 자동 생성 완료!\n주소: https://${GITHUB_USER}.github.io/${targetPwaRepo}/`);
-            loadRepos(presetRepoName);
-        }
-        log(`✅ PWA 세팅 완료`, 'ok');
-    } catch(e) { 
-        showToast(`세팅 실패: ${e.message}`, 'err'); 
-        log(`❌ PWA 세팅 오류: ${e.message}`, 'err');
-    }
+        showToast('🎉 PWA 세팅 완료!', 'ok');
+    } catch(e) { showToast('실패: ' + e.message, 'err'); }
   };
 
   window.recommendAIAttributes = async function() {
      const desc = $('aiRepoDescInput').value.trim();
-     if (!desc) return showToast('기획 의도를 적어주세요!', 'err');
-     
-     const btn = $('aiRecommendBtn'); btn.innerHTML = '🤖 AI가 고민 중...'; btn.disabled = true;
-     const prompt = `너는 수석 앱 디자이너이자 네이밍 전문가야. 다음 앱 기획을 분석하고, 어울리는 레포지토리(앱) 이름 3가지와 아이콘 이모지+배경색을 추천해줘.
-기획: ${desc}
-응답은 순수 JSON 형식:
-{"names": ["app-name-1", "app-name-2", "app-name-3"], "emoji": "🚕", "color": "#FBBF24"}`;
-
+     if (!desc) return showToast('기획을 적어주세요!', 'err');
+     const btn = $('aiRecommendBtn'); btn.innerHTML = '🤖 추천 중...'; btn.disabled = true;
      try {
-         const res = await callGeminiAPI(prompt, 0.2);
-         if (res && res.names && res.emoji) {
-             window.aiIconOptions = { emoji: res.emoji, color: res.color };
-             
-             const badgesArea = $('aiRepoNameBadges');
-             badgesArea.innerHTML = res.names.map(name => 
-                `<span onclick="$('aiRepoNameInput').value='${name}'" class="badge cursor-pointer hover:bg-gray-200 bg-gray-100 border-gray-300 text-gray-700 py-1.5 px-3 text-[11px]">${name}</span>`
-             ).join('');
-             
+         const res = await callGeminiAPI(`앱 기획: ${desc}\n응답 순수 JSON: {"names": ["app-1", "app-2"], "emoji": "🚀", "color": "#10b981"}`, 0.2);
+         if (res && res.names) {
+             $('aiRepoNameBadges').innerHTML = res.names.map(n => `<span onclick="$('aiRepoNameInput').value='${n}'" class="badge cursor-pointer bg-gray-100 p-1">${n}</span>`).join('');
              $('aiRepoNameInput').value = res.names[0];
-             
-             const iconBox = $('aiIconPreviewBox');
-             iconBox.textContent = res.emoji;
-             iconBox.style.backgroundColor = res.color;
-             
              $('aiRepoSuggestions').classList.remove('hidden');
-             const createBtn = $('aiFinalCreateBtn');
-             createBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-             createBtn.disabled = false;
+             $('aiFinalCreateBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+             $('aiFinalCreateBtn').disabled = false;
          }
-     } catch(e) {
-         showToast('AI 추천 실패: ' + e.message, 'err');
-     } finally {
-         btn.innerHTML = '🤖 다시 추천받기'; btn.disabled = false;
-     }
+     } catch(e) { showToast('추천 실패', 'err'); }
+     finally { btn.innerHTML = '🤖 AI 추천받기'; btn.disabled = false; }
   };
 
   window.createNewProjectWithAI = async function() {
       const repoName = $('aiRepoNameInput')?.value?.trim();
-      if (!repoName || !/^[a-zA-Z0-9-]+$/.test(repoName)) return showToast('영문, 숫자, 하이픈(-)만 포함된 레포 이름을 선택하거나 입력하세요.', 'err');
-      
+      if (!repoName || !/^[a-zA-Z0-9-]+$/.test(repoName)) return showToast('영문 레포 이름을 입력하세요.', 'err');
       const pat = getGitHubPat();
-      if (!pat) return showToast('GitHub PAT 토큰이 설정되어 있지 않습니다.', 'err');
-
+      if (!pat) return showToast('PAT 필요', 'err');
       $('aiRepoModal').style.display = 'none';
-      showToast('1/3 GitHub 레포지토리를 생성하는 중...', 'info');
-
       try {
-          const createRepoRes = await fetch('https://api.github.com/user/repos', {
+          await fetch('https://api.github.com/user/repos', {
               method: 'POST',
               headers: { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name: repoName, description: $('aiRepoDescInput').value, private: false, auto_init: true })
+              body: JSON.stringify({ name: repoName, private: false, auto_init: true })
           });
-          if (!createRepoRes.ok) throw new Error('GitHub 레포 생성 실패 (이미 존재할 수 있음)');
-      } catch(e) { return showToast(`생성 실패: ${e.message}`, 'err'); }
-
-      showToast('2/3 PWA 필수 파일 생성 중...', 'info');
-      setTimeout(async () => { await setupPWA(repoName, window.aiIconOptions); }, 1500);
+          await setupPWA(repoName);
+          loadRepos(repoName);
+      } catch(e) {}
   };
 
   function initSettingsInputs() {
@@ -2594,513 +2135,19 @@ ${contextConstraint}`;
         const el = $(k.replace(/_([a-z])/g, g => g[1].toUpperCase()) + 'Input');
         if (el && localStorage.getItem(k)) el.value = localStorage.getItem(k);
     });
-    
     $('googleClientIdInput')?.addEventListener('input', e => { localStorage.setItem('google_client_id', e.target.value.trim()); initGis(); });
-    $('githubPatInput')?.addEventListener('input', e => { 
-        localStorage.setItem('github_pat', e.target.value.trim()); loadRepos(); detectGithubUser(); 
-    });
+    $('githubPatInput')?.addEventListener('input', e => { localStorage.setItem('github_pat', e.target.value.trim()); loadRepos(); detectGithubUser(); });
     $('geminiApiKeyInput')?.addEventListener('input', e => localStorage.setItem('gemini_api_key', e.target.value.trim()));
     
-    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-4-argon';
+    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
     if ($('geminiModelSelect')) {
       $('geminiModelSelect').value = savedModel;
-      $('geminiModelSelect').addEventListener('change', e => { localStorage.setItem('builder_gemini_model', e.target.value); showToast(`🧠 모델 변경됨`, 'ok'); });
+      $('geminiModelSelect').addEventListener('change', e => { localStorage.setItem('builder_gemini_model', e.target.value); showToast('🧠 모델 변경됨', 'ok'); });
     }
   }
 
-  function sanitizePatchInput(text) {
-     if (!text) return '';
-     let t = text.replace(/\r\n/g, '\n');
-     t = t.replace(/```[a-zA-Z0-9_-]*\n?/gi, '').replace(/```/g, '');
-     t = t.replace(/\uFEFF/g, '').replace(/[\u200B-\u200D\u2060]/g, '');
-     return t.trim();
-  }
-
-  function extractCodeFences(text) {
-     const fences = [];
-     const fenceRegex = /```(?:html|js|javascript|css|jsx|tsx)?\n([\s\S]*?)\n```/gi;
-     let m;
-     while ((m = fenceRegex.exec(text)) !== null) {
-         if (m[1] && m[1].trim().length > 10) fences.push(m[1].trim());
-     }
-     if (fences.length === 0) {
-         const lines = text.split('\n').filter(l=>l.trim().length>0);
-         if (lines.length >= 3 && (text.includes('<div') || text.includes('function') || text.includes('const '))) {
-             fences.push(text.trim());
-         }
-     }
-     return fences;
-  }
-
-  function extractSearchReplaceBlocks(patch) {
-     const blocks = [];
-     const permissiveRegex = /<{3,}[^\n]*SEARCH[^\n]*\n([\s\S]*?)\n={3,}[^\n]*\n([\s\S]*?)\n>{3,}[^\n]*REPLACE[^\n]*/gi;
-     let match;
-     while ((match = permissiveRegex.exec(patch)) !== null) {
-         const search = match[1] || '';
-         const replace = match[2] || '';
-         if (search.trim().length > 0) {
-             blocks.push({ search, replace, raw: match[0] });
-         }
-     }
-     if (blocks.length === 0) {
-         const colonRegex = /SEARCH\s*:\s*\n([\s\S]*?)\nREPLACE\s*:\s*\n([\s\S]*?)(?=\n\[블록|\nSEARCH\s*:|\n*\s*$)/gi;
-         while ((match = colonRegex.exec(patch)) !== null) {
-             const search = match[1] || '';
-             const replace = match[2] || '';
-             if (search.trim().length > 0) {
-                 blocks.push({ search, replace, raw: match[0] });
-             }
-         }
-     }
-     if (blocks.length === 0) {
-         const plainRegex = /SEARCH\s*\n([\s\S]*?)\n={3,}\s*\n([\s\S]*?)\n.*REPLACE/gi;
-         while ((match = plainRegex.exec(patch)) !== null) {
-             blocks.push({ search: match[1], replace: match[2], raw: match[0] });
-         }
-     }
-     if (blocks.length === 0) {
-         const legacyRegex = /<{3,}\s*SEARCH\s*([\s\S]*?)\s*={3,}\s*([\s\S]*?)\s*>{3,}\s*REPLACE/gi;
-         while ((match = legacyRegex.exec(patch)) !== null) {
-             blocks.push({ search: match[1], replace: match[2], raw: match[0] });
-         }
-     }
-     return blocks;
-  }
-
-  function escapeRegExp(string) {
-     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  }
-
-  function normalizeLineEndings(str) {
-     return (str || '').replace(/\r\n/g, '\n');
-  }
-
-  function getRelevantContextForPatch(fullCode, patchText, maxLinesPerWindow = 140, maxWindows = 3, maxTotalChars = 22000) {
-     const lines = fullCode.split('\n');
-     if (fullCode.length <= maxTotalChars) return fullCode;
-     const keywordCandidates = new Set();
-     const idRegex = /(?:id|class|function|const|let|var|def)\s*[=:]?\s*["']?([A-Za-z0-9_-]{3,})["']?/gi;
-     let km;
-     while ((km = idRegex.exec(patchText)) !== null) {
-         if (km[1] && km[1].length >= 3) keywordCandidates.add(km[1]);
-     }
-     const commonStop = new Set(['the','and','for','with','this','that','from','have','function','return','const','let','var','div','span','class','style','color']);
-     patchText.split(/[^A-Za-z0-9_-]+/).forEach(w => {
-         if (w.length >= 4 && w.length <= 32 && !commonStop.has(w.toLowerCase())) {
-             keywordCandidates.add(w);
-         }
-     });
-     const hits = [];
-     keywordCandidates.forEach(kw => {
-         const esc = escapeRegExp(kw);
-         try {
-             const re = new RegExp(esc, 'g');
-             let hm;
-             while ((hm = re.exec(fullCode)) !== null) {
-                 const pos = hm.index;
-                 const lineIdx = fullCode.slice(0, pos).split('\n').length - 1;
-                 hits.push({ kw, lineIdx });
-                 if (hits.length > 50) break;
-             }
-         } catch(e) {}
-     });
-     if (hits.length === 0) {
-         const head = lines.slice(0, 180).join('\n');
-         const tail = lines.slice(-80).join('\n');
-         const combined = head + '\n\n... [중간 ' + (lines.length - 260) + '줄 생략] ...\n\n' + tail;
-         return combined.length > maxTotalChars ? combined.slice(0, maxTotalChars) : combined;
-     }
-     hits.sort((a,b) => a.lineIdx - b.lineIdx);
-     const windows = [];
-     let lastEnd = -9999;
-     for (const h of hits) {
-         const start = Math.max(0, h.lineIdx - Math.floor(maxLinesPerWindow/2));
-         const end = Math.min(lines.length, h.lineIdx + Math.floor(maxLinesPerWindow/2));
-         if (start <= lastEnd + 20) {
-             if (windows.length > 0) {
-                 windows[windows.length-1].end = Math.max(windows[windows.length-1].end, end);
-                 lastEnd = windows[windows.length-1].end;
-             }
-         } else {
-             windows.push({ start, end });
-             lastEnd = end;
-         }
-         if (windows.length >= maxWindows) break;
-     }
-     let resultParts = [];
-     let totalChars = 0;
-     windows.forEach((w, idx) => {
-         const slice = lines.slice(w.start, w.end).map((l,i) => `${w.start + i + 1}| ${l}`).join('\n');
-         const header = `\n\n// ===== Relevant Context Window ${idx+1} (lines ${w.start+1}-${w.end}) =====\n`;
-         const part = header + slice;
-         if (totalChars + part.length > maxTotalChars) return;
-         resultParts.push(part);
-         totalChars += part.length;
-     });
-     if (resultParts.length === 0) return fullCode.slice(0, maxTotalChars);
-     return resultParts.join('\n') + `\n\n// [참고: 전체 ${lines.length}줄 중 ${windows.length}개 구간만 표시]`;
-  }
-
-  function applySearchReplaceMatch(original, patch) {
-     let result = normalizeLineEndings(original);
-     const cleanPatch = sanitizePatchInput(patch);
-     const blocks = extractSearchReplaceBlocks(cleanPatch);
-     if (blocks.length === 0) {
-         return { result: null, replacedCount: 0, failedCount: 0, blocks: [], reason: 'no_blocks_found' };
-     }
-     let replacedCount = 0;
-     let failedCount = 0;
-     const failedDetails = [];
-     function tryReplaceOnce(src, search, replace) {
-         const normSrc = normalizeLineEndings(src);
-         const normSearch = normalizeLineEndings(search);
-         const normReplace = normalizeLineEndings(replace);
-         if (normSrc.includes(normSearch)) {
-             return { ok: true, out: normSrc.replace(normSearch, normReplace), method: 'exact' };
-         }
-         const trimmedSearch = normSearch.trim();
-         if (trimmedSearch && normSrc.includes(trimmedSearch)) {
-             return { ok: true, out: normSrc.replace(trimmedSearch, normReplace.trim()), method: 'trimmed' };
-         }
-         try {
-             if (trimmedSearch.length < 2500) {
-                 const flexPattern = escapeRegExp(trimmedSearch).replace(/\s+/g, '\\s+');
-                 const flexRegex = new RegExp(flexPattern);
-                 if (flexRegex.test(normSrc)) {
-                     return { ok: true, out: normSrc.replace(flexRegex, normReplace), method: 'flex_ws' };
-                 }
-             }
-         } catch(e) {}
-         try {
-             const searchLines = trimmedSearch.split('\n').map(l=>l.trim()).filter(l=>l.length>0);
-             if (searchLines.length >= 2) {
-                 const firstLine = searchLines[0];
-                 const lastLine = searchLines[searchLines.length-1];
-                 const srcLines = normSrc.split('\n');
-                 let startIdx = -1, endIdx = -1;
-                 for (let i=0;i<srcLines.length;i++) {
-                     if (srcLines[i].includes(firstLine) || firstLine.includes(srcLines[i].trim())) {
-                         for (let j=i;j<Math.min(srcLines.length, i+searchLines.length+30);j++) {
-                             if (srcLines[j].includes(lastLine) || lastLine.includes(srcLines[j].trim())) {
-                                 startIdx = i; endIdx = j; break;
-                             }
-                         }
-                         if (startIdx !== -1) break;
-                     }
-                 }
-                 if (startIdx !== -1) {
-                     const before = srcLines.slice(0, startIdx).join('\n');
-                     const after = srcLines.slice(endIdx+1).join('\n');
-                     const out = before + (before? '\n' : '') + normReplace + (after? '\n' + after : '');
-                     return { ok: true, out, method: 'fuzzy_line' };
-                 }
-             }
-         } catch(e) {}
-         return { ok: false };
-     }
-     for (const b of blocks) {
-         const attempt = tryReplaceOnce(result, b.search, b.replace);
-         if (attempt.ok) {
-             result = attempt.out;
-             replacedCount++;
-             log(`  ✓ 블록 매칭 성공 (${attempt.method}) - ${b.search.slice(0,60).replace(/\n/g,' ')}...`, 'ok');
-         } else {
-             failedCount++;
-             failedDetails.push(b.search.slice(0,120));
-             log(`  ✗ 블록 매칭 실패 - ${b.search.slice(0,80).replace(/\n/g,' ')}...`, 'err');
-         }
-     }
-     if (replacedCount === 0) {
-         return { result: null, replacedCount, failedCount, failedDetails, blocks };
-     }
-     return { result, replacedCount, failedCount, failedDetails, blocks };
-  }
-
-  function tryOfflineFuzzyReplace(fullCode, newCode) {
-     const normFull = normalizeLineEndings(fullCode);
-     const normNew = normalizeLineEndings(newCode).trim();
-     if (normFull.includes(normNew)) return null;
-     const idMatch = normNew.match(/id=["']([^"']+)["']/);
-     let targetId = idMatch ? idMatch[1] : null;
-     const lines = normFull.split('\n');
-     const newLines = normNew.split('\n');
-     if (targetId) {
-         for (let i=0;i<lines.length;i++) {
-             if (lines[i].includes(`id="${targetId}"`) || lines[i].includes(`id='${targetId}'`)) {
-                 let start = i;
-                 let end = Math.min(lines.length-1, i + newLines.length + 5);
-                 let depth = 0;
-                 for (let j=i;j<lines.length;j++) {
-                     if (lines[j].includes('<div') || lines[j].includes('<')) depth++;
-                     if (lines[j].includes('</div>')) {
-                         depth--;
-                         if (depth<=0) { end = j; break; }
-                     }
-                     if (j - i > 50) break;
-                 }
-                 return { startLine: start+1, endLine: end+1, newCode: normNew, method: 'id_match' };
-             }
-         }
-     }
-     const firstLine = newLines[0].trim();
-     if (firstLine.length > 10) {
-         for (let i=0;i<lines.length;i++) {
-             if (lines[i].trim().includes(firstLine.slice(0, 30)) || firstLine.includes(lines[i].trim().slice(0,30))) {
-                 return { startLine: i+1, endLine: i + newLines.length, newCode: normNew, method: 'first_line' };
-             }
-         }
-     }
-     return null;
-  }
-
-  function applyPatchResult(newCode, msg) {
-      const editor = $('codeEditor');
-      if (editor) editor.value = newCode;
-      showLivePreviewCurrent(newCode);
-      saveDraftCustom(newCode, '⚡ 스마트 패치 교체 완료');
-      showToast(`✅ ${msg}`, 'ok');
-      log(`✅ 스마트 패치 적용 완료: ${msg}`, 'ok');
-      $('undoPatchBtn')?.classList.remove('hidden');
-  }
-
-  function initSmartPatchEvents() {
-      $('togglePatchPanelBtn')?.addEventListener('click', () => {
-          const panel = $('smartPatchPanel');
-          if (panel.classList.contains('hidden')) {
-              panel.classList.remove('hidden');
-              $('patchInput').focus();
-          } else {
-              panel.classList.add('hidden');
-          }
-      });
-
-      $('undoPatchBtn')?.addEventListener('click', () => {
-          if (window.lastPrePatchCode) {
-              const editor = $('codeEditor');
-              if (editor) editor.value = window.lastPrePatchCode;
-              showLivePreviewCurrent(window.lastPrePatchCode);
-              saveDraftCustom(window.lastPrePatchCode, '패치 실행 취소');
-              showToast('↩️ 이전 코드로 원상복구 되었습니다.', 'ok');
-              $('undoPatchBtn').classList.add('hidden');
-              log('↩️ AI 스마트 패치 실행 취소 완료', 'info');
-              window.lastPrePatchCode = null;
-          }
-      });
-
-      $('stopSmartPatchBtn')?.addEventListener('click', () => {
-          if (currentPatchAbortController) {
-              currentPatchAbortController.abort();
-              currentPatchAbortController = null;
-              showToast('🛑 스마트 패치 작동이 강제 중지되었습니다.', 'info');
-              log('🛑 사용자가 스마트 패치 작동을 중지했습니다.', 'info');
-          }
-      });
-
-      $('runSmartPatchBtn')?.addEventListener('click', async () => {
-          const rawPatchText = $('patchInput')?.value || '';
-          const patchText = sanitizePatchInput(rawPatchText);
-          const editor = $('codeEditor');
-          let fullCode = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
-
-          if (!patchText) return showToast('교체할 부분 코드를 붙여넣으세요.', 'err');
-          if (!fullCode) return showToast('원본 코드가 없습니다. 원본 소스를 먼저 불러오세요.', 'err');
-
-          window.lastPrePatchCode = fullCode;
-          fullCode = normalizeLineEndings(fullCode);
-
-          const btn = $('runSmartPatchBtn');
-          const stopBtn = $('stopSmartPatchBtn');
-          const originalBtnText = btn.innerHTML;
-          btn.innerHTML = '⏳ 1/3 로컬 포맷 분석 중...';
-          btn.disabled = true;
-          if (stopBtn) stopBtn.classList.remove('hidden');
-
-          currentPatchAbortController = new AbortController();
-          const signal = currentPatchAbortController.signal;
-
-          try {
-              const hasSearchMarker = patchText.includes('<<<<') || patchText.includes('SEARCH') || patchText.includes('REPLACE');
-              if (hasSearchMarker) {
-                  const matchObj = applySearchReplaceMatch(fullCode, patchText);
-                  if (matchObj.result && matchObj.replacedCount > 0) {
-                      if (matchObj.failedCount === 0) {
-                          applyPatchResult(matchObj.result, `로컬 즉시 매칭 성공! ${matchObj.replacedCount}개 블록 적용 (AI 호출 없음)`);
-                      } else {
-                          applyPatchResult(matchObj.result, `로컬 부분 적용: ${matchObj.replacedCount}성공 / ${matchObj.failedCount}실패 - 나머지는 수동 확인`);
-                          log(`  ⚠️ 실패한 블록 ${matchObj.failedCount}개는 AI 없이 스킵됨`, 'err');
-                      }
-                      $('patchInput').value = '';
-                      return;
-                  }
-              }
-
-              btn.innerHTML = '🔍 2/3 오프라인 퍼지 매칭 중...';
-              const fences = extractCodeFences(rawPatchText);
-              for (const fenceCode of fences) {
-                  const fuzzy = tryOfflineFuzzyReplace(fullCode, fenceCode);
-                  if (fuzzy) {
-                      const lines = fullCode.split('\n');
-                      const s = Math.max(0, fuzzy.startLine - 1);
-                      const e = Math.min(lines.length - 1, fuzzy.endLine - 1);
-                      if (s <= e) {
-                          lines.splice(s, e - s + 1, fuzzy.newCode);
-                          applyPatchResult(lines.join('\n'), `오프라인 퍼지 교체 성공 (${fuzzy.method}) - ${fuzzy.startLine}~${fuzzy.endLine}줄`);
-                          $('patchInput').value = '';
-                          return;
-                      }
-                  }
-              }
-
-              btn.innerHTML = '🤖 3/3 AI 자동 포맷 변환 시도 중...';
-              showToast('🤖 로컬에서 못 찾아 AI가 포맷 변환 중입니다... (혼잡 시 오프라인으로 폴백)', 'info');
-              log('🤖 스마트 패치: AI 자동 포맷터 가동 - 로컬 실패로 최후 수단', 'info');
-
-              const relevantContext = getRelevantContextForPatch(fullCode, patchText);
-
-              const autoFormatPrompt = `너는 Builder-a4u의 'AI 스마트 패치 자동 포맷터'야.
-사용자가 코드 수정을 위해 안내문(일반 마크다운, 줄글 설명, 함수 코드 조각, 혹은 잘려버린 불완전한 텍스트)을 입력했어.
-아래 [관련 원본 컨텍스트]를 참고하여, 사용자의 수정 의도를 완벽히 반영하는 표준 SEARCH/REPLACE 블록들로 변환해줘.
-
-[절대 규칙]
-1. <<<<<<< SEARCH 아래에는 [관련 원본 컨텍스트] 또는 전체 원본에 실제로 존재하는 문자열을 토씨 하나, 띄어쓰기 하나 틀리지 않고 그대로 복사해서 넣어야 해. 존재하지 않는 코드를 지어내면 안돼.
-2. ======= 아래에는 교체될 새로운 코드를 넣어.
-3. >>>>>>> REPLACE 로 블록을 닫아.
-4. 수정할 곳이 여러 군데라면 여러 개의 SEARCH/REPLACE 블록을 연속으로 출력해.
-5. 부연 설명, 마크다운 코드펜스(\`\`\`), 인사말 없이 오직 SEARCH/REPLACE 블록들만 출력해.
-6. 만약 사용자가 줄글로 설명만 했다면, 그 의도에 맞는 SEARCH/REPLACE 블록을 직접 생성해.
-
-[관련 원본 컨텍스트 - 전체 중 일부 발췌, 줄번호 포함]
-${relevantContext}
-
-[사용자 입력 수정 안내문 / 부분 코드]
-${patchText}
-
-[출력 예시]
-<<<<<<< SEARCH
-<div class="old">Hello</div>
-=======
-<div class="new">Hello World</div>
->>>>>>> REPLACE`;
-
-              let aiFormattedPatch = '';
-              try {
-                  aiFormattedPatch = await callGeminiAPI(autoFormatPrompt, 0.1, false, signal);
-                  aiFormattedPatch = sanitizePatchInput(aiFormattedPatch);
-                  log(`🤖 AI 포맷터 응답 수신 (${aiFormattedPatch.length}자)`, 'info');
-              } catch(aiErr) {
-                  if (aiErr.message.includes('high demand') || aiErr.message.includes('overloaded') || aiErr.message.includes('429')) {
-                      log(`⚠️ AI 서버 혼잡으로 AI 단계 스킵 - 오프라인으로 폴백`, 'err');
-                      showToast('⚠️ AI 서버 혼잡 - AI 없이 로컬에서 최대한 적용했습니다. 줄글 설명이면 나중에 다시 시도해주세요.', 'err');
-                      throw new Error('AI 서버 혼잡으로 변환 실패 - 로컬에서 처리할 수 없는 형식입니다. SEARCH/REPLACE 형식으로 다시 붙여넣거나 잠시 후 재시도해주세요.');
-                  }
-                  log(`⚠️ AI 포맷터 1차 실패: ${aiErr.message} - 더 작은 컨텍스트로 재시도`, 'err');
-                  const smallerContext = getRelevantContextForPatch(fullCode, patchText, 80, 2, 12000);
-                  const retryPrompt = autoFormatPrompt.replace(relevantContext, smallerContext);
-                  aiFormattedPatch = await callGeminiAPI(retryPrompt, 0.2, false, signal);
-                  aiFormattedPatch = sanitizePatchInput(aiFormattedPatch);
-              }
-
-              if (aiFormattedPatch && (aiFormattedPatch.includes('<<<<') || aiFormattedPatch.includes('SEARCH'))) {
-                  const secondMatch = applySearchReplaceMatch(fullCode, aiFormattedPatch);
-                  if (secondMatch.result && secondMatch.replacedCount > 0) {
-                      applyPatchResult(secondMatch.result, `AI 자동 포맷 변환 및 패치 완료 (${secondMatch.replacedCount}개 블록)`);
-                      $('patchInput').value = '';
-                      return;
-                  }
-              }
-
-              btn.innerHTML = '🤖 3/3 줄번호 정밀 교체 시도 중...';
-              const lines = fullCode.split('\n');
-              let numberedCode = lines.map((l, i) => `${i + 1}| ${l}`).join('\n');
-              if (numberedCode.length > 20000) {
-                  numberedCode = getRelevantContextForPatch(fullCode, patchText, 100, 3, 20000);
-              }
-              const fallbackPrompt = `원본 코드에서 아래 수정 코드가 대체해야 할 시작 줄번호(startLine)와 끝 줄번호(endLine), 그리고 실제 삽입될 코드(newCode)를 순수 JSON으로만 답해.
-[원본 코드 - 줄번호 포함]
-${numberedCode}
-[수정 코드 / 설명]
-${patchText}
-출력 형식: {"startLine": 10, "endLine": 20, "newCode": "..."} - JSON만 출력`;
-
-              const res = await callGeminiAPI(fallbackPrompt, 0.1, true, signal);
-              if (res && res.startLine && res.endLine && typeof res.newCode === 'string') {
-                  const startIdx = res.startLine - 1;
-                  const endIdx = res.endLine - 1;
-                  if (startIdx >= 0 && endIdx < lines.length && startIdx <= endIdx) {
-                      lines.splice(startIdx, endIdx - startIdx + 1, normalizeLineEndings(res.newCode));
-                      applyPatchResult(lines.join('\n'), `AI 줄번호 정밀 교체 성공 (${res.startLine}~${res.endLine})`);
-                      $('patchInput').value = '';
-                      return;
-                  }
-              }
-              throw new Error('원본 코드에서 일치하는 교체 위치를 찾지 못했습니다. SEARCH/REPLACE 형식으로 다시 붙여넣어주세요.');
-          } catch(e) {
-              if (e.message !== '사용자에 의해 작동이 중지되었습니다.' && e.name !== 'AbortError') {
-                  const isCongestion = e.message.includes('혼잡') || e.message.includes('high demand') || e.message.includes('overloaded') || e.message.includes('429');
-                  if (!isCongestion) {
-                      showToast('❌ 부분 교체 실패: ' + e.message, 'err');
-                  }
-                  log('❌ 스마트 패치 실패: ' + e.message, 'err');
-                  if (!isCongestion) {
-                      log('💡 팁: SEARCH 블록에는 원본에 존재하는 코드를 정확히 복사해야 합니다.', 'info');
-                  }
-              }
-          } finally {
-              currentPatchAbortController = null;
-              if (stopBtn) stopBtn.classList.add('hidden');
-              btn.innerHTML = originalBtnText;
-              btn.disabled = false;
-          }
-      });
-  }
-
   function setupEventListeners() {
-    initTheme(); loadIdeaInbox(); detectGithubUser(); initSmartPatchEvents(); renderAITargets();
-    
-    try {
-      document.querySelectorAll('.btn, button, select, label').forEach(el => {
-        if(el.style) { el.style.touchAction='manipulation'; el.style.webkitTapHighlightColor='transparent'; }
-      });
-
-      window.syncInboxProjectSelect = function(){
-        const inboxSel = $('inboxProjectSelect'), repoSel = $('repoSelect'), hintEl = $('inboxSelectedProjectHint'), infoEl = $('splitSelectedInfo'), moveSel = $('otherIdeaMoveSelect');
-        if(!inboxSel || !repoSel) return;
-        const repos = Array.from(repoSel.options).map(o=>o.value).filter(v=>v);
-        const prev = window.inboxSelectedProject || '';
-        inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
-        if (moveSel) moveSel.innerHTML = '<option value="">프로젝트 선택...</option>';
-        repos.forEach(r => { 
-          const opt = document.createElement('option'); opt.value = r; opt.textContent = r; inboxSel.appendChild(opt); 
-          if(moveSel) { const mOpt = document.createElement('option'); mOpt.value = r; mOpt.textContent = r; moveSel.appendChild(mOpt); }
-        });
-        if(prev && repos.includes(prev)) inboxSel.value = prev;
-        if(hintEl) {
-          if(inboxSel.value) { hintEl.textContent = '→ '+inboxSel.value+' 로 저장'; hintEl.className = "text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900"; } 
-          else { hintEl.textContent = '선택 없으면 미분류'; hintEl.className = "text-[10px] px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200"; }
-        }
-        if(infoEl) infoEl.innerHTML = inboxSel.value ? '선택: '+inboxSel.value+'<br>→ 직접 저장' : '선택 없으면<br>→ 미분류로 저장';
-      };
-
-      setTimeout(syncInboxProjectSelect, 300);
-      $('repoSelect')?.addEventListener('change', () => setTimeout(syncInboxProjectSelect, 200));
-      $('inboxProjectSelect')?.addEventListener('change', (e) => { window.inboxSelectedProject = e.target.value; syncInboxProjectSelect(); });
-
-      const voiceBtn = $('voiceRecordBtn');
-      if (voiceBtn) {
-        voiceBtn.addEventListener('click', (e) => {
-          if (!recognition) return showToast('음성 미지원 환경. 텍스트를 사용하세요.', 'info');
-          if (isRecording) { try{ recognition.stop(); }catch(err){} return; }
-          try {
-            if(navigator.vibrate) navigator.vibrate(50);
-            isRecording = true; recognition.start();
-            voiceBtn.innerHTML = '<span class="text-[28px] mb-0.5">🎧</span><span class="font-bold text-[12px] leading-tight">듣는 중...</span><span class="font-bold text-[10px] opacity-80">완료 시 자동 저장</span>';
-            voiceBtn.style.background = '#3b82f6'; voiceBtn.classList.add('animate-pulse');
-          } catch(err) { resetVoiceBtn(); showToast('마이크 권한 문제 발생', 'err'); }
-        });
-      }
-    } catch(e) {}
-
+    initTheme(); loadIdeaInbox(); detectGithubUser();
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
@@ -3110,54 +2157,17 @@ ${patchText}
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
     $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);
     $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
-    $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; log('🧹 실시간 빌드 로그를 비웠습니다.', 'info'); });
-    
+    $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
-        if (!c.trim()) return showToast('빌드할 코드가 없습니다.', 'err');
-        if (!confirm(`🚀 [${currentRepo}] 빌드 및 백업을 진행하시겠습니까?`)) return;
-        saveDraftCustom(c, '최종 빌드 전 저장'); await pushToGitHubRepository(); 
+        if (!c.trim()) return showToast('코드 없음', 'err');
+        if (!confirm(`🚀 빌드하시겠습니까?`)) return;
+        saveDraftCustom(c, '최종 빌드'); await pushToGitHubRepository(); 
     });
-  
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
     $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
-    $('parseBulkKeysBtn')?.addEventListener('click', () => {
-      const text = $('bulkKeysInput')?.value || '';
-      if (!text.trim()) return;
-      text.split('\n').forEach(line => {
-        const parts = line.split('=');
-        if (parts.length >= 2) {
-          const k = parts[0].toLowerCase().trim();
-          const v = parts.slice(1).join('=').trim();
-          if (k.includes('client_id')) { localStorage.setItem('google_client_id', v); if ($('googleClientIdInput'))$('googleClientIdInput').value = v; }
-          if (k.includes('github') || k.includes('pat')) { localStorage.setItem('github_pat', v); if ($('githubPatInput'))$('githubPatInput').value = v; }
-          if (k.includes('gemini') || k.includes('ai_key')) { localStorage.setItem('gemini_api_key', v); if ($('geminiApiKeyInput'))$('geminiApiKeyInput').value = v; }
-        }
-      });
-      showToast('⚡ API 키 저장 완료', 'ok'); loadRepos(); initGis();
-    });
-    $('exportKeysJsonBtn')?.addEventListener('click', () => {
-      const keysObj = { google_client_id: getGoogleClientId(), github_pat: getGitHubPat(), gemini_api_key: localStorage.getItem('gemini_api_key') || '' };
-      const blob = new Blob([JSON.stringify(keysObj, null, 2)], { type: 'application/json' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'builder_api_keys.json'; a.click();
-    });
-    $('importKeysJsonInput')?.addEventListener('change', e => {
-      const file = e.target.files?.[0]; if (!file) return;
-      const reader = new FileReader();
-      reader.onload = evt => {
-        try {
-          const keysObj = JSON.parse(evt.target.result);
-          if (keysObj.google_client_id) { localStorage.setItem('google_client_id', keysObj.google_client_id); if ($('googleClientIdInput')) $('googleClientIdInput').value = keysObj.google_client_id; }
-          if (keysObj.github_pat) { localStorage.setItem('github_pat', keysObj.github_pat); if ($('githubPatInput')) $('githubPatInput').value = keysObj.github_pat; }
-          if (keysObj.gemini_api_key) { localStorage.setItem('gemini_api_key', keysObj.gemini_api_key); if ($('geminiApiKeyInput')) $('geminiApiKeyInput').value = keysObj.gemini_api_key; }
-          showToast('📥 API 키 복원 완료', 'ok'); loadRepos(); initGis();
-        } catch(err) {}
-      };
-      reader.readAsText(file);
-    });
     $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
     $('driveModalClose')?.addEventListener('click', () => { $('driveModal').style.display = 'none'; });
-    
     $('repoSelect')?.addEventListener('change', async e => {
       currentRepo = e.target.value; localStorage.setItem('current_repo', currentRepo);
       updateActiveRepoDisplay(); mainFile = localStorage.getItem('main_file_' + currentRepo) || 'index.html';
@@ -3165,41 +2175,13 @@ ${patchText}
       loadRepoDocuments(); loadRepoIdea(); scanRepoFileTree(); await autoRestoreDocsFromDrive();
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
     });
-  
-    $('fileTreeSelect')?.addEventListener('change', async e => {
-      if (e.target.value) {
-        mainFile = e.target.value; localStorage.setItem('main_file_' + currentRepo, mainFile);
-        if ($('mainFileInput')) $('mainFileInput').value = mainFile;
-        await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
-      }
-    });
-  
     $('mainFileInput')?.addEventListener('change', async e => {
       mainFile = e.target.value.trim() || 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
     });
-  
     $('ideaImageInput')?.addEventListener('change', async e => {
       if (e.target.files) for(let f of e.target.files) { const b64 = await processImageFileToBase64(f).catch(()=>{}); if(b64) { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); } }
       e.target.value = '';
-    });
-    
-    $('inboxPhotoInput')?.addEventListener('change', async e => {
-      const file = e.target.files?.[0]; if (!file) return;
-      const b64 = await processImageFileToBase64(file).catch(err=>showToast('사진 실패', 'err'));
-      if(b64) setPendingInboxPhoto(b64); e.target.value = '';
-    });
-    
-    $('inboxTextInput')?.addEventListener('paste', async (e) => {
-        const items = (e.clipboardData || window.clipboardData)?.items;
-        if (!items) return;
-        for (let item of items) {
-            if (item.type.startsWith('image/')) {
-                const b64 = await processImageFileToBase64(item.getAsFile()).catch(()=>{});
-                if(b64) { setPendingInboxPhoto(b64); e.preventDefault(); showToast('📸 킵!', 'info'); }
-                break;
-            }
-        }
     });
     document.addEventListener('paste', handlePasteEvent);
   }
