@@ -24,10 +24,10 @@
 }
 </style>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.9 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.2.0 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +48,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.1.9">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.9">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.9">
+  <link rel="manifest" href="./manifest.json?v=8.2.0">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.0">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.9</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.0</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -282,7 +282,7 @@
     <textarea id="codeEditor" class="textarea h-[120px] font-mono text-[12px]" placeholder="전체 코드(index.html, App.jsx 등)가 위치하는 곳입니다."></textarea>
     
     <div class="flex gap-1.5 mt-2 w-full">
-      <button id="togglePatchPanelBtn" class="btn btn-sm text-[11px] py-2 px-2 flex-1 shadow-sm border border-yellow-300 dark:border-yellow-700 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+      <button id="togglePatchPanelBtn" onclick="toggleSmartPatchPanel()" class="btn btn-sm text-[11px] py-2 px-2 flex-1 shadow-sm border border-yellow-300 dark:border-yellow-700 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
         ⚡ AI 부분 코드 스마트 교체 (패치) 열기/닫기
       </button>
     </div>
@@ -294,14 +294,14 @@
           <button onclick="smartPasteToTarget($('patchInput'))" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a">📋 붙여넣기</button>
           <button id="clearPatchInputBtn" onclick="if($('patchInput')) $('patchInput').value=''; showToast('🗑️ 부분 코드 입력창을 비웠습니다.','info');" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 지우기</button>
         </div>
-        <button id="undoPatchBtn" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
+        <button id="undoPatchBtn" onclick="undoSmartPatch()" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
       </div>
       <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="SEARCH/REPLACE 블록은 물론, 일반 줄글 설명이나 수정 코드 조각을 그대로 붙여넣어도 AI가 자동으로 포맷을 변환하여 패치합니다."></textarea>
       <div class="flex gap-1.5 mt-2">
-        <button id="runSmartPatchBtn" class="btn btn-sm flex-1 py-2.5 text-[11px] btn-emerald shadow-md">
+        <button id="runSmartPatchBtn" onclick="runSmartPatch()" class="btn btn-sm flex-1 py-2.5 text-[11px] btn-emerald shadow-md">
           🔍 기존 코드에서 위치 찾아서 자동 교체하기
         </button>
-        <button id="stopSmartPatchBtn" class="hidden btn btn-sm py-2.5 px-3 text-[11px] font-black shadow-md" style="background:#ef4444;color:#ffffff;border-color:#dc2626">
+        <button id="stopSmartPatchBtn" onclick="stopSmartPatch()" class="hidden btn btn-sm py-2.5 px-3 text-[11px] font-black shadow-md" style="background:#ef4444;color:#ffffff;border-color:#dc2626">
           🛑 작동 중지
         </button>
       </div>
@@ -374,7 +374,7 @@
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
-      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[코드.txt]</b> 자동 다운로드 + 선택 AI 새 창 오픈<br>
+      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 자동 다운로드 + 선택 AI 새 창 오픈<br>
       • <b>사진 있을 때 (역발상 원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 1개 자동 다운로드 + 선택 AI 새 창 오픈
     </p>
     
@@ -621,6 +621,22 @@
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
 
+  function normalizeLineEndings(str) {
+    return typeof str === 'string' ? str.replace(/\r\n/g, '\n').replace(/\r/g, '\n') : '';
+  }
+
+  function resetMobileViewportZoom() {
+    try {
+      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(document.activeElement.tagName)) {
+        document.activeElement.blur();
+      }
+      const vp = document.querySelector('meta[name="viewport"]');
+      if (vp) {
+        vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no');
+      }
+    } catch(e) {}
+  }
+
   const AI_TARGETS = [
     { id: 'gemini', name: '♊ Gemini', url: 'https://gemini.google.com/app' },
     { id: 'meta', name: '♾️ Meta AI', url: 'https://www.meta.ai/' },
@@ -667,7 +683,7 @@
       badge.textContent = `📸 역발상 모드 (사진 ${currentIdeaImages.length}장 클립보드 + 통합 .txt 다운)`;
       badge.className = 'text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300';
     } else {
-      badge.textContent = '📝 기본 모드 (프롬프트 클립보드 + 코드 .txt 다운)';
+      badge.textContent = '📝 기본 모드 (프롬프트 클립보드 + 통합 .txt 다운)';
       badge.className = 'text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300';
     }
   }
@@ -696,6 +712,168 @@
   
   window.lastPrePatchCode = null;
   window.aiIconOptions = { color: '#10b981', emoji: '✨' };
+
+  window.toggleSmartPatchPanel = function() {
+    const panel = $('smartPatchPanel');
+    if (!panel) return;
+    panel.classList.toggle('hidden');
+  };
+
+  function parseSearchReplaceBlocks(patchText) {
+    const blocks = [];
+    const norm = normalizeLineEndings(patchText);
+    const regex = /<{5,9}\s*SEARCH\s*\n([\s\S]*?)\n={5,9}\s*\n([\s\S]*?)\n>{5,9}\s*REPLACE/g;
+    let m;
+    while ((m = regex.exec(norm)) !== null) {
+      blocks.push({ search: m[1], replace: m[2] });
+    }
+    return blocks;
+  }
+
+  function replaceWithFlexibleIndent(sourceCode, searchBlock, replaceBlock) {
+    const src = normalizeLineEndings(sourceCode);
+    const sBlock = normalizeLineEndings(searchBlock);
+    const rBlock = normalizeLineEndings(replaceBlock);
+
+    if (src.includes(sBlock)) {
+      return { success: true, code: src.replace(sBlock, () => rBlock) };
+    }
+
+    const sTrim = sBlock.trim();
+    if (sTrim && src.includes(sTrim)) {
+      return { success: true, code: src.replace(sTrim, () => rBlock.trim()) };
+    }
+
+    const srcLines = src.split('\n');
+    const searchLines = sBlock.split('\n');
+    while (searchLines.length > 0 && searchLines[0].trim() === '') searchLines.shift();
+    while (searchLines.length > 0 && searchLines[searchLines.length - 1].trim() === '') searchLines.pop();
+
+    if (searchLines.length === 0) return { success: false, code: sourceCode };
+
+    for (let i = 0; i <= srcLines.length - searchLines.length; i++) {
+      let match = true;
+      for (let j = 0; j < searchLines.length; j++) {
+        if (srcLines[i + j].trim() !== searchLines[j].trim()) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        const before = srcLines.slice(0, i);
+        const after = srcLines.slice(i + searchLines.length);
+        const newLines = [...before, rBlock, ...after];
+        return { success: true, code: newLines.join('\n') };
+      }
+    }
+    return { success: false, code: sourceCode };
+  }
+
+  window.runSmartPatch = async function() {
+    const editor = $('codeEditor');
+    const patchEl = $('patchInput');
+    if (!editor || !patchEl) return;
+
+    let currentCode = editor.value || localStorage.getItem(getDraftCodeKey()) || '';
+    const rawPatch = patchEl.value.trim();
+
+    if (!currentCode.trim()) return showToast('교체할 원본 전체 코드가 없습니다.', 'err');
+    if (!rawPatch) return showToast('붙여넣은 부분 코드(패치) 내용이 없습니다.', 'err');
+
+    let blocks = parseSearchReplaceBlocks(rawPatch);
+    const runBtn = $('runSmartPatchBtn');
+    const stopBtn = $('stopSmartPatchBtn');
+    const undoBtn = $('undoPatchBtn');
+
+    if (blocks.length === 0) {
+      try {
+        if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '🤖 AI가 패치 위치 분석 중...'; }
+        if (stopBtn) stopBtn.classList.remove('hidden');
+        currentPatchAbortController = new AbortController();
+        log('🤖 일반 코드 조각을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
+
+        const aiPrompt = `다음 원본 소스코드에서 사용자가 요청한 부분 코드/수정사항을 찾아 정확히 교체하기 위한 SEARCH/REPLACE 블록만 출력해줘. 설명 없이 오직 아래 포맷으로만 응답해:
+<<<<<<< SEARCH
+(원본에서 찾을 정확한 코드)
+=======
+(교체할 새로운 코드)
+>>>>>>> REPLACE
+
+[사용자 입력 패치/설명]
+${rawPatch}
+
+[원본 코드]
+${currentCode}`;
+
+        const aiPatchText = await callGeminiAPI(aiPrompt, 0.1, false, currentPatchAbortController.signal);
+        blocks = parseSearchReplaceBlocks(aiPatchText);
+      } catch (e) {
+        showToast('❌ 스마트 패치 변환 실패: ' + e.message, 'err');
+        log('❌ 패치 실패: ' + e.message, 'err');
+        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+        if (stopBtn) stopBtn.classList.add('hidden');
+        return;
+      } finally {
+        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+        if (stopBtn) stopBtn.classList.add('hidden');
+        currentPatchAbortController = null;
+      }
+    }
+
+    if (blocks.length === 0) {
+      return showToast('유효한 SEARCH/REPLACE 블록을 찾지 못했습니다.', 'err');
+    }
+
+    window.lastPrePatchCode = currentCode;
+    let updatedCode = normalizeLineEndings(currentCode);
+    let successCount = 0;
+    let failCount = 0;
+
+    blocks.forEach((b, idx) => {
+      const res = replaceWithFlexibleIndent(updatedCode, b.search, b.replace);
+      if (res.success) {
+        updatedCode = res.code;
+        successCount++;
+        log(`✅ 패치 블록 #${idx + 1} 교체 성공`, 'ok');
+      } else {
+        failCount++;
+        log(`⚠️ 패치 블록 #${idx + 1} 일치 구간을 찾지 못함`, 'err');
+      }
+    });
+
+    if (successCount > 0) {
+      editor.value = updatedCode;
+      saveDraftCustom(updatedCode, `스마트 패치 (${successCount}개 블록 적용)`);
+      showLivePreviewCurrent(updatedCode, `👁️ 스마트 패치 적용됨 (${successCount}/${blocks.length})`);
+      if (undoBtn) undoBtn.classList.remove('hidden');
+      if (failCount === 0) {
+        showToast(`🎉 총 ${successCount}개 부분 코드 블록이 완벽하게 교체되었습니다!`, 'ok');
+      } else {
+        showToast(`⚠️ ${successCount}개 성공, ${failCount}개 실패 (로그 확인)`, 'info');
+      }
+    } else {
+      showToast('❌ 일치하는 원본 코드 위치를 찾지 못했습니다.', 'err');
+    }
+  };
+
+  window.stopSmartPatch = function() {
+    if (currentPatchAbortController) {
+      currentPatchAbortController.abort();
+      currentPatchAbortController = null;
+      showToast('🛑 스마트 패치 분석을 중지했습니다.', 'info');
+    }
+  };
+
+  window.undoSmartPatch = function() {
+    if (!window.lastPrePatchCode) return showToast('되돌릴 이전 코드 기록이 없습니다.', 'err');
+    const editor = $('codeEditor');
+    if (editor) editor.value = window.lastPrePatchCode;
+    saveDraftCustom(window.lastPrePatchCode, '패치 취소(Undo) 복원');
+    showLivePreviewCurrent(window.lastPrePatchCode, '👁️ 패치 취소됨 (이전 코드)');
+    window.lastPrePatchCode = null;
+    if ($('undoPatchBtn')) $('undoPatchBtn').classList.add('hidden');
+    showToast('↩️ 방금 적용한 부분 코드 교체를 취소하고 원래대로 되돌렸습니다!', 'ok');
+  };
   
   function safeSetLocalStorage(key, value) {
       try {
@@ -1148,6 +1326,7 @@
       }
     });
     if (tabName === 'settings') { loadRepoIdea(); updateFullContextBox(); renderAITargets(); }
+    if (tabName === 'inbox') { syncSecondaryRepoSelects(); }
   };
   
   function getFullContextText() {
@@ -1167,9 +1346,12 @@
       }).join('\n') + '\n';
     }
   
-    const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
+    const isPatchMode = $('promptPatchMode') ? $('promptPatchMode').checked : (localStorage.getItem('prompt_patch_mode') === 'true');
+    const contextConstraint = isPatchMode
+      ? "\n⚠️ 화면에 텍스트로 전체 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 절대 전체 완성된 코드를 다시 출력하지 마!\n🛠️ [부분 수정(패치) 전용 모드 활성화됨]: 수정이 필요한 특정 함수나 블록만 명확한 SEARCH/REPLACE 블록 형태로 제공하고, 여러 개일 경우 한 번에 복사할 수 있도록 마지막에 '하나의 코드 복사 박스' 안에 모아서 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지"
+      : "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.9)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.0)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1234,6 +1416,7 @@ ${contextConstraint}`;
   }
 
   window.generateSmartPrompt = async function() {
+    resetMobileViewportZoom();
     let ideasArr = parseIdeasData(localStorage.getItem('repo_idea_' + currentRepo) || '');
     const nonEmptyIdeas = ideasArr.filter(i => i.text && i.text.trim().length > 0);
     let checkedIdeas = nonEmptyIdeas.filter(i => i.checked);
@@ -1264,6 +1447,9 @@ ${contextConstraint}`;
     const hasImages = currentIdeaImages && currentIdeaImages.length > 0;
     const dateStr = new Date().toISOString().slice(0,10);
 
+    const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
+    const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
+
     try {
       if (hasImages) {
         if (navigator.clipboard && window.ClipboardItem) {
@@ -1273,14 +1459,10 @@ ${contextConstraint}`;
             await navigator.clipboard.write([item]);
           }
         }
-        const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
-        const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
-        
-        // 1. 먼저 파일 다운로드 확실히 트리거
         downloadTextPayload(combinedPayload, combinedFileName);
 
-        // 2. 사파리에서 다운로드 창이 밀리지 않도록 0.4초 딜레이 후 AI 탭 오픈
         setTimeout(() => {
+          resetMobileViewportZoom();
           const selected = getSelectedAITargets();
           selected.forEach((id, index) => {
             const target = AI_TARGETS.find(a => a.id === id);
@@ -1295,13 +1477,10 @@ ${contextConstraint}`;
         showToast(`📸 클립보드 [통합 사진] 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
       } else {
         await navigator.clipboard.writeText(promptText);
-        const codeFileName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
-        
-        // 1. 먼저 코드 파일 다운로드 트리거
-        downloadTextPayload(code, codeFileName);
+        downloadTextPayload(combinedPayload, combinedFileName);
 
-        // 2. 0.4초 딜레이 후 AI 탭 순차 오픈
         setTimeout(() => {
+          resetMobileViewportZoom();
           const selected = getSelectedAITargets();
           selected.forEach((id, index) => {
             const target = AI_TARGETS.find(a => a.id === id);
@@ -1313,7 +1492,7 @@ ${contextConstraint}`;
           });
         }, 400);
 
-        showToast(`📋 클립보드 복사 & [코드.txt] 다운로드 완료!`, 'ok');
+        showToast(`📋 클립보드 복사 & [통합 프롬프트+코드 .txt] 다운로드 완료!`, 'ok');
       }
     } catch (e) {
       showToast('❌ 패키징 중 오류: ' + e.message, 'err');
@@ -1532,11 +1711,67 @@ ${contextConstraint}`;
     return currentDraft || '';
   }
   
+  function syncSecondaryRepoSelects(repoList) {
+    const inboxSel = $('inboxProjectSelect');
+    const otherMoveSel = $('otherIdeaMoveSelect');
+    const names = (repoList && repoList.length > 0)
+      ? repoList.map(r => typeof r === 'string' ? r : r.name)
+      : JSON.parse(localStorage.getItem('cached_repo_names') || `["${currentRepo}"]`);
+
+    if (repoList && repoList.length > 0) {
+      safeSetLocalStorage('cached_repo_names', JSON.stringify(names));
+    }
+
+    if (inboxSel) {
+      const prevInboxVal = inboxSel.value || localStorage.getItem('last_inbox_project') || '';
+      inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === prevInboxVal) opt.selected = true;
+        inboxSel.appendChild(opt);
+      });
+      updateInboxSelectedHint(inboxSel.value);
+    }
+
+    if (otherMoveSel) {
+      const prevMoveVal = otherMoveSel.value || '';
+      otherMoveSel.innerHTML = '<option value="">프로젝트 선택...</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === prevMoveVal) opt.selected = true;
+        otherMoveSel.appendChild(opt);
+      });
+    }
+  }
+
+  function updateInboxSelectedHint(val) {
+    const hint = $('inboxSelectedProjectHint');
+    const info = $('splitSelectedInfo');
+    if (val) {
+      if (hint) {
+        hint.textContent = `📌 ${val}`;
+        hint.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300';
+      }
+      if (info) info.innerHTML = `선택됨: <b class="text-emerald-600 dark:text-emerald-400">${val}</b><br>→ 해당 앱으로 직행`;
+    } else {
+      if (hint) {
+        hint.textContent = '선택 없으면 미분류';
+        hint.className = 'text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200';
+      }
+      if (info) info.innerHTML = '선택 없으면<br>→ 미분류로 저장';
+    }
+  }
+
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
     if (!pat) {
       select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
+      syncSecondaryRepoSelects();
       loadRepoDocuments(); scanRepoFileTree(); syncLatestSourceFromGithub(); return;
     }
     try {
@@ -1553,9 +1788,14 @@ ${contextConstraint}`;
           });
           if (!newRepoSelect && !repos.some(r => r.name === currentRepo)) { currentRepo = repos[0].name; select.value = currentRepo; }
           localStorage.setItem('current_repo', currentRepo); updateActiveRepoDisplay();
+          syncSecondaryRepoSelects(repos);
         }
+      } else {
+        syncSecondaryRepoSelects();
       }
-    } catch(e) {}
+    } catch(e) {
+      syncSecondaryRepoSelects();
+    }
     if (newRepoSelect) {
         mainFile = 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
         if ($('mainFileInput')) $('mainFileInput').value = mainFile;
@@ -2175,6 +2415,15 @@ ${contextConstraint}`;
       loadRepoDocuments(); loadRepoIdea(); scanRepoFileTree(); await autoRestoreDocsFromDrive();
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
     });
+    $('fileTreeSelect')?.addEventListener('change', async e => {
+      if (!e.target.value) return;
+      mainFile = e.target.value;
+      localStorage.setItem('main_file_' + currentRepo, mainFile);
+      if ($('mainFileInput')) $('mainFileInput').value = mainFile;
+      await syncLatestSourceFromGithub(true);
+      updateFullContextBox();
+      loadGitHubCommitHistory();
+    });
     $('mainFileInput')?.addEventListener('change', async e => {
       mainFile = e.target.value.trim() || 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
@@ -2182,6 +2431,25 @@ ${contextConstraint}`;
     $('ideaImageInput')?.addEventListener('change', async e => {
       if (e.target.files) for(let f of e.target.files) { const b64 = await processImageFileToBase64(f).catch(()=>{}); if(b64) { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); } }
       e.target.value = '';
+    });
+    const savedPatchMode = localStorage.getItem('prompt_patch_mode');
+    if ($('promptPatchMode')) {
+      $('promptPatchMode').checked = savedPatchMode !== null ? (savedPatchMode === 'true') : true;
+      $('promptPatchMode').addEventListener('change', e => {
+        safeSetLocalStorage('prompt_patch_mode', String(e.target.checked));
+        if (localStorage.getItem('custom_context_' + currentRepo) === null) {
+          updateFullContextBox();
+        }
+      });
+    }
+    $('inboxProjectSelect')?.addEventListener('change', e => {
+      safeSetLocalStorage('last_inbox_project', e.target.value);
+      updateInboxSelectedHint(e.target.value);
+    });
+    window.addEventListener('pageshow', resetMobileViewportZoom);
+    window.addEventListener('focus', resetMobileViewportZoom);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) resetMobileViewportZoom();
     });
     document.addEventListener('paste', handlePasteEvent);
   }
