@@ -356,21 +356,21 @@
   
 <div id="tabSettingsContent" style="display:none;">
   <div class="card mb-4" style="border:2px solid #10b981">
-    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
-      <div class="flex gap-1 flex-wrap">
-        <button onclick="generateSmartPrompt()" class="btn btn-sm py-1.5 px-3 text-[10.5px] btn-emerald animate-pulse shadow-md">🚀 원버튼 패키지 & AI 출격</button>
-        <button onclick="copyFullContext()" class="btn btn-sm py-1.5 px-3 text-[10px] btn-primary">📋 맥락만 복사</button>
-        <button onclick="resetCustomContext()" class="btn btn-sm py-1.5 px-2 text-[10px]" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1">🔄 기본 맥락 복구</button>
+    <div class="flex flex-col gap-3 mb-2">
+      <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
+        <button onclick="generateSmartPrompt()" class="btn py-2.5 px-3 text-[11px] btn-emerald animate-pulse shadow-md w-full">🚀 원버튼 패키지 & AI 출격</button>
+        <button onclick="copyFullContext()" class="btn py-2.5 px-3 text-[11px] btn-primary w-full">📋 맥락만 복사</button>
+        <button onclick="resetCustomContext()" class="btn py-2.5 px-2 text-[11px] w-full" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1">🔄 기본 맥락 복구</button>
       </div>
     </div>
 
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
-      <div class="flex justify-between items-center mb-1.5 flex-wrap gap-1">
+      <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
         <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 기본 모드 대기</span>
       </div>
-      <div id="aiTargetList" class="flex flex-wrap gap-1.5"></div>
+      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"></div>
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
@@ -654,7 +654,7 @@
     const selected = getSelectedAITargets();
     container.innerHTML = AI_TARGETS.map(ai => {
       const isSel = selected.includes(ai.id);
-      return `<button type="button" onclick="toggleAITarget('${ai.id}')" class="ai-chip ${isSel ? 'selected' : ''}">${isSel ? '☑️' : '⬜'} ${ai.name}</button>`;
+      return `<button type="button" onclick="toggleAITarget('${ai.id}')" class="ai-chip w-full justify-center py-2 px-3 text-[11.5px] ${isSel ? 'selected' : ''}">${isSel ? '☑️' : '⬜'} ${ai.name}</button>`;
     }).join('');
     updateSmartPackageModeBadge();
   }
