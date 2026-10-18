@@ -27,7 +27,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.2.1 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.2.2 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +48,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.2.1">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.1">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.1">
+  <link rel="manifest" href="./manifest.json?v=8.2.2">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.2">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.2">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.1</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.2</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -374,8 +374,8 @@
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
-      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 자동 다운로드 + 선택 AI 새 창 오픈<br>
-      • <b>사진 있을 때 (역발상 원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 1개 자동 다운로드 + 선택 AI 새 창 오픈
+      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[통합 .txt]</b> 자동 다운로드<br>
+      • <b>사진 있을 때 (원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[통합 .txt]</b> 1개 자동 다운로드
     </p>
     
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -409,19 +409,21 @@
   
   <div class="card mb-4" style="border:2px dashed #9ca3af">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소</h2>
+      <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소 (영구 저장)</h2>
     </div>
-    <div class="flex flex-wrap gap-2 mb-2 items-center">
-      <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
-      <button onclick="clearOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#f3f4f6;color:#374151;border-color:#d1d5db">🗑️ 전체 비우기</button>
-      <button onclick="copyOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#e5e7eb;color:#111827;border-color:#d1d5db">📋 선택 복사</button>
-      <div class="flex-1 min-w-0"></div>
-      <select id="otherIdeaMoveSelect" class="input text-[10px] py-1 h-auto min-h-[28px] w-auto max-w-[120px]">
-        <option value="">프로젝트 선택...</option>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+      <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
+      <button onclick="clearOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 전체 비우기</button>
+      <button onclick="copyOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 선택 복사</button>
+      <button id="saveOtherIdeaBtn" onclick="saveOtherIdea(event, true)" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full font-bold shadow-sm" style="background:#e0e7ff;color:#3730a3;border-color:#c7d2fe">💾 변경사항 수동 저장</button>
+    </div>
+    <div class="flex gap-1.5 items-center mb-2 p-1.5 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700">
+      <select id="otherIdeaMoveSelect" class="input text-[11px] py-1 h-[34px] min-h-[34px] flex-1">
+        <option value="">이동할 대상 프로젝트 선택...</option>
       </select>
-      <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px] shadow-sm" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🚀 선택 항목 이동</button>
+      <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-1.5 px-3 text-[10.5px] shrink-0 font-bold shadow-sm" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🚀 선택 항목 이동</button>
     </div>
-    <p class="text-[10px] opacity-60 mb-2">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모입니다.</p>
+    <p class="text-[10px] opacity-60 mb-2">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모이며, 직접 삭제 전까지 드라이브에 영구 보관됩니다.</p>
     <div id="otherIdeaList" class="flex flex-col gap-2 mb-2 max-h-[200px] overflow-y-auto pr-1"></div>
     <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2 text-[11px] border-dashed border-2" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
   </div>
@@ -1102,41 +1104,64 @@ ${currentCode}`;
       return false;
   }
 
+  let otherIdeaDebounceTimer = null;
   window.renderOtherIdeas = function() {
     const container = $('otherIdeaList'); if (!container) return;
     container.innerHTML = currentOtherIdeas.map((idea, i) => `
       <div class="flex items-start gap-1.5 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(false);" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
-        <textarea class="textarea flex-1 text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(false);">${idea.text}</textarea>
-        <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(false);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
+        <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(null, false); scheduleAutoSaveOtherIdea();" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
+        <textarea class="textarea flex-1 text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(null, false); scheduleAutoSaveOtherIdea();" onblur="saveOtherIdea(null, true);">${idea.text}</textarea>
+        <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(null, true);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
       </div>
     `).join('');
     setTimeout(() => { container.querySelectorAll('textarea').forEach(autoResizeTextarea); }, 10);
   };
 
-  window.addOtherIdea = function(text = '') {
-    currentOtherIdeas.push({ id: Date.now(), text, checked: false });
-    renderOtherIdeas(); saveOtherIdea(false);
+  window.scheduleAutoSaveOtherIdea = function() {
+    clearTimeout(otherIdeaDebounceTimer);
+    otherIdeaDebounceTimer = setTimeout(() => {
+      saveOtherIdea(null, true);
+    }, 2000);
   };
 
-  window.saveOtherIdea = async function(triggerDrive = true) {
+  window.addOtherIdea = function(text = '') {
+    currentOtherIdeas.push({ id: Date.now(), text, checked: false });
+    renderOtherIdeas(); saveOtherIdea(null, true);
+  };
+
+  window.saveOtherIdea = async function(btnEvent = null, triggerDrive = true) {
     const val = stringifyIdeasData(currentOtherIdeas);
     safeSetLocalStorage('repo_idea_기타', val);
-    if(triggerDrive && isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: [] });
+    const isManualBtn = Boolean(btnEvent && (btnEvent.currentTarget || btnEvent.target));
+    if (triggerDrive) {
+      if (isManualBtn) showToast('💡 [미분류/기타] 로컬 저장 완료!', 'info');
+      if (isGoogleLoggedIn()) {
+        const btn = isManualBtn ? (btnEvent.currentTarget || btnEvent.target) : null;
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) btn.innerHTML = '☁️ 백업 중...';
+        const success = await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: [] });
+        if (btn) btn.innerHTML = originalText;
+        if (success) {
+          if (isManualBtn) showToast('☁️ 구글 드라이브(기타 아이디어) 영구 백업 완료!', 'ok');
+          log('☁️ [기타] 아이디어 드라이브 영구 백업 완료', 'ok');
+        }
+      }
+    }
   };
   
-  window.clearOtherIdea = function() {
-    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까?')) {
+  window.clearOtherIdea = async function() {
+    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까? (구글 드라이브 백업도 초기화됩니다)')) {
       currentOtherIdeas = []; renderOtherIdeas();
       localStorage.removeItem('repo_idea_기타');
-      saveOtherIdea(); showToast('전체 비워졌습니다.', 'ok');
+      if (isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: '[]', images: [] });
+      showToast('전체 비워졌습니다.', 'ok');
     }
   };
 
   window.clearCheckedOtherIdeas = function() {
     if(confirm('체크된 항목들을 삭제하시겠습니까?')) {
       currentOtherIdeas = currentOtherIdeas.filter(i => !i.checked);
-      renderOtherIdeas(); saveOtherIdea(true); showToast('선택 삭제 완료', 'ok');
+      renderOtherIdeas(); saveOtherIdea(null, true); showToast('선택 삭제 완료', 'ok');
     }
   };
 
@@ -1364,7 +1389,7 @@ ${currentCode}`;
   
     const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.`;
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.1)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.2)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1507,32 +1532,12 @@ ${contextConstraint}`;
           }
         }
         downloadTextPayload(combinedPayload, combinedFileName);
-
-        setTimeout(() => {
-          resetMobileViewportZoom();
-          const selected = getSelectedAITargets();
-          if (selected.length > 0) {
-             const firstAI = AI_TARGETS.find(a => a.id === selected[0]);
-             if (firstAI) openExternalAI(firstAI.url);
-             showAILauncher(selected);
-          }
-        }, 400);
-
+        resetMobileViewportZoom();
         showToast(`📸 클립보드 [통합 사진] 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
       } else {
         await navigator.clipboard.writeText(promptText);
         downloadTextPayload(combinedPayload, combinedFileName);
-
-        setTimeout(() => {
-          resetMobileViewportZoom();
-          const selected = getSelectedAITargets();
-          if (selected.length > 0) {
-             const firstAI = AI_TARGETS.find(a => a.id === selected[0]);
-             if (firstAI) openExternalAI(firstAI.url);
-             showAILauncher(selected);
-          }
-        }, 400);
-
+        resetMobileViewportZoom();
         showToast(`📋 클립보드 복사 & [통합 프롬프트+코드 .txt] 다운로드 완료!`, 'ok');
       }
     } catch (e) {
@@ -1899,7 +1904,12 @@ ${contextConstraint}`;
   
       data.files.forEach(file => {
         if (file.mimeType === 'application/json' && file.name === `[${currentRepo}]_idea_backup.json` && !ideaFileToRestore) ideaFileToRestore = file;
-        if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') restoreBackupJSON(file, 'repo_idea_기타');
+        if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') {
+          const currentLocalOther = localStorage.getItem('repo_idea_기타');
+          if (forceSyncIdeas || !currentLocalOther || currentLocalOther.trim() === '' || currentLocalOther === '[]') {
+            restoreBackupJSON(file, 'repo_idea_기타');
+          }
+        }
         if (file.mimeType === 'application/json' && file.name === '[inbox]_idea_backup.json') restoreBackupJSON(file, 'idea_inbox_global', true);
 
         if (file.mimeType === 'application/vnd.google-apps.document' && file.name.includes(`[${currentRepo}]`)) {
