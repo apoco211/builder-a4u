@@ -27,7 +27,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.2.2 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.2.3 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +48,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.2.2">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.2">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.2">
+  <link rel="manifest" href="./manifest.json?v=8.2.3">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.3">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.3">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.2</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.3</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -320,7 +320,7 @@
     </div>
   </div>
   
-  <div id="livePreviewBox" class="live-preview-box active mb-4 shadow-lg">
+  <div id="livePreviewBox" class="live-preview-box mb-4 shadow-lg">
     <div class="live-preview-header">
       <span id="previewTitle" class="flex items-center gap-1.5">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
@@ -375,7 +375,7 @@
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
       • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[통합 .txt]</b> 자동 다운로드<br>
-      • <b>사진 있을 때 (원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[통합 .txt]</b> 1개 자동 다운로드
+      • <b>사진 있을 때:</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[통합 .txt]</b> 1개 자동 다운로드
     </p>
     
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -1389,7 +1389,7 @@ ${currentCode}`;
   
     const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.`;
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.2)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.3)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1726,7 +1726,7 @@ ${contextConstraint}`;
     let currentDraft = localStorage.getItem(draftKey);
     if (!force && currentDraft && currentDraft.trim().length > 0) {
       if ($('codeEditor')) $('codeEditor').value = currentDraft;
-      showLivePreviewCurrent();
+      if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
       return currentDraft;
     }
     const pat = getGitHubPat();
@@ -1742,7 +1742,7 @@ ${contextConstraint}`;
           if (code) {
             safeSetLocalStorage(draftKey, code);
             if ($('codeEditor')) $('codeEditor').value = code;
-            showLivePreviewCurrent();
+            if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
             return code;
           }
         }
@@ -1751,7 +1751,12 @@ ${contextConstraint}`;
       if (!res.ok) res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${file}?t=${Date.now()}`, { headers: {} });
       if (res.ok) {
         const code = await res.text();
-        if (code) { safeSetLocalStorage(draftKey, code); if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent(); return code; }
+        if (code) {
+          safeSetLocalStorage(draftKey, code);
+          if ($('codeEditor')) $('codeEditor').value = code;
+          if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
+          return code;
+        }
       }
     } catch (e) {}
     return currentDraft || '';
@@ -2071,7 +2076,7 @@ ${contextConstraint}`;
       let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
       const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
       history.unshift(newEntry);
-      if (history.length > 8) history = history.slice(0, 8);
+      if (history.length > 4) history = history.slice(0, 4);
       safeSetLocalStorage(getDraftHistoryKey(), JSON.stringify(history));
       const status = $('draftStatus'); if (status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
     } catch(e) {}
@@ -2084,6 +2089,13 @@ ${contextConstraint}`;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
+
+    let safeCode = code;
+    // builder-a4u 자기 자신 미리보기 시 중복/무한 API 호출 및 GIS 중첩 실행 방지
+    if (file === 'index.html' && (currentRepo === 'builder-a4u' || code.includes('Builder-a4u'))) {
+      safeCode = safeCode.replace(/window\.onload\s*=\s*startApp;/g, 'console.log("미리보기 모드: 부모 앱과의 충돌 및 재귀 실행 방지를 위해 백그라운드 자동 실행이 비활성화되었습니다.");');
+    }
+
     const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
     if (isReactJsx) {
       let compName = 'App';
@@ -2091,14 +2103,20 @@ ${contextConstraint}`;
       if (defaultFnMatch) compName = defaultFnMatch[1];
       frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body><div id="root"></div><script type="text/babel" data-type="module">${code}<\/script></body></html>`;
     } else {
-      frame.srcdoc = code;
+      frame.srcdoc = safeCode;
     }
     box.classList.add('active');
     const titleObj = $('previewTitle');
     if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 실시간 미리보기 화면 (${file})`}`;
   }
   
-  function hideLivePreviewBox() { const box = $('livePreviewBox'); if (box) box.classList.remove('active'); }
+  function hideLivePreviewBox() {
+    const box = $('livePreviewBox');
+    const frame = $('livePreviewFrame');
+    if (box) box.classList.remove('active');
+    if (frame) frame.srcdoc = ''; // 메모리 즉각 반환 (GC 촉진)
+    showToast('👁️ 미리보기가 닫히고 메모리가 즉시 정리되었습니다.', 'info');
+  }
   
   window.capturePreviewScreen = async function() {
     const frame = $('livePreviewFrame');
