@@ -24,7 +24,7 @@
 }
 </style>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <title>Builder-a4u v8.1.9 - 원스톱 AI 자동 생성 빌더</title>
@@ -774,6 +774,9 @@
       const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
+      a.style.display = 'none';
+      a.tabIndex = -1;
+      a.setAttribute('aria-hidden', 'true');
       a.href = url;
       a.download = customFileName.endsWith('.txt') || customFileName.endsWith('.html') ? customFileName : customFileName + '.txt';
       document.body.appendChild(a); 
@@ -1234,6 +1237,9 @@ ${contextConstraint}`;
   }
 
   window.generateSmartPrompt = async function() {
+    if (document.activeElement && typeof document.activeElement.blur === 'function') {
+      document.activeElement.blur();
+    }
     let ideasArr = parseIdeasData(localStorage.getItem('repo_idea_' + currentRepo) || '');
     const nonEmptyIdeas = ideasArr.filter(i => i.text && i.text.trim().length > 0);
     let checkedIdeas = nonEmptyIdeas.filter(i => i.checked);
