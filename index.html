@@ -24,10 +24,10 @@
 }
 </style>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.1.9 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.2.5 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +48,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.1.9">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.1.9">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.1.9">
+  <link rel="manifest" href="./manifest.json?v=8.2.5">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.5">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.5">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.1.9</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.5</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -282,7 +282,7 @@
     <textarea id="codeEditor" class="textarea h-[120px] font-mono text-[12px]" placeholder="전체 코드(index.html, App.jsx 등)가 위치하는 곳입니다."></textarea>
     
     <div class="flex gap-1.5 mt-2 w-full">
-      <button id="togglePatchPanelBtn" class="btn btn-sm text-[11px] py-2 px-2 flex-1 shadow-sm border border-yellow-300 dark:border-yellow-700 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
+      <button id="togglePatchPanelBtn" onclick="toggleSmartPatchPanel()" class="btn btn-sm text-[11px] py-2 px-2 flex-1 shadow-sm border border-yellow-300 dark:border-yellow-700 bg-yellow-50 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
         ⚡ AI 부분 코드 스마트 교체 (패치) 열기/닫기
       </button>
     </div>
@@ -294,14 +294,14 @@
           <button onclick="smartPasteToTarget($('patchInput'))" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a">📋 붙여넣기</button>
           <button id="clearPatchInputBtn" onclick="if($('patchInput')) $('patchInput').value=''; showToast('🗑️ 부분 코드 입력창을 비웠습니다.','info');" class="btn btn-sm py-0.5 px-2 text-[9.5px] shadow-sm" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 지우기</button>
         </div>
-        <button id="undoPatchBtn" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
+        <button id="undoPatchBtn" onclick="undoSmartPatch()" class="hidden btn btn-sm py-0.5 px-2 text-[9.5px] font-bold shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">↩️ 방금 교체 취소(Undo)</button>
       </div>
       <textarea id="patchInput" class="textarea h-[90px] font-mono text-[11px] border-yellow-300 dark:border-yellow-700 focus:border-yellow-500" placeholder="SEARCH/REPLACE 블록은 물론, 일반 줄글 설명이나 수정 코드 조각을 그대로 붙여넣어도 AI가 자동으로 포맷을 변환하여 패치합니다."></textarea>
       <div class="flex gap-1.5 mt-2">
-        <button id="runSmartPatchBtn" class="btn btn-sm flex-1 py-2.5 text-[11px] btn-emerald shadow-md">
+        <button id="runSmartPatchBtn" onclick="runSmartPatch()" class="btn btn-sm flex-1 py-2.5 text-[11px] btn-emerald shadow-md">
           🔍 기존 코드에서 위치 찾아서 자동 교체하기
         </button>
-        <button id="stopSmartPatchBtn" class="hidden btn btn-sm py-2.5 px-3 text-[11px] font-black shadow-md" style="background:#ef4444;color:#ffffff;border-color:#dc2626">
+        <button id="stopSmartPatchBtn" onclick="stopSmartPatch()" class="hidden btn btn-sm py-2.5 px-3 text-[11px] font-black shadow-md" style="background:#ef4444;color:#ffffff;border-color:#dc2626">
           🛑 작동 중지
         </button>
       </div>
@@ -320,7 +320,7 @@
     </div>
   </div>
   
-  <div id="livePreviewBox" class="live-preview-box active mb-4 shadow-lg">
+  <div id="livePreviewBox" class="live-preview-box mb-4 shadow-lg">
     <div class="live-preview-header">
       <span id="previewTitle" class="flex items-center gap-1.5">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
@@ -374,13 +374,13 @@
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
-      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[코드.txt]</b> 자동 다운로드 + 선택 AI 새 창 오픈<br>
-      • <b>사진 있을 때 (역발상 원클릭):</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[프롬프트+전체코드 통합 .txt]</b> 1개 자동 다운로드 + 선택 AI 새 창 오픈
+      • <b>사진 없을 때:</b> 클립보드에 <b>[프롬프트]</b> 복사 + <b>[통합 .txt]</b> 자동 다운로드<br>
+      • <b>사진 있을 때:</b> 클립보드에 <b>[통합 사진]</b> 자동 복사 + <b>[통합 .txt]</b> 1개 자동 다운로드
     </p>
     
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
       <input type="checkbox" id="promptPatchMode" class="w-3.5 h-3.5 text-emerald-600 rounded focus:ring-emerald-500">
-      <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🛠️ 부분 수정(패치) 전용 모드 켜기 (전체 코드 재생성 금지 지시)</span>
+      <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🛠️ 부분 수정(패치) 전용 모드 켜기 (유연한 AI 판단 지원)</span>
     </label>
     
     <textarea id="fullContextBox" class="textarea h-[180px] text-[11px] font-mono" oninput="saveCustomContext(this.value)"></textarea>
@@ -409,19 +409,21 @@
   
   <div class="card mb-4" style="border:2px dashed #9ca3af">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소</h2>
+      <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소 (영구 저장)</h2>
     </div>
-    <div class="flex flex-wrap gap-2 mb-2 items-center">
-      <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
-      <button onclick="clearOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#f3f4f6;color:#374151;border-color:#d1d5db">🗑️ 전체 비우기</button>
-      <button onclick="copyOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#e5e7eb;color:#111827;border-color:#d1d5db">📋 선택 복사</button>
-      <div class="flex-1 min-w-0"></div>
-      <select id="otherIdeaMoveSelect" class="input text-[10px] py-1 h-auto min-h-[28px] w-auto max-w-[120px]">
-        <option value="">프로젝트 선택...</option>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2">
+      <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
+      <button onclick="clearOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 전체 비우기</button>
+      <button onclick="copyOtherIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 선택 복사</button>
+      <button id="saveOtherIdeaBtn" onclick="saveOtherIdea(event, true)" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full font-bold shadow-sm" style="background:#e0e7ff;color:#3730a3;border-color:#c7d2fe">💾 변경사항 수동 저장</button>
+    </div>
+    <div class="flex gap-1.5 items-center mb-2 p-1.5 rounded-xl bg-gray-50 dark:bg-gray-800/60 border border-gray-200 dark:border-gray-700">
+      <select id="otherIdeaMoveSelect" class="input text-[11px] py-1 h-[34px] min-h-[34px] flex-1">
+        <option value="">이동할 대상 프로젝트 선택...</option>
       </select>
-      <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px] shadow-sm" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🚀 선택 항목 이동</button>
+      <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-1.5 px-3 text-[10.5px] shrink-0 font-bold shadow-sm" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🚀 선택 항목 이동</button>
     </div>
-    <p class="text-[10px] opacity-60 mb-2">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모입니다.</p>
+    <p class="text-[10px] opacity-60 mb-2">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모이며, 직접 삭제 전까지 드라이브에 영구 보관됩니다.</p>
     <div id="otherIdeaList" class="flex flex-col gap-2 mb-2 max-h-[200px] overflow-y-auto pr-1"></div>
     <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2 text-[11px] border-dashed border-2" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
   </div>
@@ -518,7 +520,7 @@
            <label class="cursor-pointer text-[12px] font-bold px-1 py-1 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600 select-none flex justify-center items-center h-[26px]" title="사진 첨부" style="touch-action:manipulation">
               📸 첨부<input type="file" accept="image/*" class="hidden" id="inboxPhotoInput">
            </label>
-           <button type="button" onclick="pasteInboxImageFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보드 사진 붙여넣기" style="touch-action:manipulation">📋 사진붙이기</button>
+           <button type="button" onclick="pasteInboxImageFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보 사진 붙여넣기" style="touch-action:manipulation">📋 사진붙이기</button>
            <button type="button" onclick="pasteInboxTextFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-800/50 border border-emerald-200 dark:border-emerald-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보드 텍스트 붙여넣기" style="touch-action:manipulation">📝 Text붙이기</button>
         </div>
         <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:86px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
@@ -600,6 +602,22 @@
     </div>
   </div>
 </div>
+
+<!-- AI PWA/외부 브라우저 강제 런처 오버레이 -->
+<div id="aiLauncherBar" class="fixed inset-0 bg-black/60 z-[10000] hidden flex flex-col justify-end">
+  <div class="bg-white dark:bg-gray-800 rounded-t-2xl p-5 shadow-2xl transform transition-transform pb-8">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="font-bold text-[14px] text-gray-800 dark:text-gray-100 flex items-center gap-2">
+        <span class="animate-bounce">🚀</span> 선택한 AI 열기 (팝업 우회)
+      </h3>
+      <button onclick="hideAILauncher()" class="p-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-500 hover:text-gray-800 w-7 h-7 flex items-center justify-center text-[10px]">✕</button>
+    </div>
+    <p class="text-[11px] text-gray-500 dark:text-gray-400 mb-4 leading-relaxed">
+      모바일 보안 정책상 한 번에 하나의 앱만 자동으로 열립니다. 첫 번째 AI에 복사된 내용을 붙여넣고 다시 돌아온 뒤, 아래 버튼을 눌러 다음 AI를 외부 브라우저(사파리/PWA)로 100% 안전하게 띄우세요.
+    </p>
+    <div id="aiLauncherList" class="flex flex-col gap-2"></div>
+  </div>
+</div>
   
 <script>
   const $ = id => document.getElementById(id);
@@ -620,6 +638,22 @@
   let currentPatchAbortController = null;
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
+
+  function normalizeLineEndings(str) {
+    return typeof str === 'string' ? str.replace(/\r\n/g, '\n').replace(/\r/g, '\n') : '';
+  }
+
+  function resetMobileViewportZoom() {
+    try {
+      if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON'].includes(document.activeElement.tagName)) {
+        document.activeElement.blur();
+      }
+      const vp = document.querySelector('meta[name="viewport"]');
+      if (vp) {
+        vp.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no');
+      }
+    } catch(e) {}
+  }
 
   const AI_TARGETS = [
     { id: 'gemini', name: '♊ Gemini', url: 'https://gemini.google.com/app' },
@@ -667,7 +701,7 @@
       badge.textContent = `📸 역발상 모드 (사진 ${currentIdeaImages.length}장 클립보드 + 통합 .txt 다운)`;
       badge.className = 'text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300';
     } else {
-      badge.textContent = '📝 기본 모드 (프롬프트 클립보드 + 코드 .txt 다운)';
+      badge.textContent = '📝 기본 모드 (프롬프트 클립보드 + 통합 .txt 다운)';
       badge.className = 'text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300';
     }
   }
@@ -696,6 +730,168 @@
   
   window.lastPrePatchCode = null;
   window.aiIconOptions = { color: '#10b981', emoji: '✨' };
+
+  window.toggleSmartPatchPanel = function() {
+    const panel = $('smartPatchPanel');
+    if (!panel) return;
+    panel.classList.toggle('hidden');
+  };
+
+  function parseSearchReplaceBlocks(patchText) {
+    const blocks = [];
+    const norm = normalizeLineEndings(patchText);
+    const regex = /<{5,9}\s*SEARCH\s*\n([\s\S]*?)\n={5,9}\s*\n([\s\S]*?)\n>{5,9}\s*REPLACE/g;
+    let m;
+    while ((m = regex.exec(norm)) !== null) {
+      blocks.push({ search: m[1], replace: m[2] });
+    }
+    return blocks;
+  }
+
+  function replaceWithFlexibleIndent(sourceCode, searchBlock, replaceBlock) {
+    const src = normalizeLineEndings(sourceCode);
+    const sBlock = normalizeLineEndings(searchBlock);
+    const rBlock = normalizeLineEndings(replaceBlock);
+
+    if (src.includes(sBlock)) {
+      return { success: true, code: src.replace(sBlock, () => rBlock) };
+    }
+
+    const sTrim = sBlock.trim();
+    if (sTrim && src.includes(sTrim)) {
+      return { success: true, code: src.replace(sTrim, () => rBlock.trim()) };
+    }
+
+    const srcLines = src.split('\n');
+    const searchLines = sBlock.split('\n');
+    while (searchLines.length > 0 && searchLines[0].trim() === '') searchLines.shift();
+    while (searchLines.length > 0 && searchLines[searchLines.length - 1].trim() === '') searchLines.pop();
+
+    if (searchLines.length === 0) return { success: false, code: sourceCode };
+
+    for (let i = 0; i <= srcLines.length - searchLines.length; i++) {
+      let match = true;
+      for (let j = 0; j < searchLines.length; j++) {
+        if (srcLines[i + j].trim() !== searchLines[j].trim()) {
+          match = false;
+          break;
+        }
+      }
+      if (match) {
+        const before = srcLines.slice(0, i);
+        const after = srcLines.slice(i + searchLines.length);
+        const newLines = [...before, rBlock, ...after];
+        return { success: true, code: newLines.join('\n') };
+      }
+    }
+    return { success: false, code: sourceCode };
+  }
+
+  window.runSmartPatch = async function() {
+    const editor = $('codeEditor');
+    const patchEl = $('patchInput');
+    if (!editor || !patchEl) return;
+
+    let currentCode = editor.value || localStorage.getItem(getDraftCodeKey()) || '';
+    const rawPatch = patchEl.value.trim();
+
+    if (!currentCode.trim()) return showToast('교체할 원본 전체 코드가 없습니다.', 'err');
+    if (!rawPatch) return showToast('붙여넣은 부분 코드(패치) 내용이 없습니다.', 'err');
+
+    let blocks = parseSearchReplaceBlocks(rawPatch);
+    const runBtn = $('runSmartPatchBtn');
+    const stopBtn = $('stopSmartPatchBtn');
+    const undoBtn = $('undoPatchBtn');
+
+    if (blocks.length === 0) {
+      try {
+        if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '🤖 AI가 패치 위치 분석 중...'; }
+        if (stopBtn) stopBtn.classList.remove('hidden');
+        currentPatchAbortController = new AbortController();
+        log('🤖 일반 코드 조각을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
+
+        const aiPrompt = `다음 원본 소스코드에서 사용자가 요청한 부분 코드/수정사항을 찾아 정확히 교체하기 위한 SEARCH/REPLACE 블록만 출력해줘. 설명 없이 오직 아래 포맷으로만 응답해:
+<<<<<<< SEARCH
+(원본에서 찾을 정확한 코드)
+=======
+(교체할 새로운 코드)
+>>>>>>> REPLACE
+
+[사용자 입력 패치/설명]
+${rawPatch}
+
+[원본 코드]
+${currentCode}`;
+
+        const aiPatchText = await callGeminiAPI(aiPrompt, 0.1, false, currentPatchAbortController.signal);
+        blocks = parseSearchReplaceBlocks(aiPatchText);
+      } catch (e) {
+        showToast('❌ 스마트 패치 변환 실패: ' + e.message, 'err');
+        log('❌ 패치 실패: ' + e.message, 'err');
+        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+        if (stopBtn) stopBtn.classList.add('hidden');
+        return;
+      } finally {
+        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+        if (stopBtn) stopBtn.classList.add('hidden');
+        currentPatchAbortController = null;
+      }
+    }
+
+    if (blocks.length === 0) {
+      return showToast('유효한 SEARCH/REPLACE 블록을 찾지 못했습니다.', 'err');
+    }
+
+    window.lastPrePatchCode = currentCode;
+    let updatedCode = normalizeLineEndings(currentCode);
+    let successCount = 0;
+    let failCount = 0;
+
+    blocks.forEach((b, idx) => {
+      const res = replaceWithFlexibleIndent(updatedCode, b.search, b.replace);
+      if (res.success) {
+        updatedCode = res.code;
+        successCount++;
+        log(`✅ 패치 블록 #${idx + 1} 교체 성공`, 'ok');
+      } else {
+        failCount++;
+        log(`⚠️ 패치 블록 #${idx + 1} 일치 구간을 찾지 못함`, 'err');
+      }
+    });
+
+    if (successCount > 0) {
+      editor.value = updatedCode;
+      saveDraftCustom(updatedCode, `스마트 패치 (${successCount}개 블록 적용)`);
+      showLivePreviewCurrent(updatedCode, `👁️ 스마트 패치 적용됨 (${successCount}/${blocks.length})`);
+      if (undoBtn) undoBtn.classList.remove('hidden');
+      if (failCount === 0) {
+        showToast(`🎉 총 ${successCount}개 부분 코드 블록이 완벽하게 교체되었습니다!`, 'ok');
+      } else {
+        showToast(`⚠️ ${successCount}개 성공, ${failCount}개 실패 (로그 확인)`, 'info');
+      }
+    } else {
+      showToast('❌ 일치하는 원본 코드 위치를 찾지 못했습니다.', 'err');
+    }
+  };
+
+  window.stopSmartPatch = function() {
+    if (currentPatchAbortController) {
+      currentPatchAbortController.abort();
+      currentPatchAbortController = null;
+      showToast('🛑 스마트 패치 분석을 중지했습니다.', 'info');
+    }
+  };
+
+  window.undoSmartPatch = function() {
+    if (!window.lastPrePatchCode) return showToast('되돌릴 이전 코드 기록이 없습니다.', 'err');
+    const editor = $('codeEditor');
+    if (editor) editor.value = window.lastPrePatchCode;
+    saveDraftCustom(window.lastPrePatchCode, '패치 취소(Undo) 복원');
+    showLivePreviewCurrent(window.lastPrePatchCode, '👁️ 패치 취소됨 (이전 코드)');
+    window.lastPrePatchCode = null;
+    if ($('undoPatchBtn')) $('undoPatchBtn').classList.add('hidden');
+    showToast('↩️ 방금 적용한 부분 코드 교체를 취소하고 원래대로 되돌렸습니다!', 'ok');
+  };
   
   function safeSetLocalStorage(key, value) {
       try {
@@ -741,20 +937,28 @@
     if (el) el.textContent = currentRepo;
   }
   
+  function extractVersionFromCode(rawCode) {
+    if (!rawCode || typeof rawCode !== 'string') return '';
+    let c = rawCode;
+    try { c = normalizeLineEndings(c); } catch(e) {}
+    let m = c.match(/<title[^>]*>[^<]*?v(\d+\.\d+(?:\.\d+)?)[^<]*<\/title>/i);
+    if (m) return 'v' + m[1];
+    m = c.match(/<h1[^>]*>[^<]*?v(\d+\.\d+(?:\.\d+)?)[^<]*<\/h1>/i);
+    if (m) return 'v' + m[1];
+    m = c.match(/Builder-a4u\s+v?(\d+\.\d+(?:\.\d+)?)/i);
+    if (m) return 'v' + m[1];
+    m = c.match(/(?:version|VERSION|ver)\s*[:=]\s*['"`]v?(\d+\.\d+(?:\.\d+)?)['"`]/);
+    if (m) return 'v' + m[1];
+    m = c.match(/\bv(\d+\.\d+(?:\.\d+)?)\b/i);
+    if (m) return 'v' + m[1];
+    return '';
+  }
+
   function getTargetAppVersion() {
     const editor = $('codeEditor');
     let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
     if (!code) return '버전 미상';
-    try { code = normalizeLineEndings(code); } catch(e) {}
-    let m = code.match(/<title[^>]*>.*?v?(\d+\.\d+(?:\.\d+)?).*?<\/title>/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/<h1[^>]*>.*?v?(\d+\.\d+(?:\.\d+)?).*?<\/h1>/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/Builder-a4u\s+v?(\d+\.\d+(?:\.\d+)?)/i);
-    if (m) return 'v' + m[1];
-    m = code.match(/v(\d+\.\d+(?:\.\d+)?)/);
-    if (m) return 'v' + m[1];
-    return '버전 미상';
+    return extractVersionFromCode(code) || '버전 미상';
   }
   
   function isGoogleLoggedIn() {
@@ -774,9 +978,6 @@
       const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
-      a.style.display = 'none';
-      a.tabIndex = -1;
-      a.setAttribute('aria-hidden', 'true');
       a.href = url;
       a.download = customFileName.endsWith('.txt') || customFileName.endsWith('.html') ? customFileName : customFileName + '.txt';
       document.body.appendChild(a); 
@@ -911,41 +1112,64 @@
       return false;
   }
 
+  let otherIdeaDebounceTimer = null;
   window.renderOtherIdeas = function() {
     const container = $('otherIdeaList'); if (!container) return;
     container.innerHTML = currentOtherIdeas.map((idea, i) => `
       <div class="flex items-start gap-1.5 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-        <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(false);" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
-        <textarea class="textarea flex-1 text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(false);">${idea.text}</textarea>
-        <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(false);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
+        <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(null, false); scheduleAutoSaveOtherIdea();" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
+        <textarea class="textarea flex-1 text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(null, false); scheduleAutoSaveOtherIdea();" onblur="saveOtherIdea(null, true);">${idea.text}</textarea>
+        <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(null, true);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
       </div>
     `).join('');
     setTimeout(() => { container.querySelectorAll('textarea').forEach(autoResizeTextarea); }, 10);
   };
 
-  window.addOtherIdea = function(text = '') {
-    currentOtherIdeas.push({ id: Date.now(), text, checked: false });
-    renderOtherIdeas(); saveOtherIdea(false);
+  window.scheduleAutoSaveOtherIdea = function() {
+    clearTimeout(otherIdeaDebounceTimer);
+    otherIdeaDebounceTimer = setTimeout(() => {
+      saveOtherIdea(null, true);
+    }, 2000);
   };
 
-  window.saveOtherIdea = async function(triggerDrive = true) {
+  window.addOtherIdea = function(text = '') {
+    currentOtherIdeas.push({ id: Date.now(), text, checked: false });
+    renderOtherIdeas(); saveOtherIdea(null, true);
+  };
+
+  window.saveOtherIdea = async function(btnEvent = null, triggerDrive = true) {
     const val = stringifyIdeasData(currentOtherIdeas);
     safeSetLocalStorage('repo_idea_기타', val);
-    if(triggerDrive && isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: [] });
+    const isManualBtn = Boolean(btnEvent && (btnEvent.currentTarget || btnEvent.target));
+    if (triggerDrive) {
+      if (isManualBtn) showToast('💡 [미분류/기타] 로컬 저장 완료!', 'info');
+      if (isGoogleLoggedIn()) {
+        const btn = isManualBtn ? (btnEvent.currentTarget || btnEvent.target) : null;
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) btn.innerHTML = '☁️ 백업 중...';
+        const success = await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: [] });
+        if (btn) btn.innerHTML = originalText;
+        if (success) {
+          if (isManualBtn) showToast('☁️ 구글 드라이브(기타 아이디어) 영구 백업 완료!', 'ok');
+          log('☁️ [기타] 아이디어 드라이브 영구 백업 완료', 'ok');
+        }
+      }
+    }
   };
   
-  window.clearOtherIdea = function() {
-    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까?')) {
+  window.clearOtherIdea = async function() {
+    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까? (구글 드라이브 백업도 초기화됩니다)')) {
       currentOtherIdeas = []; renderOtherIdeas();
       localStorage.removeItem('repo_idea_기타');
-      saveOtherIdea(); showToast('전체 비워졌습니다.', 'ok');
+      if (isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: '[]', images: [] });
+      showToast('전체 비워졌습니다.', 'ok');
     }
   };
 
   window.clearCheckedOtherIdeas = function() {
     if(confirm('체크된 항목들을 삭제하시겠습니까?')) {
       currentOtherIdeas = currentOtherIdeas.filter(i => !i.checked);
-      renderOtherIdeas(); saveOtherIdea(true); showToast('선택 삭제 완료', 'ok');
+      renderOtherIdeas(); saveOtherIdea(null, true); showToast('선택 삭제 완료', 'ok');
     }
   };
 
@@ -1150,7 +1374,14 @@
           $('tab' + t.charAt(0).toUpperCase() + t.slice(1) + 'Btn').classList.toggle('active', tabName === t);
       }
     });
+    if (tabName === 'build') {
+      const box = $('versionHistoryBox');
+      if (box && (box.textContent.includes('버튼을 눌러') || box.dataset.repo !== currentRepo)) {
+        loadGitHubCommitHistory();
+      }
+    }
     if (tabName === 'settings') { loadRepoIdea(); updateFullContextBox(); renderAITargets(); }
+    if (tabName === 'inbox') { syncSecondaryRepoSelects(); }
   };
   
   function getFullContextText() {
@@ -1170,9 +1401,9 @@
       }).join('\n') + '\n';
     }
   
-    const contextConstraint = "\n⚠️ 화면에 텍스트로 코드를 출력하면 브라우저 메모리가 부족해서 앱이 굳어버려. 화면에 긴 코드를 절대 직접 타이핑하지 마. 코드가 2000줄 이상인 경우는 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 사용 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n⚠️ 특별한 요청이 있지 않는 한 기존의 디자인과 기능 절대 변경금지";
+    const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.`;
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.1.9)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.5)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -1183,6 +1414,7 @@ ${extraDocsText}
 [프로젝트 주요 링크]
 1. repo: https://github.com/${GITHUB_USER}/${repo}
 2. pages: https://${GITHUB_USER}.github.io/${repo}/
+
 ${contextConstraint}`;
   }
   
@@ -1236,10 +1468,39 @@ ${contextConstraint}`;
     });
   }
 
+  window.openExternalAI = function(url) {
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer external';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  window.showAILauncher = function(selectedIds) {
+    const bar = $('aiLauncherBar');
+    const list = $('aiLauncherList');
+    if (!bar || !list) return;
+    list.innerHTML = selectedIds.map(id => {
+      const ai = AI_TARGETS.find(a => a.id === id);
+      if(!ai) return '';
+      let bgStyle = 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200 border-transparent';
+      if (id === 'gemini') bgStyle = 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:border-blue-800';
+      if (id === 'meta') bgStyle = 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800';
+      if (id === 'chatgpt') bgStyle = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800';
+      return `<button onclick="openExternalAI('${ai.url}')" class="btn w-full py-4 text-[14px] font-black shadow-sm flex items-center justify-center gap-2 border ${bgStyle}">${ai.name} 외부 열기 🚀</button>`;
+    }).join('');
+    bar.classList.remove('hidden');
+  };
+
+  window.hideAILauncher = function() {
+    const bar = $('aiLauncherBar');
+    if (bar) bar.classList.add('hidden');
+  };
+
   window.generateSmartPrompt = async function() {
-    if (document.activeElement && typeof document.activeElement.blur === 'function') {
-      document.activeElement.blur();
-    }
+    resetMobileViewportZoom();
     let ideasArr = parseIdeasData(localStorage.getItem('repo_idea_' + currentRepo) || '');
     const nonEmptyIdeas = ideasArr.filter(i => i.text && i.text.trim().length > 0);
     let checkedIdeas = nonEmptyIdeas.filter(i => i.checked);
@@ -1258,17 +1519,22 @@ ${contextConstraint}`;
     const idea = checkedIdeas.map(i => '- ' + i.text.trim()).join('\n');
     const isPatchMode = $('promptPatchMode')?.checked;
     
-    let instruction = isPatchMode
-        ? `⚠️ 주의: 지금 당장 전체 완성된 코드를 출력하지 마! (브라우저 뻗음 방지)\n1. 업데이트 아이디어를 어떻게 구현할지 방향성을 먼저 제시해줘.\n2. 내가 "코드 수정해줘"라고 요청하면, 절대 전체 코드를 다시 출력하지 말고 수정이 필요한 특정 함수나 블록만 '부분 코드' 형태로 제공해줘.\n3. 부분 코드를 제공할 때는 내가 쉽게 복사해서 끼워 넣을 수 있도록 기존 코드의 어떤 부분을 어떻게 바꿀지 명확한 블록 단위(SEARCH/REPLACE 형태 또는 함수 전체)로 줘.\n4. (중요) 여러 개의 SEARCH/REPLACE 블록을 만들게 되면, 사용자가 한 번에 복사할 수 있도록 마지막에 모든 블록들을 모아서 '하나의 코드 복사 박스' 안에 넣어줘.\n5. 빌드를 할 때는 버전넘버를 올리고 빌드 후엔 빌드넘버와 업데이트 내용을 바로 복사 할 수 있도록 카피박스형태로 만들어서 같이 올려줘.`
-        : `⚠️ 주의: 지금 당장 완성된 코드를 작성하거나 빌드하지 마!\n1. 내가 제시한 업데이트 아이디어와 요구사항을 어떻게 구현할지 방향성을 먼저 제시해줘.\n2. 예상되는 문제점이나 더 나은 UI/UX 개선점이 있다면 나에게 역으로 질문하거나 제안해줘.\n3. 우리가 충분히 대화하고 방향성에 합의한 뒤, 내가 명시적으로 "이제 전체 코드 빌드해줘"라고 요청할 때만 전체 완성 코드를 단일 파일로 제공해줘.\n4. 빌드를 할 때는 버전넘버를 올리고 빌드 후엔 빌드넘버와 업데이트 내용을 바로 복사 할 수 있도록 카피박스형태로 만들어서 같이 올려줘.`;
+    const instructionPatch = `=========================\n🤖 [AI 전용 지시사항: 즉시 코딩 금지 & 부분 패치 우선 모드]\n방금 첨부한 현재 버전의 소스코드와 위의 [작업 맥락], [업데이트 아이디어]를 확인해줘. (사진이 첨부되었다면 함께 참고해줘.)\n\n⚠️ 주의: 지금 당장 코드를 작성하거나 수정하지 마! 반드시 아래 순서대로 진행해줘.\n1. [방향성 제시]: 내가 제시한 업데이트 아이디어를 어떻게 구현할지 방향성과 개선 제안을 먼저 설명해줘.\n2. [AI 자율 판단 - 부분 패치 vs 전체 코드 제안]:\n   - 기본적으로 이 작업은 수정이 필요한 특정 함수나 구간만 교체하는 '부분 수정(패치) 모드'야.\n   - 하지만 네가 분석했을 때 수정 범위가 너무 넓거나 코드 구조/복잡성 측면에서 부분 패치로 진행하면 코드가 꼬이거나 누락될 위험이 크다고 판단되면, 방향성 설명 끝에 "⚠️ 이번 작업은 코드 양과 복잡도를 고려할 때 [전체 코드 파일]로 한 번에 받는 것이 훨씬 안전하고 유리합니다. 전체 완성 코드로 빌드해 드릴까요?"라고 먼저 제안해줘.\n3. [코드 제공 방식]:\n   - (부분 패치 진행 시): 내가 "코드 수정해줘"라고 하면, 기존 코드의 어느 부분을 바꿀지 명확한 SEARCH/REPLACE 블록 형태로만 제공해줘. 블록이 여러 개일 경우 내가 한 번에 복사할 수 있도록 마지막에 '단 하나의 코드 복사 박스' 안에 모든 블록을 모아서 넣어줘.\n   - (전체 코드 전환 합의 시): 내가 전체 코드로 달라고 동의하거나 요청하면, 채팅창에 직접 코드를 타이핑하지 말고 수정 사항이 모두 반영된 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 확장자)로 생성해서 바로 다운로드할 수 있는 링크로 제공해줘.\n4. [버전 및 빌드 요약]: 코드를 제공할 때는 버전 넘버를 올리고, 내가 바로 복사해서 쓸 수 있도록 [빌드 넘버 + 업데이트 내용 요약]을 별도의 카피박스(코드 블록) 형태로 함께 올려줘.\n=========================`;
 
-    const promptText = `${context}\n\n[업데이트 아이디어]\n${idea ? idea : '기재된 업데이트 아이디어가 없습니다.'}\n\n=========================\n🤖 [AI 전용 지시사항: 즉시 코딩 금지]\n방금 첨부한 현재 버전의 소스코드(.txt)와 위의 [작업 맥락], 그리고 [업데이트 아이디어]를 확인해줘. (사진이 추가로 첨부되었다면 함께 참고해줘.)\n\n${instruction}\n=========================`;
+    const instructionFull = `=========================\n🤖 [AI 전용 지시사항: 즉시 코딩 금지 & 전체 코드 빌드 모드]\n방금 첨부한 현재 버전의 소스코드와 위의 [작업 맥락], [업데이트 아이디어]를 확인해줘. (사진이 첨부되었다면 함께 참고해줘.)\n\n⚠️ 주의: 지금 당장 완성된 코드를 작성하거나 빌드하지 마! 반드시 아래 순서대로 진행해줘.\n1. [방향성 제시]: 내가 제시한 업데이트 아이디어와 요구사항을 어떻게 구현할지 방향성을 먼저 제시하고, 예상되는 문제점이나 더 나은 UI/UX 개선점이 있다면 역으로 질문하거나 제안해줘.\n2. [전체 코드 단일 파일 제공]: 우리가 충분히 대화하고 방향성에 합의한 뒤, 내가 명시적으로 "이제 전체 코드 빌드해줘"라고 요청할 때만 전체 완성 코드를 만들어줘. 이때 채팅창에 긴 코드를 직접 타이핑하지 말고, 전체 완성 코드를 단일 파일(예: updated_code.txt 또는 실제 확장자)로 생성한 뒤 바로 다운로드할 수 있는 링크로 제공해줘.\n3. [버전 및 빌드 요약]: 빌드를 할 때는 버전 넘버를 올리고, 빌드 후엔 내가 바로 복사할 수 있도록 [빌드 넘버 + 업데이트 내용 요약]을 별도의 카피박스(코드 블록) 형태로 함께 올려줘.\n=========================`;
+
+    const instruction = isPatchMode ? instructionPatch : instructionFull;
+
+    const promptText = `${context}\n\n[업데이트 아이디어]\n${idea ? idea : '기재된 업데이트 아이디어가 없습니다.'}\n\n${instruction}`;
 
     const editor = $('codeEditor');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
     const hasImages = currentIdeaImages && currentIdeaImages.length > 0;
     const dateStr = new Date().toISOString().slice(0,10);
+
+    const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
+    const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
 
     try {
       if (hasImages) {
@@ -1279,47 +1545,14 @@ ${contextConstraint}`;
             await navigator.clipboard.write([item]);
           }
         }
-        const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
-        const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
-        
-        // 1. 먼저 파일 다운로드 확실히 트리거
         downloadTextPayload(combinedPayload, combinedFileName);
-
-        // 2. 사파리에서 다운로드 창이 밀리지 않도록 0.4초 딜레이 후 AI 탭 오픈
-        setTimeout(() => {
-          const selected = getSelectedAITargets();
-          selected.forEach((id, index) => {
-            const target = AI_TARGETS.find(a => a.id === id);
-            if (target) {
-              setTimeout(() => {
-                window.open(target.url, '_blank');
-              }, index * 400);
-            }
-          });
-        }, 400);
-
+        resetMobileViewportZoom();
         showToast(`📸 클립보드 [통합 사진] 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
       } else {
         await navigator.clipboard.writeText(promptText);
-        const codeFileName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}_${dateStr}.txt`;
-        
-        // 1. 먼저 코드 파일 다운로드 트리거
-        downloadTextPayload(code, codeFileName);
-
-        // 2. 0.4초 딜레이 후 AI 탭 순차 오픈
-        setTimeout(() => {
-          const selected = getSelectedAITargets();
-          selected.forEach((id, index) => {
-            const target = AI_TARGETS.find(a => a.id === id);
-            if (target) {
-              setTimeout(() => {
-                window.open(target.url, '_blank');
-              }, index * 400);
-            }
-          });
-        }, 400);
-
-        showToast(`📋 클립보드 복사 & [코드.txt] 다운로드 완료!`, 'ok');
+        downloadTextPayload(combinedPayload, combinedFileName);
+        resetMobileViewportZoom();
+        showToast(`📋 클립보드 복사 & [통합 프롬프트+코드 .txt] 다운로드 완료!`, 'ok');
       }
     } catch (e) {
       showToast('❌ 패키징 중 오류: ' + e.message, 'err');
@@ -1507,7 +1740,7 @@ ${contextConstraint}`;
     let currentDraft = localStorage.getItem(draftKey);
     if (!force && currentDraft && currentDraft.trim().length > 0) {
       if ($('codeEditor')) $('codeEditor').value = currentDraft;
-      showLivePreviewCurrent();
+      if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
       return currentDraft;
     }
     const pat = getGitHubPat();
@@ -1523,7 +1756,7 @@ ${contextConstraint}`;
           if (code) {
             safeSetLocalStorage(draftKey, code);
             if ($('codeEditor')) $('codeEditor').value = code;
-            showLivePreviewCurrent();
+            if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
             return code;
           }
         }
@@ -1532,17 +1765,78 @@ ${contextConstraint}`;
       if (!res.ok) res = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${file}?t=${Date.now()}`, { headers: {} });
       if (res.ok) {
         const code = await res.text();
-        if (code) { safeSetLocalStorage(draftKey, code); if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent(); return code; }
+        if (code) {
+          safeSetLocalStorage(draftKey, code);
+          if ($('codeEditor')) $('codeEditor').value = code;
+          if ($('livePreviewBox')?.classList.contains('active')) showLivePreviewCurrent();
+          return code;
+        }
       }
     } catch (e) {}
     return currentDraft || '';
   }
   
+  function syncSecondaryRepoSelects(repoList) {
+    const inboxSel = $('inboxProjectSelect');
+    const otherMoveSel = $('otherIdeaMoveSelect');
+    const names = (repoList && repoList.length > 0)
+      ? repoList.map(r => typeof r === 'string' ? r : r.name)
+      : JSON.parse(localStorage.getItem('cached_repo_names') || `["${currentRepo}"]`);
+
+    if (repoList && repoList.length > 0) {
+      safeSetLocalStorage('cached_repo_names', JSON.stringify(names));
+    }
+
+    if (inboxSel) {
+      const prevInboxVal = inboxSel.value || localStorage.getItem('last_inbox_project') || '';
+      inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === prevInboxVal) opt.selected = true;
+        inboxSel.appendChild(opt);
+      });
+      updateInboxSelectedHint(inboxSel.value);
+    }
+
+    if (otherMoveSel) {
+      const prevMoveVal = otherMoveSel.value || '';
+      otherMoveSel.innerHTML = '<option value="">프로젝트 선택...</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === prevMoveVal) opt.selected = true;
+        otherMoveSel.appendChild(opt);
+      });
+    }
+  }
+
+  function updateInboxSelectedHint(val) {
+    const hint = $('inboxSelectedProjectHint');
+    const info = $('splitSelectedInfo');
+    if (val) {
+      if (hint) {
+        hint.textContent = `📌 ${val}`;
+        hint.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300';
+      }
+      if (info) info.innerHTML = `선택됨: <b class="text-emerald-600 dark:text-emerald-400">${val}</b><br>→ 해당 앱으로 직행`;
+    } else {
+      if (hint) {
+        hint.textContent = '선택 없으면 미분류';
+        hint.className = 'text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200';
+      }
+      if (info) info.innerHTML = '선택 없으면<br>→ 미분류로 저장';
+    }
+  }
+
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
     if (!pat) {
       select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
+      syncSecondaryRepoSelects();
       loadRepoDocuments(); scanRepoFileTree(); syncLatestSourceFromGithub(); return;
     }
     try {
@@ -1559,14 +1853,19 @@ ${contextConstraint}`;
           });
           if (!newRepoSelect && !repos.some(r => r.name === currentRepo)) { currentRepo = repos[0].name; select.value = currentRepo; }
           localStorage.setItem('current_repo', currentRepo); updateActiveRepoDisplay();
+          syncSecondaryRepoSelects(repos);
         }
+      } else {
+        syncSecondaryRepoSelects();
       }
-    } catch(e) {}
+    } catch(e) {
+      syncSecondaryRepoSelects();
+    }
     if (newRepoSelect) {
         mainFile = 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
         if ($('mainFileInput')) $('mainFileInput').value = mainFile;
     }
-    loadRepoDocuments(); scanRepoFileTree(); syncLatestSourceFromGithub(Boolean(newRepoSelect));
+    loadRepoDocuments(); scanRepoFileTree(); syncLatestSourceFromGithub(Boolean(newRepoSelect)); loadGitHubCommitHistory();
   }
 
   window.openLiveSite = function() {
@@ -1624,7 +1923,12 @@ ${contextConstraint}`;
   
       data.files.forEach(file => {
         if (file.mimeType === 'application/json' && file.name === `[${currentRepo}]_idea_backup.json` && !ideaFileToRestore) ideaFileToRestore = file;
-        if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') restoreBackupJSON(file, 'repo_idea_기타');
+        if (file.mimeType === 'application/json' && file.name === '[기타]_idea_backup.json') {
+          const currentLocalOther = localStorage.getItem('repo_idea_기타');
+          if (forceSyncIdeas || !currentLocalOther || currentLocalOther.trim() === '' || currentLocalOther === '[]') {
+            restoreBackupJSON(file, 'repo_idea_기타');
+          }
+        }
         if (file.mimeType === 'application/json' && file.name === '[inbox]_idea_backup.json') restoreBackupJSON(file, 'idea_inbox_global', true);
 
         if (file.mimeType === 'application/vnd.google-apps.document' && file.name.includes(`[${currentRepo}]`)) {
@@ -1783,37 +2087,63 @@ ${contextConstraint}`;
     if (!code) return;
     try {
       safeSetLocalStorage(getDraftCodeKey(), code);
+      const ver = extractVersionFromCode(code) || getTargetAppVersion();
       let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
-      const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
+      const newEntry = { id: Date.now(), time: new Date().toLocaleString(), ver: ver, note: note, code: code };
       history.unshift(newEntry);
-      if (history.length > 8) history = history.slice(0, 8);
+      if (history.length > 4) history = history.slice(0, 4);
       safeSetLocalStorage(getDraftHistoryKey(), JSON.stringify(history));
       const status = $('draftStatus'); if (status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
     } catch(e) {}
   }
   
-  function showLivePreviewCurrent(customCode = null, customTitle = null) {
+  function showLivePreviewCurrent(customCode = null, customTitle = null, autoScroll = false) {
+    if (window.__IS_PREVIEW_IFRAME__) return;
     const editor = $('codeEditor');
     let code = customCode !== null ? customCode : (editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey()));
-    if (!code || code.trim() === '') return;
+    if (!code || code.trim() === '') return showToast('미리보기할 코드가 없습니다.', 'err');
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
-    const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
+
+    let safeCode = code;
+    // builder-a4u 자기 자신 미리보기 시 UI/버튼 동작은 유지하면서 자식 iframe의 중복 미리보기 생성만 차단
+    if (file === 'index.html' && (currentRepo === 'builder-a4u' || code.includes('Builder-a4u'))) {
+      safeCode = safeCode.replace('<head>', '<head><script>window.__IS_PREVIEW_IFRAME__=true;<\/script>');
+      safeCode = safeCode.replace(/class="live-preview-box\s+active/g, 'class="live-preview-box');
+    }
+
+    const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!/^\s*</.test(code) && (code.includes('import React') || code.includes("from 'react'") || /export\s+default\s+function/.test(code)));
     if (isReactJsx) {
       let compName = 'App';
       const defaultFnMatch = code.match(/export\s+default\s+function\s+([A-Za-z0-9_]+)/);
       if (defaultFnMatch) compName = defaultFnMatch[1];
-      frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body><div id="root"></div><script type="text/babel" data-type="module">${code}<\/script></body></html>`;
+      let mountCode = code.replace(/export\s+default\s+function\s+([A-Za-z0-9_]+)/, 'function $1');
+      mountCode = mountCode.replace(/export\s+default\s+([A-Za-z0-9_]+)\s*;?/, '');
+      if (!mountCode.includes('createRoot') && !mountCode.includes('ReactDOM.render')) {
+        mountCode += `\nimport { createRoot as __createRoot } from 'react-dom/client';\nconst __rootEl = document.getElementById('root');\nif (__rootEl && typeof ${compName} !== 'undefined') { __createRoot(__rootEl).render(React.createElement(${compName})); }`;
+      }
+      frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><script src="https://cdn.tailwindcss.com"><\/script><script type="importmap">{"imports":{"react":"https://esm.sh/react@18.2.0","react-dom":"https://esm.sh/react-dom@18.2.0","react-dom/client":"https://esm.sh/react-dom@18.2.0/client","lucide-react":"https://esm.sh/lucide-react@0.460.0?external=react"}}<\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body class="bg-white"><div id="root"></div><script type="text/babel" data-type="module">import React from 'react';\n${mountCode}<\/script></body></html>`;
     } else {
-      frame.srcdoc = code;
+      frame.srcdoc = safeCode;
     }
     box.classList.add('active');
     const titleObj = $('previewTitle');
     if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 실시간 미리보기 화면 (${file})`}`;
+    if (autoScroll) {
+      setTimeout(() => {
+        try { box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
+      }, 80);
+    }
   }
   
-  function hideLivePreviewBox() { const box = $('livePreviewBox'); if (box) box.classList.remove('active'); }
+  function hideLivePreviewBox() {
+    const box = $('livePreviewBox');
+    const frame = $('livePreviewFrame');
+    if (box) box.classList.remove('active');
+    if (frame) frame.srcdoc = ''; // 메모리 즉각 반환 (GC 촉진)
+    showToast('👁️ 미리보기가 닫히고 메모리가 즉시 정리되었습니다.', 'info');
+  }
   
   window.capturePreviewScreen = async function() {
     const frame = $('livePreviewFrame');
@@ -1834,10 +2164,13 @@ ${contextConstraint}`;
     if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
     log(`🚀 [빌드 시작] ${currentRepo} 리포지토리 푸시 준비...`, 'info');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    const editor = $('codeEditor'); const version = getTargetAppVersion();
-    let userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
+    const cleanPath = targetFile.split('/').map(encodeURIComponent).join('/');
+    const editor = $('codeEditor');
     let codeToPush = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
     if (!codeToPush) codeToPush = await syncLatestSourceFromGithub();
+    const version = extractVersionFromCode(codeToPush) || getTargetAppVersion();
+    let rawNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
+    let userNote = (version && version !== '버전 미상' && !rawNote.includes(version)) ? `[${version}] ${rawNote}` : rawNote;
     
     let base64Content = '';
     try { base64Content = window.btoa(unescape(encodeURIComponent(codeToPush))); } catch(e) {
@@ -1849,24 +2182,48 @@ ${contextConstraint}`;
     let commitSha = null;
     try {
       let fileSha = null;
-      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
+      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${cleanPath}`, { headers });
       if (getRes.ok) fileSha = (await getRes.json()).sha;
       const payload = { message: `${userNote} (${new Date().toLocaleString()})`, content: base64Content };
       if (fileSha) payload.sha = fileSha;
-      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${cleanPath}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
       if (!putRes.ok) throw new Error(`HTTP ${putRes.status}`);
-      commitSha = (await putRes.json()).commit?.sha?.slice(0, 7) || '완료';
-      log(`✅ GitHub 푸시 성공! (#${commitSha})`, 'ok');
+      const putData = await putRes.json();
+      const fullSha = putData.commit?.sha || '';
+      commitSha = fullSha ? fullSha.slice(0, 7) : '완료';
+      if (fullSha && version && version !== '버전 미상') {
+        safeSetLocalStorage('commit_ver_' + fullSha, version);
+      }
+      log(`✅ GitHub 푸시 성공! ([${version}] #${commitSha})`, 'ok');
+      loadGitHubCommitHistory();
     } catch(e) { return showToast('푸시 실패: ' + e.message, 'err'); }
     
-    if (connectedDoc1 && connectedDoc1.id) {
-      const logText = `[${currentRepo} 빌드] ⏰ ${new Date().toLocaleString()} (#${commitSha})\n내용: ${userNote}\n\n`;
-      await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+    if (!isGoogleLoggedIn()) {
+      log('⚠️ Google 미로그인 상태: 이중 백업(구글 문서)이 건너뛰어졌습니다.', 'info');
+    } else {
+      if (connectedDoc1 && connectedDoc1.id) {
+        log(`📝 메인1(히스토리) 구글 문서 백업 중...`, 'info');
+        const logText = `[${currentRepo} 빌드] ⏰ ${new Date().toLocaleString()} (#${commitSha})
+내용: ${userNote}
+
+`;
+        const ok1 = await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+        if (ok1) log(`📄 메인1(히스토리) 백업 기록 완료!`, 'ok');
+        else log(`⚠️ 메인1(히스토리) 기록 실패 (문서 권한 또는 토큰 확인 필요)`, 'err');
+      } else {
+        log('ℹ️ 메인1(히스토리) 구글 문서가 연결되지 않음 (건너뜀)', 'info');
+      }
+
+      if (connectedDoc2 && connectedDoc2.id) {
+        log(`📦 메인2(최신 소스) 구글 문서 백업 중...`, 'info');
+        const ok2 = await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
+        if (ok2) log(`📦 메인2(최신 소스코드) 구글 문서 백업 완료!`, 'ok');
+        else log(`⚠️ 메인2(소스 백업) 실패 (문서 권한 또는 토큰 확인 필요)`, 'err');
+      } else {
+        log('ℹ️ 메인2(최신 소스코드) 구글 문서가 연결되지 않음 (건너뜀)', 'info');
+      }
     }
-    if (connectedDoc2 && connectedDoc2.id) {
-      await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
-    }
-    showToast(`🚀 빌드 및 백업 완료!`, 'ok');
+    showToast(`🚀 [${version}] 빌드 및 백업 완료!`, 'ok');
   }
   
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
@@ -1892,72 +2249,242 @@ ${contextConstraint}`;
     } catch(e) { return false; }
   }
   
+  function decodeGitHubBase64(b64) {
+    const clean = (b64 || '').replace(/\s/g, '');
+    return new TextDecoder().decode(Uint8Array.from(atob(clean), c => c.charCodeAt(0)));
+  }
+
   async function loadGitHubCommitHistory() {
     const box = $('versionHistoryBox'); if (!box) return;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">로드 중...</div>`;
+    box.dataset.repo = currentRepo;
+    box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">⏳ GitHub 커밋 히스토리 불러오는 중...</div>`;
     const pat = getGitHubPat(); const headers = { 'Accept': 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
     try {
-      const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=15`, { headers });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const commits = await res.json();
+      let res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=15`, { headers, cache: 'no-store' });
+      let commits = res.ok ? await res.json() : [];
+      if (!Array.isArray(commits) || commits.length === 0) {
+        const fallbackRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?per_page=15`, { headers, cache: 'no-store' });
+        if (!fallbackRes.ok) throw new Error(`HTTP ${fallbackRes.status}`);
+        commits = await fallbackRes.json();
+      }
+      if (!Array.isArray(commits) || commits.length === 0) {
+        box.innerHTML = `<div class="text-[10px] text-gray-400 p-3 text-center">커밋 기록이 없습니다.</div>`;
+        return;
+      }
       let html = '';
-      commits.forEach((c) => {
+      const needVerResolve = [];
+      commits.forEach((c, idx) => {
         const sha = c.sha, shortSha = sha.slice(0, 7);
-        const msg = c.commit?.message?.split('\n')[0] || '';
-        html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-          <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px] truncate">${msg}</span></div>
-          <div class="flex gap-1 shrink-0"><button onclick="previewGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">👁️ 보기</button><button onclick="rollbackGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button></div>
+        const msg = c.commit?.message?.split('\n')[0] || '커밋 메시지 없음';
+        const rawDate = c.commit?.author?.date || c.commit?.committer?.date || '';
+        let dateLabel = '';
+        if (rawDate) {
+          const d = new Date(rawDate);
+          if (!isNaN(d.getTime())) {
+            const mm = String(d.getMonth() + 1).padStart(2, '0');
+            const dd = String(d.getDate()).padStart(2, '0');
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mi = String(d.getMinutes()).padStart(2, '0');
+            dateLabel = `${mm}/${dd} ${hh}:${mi}`;
+          }
+        }
+        const msgVerMatch = msg.match(/\bv(\d+\.\d+(?:\.\d+)?)\b/i);
+        let cachedVer = msgVerMatch ? ('v' + msgVerMatch[1]) : (localStorage.getItem('commit_ver_' + sha) || '');
+        if (!cachedVer && idx < 8) {
+          needVerResolve.push({ sha, shortSha });
+        }
+        const verBadgeHtml = cachedVer
+          ? `<span id="commit-ver-${shortSha}" class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-black text-[9.5px] shrink-0">🏷️ ${cachedVer}</span>`
+          : `<span id="commit-ver-${shortSha}" class="px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300 font-bold text-[9px] shrink-0">빌드 #${shortSha}</span>`;
+        const latestBadge = idx === 0 ? `<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-extrabold text-[8.5px] shrink-0">최신</span>` : '';
+
+        html += `<div class="version-item p-2.5 mb-2 rounded-[10px] border transition-colors" style="border-color:var(--line);background:var(--card)">
+          <div class="flex flex-col min-w-0 flex-1 pr-1 gap-1">
+            <div class="flex items-center gap-1 flex-wrap">
+              ${latestBadge}
+              ${verBadgeHtml}
+              <span class="font-mono text-[9px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold">#${shortSha}</span>
+              ${dateLabel ? `<span class="text-[9px] opacity-60 font-mono">⏰ ${dateLabel}</span>` : ''}
+            </div>
+            <span class="font-bold text-[11px] truncate" title="${msg.replace(/"/g, '&quot;')}">${msg}</span>
+          </div>
+          <div class="flex gap-1.5 shrink-0 mt-1 sm:mt-0">
+            <button id="btn-prev-${shortSha}" onclick="previewGitHubCommit('${sha}', '${shortSha}', this)" class="btn btn-sm text-[10px] py-1 px-2.5">👁️ 보기</button>
+            <button id="btn-roll-${shortSha}" onclick="rollbackGitHubCommit('${sha}', '${shortSha}', this)" class="btn btn-sm text-[10px] py-1 px-2.5">↺ 롤백</button>
+          </div>
         </div>`;
       });
       box.innerHTML = html;
-    } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류</div>`; }
+
+      // 커밋 메시지에 버전이 없는 경우(예: Add files via upload) 백그라운드에서 소스 내 버전 태그 자동 추출
+      needVerResolve.forEach(async ({ sha, shortSha }) => {
+        try {
+          const code = await fetchGitHubCommitContent(sha);
+          const detectedVer = extractVersionFromCode(code);
+          if (detectedVer) {
+            safeSetLocalStorage('commit_ver_' + sha, detectedVer);
+            const badgeEl = $('commit-ver-' + shortSha);
+            if (badgeEl) {
+              badgeEl.textContent = `🏷️ ${detectedVer}`;
+              badgeEl.className = 'px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-black text-[9.5px] shrink-0';
+            }
+          }
+        } catch (e) {}
+      });
+    } catch(e) {
+      box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">커밋 조회 실패: ${e.message}</div>`;
+    }
   }
   
   async function fetchGitHubCommitContent(sha) {
-    const pat = getGitHubPat(); const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+    const pat = getGitHubPat();
+    const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+    const cleanPath = file.split('/').map(encodeURIComponent).join('/');
     const headers = { 'Accept': 'application/vnd.github.v3+json' };
     if (pat && pat.length > 10) headers.Authorization = 'Bearer ' + pat;
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(file)}?ref=${sha}`, { headers });
-    if (res.ok) {
-      const data = await res.json();
-      if (data.content) return new TextDecoder().decode(Uint8Array.from(atob(data.content.replace(/\s/g, '')), c => c.charCodeAt(0)));
-    }
-    throw new Error("내용 없음");
+
+    // 1단계: GitHub Contents API (ref=sha)
+    try {
+      const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${cleanPath}?ref=${sha}`, { headers, cache: 'no-store' });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.content) {
+          return decodeGitHubBase64(data.content);
+        }
+        if (data && data.sha) {
+          const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/blobs/${data.sha}`, { headers, cache: 'no-store' });
+          if (blobRes.ok) {
+            const blobData = await blobRes.json();
+            if (blobData && blobData.content) return decodeGitHubBase64(blobData.content);
+          }
+        }
+      }
+    } catch (e) {}
+
+    // 2단계: raw.githubusercontent.com 폴백
+    try {
+      const rawRes = await fetch(`https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/${sha}/${cleanPath}?t=${Date.now()}`);
+      if (rawRes.ok) {
+        const text = await rawRes.text();
+        if (text && text.trim().length > 0) return text;
+      }
+    } catch (e) {}
+
+    // 3단계: 커밋 상세 조회를 통해 해당 커밋에 포함된 실제 파일 Blob 추적
+    try {
+      const commitRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits/${sha}`, { headers, cache: 'no-store' });
+      if (commitRes.ok) {
+        const commitData = await commitRes.json();
+        const files = commitData.files || [];
+        const targetObj = files.find(f => f.filename === file || f.filename.endsWith('/' + file)) || files.find(f => /\.(html|jsx|tsx|js)$/i.test(f.filename)) || files[0];
+        if (targetObj && targetObj.sha) {
+          const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/blobs/${targetObj.sha}`, { headers, cache: 'no-store' });
+          if (blobRes.ok) {
+            const blobData = await blobRes.json();
+            if (blobData && blobData.content) return decodeGitHubBase64(blobData.content);
+          }
+        }
+      }
+    } catch (e) {}
+
+    throw new Error(`#${sha.slice(0, 7)} 버전에서 [${file}] 파일 내용을 불러올 수 없습니다.`);
   }
   
-  window.previewGitHubCommit = async function(sha, shortSha) {
-    try { showLivePreviewCurrent(await fetchGitHubCommitContent(sha), `👁️ 미리보기 (#${shortSha})`); } catch(e) {}
-  };
-  window.rollbackGitHubCommit = async function(sha, shortSha) {
+  window.previewGitHubCommit = async function(sha, shortSha, btnEl = null) {
+    const origText = btnEl ? btnEl.innerHTML : '👁️ 보기';
+    if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '⏳ 로딩...'; }
+    showToast(`⏳ #${shortSha} 버전 코드를 불러오는 중...`, 'info');
     try {
-      const code = await fetchGitHubCommitContent(sha); safeSetLocalStorage(getDraftCodeKey(), code);
-      if ($('codeEditor')) $('codeEditor').value = code; showLivePreviewCurrent();
-      showToast(`↺ #${shortSha} 복원됨`, 'ok');
-    } catch(e) {}
+      const code = await fetchGitHubCommitContent(sha);
+      const ver = extractVersionFromCode(code) || localStorage.getItem('commit_ver_' + sha) || `#${shortSha}`;
+      if (ver && ver.startsWith('v')) safeSetLocalStorage('commit_ver_' + sha, ver);
+      showLivePreviewCurrent(code, `👁️ 타임머신 미리보기: [${ver}] (#${shortSha})`, true);
+      log(`👁️ 타임머신 미리보기 로드 완료: [${ver}] (#${shortSha})`, 'info');
+      showToast(`👁️ [${ver}] (#${shortSha}) 미리보기가 열렸습니다!`, 'ok');
+    } catch(e) {
+      log(`❌ 타임머신 미리보기 실패 (#${shortSha}): ${e.message}`, 'err');
+      showToast(`❌ 미리보기 실패: ${e.message}`, 'err');
+    } finally {
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = origText; }
+    }
+  };
+
+  window.rollbackGitHubCommit = async function(sha, shortSha, btnEl = null) {
+    const origText = btnEl ? btnEl.innerHTML : '↺ 롤백';
+    if (btnEl) { btnEl.disabled = true; btnEl.innerHTML = '⏳ 복원중...'; }
+    showToast(`⏳ #${shortSha} 버전으로 롤백 준비 중...`, 'info');
+    try {
+      const code = await fetchGitHubCommitContent(sha);
+      const ver = extractVersionFromCode(code) || localStorage.getItem('commit_ver_' + sha) || `#${shortSha}`;
+      if (ver && ver.startsWith('v')) safeSetLocalStorage('commit_ver_' + sha, ver);
+      if ($('codeEditor')) $('codeEditor').value = code;
+      const rollbackNote = `↺ [${ver}] (#${shortSha}) 버전으로 롤백`;
+      if ($('updateNoteInput')) $('updateNoteInput').value = rollbackNote;
+      saveDraftCustom(code, rollbackNote);
+      showLivePreviewCurrent(code, `↺ 롤백 복원됨: [${ver}] (#${shortSha})`, true);
+      log(`↺ [${ver}] (#${shortSha}) 버전 코드가 편집기에 복원되었습니다.`, 'ok');
+      showToast(`↺ [${ver}] (#${shortSha}) 버전이 편집기와 미리보기에 복원되었습니다!`, 'ok');
+
+      setTimeout(async () => {
+        const confirmMsg = `↺ [${currentRepo}] #${shortSha} (${ver}) 버전 코드가 복원되었습니다!\n\n지금 바로 [${currentRepo}] GitHub(라이브 사이트)에도 이 버전으로 롤백 배포(푸시)하시겠습니까?\n(취소를 누르면 편집기에만 복원된 상태로 유지됩니다)`;
+        if (confirm(confirmMsg)) {
+          await pushToGitHubRepository();
+        }
+      }, 150);
+    } catch(e) {
+      log(`❌ 타임머신 롤백 실패 (#${shortSha}): ${e.message}`, 'err');
+      showToast(`❌ 롤백 실패: ${e.message}`, 'err');
+    } finally {
+      if (btnEl) { btnEl.disabled = false; btnEl.innerHTML = origText; }
+    }
   };
   
   function loadDraftHistory() {
     const box = $('versionHistoryBox'); if (!box) return;
     let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
-    if (history.length === 0) return box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">기록 없음</div>';
+    if (history.length === 0) return box.innerHTML = '<div class="text-[10px] text-gray-400 p-3 text-center">로컬 드래프트 기록이 없습니다.</div>';
     let html = '';
-    history.forEach((item) => {
-      html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-        <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px]">${item.note}</span><span class="text-[8.5px] opacity-60">${item.time}</span></div>
-        <div class="flex gap-1 shrink-0"><button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button></div></div>`;
+    history.forEach((item, idx) => {
+      const ver = item.ver || extractVersionFromCode(item.code) || '로컬';
+      const latestBadge = idx === 0 ? `<span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-extrabold text-[8.5px] shrink-0">최신</span>` : '';
+      html += `<div class="version-item p-2.5 mb-2 rounded-[10px] border" style="border-color:var(--line);background:var(--card)">
+        <div class="flex flex-col min-w-0 flex-1 pr-1 gap-1">
+          <div class="flex items-center gap-1 flex-wrap">
+            ${latestBadge}
+            <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300 font-black text-[9.5px] shrink-0">🏷️ ${ver}</span>
+            <span class="text-[9px] opacity-60 font-mono">⏰ ${item.time}</span>
+          </div>
+          <span class="font-bold text-[11px] truncate">${item.note}</span>
+        </div>
+        <div class="flex gap-1.5 shrink-0 mt-1 sm:mt-0">
+          <button onclick="previewDraftHistory(${item.id})" class="btn btn-sm text-[10px] py-1 px-2.5">👁️ 보기</button>
+          <button onclick="rollbackToVersionHistory(${item.id})" class="btn btn-sm text-[10px] py-1 px-2.5">↺ 롤백</button>
+        </div>
+      </div>`;
     });
     box.innerHTML = html;
   }
   
+  window.previewDraftHistory = function(id) {
+    const item = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]').find(h => h.id === id);
+    if (!item || !item.code) return showToast('드래프트 코드를 찾을 수 없습니다.', 'err');
+    const ver = item.ver || extractVersionFromCode(item.code) || '로컬';
+    showLivePreviewCurrent(item.code, `👁️ 로컬 드래프트 미리보기: [${ver}] (${item.note})`, true);
+    showToast(`👁️ [${ver}] 로컬 드래프트 미리보기가 열렸습니다!`, 'ok');
+  };
+
   window.rollbackToVersionHistory = function(id) {
     const item = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]').find(h => h.id === id);
-    if (!item) return;
+    if (!item || !item.code) return showToast('복원할 드래프트 코드를 찾을 수 없습니다.', 'err');
+    const ver = item.ver || extractVersionFromCode(item.code) || '로컬';
     safeSetLocalStorage(getDraftCodeKey(), item.code);
     if ($('codeEditor')) $('codeEditor').value = item.code;
-    showLivePreviewCurrent();
-    showToast(`↺ 복원 완료`, 'ok');
+    if ($('updateNoteInput')) $('updateNoteInput').value = `↺ [${ver}] 로컬 드래프트 복원 (${item.note})`;
+    showLivePreviewCurrent(item.code, `↺ 로컬 드래프트 복원됨: [${ver}]`, true);
+    log(`↺ [${ver}] 로컬 드래프트(${item.note})가 편집기에 복원되었습니다.`, 'ok');
+    showToast(`↺ [${ver}] 로컬 드래프트가 편집기와 미리보기에 복원되었습니다!`, 'ok');
   };
 
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null) {
@@ -2092,7 +2619,7 @@ ${contextConstraint}`;
     };
     try {
         await pushFile('icon-192.png', createIconBase64(192), true); await pushFile('icon-512.png', createIconBase64(512), true);
-        const manifest = { name: pwaName, short_name: shortName, start_url: "./index.html", display: "standalone", background_color: "#ffffff", theme_color: themeColor, icons: [{ src: "./icon-192.png", sizes: "192x192", type: "image/png" }, { src: "./icon-512.png", sizes: "512x512", type: "image/png" }] };
+        const manifest = { name: pwaName, short_name: shortName, start_url: "./index.html", display: "standalone", scope: "./", background_color: "#ffffff", theme_color: themeColor, icons: [{ src: "./icon-192.png", sizes: "192x192", type: "image/png" }, { src: "./icon-512.png", sizes: "512x512", type: "image/png" }] };
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
@@ -2153,6 +2680,16 @@ ${contextConstraint}`;
   }
 
   function setupEventListeners() {
+    if (localStorage.getItem('migrated_v821') !== 'true') {
+        localStorage.setItem('migrated_v821', 'true');
+        for (let i = 0; i < localStorage.length; i++) {
+            const k = localStorage.key(i);
+            if (k && k.startsWith('custom_context_')) {
+                localStorage.removeItem(k);
+            }
+        }
+    }
+
     initTheme(); loadIdeaInbox(); detectGithubUser();
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
@@ -2167,7 +2704,10 @@ ${contextConstraint}`;
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
         if (!c.trim()) return showToast('코드 없음', 'err');
-        if (!confirm(`🚀 빌드하시겠습니까?`)) return;
+        const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+        const ver = extractVersionFromCode(c) || getTargetAppVersion();
+        const confirmMsg = `🚀 [${currentRepo}] 프로젝트를 빌드하시겠습니까?\n\n📌 대상 프로젝트(Repo): ${currentRepo}\n📁 대상 파일: ${targetFile}\n🏷️ 빌드 버전: ${ver}\n\n확인을 누르면 GitHub에 푸시되고 이중 백업이 진행됩니다.`;
+        if (!confirm(confirmMsg)) return;
         saveDraftCustom(c, '최종 빌드'); await pushToGitHubRepository(); 
     });
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
@@ -2181,6 +2721,15 @@ ${contextConstraint}`;
       loadRepoDocuments(); loadRepoIdea(); scanRepoFileTree(); await autoRestoreDocsFromDrive();
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
     });
+    $('fileTreeSelect')?.addEventListener('change', async e => {
+      if (!e.target.value) return;
+      mainFile = e.target.value;
+      localStorage.setItem('main_file_' + currentRepo, mainFile);
+      if ($('mainFileInput')) $('mainFileInput').value = mainFile;
+      await syncLatestSourceFromGithub(true);
+      updateFullContextBox();
+      loadGitHubCommitHistory();
+    });
     $('mainFileInput')?.addEventListener('change', async e => {
       mainFile = e.target.value.trim() || 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
       await syncLatestSourceFromGithub(true); updateFullContextBox(); loadGitHubCommitHistory();
@@ -2188,6 +2737,25 @@ ${contextConstraint}`;
     $('ideaImageInput')?.addEventListener('change', async e => {
       if (e.target.files) for(let f of e.target.files) { const b64 = await processImageFileToBase64(f).catch(()=>{}); if(b64) { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); } }
       e.target.value = '';
+    });
+    const savedPatchMode = localStorage.getItem('prompt_patch_mode');
+    if ($('promptPatchMode')) {
+      $('promptPatchMode').checked = savedPatchMode !== null ? (savedPatchMode === 'true') : true;
+      $('promptPatchMode').addEventListener('change', e => {
+        safeSetLocalStorage('prompt_patch_mode', String(e.target.checked));
+        if (localStorage.getItem('custom_context_' + currentRepo) === null) {
+          updateFullContextBox();
+        }
+      });
+    }
+    $('inboxProjectSelect')?.addEventListener('change', e => {
+      safeSetLocalStorage('last_inbox_project', e.target.value);
+      updateInboxSelectedHint(e.target.value);
+    });
+    window.addEventListener('pageshow', resetMobileViewportZoom);
+    window.addEventListener('focus', resetMobileViewportZoom);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) resetMobileViewportZoom();
     });
     document.addEventListener('paste', handlePasteEvent);
   }
