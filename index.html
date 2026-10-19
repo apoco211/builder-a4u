@@ -468,11 +468,9 @@
           <label class="text-[9.5px] font-bold text-blue-600 dark:text-blue-400">🧠 AI 워크플로우 모델 선택</label>
           <div class="flex gap-1 mt-0.5">
             <select id="geminiModelSelect" class="input text-[10px] font-mono flex-1">
-              <option value="gemini-4-argon">gemini-4-argon (최신 초거대)</option>
-              <option value="gemini-3.8-flash">gemini-3.8-flash (빠름/권장)</option>
-              <option value="gemini-3.5-flash">gemini-3.5-flash (안정)</option>
-              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (폭주 방지)</option>
-              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (최후 보루)</option>
+              <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장)</option>
+              <option value="gemini-1.5-flash">gemini-1.5-flash (안정)</option>
+              <option value="gemini-1.5-pro">gemini-1.5-pro (심층 분석)</option>
             </select>
             <button id="checkModelsBtn" class="btn btn-sm text-[9px]" style="background:#dbeafe;color:#1e40af">🔍 확인</button>
           </div>
@@ -735,10 +733,18 @@
     panel.classList.toggle('hidden');
   };
 
+  function extractBuildNoteFromPatch(text) {
+    if (!text) return null;
+    const norm = normalizeLineEndings(text);
+    const m = norm.match(/(?:^|\n)\s*(\[(?:빌드\s*넘버|v\d+|빌드|업데이트)[^\]]*\][^\n]*)/i);
+    if (m && m[1]) return m[1].trim();
+    return null;
+  }
+
   function cleanMarkdownCodeFences(text) {
     if (!text) return '';
     let str = normalizeLineEndings(text).trim();
-    str = str.replace(/^```[a-zA-Z0-9_-]*\s*\n/, '').replace(/\n```\s*$/, '').trim();
+    str = str.replace(/```[a-zA-Z0-9_-]*\s*\n/g, '').replace(/\n```\s*$/g, '').trim();
     return str;
   }
 
@@ -845,16 +851,85 @@
   }
 
   function parseSearchReplaceBlocks(patchText) {
+    if (!patchText) return [];
+    const norm = normalizeLineEndings(patchText);
+    const lines = norm.split('\n');
     const blocks = [];
-    const clean = cleanMarkdownCodeFences(patchText);
-    const norm = normalizeLineEndings(clean);
 
-    // 1단계: 완화된 SEARCH/REPLACE 정규식 (주석 기호, 파일명/줄번호, 4개 이상 기호 허용)
-    const regex = /(?:(?:\/\/|#|<!--)\s*)?<={0,1}<{3,}\s*(?:SEARCH|ORIGINAL)[^\n]*\n([\s\S]*?)\n(?:(?:\/\/|#|<!--)\s*)?={4,}[^\n]*\n([\s\S]*?)\n(?:(?:\/\/|#|<!--)\s*)?>{4,}\s*(?:REPLACE|UPDATED)[^\n]*(?:\s*-->)?/gi;
-    let m;
-    while ((m = regex.exec(norm)) !== null) {
-      blocks.push({ search: m[1], replace: m[2] });
+    let currentSearch = [];
+    let currentReplace = [];
+    let state = 'IDLE'; // IDLE, IN_SEARCH, IN_REPLACE
+
+    const isSearchLine = (t) => {
+      const c = t.replace(/^(?:\/\/|#|<!--)\s*/, '').replace(/\s*(?:-->)?$/, '').trim();
+      return /<{3,}.*(?:SEARCH|ORIGINAL)/i.test(c);
+    };
+
+    const isReplaceLine = (t) => {
+      const c = t.replace(/^(?:\/\/|#|<!--)\s*/, '').replace(/\s*(?:-->)?$/, '').trim();
+      return />{3,}.*(?:REPLACE|UPDATED)/i.test(c);
+    };
+
+    const isDividerLine = (t) => {
+      const c = t.replace(/^(?:\/\/|#|<!--)\s*/, '').replace(/\s*(?:-->)?$/, '').trim();
+      return /^[=]{3,}$|^[-]{4,}$/.test(c);
+    };
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      const searchHit = isSearchLine(trimmed);
+      const replaceHit = isReplaceLine(trimmed);
+      const dividerHit = isDividerLine(trimmed) && !searchHit && !replaceHit;
+
+      if (searchHit) {
+        if (state === 'IN_REPLACE') {
+          blocks.push({ search: currentSearch.join('\n'), replace: currentReplace.join('\n') });
+        }
+        currentSearch = [];
+        currentReplace = [];
+        state = 'IN_SEARCH';
+        continue;
+      }
+
+      if (dividerHit && state === 'IN_SEARCH') {
+        state = 'IN_REPLACE';
+        continue;
+      }
+
+      if (replaceHit && state === 'IN_REPLACE') {
+        blocks.push({ search: currentSearch.join('\n'), replace: currentReplace.join('\n') });
+        currentSearch = [];
+        currentReplace = [];
+        state = 'IDLE';
+        continue;
+      }
+
+      if (trimmed.startsWith('```') && state === 'IDLE') {
+        continue;
+      }
+
+      if (state === 'IN_SEARCH') {
+        currentSearch.push(line);
+      } else if (state === 'IN_REPLACE') {
+        currentReplace.push(line);
+      }
     }
+
+    if (state === 'IN_REPLACE' && (currentSearch.length > 0 || currentReplace.length > 0)) {
+      blocks.push({ search: currentSearch.join('\n'), replace: currentReplace.join('\n') });
+    }
+
+    if (blocks.length === 0) {
+      const clean = cleanMarkdownCodeFences(patchText);
+      const regex = /(?:(?:\/\/|#|<!--)\s*)?<={0,1}<{3,}\s*(?:SEARCH|ORIGINAL)[^\n]*\n([\s\S]*?)\n(?:(?:\/\/|#|<!--)\s*)?={3,}[^\n]*\n([\s\S]*?)\n(?:(?:\/\/|#|<!--)\s*)?>{3,}\s*(?:REPLACE|UPDATED)[^\n]*(?:\s*-->)?/gi;
+      let m;
+      while ((m = regex.exec(clean)) !== null) {
+        blocks.push({ search: m[1], replace: m[2] });
+      }
+    }
+
     return blocks;
   }
 
@@ -908,7 +983,6 @@
 
     if (sLines.length === 0) return { success: false, code: sourceCode };
 
-    // 생략 부호(// ..., ..., /* ... */) 감지 및 앵커 분할 매칭
     let ellipsisIdx = -1;
     for (let idx = 0; idx < sLines.length; idx++) {
       const t = sLines[idx].trim();
@@ -948,8 +1022,7 @@
       }
     }
 
-    // 표준 라인별 매칭 (공백 정규화)
-    const normLine = l => l.trim().replace(/\s+/g, ' ').replace(/;$/, '');
+    const normLine = l => l.trim().replace(/\s+/g, ' ').replace(/["'`]/g, '"').replace(/;$/, '');
     const normSLines = sLines.map(normLine);
 
     for (let i = 0; i <= srcLines.length - sLines.length; i++) {
@@ -989,13 +1062,20 @@
     }
     if (!rawPatch) return showToast('붙여넣은 부분 코드(패치) 내용이 없습니다.', 'err');
 
-    // 1차: SEARCH/REPLACE 표준/완화 블록 파싱
+    // 0단계: [빌드 넘버: ...] 등 빌드 요약 메모가 포함된 경우 자동 연동
+    const buildNote = extractBuildNoteFromPatch(rawPatch);
+    if (buildNote && $('updateNoteInput') && !$('updateNoteInput').value.trim()) {
+      $('updateNoteInput').value = buildNote;
+      log(`📝 빌드 요약 메모 자동 추출: ${buildNote}`, 'ok');
+    }
+
+    // 1단계: 라인 단위 상태머신 기반 SEARCH/REPLACE 블록 파싱 (들여쓰기, 주석, 마크다운 완벽 지원)
     let blocks = parseSearchReplaceBlocks(rawPatch);
     const runBtn = $('runSmartPatchBtn');
     const stopBtn = $('stopSmartPatchBtn');
     const undoBtn = $('undoPatchBtn');
 
-    // 2차: 마커가 없으면 로컬 JS 함수/블록 직접 추출 시도 (Gemini API 키 불필요)
+    // 2단계: 마커가 없으면 로컬 JS 함수/블록 직접 추출 시도 (Gemini API 불필요)
     if (blocks.length === 0) {
       const localMatches = tryExtractLocalFunctionPatch(rawPatch, currentCode);
       if (localMatches.length > 0) {
@@ -1004,18 +1084,30 @@
       }
     }
 
-    // 3차: 여전히 블록을 못 찾았다면 Gemini AI에게 SEARCH/REPLACE 변환 요청
+    // 3단계: 여전히 블록을 못 찾았을 때
     if (blocks.length === 0) {
+      // SEARCH 또는 REPLACE 마커를 쓰려고 시도한 흔적이 있다면 AI를 호출하지 않고 마커 형식 확인 안내 (무한 대기 및 먹통 방지)
+      const hasSearchMarker = /<{3,}|SEARCH|ORIGINAL/i.test(rawPatch);
+      const hasReplaceMarker = />{3,}|REPLACE|UPDATED/i.test(rawPatch);
+      if (hasSearchMarker || hasReplaceMarker) {
+        return showToast('❌ SEARCH/REPLACE 마커 구조가 올바르지 않습니다. (<<<< SEARCH, =======, >>>> REPLACE를 확인해주세요)', 'err');
+      }
+
+      // 순수 줄글/설명일 때만 Gemini AI 자동 변환 시도 (단, 15초 타임아웃 보장)
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
       if (!geminiKey) {
-        return showToast('❌ 패치 블록 형식을 감지하지 못했습니다. (SEARCH/REPLACE 포맷을 사용하거나 Gemini API 키를 등록하세요)', 'err');
+        return showToast('❌ SEARCH/REPLACE 마커 형식을 감지하지 못했습니다. (SEARCH/REPLACE 포맷을 사용해주세요)', 'err');
       }
 
       try {
         if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '🤖 AI가 패치 위치 분석 중...'; }
         if (stopBtn) stopBtn.classList.remove('hidden');
         currentPatchAbortController = new AbortController();
-        log('🤖 일반 코드 조각을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
+        const timeoutTimer = setTimeout(() => {
+          if (currentPatchAbortController) currentPatchAbortController.abort('timeout');
+        }, 15000);
+
+        log('🤖 일반 줄글을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
 
         const aiPrompt = `다음 원본 소스코드에서 사용자가 요청한 부분 코드/수정사항을 찾아 정확히 교체하기 위한 SEARCH/REPLACE 블록만 출력해줘. 설명 없이 오직 아래 포맷으로만 응답해:
 <<<<<<< SEARCH
@@ -1031,10 +1123,12 @@ ${rawPatch}
 ${currentCode}`;
 
         const aiPatchText = await callGeminiAPI(aiPrompt, 0.1, false, currentPatchAbortController.signal);
+        clearTimeout(timeoutTimer);
         blocks = parseSearchReplaceBlocks(aiPatchText);
       } catch (e) {
-        showToast('❌ 스마트 패치 변환 실패: ' + e.message, 'err');
-        log('❌ 패치 실패: ' + e.message, 'err');
+        const msg = (e === 'timeout' || e.name === 'AbortError') ? '분석 시간이 초과되었습니다. 마커를 직접 사용해주세요.' : e.message;
+        showToast('❌ 스마트 패치 변환 실패: ' + msg, 'err');
+        log('❌ 패치 실패: ' + msg, 'err');
         return;
       } finally {
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
@@ -1082,10 +1176,14 @@ ${currentCode}`;
 
   window.stopSmartPatch = function() {
     if (currentPatchAbortController) {
-      currentPatchAbortController.abort();
+      currentPatchAbortController.abort('stopped_by_user');
       currentPatchAbortController = null;
       showToast('🛑 스마트 패치 분석을 중지했습니다.', 'info');
     }
+    const runBtn = $('runSmartPatchBtn');
+    const stopBtn = $('stopSmartPatchBtn');
+    if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+    if (stopBtn) stopBtn.classList.add('hidden');
   };
 
   window.undoSmartPatch = function() {
@@ -2446,8 +2544,8 @@ ${contextConstraint}`;
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null) {
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
-      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
-      const MODEL_CANDIDATES = [savedModel, 'gemini-3.8-flash', 'gemini-4-argon', 'gemini-3.5-flash', 'gemini-2.5-flash'].filter((v,i,a)=>a.indexOf(v)===i);
+      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
+      const MODEL_CANDIDATES = [savedModel, 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v,i,a)=>a.indexOf(v)===i);
       
       let res = null, lastError = null;
       for (const model of MODEL_CANDIDATES) {
@@ -2464,7 +2562,7 @@ ${contextConstraint}`;
       }
       if (!res || !res.ok) throw lastError || new Error('API 호출 실패');
       const data = await res.json();
-      let textRes = data.candidates[0].content.parts[0].text;
+      let textRes = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
       if (parseJSON) {
           textRes = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
           return JSON.parse(textRes);
@@ -2628,7 +2726,7 @@ ${contextConstraint}`;
     $('githubPatInput')?.addEventListener('input', e => { localStorage.setItem('github_pat', e.target.value.trim()); loadRepos(); detectGithubUser(); });
     $('geminiApiKeyInput')?.addEventListener('input', e => localStorage.setItem('gemini_api_key', e.target.value.trim()));
     
-    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-3.8-flash';
+    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
     if ($('geminiModelSelect')) {
       $('geminiModelSelect').value = savedModel;
       $('geminiModelSelect').addEventListener('change', e => { localStorage.setItem('builder_gemini_model', e.target.value); showToast('🧠 모델 변경됨', 'ok'); });
