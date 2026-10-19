@@ -27,7 +27,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.2.6 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.2.7 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +48,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.2.6">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.6">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.6">
+  <link rel="manifest" href="./manifest.json?v=8.2.7">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.7">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.7">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +164,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.6</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.7</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1242,6 +1242,10 @@ ${currentCode}`;
   }
   
   function getTargetAppVersion() {
+    const note = $('updateNoteInput')?.value || '';
+    let noteMatch = note.match(/(?:빌드\s*넘버|버전|ver|v)\s*[:：]?\s*v?(\d+\.\d+(?:\.\d+)?)/i);
+    if (noteMatch) return 'v' + noteMatch[1];
+
     const editor = $('codeEditor');
     let code = editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey());
     if (!code) return '버전 미상';
@@ -1250,13 +1254,15 @@ ${currentCode}`;
     if (m) return 'v' + m[1];
     m = code.match(/<h1[^>]*>.*?v?(\d+\.\d+(?:\.\d+)?).*?<\/h1>/i);
     if (m) return 'v' + m[1];
+    m = code.match(/["']?version["']?\s*[:=]\s*["']v?(\d+\.\d+(?:\.\d+)?)["']/i);
+    if (m) return 'v' + m[1];
     m = code.match(/Builder-a4u\s+v?(\d+\.\d+(?:\.\d+)?)/i);
     if (m) return 'v' + m[1];
     m = code.match(/v(\d+\.\d+(?:\.\d+)?)/);
     if (m) return 'v' + m[1];
     return '버전 미상';
   }
-  
+
   function isGoogleLoggedIn() {
     if (!accessToken || Date.now() >= tokenExpiry) {
       if (accessToken) {
@@ -1670,7 +1676,7 @@ ${currentCode}`;
   
     const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.`;
 
-    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.6)]
+    return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.7)]
   📌 프로젝트(Repo): ${repo}
 📁 작업 대상 파일: ${file}
   
@@ -2413,7 +2419,7 @@ ${contextConstraint}`;
   async function pushToGitHubRepository() {
     const pat = getGitHubPat();
     if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
-    log(`🚀 [빌드 시작] ${currentRepo} 리포지토리 푸시 준비...`, 'info');
+    log(`🚀 [빌드 시작] ${currentRepo} (${version}) 푸시 준비...`, 'info');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const editor = $('codeEditor'); const version = getTargetAppVersion();
     let userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
@@ -2447,7 +2453,7 @@ ${contextConstraint}`;
     if (connectedDoc2 && connectedDoc2.id) {
       await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
     }
-    showToast(`🚀 빌드 및 백업 완료!`, 'ok');
+    showToast(`🚀 [${currentRepo}] (${version}) 빌드 및 백업 완료!`, 'ok');
   }
   
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
@@ -2757,8 +2763,21 @@ ${contextConstraint}`;
     $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
-        if (!c.trim()) return showToast('코드 없음', 'err');
-        if (!confirm(`🚀 빌드하시겠습니까?`)) return;
+        if (!c.trim()) return showToast('빌드할 소스코드가 없습니다.', 'err');
+
+        const targetRepo = currentRepo || 'builder-a4u';
+        const targetVer = getTargetAppVersion();
+        const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+        const userNote = $('updateNoteInput')?.value?.trim();
+
+        let confirmMsg = `🚀 [최종 빌드 확인]\n\n• 대상 프로젝트: [ ${targetRepo} ]\n• 현재 빌드 넘버: [ ${targetVer} ]\n• 대상 파일: ${targetFile}`;
+        if (userNote) {
+            const shortNote = userNote.length > 50 ? userNote.slice(0, 50) + '...' : userNote;
+            confirmMsg += `\n• 업데이트 메모: ${shortNote}`;
+        }
+        confirmMsg += `\n\n위 프로젝트와 빌드 넘버로 최종 빌드 및 배포를 진행하시겠습니까?`;
+
+        if (!confirm(confirmMsg)) return;
         saveDraftCustom(c, '최종 빌드'); await pushToGitHubRepository(); 
     });
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
