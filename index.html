@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.25">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.25">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.25">
+  <link rel="manifest" href="./manifest.json?v=8.9.26">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.26">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.26">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -755,7 +755,7 @@
       const prompt = AI_ROUTER_PROMPT_TEMPLATE.replace('{{REPO_LIST}}', JSON.stringify(repoList)).replace('{{USER_TEXT}}', rawText.replace(/"/g,'\"'));
       if (typeof log !== 'undefined') log(`🤖 AI 라우터 분류 중: "${rawText}"`, 'info');
       const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.5-flash';
-      const response = await callGeminiAPI(prompt, model);
+      const response = await callGeminiAPI(prompt, 0.2, false, null, model);
       const jsonMatch = response.match(/\{[\s\S]*\}/) || response.match(/\{[\s\S]*?\}/);
       // Actually try normal JSON extraction
       const m = response.match(/\{[^}]*"repo"[^}]*\}/) || response.match(/\{[\s\S]*\}/);
@@ -907,7 +907,7 @@ ${currentCode.substring(0, 12000)}
         return;
       }
       const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
-      const aiResponse = await callGeminiAPI(patchPrompt, model);
+      const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
       
       if (runBtn) runBtn.innerHTML = '🔧 3/4 패치 적용 중...';
       log('📦 AI 응답 파싱 중...', 'info');
@@ -3049,31 +3049,62 @@ ${contextConstraint}`;
     showToast(`↺ 복원 완료`, 'ok');
   };
 
-  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null) {
-      const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
+  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null, modelOverride = null) {
+      // v8.9.25 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
+      if (typeof temperature === 'string' && temperature.includes('gemini')) {
+        modelOverride = temperature;
+        temperature = 0.2;
+      }
+      if (typeof parseJSON === 'string' && parseJSON.includes('gemini')) {
+        modelOverride = parseJSON;
+        parseJSON = false;
+      }
+      const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || localStorage.getItem('gemini_api_key') || ($('geminiApiKeyInput') && $('geminiApiKeyInput').value.trim()) || '';
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
-      const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
-      const MODEL_CANDIDATES = [savedModel, 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v,i,a)=>a.indexOf(v)===i);
+      const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
+      const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
+      // v8.9.25: 모델 후보에 2.5 추가, 중복 제거
+      const MODEL_CANDIDATES = [savedModel, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v,i,a)=>a.indexOf(v)===i);
       
-      let res = null, lastError = null;
+      let res = null, lastError = null, lastStatus = '';
       for (const model of MODEL_CANDIDATES) {
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
           try {
               const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
               res = await fetch(url, {
                   method: 'POST', headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature } }),
+                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2 } }),
                   signal: abortSignal
               });
-              if (res && res.ok) break;
-          } catch(e) { lastError = e; }
+              if (res && res.ok) {
+                lastStatus = model;
+                break;
+              } else {
+                const txt = await res.text().catch(()=> '');
+                lastError = new Error(`모델 ${model} 실패 ${res.status}: ${txt.substring(0,200)}`);
+                console.warn(lastError.message);
+              }
+          } catch(e) { lastError = e; console.warn('API 시도 실패', e.message); }
       }
-      if (!res || !res.ok) throw lastError || new Error('API 호출 실패');
-      const data = await res.json();
-      let textRes = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+      if (!res || !res.ok) {
+        console.error('모든 모델 실패', lastError);
+        throw lastError || new Error('API 호출 실패 - 키 확인 및 모델 선택 확인');
+      }
+      const data = await res.json().catch(()=>{ throw new Error('API 응답 JSON 파싱 실패'); });
+      let textRes = data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.parts?.map(p=>p.text).join('\n') || '';
+      if (!textRes) {
+        console.error('빈 응답', data);
+        throw new Error('API 빈 응답 - 안전 필터 또는 할당량 확인');
+      }
       if (parseJSON) {
-          textRes = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
-          return JSON.parse(textRes);
+          try {
+            const clean = textRes.replace(/```json/gi, '').replace(/```/g, '').trim();
+            return JSON.parse(clean);
+          } catch(e) {
+            // JSON 파싱 실패 시 텍스트 그대로 반환 (호환)
+            console.warn('JSON 파싱 실패, 텍스트 반환', e.message);
+            return textRes;
+          }
       }
       return textRes;
   }
