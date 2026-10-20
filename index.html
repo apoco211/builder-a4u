@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.29 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.31 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.29">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.29">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.29">
+  <link rel="manifest" href="./manifest.json?v=8.9.31">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.31">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.31">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.29</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.31</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -820,7 +820,7 @@
       }
       const prompt = AI_ROUTER_PROMPT_TEMPLATE.replace('{{REPO_LIST}}', JSON.stringify(repoList)).replace('{{USER_TEXT}}', rawText.replace(/"/g,'\"'));
       if (typeof log !== 'undefined') log(`🤖 AI 라우터 분류 중: "${rawText}"`, 'info');
-      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.5-flash';
+      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.0-flash';
       const response = await callGeminiAPI(prompt, 0.2, false, null, model);
       const jsonMatch = response.match(/\{[\s\S]*\}/) || response.match(/\{[\s\S]*?\}/);
       // Actually try normal JSON extraction
@@ -974,7 +974,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.29] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.31] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -989,7 +989,7 @@ ${currentCode.substring(0, 12000)}
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
         return;
       }
-      const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
+      const model = $('geminiModelSelect')?.value || 'gemini-2.0-flash';
       const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
       
       if (runBtn) runBtn.innerHTML = '🔧 3/4 패치 적용 중...';
@@ -1039,7 +1039,7 @@ ${currentCode.substring(0, 12000)}
         } else {
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
-        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.29)`;
+        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.31)`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         if (runBtn) runBtn.innerHTML = '👁️ 4/4 미리보기 생성 중...';
@@ -3145,9 +3145,9 @@ ${contextConstraint}`;
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || localStorage.getItem('gemini_api_key') || ($('geminiApiKeyInput') && $('geminiApiKeyInput').value.trim()) || '';
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
-      const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.26: 모델 후보에 2.5 추가, 중복 제거
-      const MODEL_CANDIDATES = [savedModel, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v,i,a)=>a.indexOf(v)===i);
+      const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
+      // v8.9.31: 1.5 모델 완전 제거 (404 에러), 2.0/2.5만 사용
+      const MODEL_CANDIDATES = [savedModel, 'gemini-2.0-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-flash-latest'].filter((v,i,a)=>a.indexOf(v)===i).filter(m => !m.includes('1.5'));
       
       let res = null, lastError = null, lastStatus = '';
       for (const model of MODEL_CANDIDATES) {
@@ -3171,7 +3171,15 @@ ${contextConstraint}`;
       }
       if (!res || !res.ok) {
         console.error('모든 모델 실패', lastError);
-        throw lastError || new Error('API 호출 실패 - 키 확인 및 모델 선택 확인');
+        let msg = lastError ? lastError.message : 'API 호출 실패';
+        if (msg.includes('401') || msg.includes('API key not valid') || msg.includes('UNAUTHENTICATED')) {
+          throw new Error(`🔑 Gemini API 키가 유효하지 않습니다. 
+1. https://aistudio.google.com/app/apikey 에서 새 키 발급
+2. 설정 탭 > Gemini API Key에 붙여넣기
+3. 모델은 gemini-2.0-flash 권장
+원본: ${msg.substring(0,150)}`);
+        }
+        throw lastError || new Error('API 호출 실패 - 키 확인 및 모델 선택 확인: ' + msg);
       }
       const data = await res.json().catch(()=>{ throw new Error('API 응답 JSON 파싱 실패'); });
       let textRes = data.candidates?.[0]?.content?.parts?.[0]?.text || data.candidates?.[0]?.content?.parts?.map(p=>p.text).join('\n') || '';
@@ -3637,8 +3645,26 @@ ${contextConstraint}`;
     $('githubPatInput')?.addEventListener('input', e => { localStorage.setItem('github_pat', e.target.value.trim()); loadRepos(); detectGithubUser(); });
     $('geminiApiKeyInput')?.addEventListener('input', e => localStorage.setItem('gemini_api_key', e.target.value.trim()));
     
+
+    // v8.9.31: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
+    let savedModelRaw = localStorage.getItem('builder_gemini_model') || '';
+    if (savedModelRaw.includes('1.5')) {
+      localStorage.setItem('builder_gemini_model', 'gemini-2.0-flash');
+      savedModelRaw = 'gemini-2.0-flash';
+      console.log('[Migration] 1.5 모델 → 2.0-flash로 자동 변경');
+    }
     const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
     if ($('geminiModelSelect')) {
+      // 드롭다운 옵션 강제 교체 (1.5 제거)
+      const sel = $('geminiModelSelect');
+      sel.innerHTML = `
+        <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장)</option>
+        <option value="gemini-2.0-flash-001">gemini-2.0-flash-001</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash (최신)</option>
+        <option value="gemini-2.5-pro">gemini-2.5-pro (고성능)</option>
+        <option value="gemini-flash-latest">gemini-flash-latest</option>
+      `;
+      sel.value = savedModelRaw || 'gemini-2.0-flash';
       $('geminiModelSelect').value = savedModel;
       $('geminiModelSelect').addEventListener('change', e => { localStorage.setItem('builder_gemini_model', e.target.value); showToast('🧠 모델 변경됨', 'ok'); });
     }
