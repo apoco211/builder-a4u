@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.26 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.27 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.26">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.26">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.26">
+  <link rel="manifest" href="./manifest.json?v=8.9.27">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.27">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.27">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.26</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.27</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -788,8 +788,10 @@
     }
   }, 1500);
 
-  const _originalSaveIdeaInbox = (typeof saveIdeaInbox !== 'undefined') ? saveIdeaInbox : null;
+  let _originalSaveIdeaInbox = null;
   async function saveIdeaInboxWithAIRouter(type) {
+    // 런타임에 원본 함수 가져오기 (캡쳐 시점 버그 방지)
+    const origFunc = window.saveIdeaInbox_original || _originalSaveIdeaInbox || window._originalInboxFunc;
     const textInput = $('inboxTextInput');
     const projectSelect = $('inboxProjectSelect');
     const aiToggle = $('aiSmartRouterToggle');
@@ -798,11 +800,14 @@
       if (typeof showToast === 'function') showToast('💡 아이디어를 입력하세요', 'warn');
       return;
     }
+    // ★ 프로젝트가 선택되어 있으면 무조건 해당 프로젝트로 직행 (AI 무시)
     if (projectSelect && projectSelect.value) {
-      if (_originalSaveIdeaInbox) return _originalSaveIdeaInbox(type);
+      if (origFunc) return origFunc(type);
+      // fallback 직접 저장
+      if (typeof window.saveIdeaInbox_direct === 'function') return window.saveIdeaInbox_direct(type);
     }
     if (!aiToggle || !aiToggle.checked) {
-      if (_originalSaveIdeaInbox) return _originalSaveIdeaInbox(type);
+      if (origFunc) return origFunc(type);
       return;
     }
     if (typeof showToast === 'function') showToast('🤖 AI 분류 중...', 'info');
@@ -819,18 +824,30 @@
     } else {
       if (typeof showToast === 'function') showToast(`🤖 미분류로 저장`, 'info');
     }
-    if (_originalSaveIdeaInbox) {
+    const finalOrig = window.saveIdeaInbox_original || _originalSaveIdeaInbox || window._originalInboxFunc;
+    if (finalOrig) {
       if (textInput) textInput.value = result.corrected;
-      return _originalSaveIdeaInbox(type);
+      return finalOrig(type);
     }
   }
-  // Override after 1.5s
+  // 원본 직접 저장 함수 백업 (AI 우회용)
+  window.saveIdeaInbox_direct = null;
+  
+  // Override after 1.5s - 수정됨: 원본 캡쳐를 여기서 확실히
   setTimeout(()=>{
-    if (typeof saveIdeaInbox !== 'undefined') {
+    if (typeof saveIdeaInbox !== 'undefined' && typeof saveIdeaInboxWithAIRouter !== 'undefined') {
+      // 이미 오버라이드 되었는지 확인
+      if (saveIdeaInbox.name === 'saveIdeaInboxWithAIRouter' || saveIdeaInbox.toString().includes('AI 분류 중')) {
+        console.log('[Phase1] 이미 오버라이드됨, 스킵');
+        return;
+      }
+      _originalSaveIdeaInbox = saveIdeaInbox;
+      window._originalInboxFunc = saveIdeaInbox;
       window.saveIdeaInbox_original = saveIdeaInbox;
+      window.saveIdeaInbox_direct = saveIdeaInbox;
       window.saveIdeaInbox = saveIdeaInboxWithAIRouter;
-      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.24');
-      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.24', 'success');
+      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.27 - 프로젝트 선택 버그 수정');
+      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.27 (프로젝트 선택 수정)', 'success');
     }
   }, 2000);
   // ===== End Phase 0+1 =====
@@ -890,7 +907,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.26] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.27] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -955,7 +972,7 @@ ${currentCode.substring(0, 12000)}
         } else {
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
-        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.26)`;
+        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.27)`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         if (runBtn) runBtn.innerHTML = '👁️ 4/4 미리보기 생성 중...';
