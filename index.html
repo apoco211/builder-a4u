@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
 <style>
 @font-face {
   font-family: "Optimistic";
@@ -27,7 +48,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.2.7 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.17 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -48,9 +69,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.2.7">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.2.7">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.2.7">
+  <link rel="manifest" href="./manifest.json?v=8.9.17">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.17">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.17">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -164,7 +185,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.2.7</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.17</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -407,23 +428,37 @@
     <div id="ideaImageContainer" class="idea-img-container"></div>
   </div>
   
-  <div class="card mb-4" style="border:2px dashed #9ca3af">
-    <div class="flex justify-between items-center mb-2 card-header-mobile-col">
+  <div class="card mb-4" style="border:2px dashed #9ca3af; padding:14px;">
+    <div class="flex justify-between items-center mb-2">
       <h2 class="font-bold text-[13px] text-gray-700 dark:text-gray-300">🌐 [미분류/기타] 신규 프로젝트 아이디어 보관소</h2>
+      <span class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">미분류</span>
     </div>
-    <div class="flex flex-wrap gap-2 mb-2 items-center">
-      <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
-      <button onclick="clearOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#f3f4f6;color:#374151;border-color:#d1d5db">🗑️ 전체 비우기</button>
-      <button onclick="copyOtherIdea()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#e5e7eb;color:#111827;border-color:#d1d5db">📋 선택 복사</button>
-      <div class="flex-1 min-w-0"></div>
-      <select id="otherIdeaMoveSelect" class="input text-[10px] py-1 h-auto min-h-[28px] w-auto max-w-[120px]">
-        <option value="">프로젝트 선택...</option>
-      </select>
-      <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-1 px-2 text-[10px] shadow-sm" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🚀 선택 항목 이동</button>
+    <p class="text-[10px] opacity-60 mb-3 leading-relaxed">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모입니다. 사진 첨부 후 썸네일을 클릭하면 크게 볼 수 있습니다.</p>
+    
+    <div class="space-y-2 mb-3">
+      <div class="grid grid-cols-3 gap-1.5">
+        <button onclick="clearCheckedOtherIdeas()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#fef2f2;color:#991b1b;border:1px solid #fecaca">☑️ 선택 지우기</button>
+        <button onclick="clearOtherIdea()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#f9fafb;color:#374151;border:1px solid #e5e7eb">🗑️ 전체 비우기</button>
+        <button onclick="copyOtherIdea()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#f3f4f6;color:#111827;border:1px solid #d1d5db">📋 선택 복사</button>
+      </div>
+      <div class="grid grid-cols-2 gap-1.5">
+        <label class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg cursor-pointer flex justify-center items-center" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">
+          📸 사진 첨부
+          <input type="file" id="otherIdeaImageInput" accept="image/*" class="hidden" multiple onchange="handleOtherIdeaImageUpload(this)">
+        </label>
+        <button onclick="pasteOtherIdeaImageFromClipboard()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0">📋 사진 붙여넣기</button>
+      </div>
+      <div class="flex gap-1.5 items-center">
+        <select id="otherIdeaMoveSelect" class="input text-[11px] py-2 h-auto min-h-[36px] flex-1 rounded-lg">
+          <option value="">프로젝트 선택...</option>
+        </select>
+        <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-2 px-3 text-[11px] font-black rounded-lg shadow-sm shrink-0" style="background:#3b82f6;color:white;border-color:#2563eb; min-height:36px">🚀 선택 항목 이동</button>
+      </div>
     </div>
-    <p class="text-[10px] opacity-60 mb-2">기존 앱 목록에 해당하지 않는 '새로운 기획/아이디어'들이 모입니다.</p>
-    <div id="otherIdeaList" class="flex flex-col gap-2 mb-2 max-h-[200px] overflow-y-auto pr-1"></div>
-    <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2 text-[11px] border-dashed border-2" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
+
+    <div id="otherIdeaList" class="flex flex-col gap-2 mb-3 max-h-[200px] overflow-y-auto pr-1"></div>
+    <div id="otherIdeaImageContainer" class="idea-img-container mb-3"></div>
+    <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2.5 text-[11px] border-dashed border-2 rounded-xl" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
   </div>
 
   <div class="card mb-4">
@@ -631,6 +666,7 @@
   let tokenExpiry = Number(localStorage.getItem('google_token_expiry') || 0);
   let activeDriveTargetSlot = 'main1', activeDriveTab = 'recent';
   let currentIdeaImages = [];
+  let currentOtherIdeaImages = [];
   let currentPatchAbortController = null;
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
@@ -1341,14 +1377,18 @@ ${currentCode}`;
   }
   
   function log(msg, type = 'info') {
-    const logArea = $('logArea'); if (!logArea) return;
+    const logArea = $('logArea');
     const time = new Date().toLocaleTimeString();
     let color = 'text-gray-700 dark:text-gray-300';
     if (type === 'ok') color = 'text-emerald-600 dark:text-emerald-400 font-bold';
     if (type === 'err') color = 'text-red-500 font-bold';
     if (type === 'info') color = 'text-blue-600 dark:text-blue-400 font-semibold';
-    logArea.innerHTML += `<div class="${color} mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[${time}] ${msg}</div>`;
-    logArea.scrollTop = logArea.scrollHeight;
+    if (logArea) {
+      logArea.innerHTML += `<div class="${color} mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[${time}] ${msg}</div>`;
+      logArea.scrollTop = logArea.scrollHeight;
+    }
+    if (type === 'err') console.error(`[${time}] ${msg}`);
+    else console.log(`[${time}] ${msg}`);
   }
   
   function getGitHubPat() { return localStorage.getItem('github_pat') || $('githubPatInput')?.value || ''; }
@@ -1434,13 +1474,16 @@ ${currentCode}`;
   window.saveOtherIdea = async function(triggerDrive = true) {
     const val = stringifyIdeasData(currentOtherIdeas);
     safeSetLocalStorage('repo_idea_기타', val);
-    if(triggerDrive && isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: [] });
+    safeSetLocalStorage('repo_idea_images_기타', JSON.stringify(currentOtherIdeaImages));
+    if(triggerDrive && isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: currentOtherIdeaImages });
   };
   
   window.clearOtherIdea = function() {
-    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까?')) {
-      currentOtherIdeas = []; renderOtherIdeas();
+    if(confirm('신규/미분류 아이디어 보관소 전체 내용을 지우시겠습니까? (사진 포함)')) {
+      currentOtherIdeas = []; currentOtherIdeaImages = [];
+      renderOtherIdeas(); renderOtherIdeaImages();
       localStorage.removeItem('repo_idea_기타');
+      localStorage.removeItem('repo_idea_images_기타');
       saveOtherIdea(); showToast('전체 비워졌습니다.', 'ok');
     }
   };
@@ -1509,7 +1552,11 @@ ${currentCode}`;
       const savedImages = localStorage.getItem(getIdeaImagesKey());
       currentIdeaImages = savedImages ? JSON.parse(savedImages) : [];
     } catch(e) { currentIdeaImages = []; }
-    renderIdeaImages(); updateFullContextBox(); renderAITargets();
+    try {
+      const savedOtherImages = localStorage.getItem('repo_idea_images_기타');
+      currentOtherIdeaImages = savedOtherImages ? JSON.parse(savedOtherImages) : [];
+    } catch(e) { currentOtherIdeaImages = []; }
+    renderIdeaImages(); renderOtherIdeaImages(); updateFullContextBox(); renderAITargets();
   }
   
   window.saveRepoIdea = async function(btnEvent, triggerDrive = true) {
@@ -1602,34 +1649,106 @@ ${currentCode}`;
     const container = $('ideaImageContainer'); if (!container) return;
     container.innerHTML = '';
     currentIdeaImages.forEach((imgBase64, index) => {
-      const thumb = document.createElement('div'); thumb.className = 'idea-img-thumb';
+      const thumb = document.createElement('div'); thumb.className = 'idea-img-thumb cursor-pointer';
       thumb.style.backgroundImage = `url(${imgBase64})`;
+      thumb.title = '클릭하면 크게 보기';
+      thumb.onclick = () => openImageLightbox(imgBase64);
       const removeBtn = document.createElement('button'); removeBtn.className = 'idea-img-remove';
       removeBtn.textContent = '✕';
-      removeBtn.onclick = function() { currentIdeaImages.splice(index, 1); renderIdeaImages(); saveRepoIdea(); };
+      removeBtn.onclick = function(e) { e.stopPropagation(); currentIdeaImages.splice(index, 1); renderIdeaImages(); saveRepoIdea(); };
       thumb.appendChild(removeBtn); container.appendChild(thumb);
     });
     updateSmartPackageModeBadge();
   }
-  
-  function handlePasteEvent(e) {
-    const activeTab = $('tabSettingsContent');
-    if (activeTab && activeTab.style.display !== 'none') {
-      const items = (e.clipboardData || window.clipboardData)?.items;
-      if (!items) return;
+
+  function renderOtherIdeaImages() {
+    const container = $('otherIdeaImageContainer'); if (!container) return;
+    container.innerHTML = '';
+    currentOtherIdeaImages.forEach((imgBase64, index) => {
+      const thumb = document.createElement('div'); thumb.className = 'idea-img-thumb cursor-pointer';
+      thumb.style.backgroundImage = `url(${imgBase64})`;
+      thumb.title = '클릭하면 크게 보기';
+      thumb.onclick = () => openImageLightbox(imgBase64);
+      const removeBtn = document.createElement('button'); removeBtn.className = 'idea-img-remove';
+      removeBtn.textContent = '✕';
+      removeBtn.onclick = function(e) { e.stopPropagation(); currentOtherIdeaImages.splice(index, 1); renderOtherIdeaImages(); saveOtherIdea(true); };
+      thumb.appendChild(removeBtn); container.appendChild(thumb);
+    });
+  }
+
+  window.openImageLightbox = function(src) {
+    let modal = $('imageLightboxModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'imageLightboxModal';
+      modal.className = 'fixed inset-0 z-[99999] bg-black/80 flex items-center justify-center p-4 hidden';
+      modal.innerHTML = `<div class="relative max-w-[90vw] max-h-[90vh] flex flex-col items-center"><img id="lightboxImg" src="" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain bg-white"><button onclick="closeImageLightbox()" class="absolute -top-3 -right-3 bg-white text-black rounded-full w-8 h-8 flex items-center justify-center font-bold shadow border">✕</button><div class="mt-3 flex gap-2"><button onclick="closeImageLightbox()" class="btn bg-white text-black px-4 py-1.5 rounded-full font-bold">닫기</button></div></div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeImageLightbox(); });
+    }
+    const imgEl = $('lightboxImg');
+    if (imgEl) imgEl.src = src;
+    modal.classList.remove('hidden');
+  };
+  window.closeImageLightbox = function() {
+    const modal = $('imageLightboxModal');
+    if (modal) modal.classList.add('hidden');
+  };
+
+  window.pasteOtherIdeaImageFromClipboard = async function() {
+    try {
+      if (!navigator.clipboard || !navigator.clipboard.read) { showToast('Ctrl+V로 이미지를 붙여넣어 주세요.', 'info'); return; }
+      const items = await navigator.clipboard.read();
       let hasImage = false;
-      for (let index = 0; index < items.length; index++) {
-        const item = items[index];
-        if (item.kind === 'file' && item.type.startsWith('image/')) {
-          const blob = item.getAsFile();
-          processImageFileToBase64(blob).then(b64 => {
-             currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea();
-          });
-          hasImage = true;
+      for (const item of items) {
+        for (const type of item.types) {
+          if (type.startsWith('image/')) {
+            const blob = await item.getType(type);
+            const b64 = await processImageFileToBase64(blob);
+            currentOtherIdeaImages.push(b64); hasImage = true;
+          }
         }
       }
-      if (hasImage) { e.preventDefault(); showToast('📸 이미지가 추가되었습니다.', 'ok'); }
+      if (hasImage) { renderOtherIdeaImages(); saveOtherIdea(true); showToast('📸 미분류에 이미지가 추가되었습니다!', 'ok'); }
+      else showToast('복사된 이미지가 없습니다.', 'err');
+    } catch(e) { showToast('클립보드 권한 오류 (Ctrl+V 권장)', 'err'); }
+  };
+  window.handleOtherIdeaImageUpload = async function(input) {
+    if (!input.files) return;
+    for (let f of input.files) {
+      const b64 = await processImageFileToBase64(f).catch(()=>{});
+      if (b64) currentOtherIdeaImages.push(b64);
     }
+    renderOtherIdeaImages(); saveOtherIdea(true);
+    input.value = '';
+    showToast('📸 미분류 사진이 추가되었습니다.', 'ok');
+  };
+  
+  function handlePasteEvent(e) {
+    const settingsVisible = $('tabSettingsContent') && $('tabSettingsContent').style.display !== 'none';
+    const inboxVisible = $('tabInboxContent') && $('tabInboxContent').style.display !== 'none';
+    const items = (e.clipboardData || window.clipboardData)?.items;
+    if (!items) return;
+    let handled = false;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file' && item.type.startsWith('image/')) {
+        const blob = item.getAsFile();
+        if (inboxVisible) {
+          processImageFileToBase64(blob).then(b64 => { setPendingInboxPhoto(b64); });
+          handled = true;
+        } else if (settingsVisible) {
+          processImageFileToBase64(blob).then(b64 => {
+            const activeEl = document.activeElement;
+            const inOther = activeEl && activeEl.closest && activeEl.closest('#otherIdeaList, #otherIdeaImageContainer');
+            if (inOther) { currentOtherIdeaImages.push(b64); renderOtherIdeaImages(); saveOtherIdea(false); }
+            else { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); }
+          });
+          handled = true;
+        }
+      }
+    }
+    if (handled) { e.preventDefault(); showToast('📸 이미지가 추가되었습니다. (썸네일 클릭하면 크게 보기)', 'ok'); }
   }
   
   function initTheme() {
@@ -1819,33 +1938,15 @@ ${contextConstraint}`;
           }
         }
         downloadTextPayload(combinedPayload, combinedFileName);
-
-        setTimeout(() => {
-          resetMobileViewportZoom();
-          const selected = getSelectedAITargets();
-          if (selected.length > 0) {
-             const firstAI = AI_TARGETS.find(a => a.id === selected[0]);
-             if (firstAI) openExternalAI(firstAI.url);
-             showAILauncher(selected);
-          }
-        }, 400);
-
+        resetMobileViewportZoom();
         showToast(`📸 클립보드 [통합 사진] 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
+        log(`✅ 스마트 패키지 생성 완료 (사진 ${currentIdeaImages.length}장 포함)`, 'ok');
       } else {
         await navigator.clipboard.writeText(promptText);
         downloadTextPayload(combinedPayload, combinedFileName);
-
-        setTimeout(() => {
-          resetMobileViewportZoom();
-          const selected = getSelectedAITargets();
-          if (selected.length > 0) {
-             const firstAI = AI_TARGETS.find(a => a.id === selected[0]);
-             if (firstAI) openExternalAI(firstAI.url);
-             showAILauncher(selected);
-          }
-        }, 400);
-
+        resetMobileViewportZoom();
         showToast(`📋 클립보드 복사 & [통합 프롬프트+코드 .txt] 다운로드 완료!`, 'ok');
+        log(`✅ 스마트 패키지 생성 완료 (프롬프트 + 코드 통합)`, 'ok');
       }
     } catch (e) {
       showToast('❌ 패키징 중 오류: ' + e.message, 'err');
@@ -2418,44 +2519,108 @@ ${contextConstraint}`;
   
   async function pushToGitHubRepository() {
     const pat = getGitHubPat();
-    if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
-    log(`🚀 [빌드 시작] ${currentRepo} (${version}) 푸시 준비...`, 'info');
+    if (!pat || pat.length < 10) {
+      log('❌ GitHub PAT가 없습니다. 설정 탭에서 PAT를 입력하세요.', 'err');
+      showToast('GitHub PAT 필요 - 설정 탭에서 입력하세요', 'err');
+      return;
+    }
+    const version = getTargetAppVersion();
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    const editor = $('codeEditor'); const version = getTargetAppVersion();
+    const editor = $('codeEditor');
     let userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 빌드 및 업데이트`;
     let codeToPush = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
-    if (!codeToPush) codeToPush = await syncLatestSourceFromGithub();
-    
-    let base64Content = '';
-    try { base64Content = window.btoa(unescape(encodeURIComponent(codeToPush))); } catch(e) {
-      const bytes = new TextEncoder().encode(codeToPush); let binary = '';
-      for (let i = 0; i < bytes.byteLength; i += 1024) binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 1024, bytes.byteLength)));
-      base64Content = window.btoa(binary);
+    if (!codeToPush) {
+      log('⚠️ 에디터 코드가 비어있어 GitHub에서 최신 소스를 가져옵니다...', 'info');
+      codeToPush = await syncLatestSourceFromGithub();
     }
+    if (!codeToPush || codeToPush.trim().length < 10) {
+      log('❌ 푸시할 코드가 없습니다.', 'err');
+      showToast('푸시할 코드가 없습니다.', 'err');
+      return;
+    }
+
+    log(`🚀 [빌드 시작] ${currentRepo} (${version}) 푸시 준비...`, 'info');
+    log(`📁 대상: ${GITHUB_USER}/${currentRepo}/${targetFile} (${codeToPush.length.toLocaleString()}자)`, 'info');
+    log(`📝 커밋 메시지: ${userNote}`, 'info');
+
+    let base64Content = '';
+    try {
+      try { base64Content = window.btoa(unescape(encodeURIComponent(codeToPush))); } catch(e) {
+        const bytes = new TextEncoder().encode(codeToPush); let binary = '';
+        for (let i = 0; i < bytes.byteLength; i += 1024) binary += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 1024, bytes.byteLength)));
+        base64Content = window.btoa(binary);
+      }
+      log(`📦 Base64 인코딩 완료 (${(base64Content.length/1024).toFixed(1)}KB)`, 'info');
+    } catch(e) {
+      log(`❌ 인코딩 실패: ${e.message}`, 'err');
+      showToast('인코딩 실패: ' + e.message, 'err');
+      return;
+    }
+
     const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
     let commitSha = null;
     try {
+      log(`🔍 기존 파일 SHA 조회 중...`, 'info');
       let fileSha = null;
-      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
-      if (getRes.ok) fileSha = (await getRes.json()).sha;
+      try {
+        const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
+        if (getRes.ok) {
+          const j = await getRes.json();
+          fileSha = j.sha;
+          log(`📄 기존 파일 발견 (SHA: ${fileSha.slice(0,7)})`, 'info');
+        } else {
+          log(`📄 기존 파일 없음 (새 파일로 생성) - HTTP ${getRes.status}`, 'info');
+        }
+      } catch(fetchErr) {
+        log(`⚠️ SHA 조회 중 오류 (새 파일로 진행): ${fetchErr.message}`, 'info');
+      }
+
       const payload = { message: `${userNote} (${new Date().toLocaleString()})`, content: base64Content };
       if (fileSha) payload.sha = fileSha;
+
+      log(`⬆️ GitHub PUT 요청 전송 중...`, 'info');
       const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
-      if (!putRes.ok) throw new Error(`HTTP ${putRes.status}`);
-      commitSha = (await putRes.json()).commit?.sha?.slice(0, 7) || '완료';
+      const putText = await putRes.text();
+      let putJson = null;
+      try { putJson = JSON.parse(putText); } catch(e) {}
+
+      if (!putRes.ok) {
+        const errMsg = putJson?.message || putText.slice(0,200);
+        log(`❌ GitHub 푸시 실패: HTTP ${putRes.status} - ${errMsg}`, 'err');
+        showToast(`푸시 실패: HTTP ${putRes.status} - ${errMsg}`, 'err');
+        console.error('GitHub PUT failed', putRes.status, putText);
+        return;
+      }
+
+      commitSha = putJson?.commit?.sha?.slice(0, 7) || '완료';
       log(`✅ GitHub 푸시 성공! (#${commitSha})`, 'ok');
-    } catch(e) { return showToast('푸시 실패: ' + e.message, 'err'); }
+    } catch(e) {
+      log(`❌ 푸시 중 예외 발생: ${e.message}`, 'err');
+      showToast('푸시 실패: ' + e.message, 'err');
+      console.error(e);
+      return;
+    }
     
-    if (connectedDoc1 && connectedDoc1.id) {
-      const logText = `[${currentRepo} 빌드] ⏰ ${new Date().toLocaleString()} (#${commitSha})\n내용: ${userNote}\n\n`;
-      await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+    try {
+      if (connectedDoc1 && connectedDoc1.id) {
+        log(`📝 히스토리 문서 업데이트 중...`, 'info');
+        const logText = `[${currentRepo} 빌드] ⏰ ${new Date().toLocaleString()} (#${commitSha})\n내용: ${userNote}\n\n`;
+        await writeOrAppendToGoogleDoc(connectedDoc1.id, logText, 'append');
+        log(`✅ 히스토리 문서 업데이트 완료`, 'ok');
+      }
+      if (connectedDoc2 && connectedDoc2.id) {
+        log(`📦 소스코드 백업 문서 업데이트 중...`, 'info');
+        await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
+        log(`✅ 소스코드 백업 완료`, 'ok');
+      }
+    } catch(docErr) {
+      log(`⚠️ 문서 백업 중 오류: ${docErr.message}`, 'info');
     }
-    if (connectedDoc2 && connectedDoc2.id) {
-      await writeOrAppendToGoogleDoc(connectedDoc2.id, codeToPush, 'overwrite');
-    }
+
+    log(`🎉 [${currentRepo}] (${version}) 빌드 및 백업 전체 완료!`, 'ok');
     showToast(`🚀 [${currentRepo}] (${version}) 빌드 및 백업 완료!`, 'ok');
   }
-  
+
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
     if (!isGoogleLoggedIn() || !docId) return false;
     try {
@@ -2590,6 +2755,49 @@ ${contextConstraint}`;
   window.removePendingInboxPhoto = function() {
     pendingInboxPhoto = null; $('inboxPhotoPreviewImg').src = '';
     $('inboxPhotoPreviewContainer').classList.add('hidden');
+  };
+
+  window.pasteInboxImageFromClipboard = async function() {
+    try {
+      if (navigator.clipboard && navigator.clipboard.read) {
+        const items = await navigator.clipboard.read();
+        let hasImage = false;
+        for (const item of items) {
+          for (const type of item.types) {
+            if (type.startsWith('image/')) {
+              const blob = await item.getType(type);
+              const b64 = await processImageFileToBase64(blob);
+              setPendingInboxPhoto(b64);
+              hasImage = true;
+            }
+          }
+        }
+        if (hasImage) { showToast('📸 클립보드 이미지가 추가되었습니다!', 'ok'); return; }
+      }
+      showToast('복사된 이미지가 없습니다. Ctrl+V로 붙여넣어 보세요.', 'info');
+    } catch (e) {
+      showToast('클립보드 권한 오류 (Ctrl+V 권장)', 'err');
+    }
+  };
+
+  window.pasteInboxTextFromClipboard = async function() {
+    try {
+      if (navigator.clipboard && navigator.clipboard.readText) {
+        const text = await navigator.clipboard.readText();
+        if (text && text.trim()) {
+          const el = $('inboxTextInput');
+          if (el) { el.value = text.trim(); el.focus(); }
+          showToast('📝 클립보드 텍스트가 입력되었습니다!', 'ok');
+          return;
+        }
+      }
+      const fallback = prompt('붙여넣을 텍스트를 입력해주세요:');
+      if (fallback && fallback.trim()) {
+        const el = $('inboxTextInput');
+        if (el) el.value = fallback.trim();
+        showToast('📝 입력한 텍스트가 적용되었습니다!', 'ok');
+      }
+    } catch(e) { showToast('클립보드 읽기 실패', 'err'); }
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
@@ -2763,22 +2971,52 @@ ${contextConstraint}`;
     $('clearLogBtn')?.addEventListener('click', () => { $('logArea').innerHTML = ''; });
     $('buildBtn')?.addEventListener('click', async () => { 
         const c = $('codeEditor')?.value || ''; 
-        if (!c.trim()) return showToast('빌드할 소스코드가 없습니다.', 'err');
+        if (!c.trim()) {
+          log('❌ 빌드할 소스코드가 없습니다.', 'err');
+          return showToast('빌드할 소스코드가 없습니다.', 'err');
+        }
 
         const targetRepo = currentRepo || 'builder-a4u';
         const targetVer = getTargetAppVersion();
         const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
         const userNote = $('updateNoteInput')?.value?.trim();
 
-        let confirmMsg = `🚀 [최종 빌드 확인]\n\n• 대상 프로젝트: [ ${targetRepo} ]\n• 현재 빌드 넘버: [ ${targetVer} ]\n• 대상 파일: ${targetFile}`;
+        let confirmMsg = `🚀 [최종 빌드 확인]
+
+• 대상 프로젝트: [ ${targetRepo} ]
+• 현재 빌드 넘버: [ ${targetVer} ]
+• 대상 파일: ${targetFile}`;
         if (userNote) {
             const shortNote = userNote.length > 50 ? userNote.slice(0, 50) + '...' : userNote;
-            confirmMsg += `\n• 업데이트 메모: ${shortNote}`;
+            confirmMsg += `
+• 업데이트 메모: ${shortNote}`;
         }
-        confirmMsg += `\n\n위 프로젝트와 빌드 넘버로 최종 빌드 및 배포를 진행하시겠습니까?`;
+        confirmMsg += `
 
-        if (!confirm(confirmMsg)) return;
-        saveDraftCustom(c, '최종 빌드'); await pushToGitHubRepository(); 
+위 프로젝트와 빌드 넘버로 최종 빌드 및 배포를 진행하시겠습니까?`;
+
+        if (!confirm(confirmMsg)) {
+          log('🚫 사용자가 빌드를 취소했습니다.', 'info');
+          return;
+        }
+        const btn = $('buildBtn');
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) { btn.disabled = true; btn.innerHTML = '⏳ 빌드 중...'; }
+        try { $('logArea')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
+        log(`🚀 최종 빌드 시작 - ${targetRepo} ${targetVer} - 파일: ${targetFile}`, 'info');
+        log(`🔑 PAT: ${getGitHubPat() ? '있음 ('+getGitHubPat().length+'자)' : '없음! 설정탭 확인'}`, getGitHubPat() ? 'info' : 'err');
+        try {
+          saveDraftCustom(c, '최종 빌드');
+          log(`💾 로컬 초안 저장 완료`, 'info');
+          await pushToGitHubRepository();
+          log(`✅ 최종 빌드 프로세스 완료`, 'ok');
+        } catch(e) {
+          log(`❌ 빌드 실패: ${e.message}`, 'err');
+          console.error(e);
+          showToast('빌드 실패: ' + e.message, 'err');
+        } finally {
+          if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+        }
     });
     $('showGithubCommitHistoryBtn')?.addEventListener('click', loadGitHubCommitHistory);
     $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
@@ -2806,6 +3044,21 @@ ${contextConstraint}`;
     });
     $('ideaImageInput')?.addEventListener('change', async e => {
       if (e.target.files) for(let f of e.target.files) { const b64 = await processImageFileToBase64(f).catch(()=>{}); if(b64) { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); } }
+      e.target.value = '';
+    });
+    $('inboxPhotoInput')?.addEventListener('change', async e => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const b64 = await processImageFileToBase64(file);
+        setPendingInboxPhoto(b64);
+        showToast('📸 사진이 추가되었습니다. (던지기로 저장)', 'ok');
+      } catch(err) {}
+      e.target.value = '';
+    });
+    $('otherIdeaImageInput')?.addEventListener('change', async e => {
+      if (e.target.files) for(let f of e.target.files) { const b64 = await processImageFileToBase64(f).catch(()=>{}); if(b64) { currentOtherIdeaImages.push(b64); } }
+      renderOtherIdeaImages(); saveOtherIdea(false);
       e.target.value = '';
     });
     const savedPatchMode = localStorage.getItem('prompt_patch_mode');
@@ -2836,5 +3089,5 @@ ${contextConstraint}`;
   }
   window.onload = startApp;
 </script>
-</body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
