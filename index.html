@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.26">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.26">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.26">
+  <link rel="manifest" href="./manifest.json?v=8.9.25">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.25">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.25">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -900,12 +900,24 @@ ${ideaText}
 ${currentCode.substring(0, 12000)}
 `;
 
-      const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || $('geminiApiKeyInput')?.value?.trim();
+      // v8.9.25 debug: 다중 키 소스에서 읽기
+      let geminiKey = localStorage.getItem('gemini_api_key')?.trim() || localStorage.getItem('GEMINI_API_KEY')?.trim() || localStorage.getItem('builder_gemini_api_key')?.trim() || ($('geminiApiKeyInput')?.value?.trim()) || '';
+      // bulk import에서 저장된 키도 확인
+      try {
+        const bulk = localStorage.getItem('api_keys_bulk');
+        if (bulk) {
+          const parsed = JSON.parse(bulk);
+          if (parsed.GEMINI_API_KEY) geminiKey = parsed.GEMINI_API_KEY;
+          if (parsed.gemini_api_key) geminiKey = parsed.gemini_api_key;
+        }
+      } catch(e) {}
       if (!geminiKey) {
         showToast('Gemini API 키가 없습니다. 설정 탭에서 입력하세요.', 'err');
+        log('❌ Gemini 키 없음 - localStorage 확인: gemini_api_key=' + (localStorage.getItem('gemini_api_key') ? '있음' : '없음'), 'err');
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
         return;
       }
+      log('🔑 Gemini 키 확인: ' + geminiKey.substring(0,10) + '... 길이 ' + geminiKey.length, 'info');
       const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
       const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
       
@@ -972,8 +984,14 @@ ${currentCode.substring(0, 12000)}
       }
     } catch (e) {
       console.error(e);
-      showToast('원클릭 패치 실패: ' + e.message, 'err');
-      log('❌ 원클릭 실패: ' + (e.stack || e.message), 'err');
+      const msg = e.message || '알 수 없는 오류';
+      showToast('원클릭 패치 실패: ' + msg, 'err');
+      log('❌ 원클릭 실패: ' + msg, 'err');
+      log('📋 상세: ' + (e.stack || JSON.stringify(e)).substring(0,800), 'err');
+      // 키 재확인 안내
+      if (msg.includes('API') || msg.includes('모델') || msg.includes('403') || msg.includes('404')) {
+        showToast('설정 탭에서 Gemini API 키와 모델 선택을 확인해주세요', 'info');
+      }
     } finally {
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
