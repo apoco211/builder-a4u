@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.25">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.25">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.25">
+  <link rel="manifest" href="./manifest.json?v=8.9.26">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.26">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.26">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -587,7 +587,7 @@
         <div id="splitSelectedInfo" class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
       </div>
       <div class="flex flex-col" style="flex:1.05">
-        <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; padding:10px">
+        <button id="voiceRecordBtn" type="button" onclick="toggleVoiceRecording()" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; padding:10px">
           <span class="text-[28px] mb-0.5">🎙️</span>
           <span class="font-bold text-[12px] leading-tight">크게 말하기</span>
           <span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span>
@@ -900,24 +900,12 @@ ${ideaText}
 ${currentCode.substring(0, 12000)}
 `;
 
-      // v8.9.25 debug: 다중 키 소스에서 읽기
-      let geminiKey = localStorage.getItem('gemini_api_key')?.trim() || localStorage.getItem('GEMINI_API_KEY')?.trim() || localStorage.getItem('builder_gemini_api_key')?.trim() || ($('geminiApiKeyInput')?.value?.trim()) || '';
-      // bulk import에서 저장된 키도 확인
-      try {
-        const bulk = localStorage.getItem('api_keys_bulk');
-        if (bulk) {
-          const parsed = JSON.parse(bulk);
-          if (parsed.GEMINI_API_KEY) geminiKey = parsed.GEMINI_API_KEY;
-          if (parsed.gemini_api_key) geminiKey = parsed.gemini_api_key;
-        }
-      } catch(e) {}
+      const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || $('geminiApiKeyInput')?.value?.trim();
       if (!geminiKey) {
         showToast('Gemini API 키가 없습니다. 설정 탭에서 입력하세요.', 'err');
-        log('❌ Gemini 키 없음 - localStorage 확인: gemini_api_key=' + (localStorage.getItem('gemini_api_key') ? '있음' : '없음'), 'err');
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
         return;
       }
-      log('🔑 Gemini 키 확인: ' + geminiKey.substring(0,10) + '... 길이 ' + geminiKey.length, 'info');
       const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
       const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
       
@@ -984,14 +972,8 @@ ${currentCode.substring(0, 12000)}
       }
     } catch (e) {
       console.error(e);
-      const msg = e.message || '알 수 없는 오류';
-      showToast('원클릭 패치 실패: ' + msg, 'err');
-      log('❌ 원클릭 실패: ' + msg, 'err');
-      log('📋 상세: ' + (e.stack || JSON.stringify(e)).substring(0,800), 'err');
-      // 키 재확인 안내
-      if (msg.includes('API') || msg.includes('모델') || msg.includes('403') || msg.includes('404')) {
-        showToast('설정 탭에서 Gemini API 키와 모델 선택을 확인해주세요', 'info');
-      }
+      showToast('원클릭 패치 실패: ' + e.message, 'err');
+      log('❌ 원클릭 실패: ' + (e.stack || e.message), 'err');
     } finally {
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
@@ -3128,6 +3110,110 @@ ${contextConstraint}`;
   }
 
   let ideaInbox = []; let isRecording = false; let recognition = null; let pendingInboxPhoto = null;
+
+  // ===== Voice Recording Fix v8.9.25 =====
+  window.toggleVoiceRecording = function() {
+    if (isRecording) {
+      stopVoiceRecording();
+    } else {
+      startVoiceRecording();
+    }
+  };
+
+  window.startVoiceRecording = function() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      showToast('이 브라우저는 음성 인식을 지원하지 않습니다. Safari에서 시도하거나 텍스트로 입력해주세요.', 'err');
+      // iOS PWA에서는 지원 안 될 수 있음 - 대체 안내
+      const fallback = prompt('음성 인식 미지원. 직접 입력해주세요:');
+      if (fallback && fallback.trim()) {
+        const el = $('inboxTextInput');
+        if (el) { el.value = fallback.trim(); el.focus(); }
+      }
+      return;
+    }
+    
+    try {
+      if (recognition) {
+        try { recognition.stop(); } catch(e) {}
+        recognition = null;
+      }
+      
+      recognition = new SpeechRecognition();
+      recognition.lang = 'ko-KR';
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.maxAlternatives = 1;
+      
+      const btn = $('voiceRecordBtn');
+      const status = $('voiceRecStatus');
+      const input = $('inboxTextInput');
+      
+      recognition.onstart = function() {
+        isRecording = true;
+        if (btn) { btn.style.background = '#dc2626'; btn.style.transform = 'scale(0.95)'; }
+        if (status) { status.classList.remove('hidden'); status.textContent = '● 녹음중... 말씀하세요'; }
+        showToast('🎙️ 듣고 있습니다...', 'info');
+        log('🎙️ 음성 인식 시작', 'info');
+      };
+      
+      recognition.onresult = function(event) {
+        let transcript = '';
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (input) {
+          input.value = transcript;
+          input.focus();
+          // 자동 높이 조절
+          if (typeof autoResizeTextarea === 'function') autoResizeTextarea(input);
+        }
+        if (status) status.textContent = '● 인식: ' + transcript.substring(0,20);
+      };
+      
+      recognition.onend = function() {
+        isRecording = false;
+        if (btn) { btn.style.background = '#ef4444'; btn.style.transform = 'scale(1)'; }
+        if (status) { 
+          setTimeout(() => {
+            status.classList.add('hidden');
+            status.textContent = '● 녹음중...';
+          }, 2000);
+        }
+        log('🎙️ 음성 인식 종료', 'info');
+        if (input && input.value.trim()) {
+          showToast('✅ 음성 입력 완료: ' + input.value.substring(0,30), 'ok');
+        }
+      };
+      
+      recognition.onerror = function(event) {
+        isRecording = false;
+        if (btn) { btn.style.background = '#ef4444'; btn.style.transform = 'scale(1)'; }
+        if (status) status.classList.add('hidden');
+        let msg = event.error;
+        if (event.error === 'not-allowed') msg = '마이크 권한이 거부되었습니다. 설정에서 허용해주세요.';
+        if (event.error === 'no-speech') msg = '음성이 감지되지 않았습니다.';
+        if (event.error === 'audio-capture') msg = '마이크를 찾을 수 없습니다.';
+        showToast('🎙️ 오류: ' + msg, 'err');
+        log('❌ 음성 인식 오류: ' + event.error, 'err');
+      };
+      
+      recognition.start();
+    } catch(e) {
+      showToast('음성 인식 시작 실패: ' + e.message, 'err');
+      isRecording = false;
+      console.error(e);
+    }
+  };
+
+  window.stopVoiceRecording = function() {
+    if (recognition) {
+      try { recognition.stop(); } catch(e) {}
+    }
+    isRecording = false;
+  };
+  // ===== End Voice Fix =====
+
 
   function loadIdeaInbox() {
     try { ideaInbox = JSON.parse(localStorage.getItem('idea_inbox_global') || '[]'); } catch(e) { ideaInbox = []; }
