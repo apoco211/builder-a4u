@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.27 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.28 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.27">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.27">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.27">
+  <link rel="manifest" href="./manifest.json?v=8.9.28">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.28">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.28">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.27</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.28</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -730,17 +730,58 @@
   // ===== Phase 0+1: AI 스마트 라우터 v8.9.24 (Hyper-Automation Level1) =====
   const AI_ROUTER_PROMPT_TEMPLATE = `너는 Builder-a4u 프로젝트 분류기다.
 내 저장소 목록: {{REPO_LIST}}
+저장소 별칭 정보:
+- sudataxi-k = 수다택시, 수다택시앱, 택시앱, 수다택시-k
+- builder-a4u = 빌더, 빌더앱, builder, 빌더에이포유
+- 기타 저장소는 이름에 포함된 키워드로 판단
+
 사용자 입력: "{{USER_TEXT}}"
 작업:
-1. 저장소 목록 중 가장 관련 높은 저장소 하나 선택
-2. 음성 오타를 자연스러운 개발 요구사항 문장으로 교정
+1. 저장소 목록 중 가장 관련 높은 저장소 하나 선택 (한글 별칭도 고려)
+   예: "수다택시 하단버튼" → sudataxi-k, "빌더 음성버튼" → builder-a4u
+2. 음성 오타를 자연스러운 개발 요구사항 문장으로 교정 (띄어쓰기 포함)
+   예: "하단버튼중첫번째" → "하단 버튼 중 첫 번째"
 3. JSON만 반환: {"repo":"선택된 저장소명 또는 null", "corrected":"교정된 문장", "reason":"이유 한줄"}
-반드시 JSON만.`;
+반드시 JSON만. repo는 반드시 저장소 목록에 있는 정확한 영문명으로.`;
+
+  const KOREAN_ALIAS_MAP = {
+    '수다택시': 'sudataxi-k',
+    '수다 택시': 'sudataxi-k',
+    '수다택시앱': 'sudataxi-k',
+    '수다택시 앱': 'sudataxi-k',
+    '택시앱': 'sudataxi-k',
+    '택시 앱': 'sudataxi-k',
+    'sudataxi': 'sudataxi-k',
+    '수다': 'sudataxi-k',
+    '빌더': 'builder-a4u',
+    '빌더앱': 'builder-a4u',
+    '빌더 앱': 'builder-a4u',
+    'builder': 'builder-a4u'
+  };
 
   async function aiClassifyAndRoute(rawText) {
     try {
       const repoList = (typeof cached_repo_names !== 'undefined' && cached_repo_names.length) ? cached_repo_names : [currentRepo];
       if (!repoList || repoList.length === 0) return {repo:null, corrected: rawText, reason:'목록 없음'};
+      
+      // ★ v8.9.28: 한글 별칭 선체크 (Gemini 없이도 동작)
+      const lowerRaw = rawText.toLowerCase();
+      for (const [alias, repo] of Object.entries(KOREAN_ALIAS_MAP)) {
+        if (lowerRaw.includes(alias.toLowerCase())) {
+          if (repoList.includes(repo) || repoList.some(r => r.toLowerCase().includes(repo.split('-')[0]))) {
+            const matchedRepo = repoList.find(r => r === repo) || repoList.find(r => r.toLowerCase().includes(repo.split('-')[0])) || repo;
+            // 오타 교정 (띄어쓰기)
+            let corrected = rawText;
+            corrected = corrected.replace(/하단버튼/g, '하단 버튼');
+            corrected = corrected.replace(/첫번째/g, '첫 번째');
+            corrected = corrected.replace(/아이콘을/g, '아이콘을');
+            corrected = corrected.replace(/좀더/g, '좀 더');
+            if (typeof log !== 'undefined') log(`✅ 별칭 매칭: "${alias}" → ${matchedRepo}`, 'success');
+            return {repo: matchedRepo, corrected: corrected, reason:`한글 별칭 매칭: ${alias}`};
+          }
+        }
+      }
+      
       const geminiKey = localStorage.getItem('gemini_api_key') || ($('geminiApiKeyInput') && $('geminiApiKeyInput').value) || '';
       if (!geminiKey) {
         const lower = rawText.toLowerCase();
@@ -847,7 +888,7 @@
       window.saveIdeaInbox_direct = saveIdeaInbox;
       window.saveIdeaInbox = saveIdeaInboxWithAIRouter;
       console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.27 - 프로젝트 선택 버그 수정');
-      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.27 (프로젝트 선택 수정)', 'success');
+      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.28 (한글 별칭 수정)', 'success');
     }
   }, 2000);
   // ===== End Phase 0+1 =====
@@ -907,7 +948,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.27] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.28] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -972,7 +1013,7 @@ ${currentCode.substring(0, 12000)}
         } else {
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
-        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.27)`;
+        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.28)`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         if (runBtn) runBtn.innerHTML = '👁️ 4/4 미리보기 생성 중...';
