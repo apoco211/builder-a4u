@@ -21,6 +21,27 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style>
 <style>
 @font-face {
@@ -48,7 +69,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.20 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.21 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -69,9 +90,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.20">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.20">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.20">
+  <link rel="manifest" href="./manifest.json?v=8.9.21">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.21">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.21">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -185,7 +206,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.20</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.21</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -518,20 +539,8 @@
 
 <div id="tabInboxContent" style="display:none;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
-    <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 미분류</span></h2>
+    <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">→ 미분류 보관소 직행</span></h2>
     <div class="flex gap-2 mb-2 items-stretch" style="gap:8px">
-      <div class="flex flex-col justify-between" style="flex:0.95; min-width:0">
-        <div>
-          <div class="flex justify-between items-center mb-1">
-            <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">📁 프로젝트 선택</label>
-            <button type="button" onclick="reloadInboxProjectsAndIdeas()" class="btn btn-sm text-[9.5px] py-0.5 px-2 shadow-sm" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd;min-height:22px;">🔄 리로드</button>
-          </div>
-          <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
-            <option value="">미분류 (선택없음)</option>
-          </select>
-        </div>
-        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
-      </div>
       <div class="flex flex-col" style="flex:1.05">
         <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; padding:10px">
           <span class="text-[28px] mb-0.5">🎙️</span>
@@ -539,6 +548,12 @@
           <span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span>
           <span id="voiceRecStatus" class="text-[9px] mt-1 hidden">● 녹음중...</span>
         </button>
+      </div>
+      <div class="flex flex-col justify-center gap-1.5" style="flex:0.95; min-width:0">
+        <div class="text-[10px] text-slate-700 dark:text-slate-300 leading-tight p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700">
+          🎯 <b>던지면</b><br>설정탭의<br><b>🌐[미분류/기타] 보관소</b>로<br>자동 저장됩니다
+        </div>
+        <button type="button" onclick="openSettingsTabAndScrollToOther()" class="btn btn-sm text-[9.5px] py-1 px-2 shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a; min-height:28px">🔍 보관소 바로가기</button>
       </div>
     </div>
     <div class="bg-white dark:bg-gray-800 p-2 rounded-xl border border-yellow-300 dark:border-yellow-700 shadow-sm" style="padding:8px">
@@ -554,23 +569,26 @@
            <button type="button" onclick="pasteInboxImageFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보 사진 붙여넣기" style="touch-action:manipulation">📋 사진붙이기</button>
            <button type="button" onclick="pasteInboxTextFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-800/50 border border-emerald-200 dark:border-emerald-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보드 텍스트 붙여넣기" style="touch-action:manipulation">📝 Text붙이기</button>
         </div>
-        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:86px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
+        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:86px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 입력 → 미분류로 직행"></textarea>
         <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 rounded-lg mt-0.5" style="touch-action:manipulation; height:86px">🚀<br>던지기</button>
       </div>
     </div>
   </div>
-  <div class="card mb-4">
-    <div class="flex justify-between items-center mb-3">
-      <h2 class="font-bold text-[13px]">📥 쌓인 아이디어 (<span id="inboxCount">0</span>)</h2>
-      <button onclick="runClassificationAgent()" class="btn btn-sm text-[11px] py-1.5 px-3 shadow-sm" style="background:#3b82f6; color:white; border-color:#2563eb;">
-        🤖 앱별로 묶어줘
-      </button>
+  <div class="card mb-4" style="border:2px dashed #eab308; padding:14px;">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="font-bold text-[12px] text-yellow-800 dark:text-yellow-300">📝 [메모] - 자유 메모장 (영구 저장)</h2>
+      <div class="flex gap-1 items-center">
+        <span id="inboxMemoCount" class="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">0자</span>
+        <span class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">안날아감</span>
+      </div>
     </div>
-    <div id="ideaInboxList" class="space-y-2 max-h-[350px] overflow-y-auto p-1"></div>
-  </div>
-  <div id="agentResultArea" class="hidden">
-    <h2 class="font-bold text-[13px] text-blue-600 mb-2">✨ 분류 에이전트 결과</h2>
-    <div id="agentResultList" class="space-y-3"></div>
+    <p class="text-[10px] opacity-60 mb-2 leading-relaxed">지우기 전까지 유지됩니다. 임시 생각, 링크, 할일 자유롭게 적어두세요. 자동 저장.</p>
+    <textarea id="inboxMemoInput" class="textarea w-full text-[13px] bg-white dark:bg-gray-900 !border !border-yellow-300 dark:!border-yellow-700 !shadow-none !p-3 focus:ring-1 focus:ring-yellow-400" style="min-height:380px; resize:vertical" placeholder="여기에 자유롭게 메모... (자동 저장, 지우기 전까지 유지)"></textarea>
+    <div class="grid grid-cols-3 gap-1.5 mt-3">
+      <button onclick="copyInboxMemo()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#f3f4f6;color:#111827;border:1px solid #d1d5db">📋 메모 복사</button>
+      <button onclick="clearInboxMemo()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 메모 비우기</button>
+      <button onclick="moveInboxMemoToOther()" class="btn btn-sm py-2 px-2 text-[10px] font-black rounded-lg shadow-sm" style="background:#FFC800;color:#111;border-color:#eab308">🚀 미분류로 던지기</button>
+    </div>
   </div>
 </div>
   
@@ -1772,7 +1790,7 @@ ${currentCode}`;
       }
     });
     if (tabName === 'settings') { loadRepoIdea(); updateFullContextBox(); renderAITargets(); }
-    if (tabName === 'inbox') { syncSecondaryRepoSelects(); }
+    if (tabName === 'inbox') { loadInboxMemo(); syncSecondaryRepoSelects(); }
   };
   
   function getFullContextText() {
@@ -2159,7 +2177,6 @@ ${contextConstraint}`;
   }
   
   function syncSecondaryRepoSelects(repoList) {
-    const inboxSel = $('inboxProjectSelect');
     const otherMoveSel = $('otherIdeaMoveSelect');
     const names = (repoList && repoList.length > 0)
       ? repoList.map(r => typeof r === 'string' ? r : r.name)
@@ -2167,19 +2184,6 @@ ${contextConstraint}`;
 
     if (repoList && repoList.length > 0) {
       safeSetLocalStorage('cached_repo_names', JSON.stringify(names));
-    }
-
-    if (inboxSel) {
-      const prevInboxVal = inboxSel.value || localStorage.getItem('last_inbox_project') || '';
-      inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
-      names.forEach(name => {
-        const opt = document.createElement('option');
-        opt.value = name;
-        opt.textContent = name;
-        if (name === prevInboxVal) opt.selected = true;
-        inboxSel.appendChild(opt);
-      });
-      updateInboxSelectedHint(inboxSel.value);
     }
 
     if (otherMoveSel) {
@@ -2794,34 +2798,18 @@ ${contextConstraint}`;
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
-      const inboxSel = $('inboxProjectSelect');
-      const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
+      // v8.9.21: 막던지기 던지면 무조건 설정탭 미분류/기타 보관소로 직행
       let text = textData || $('inboxTextInput')?.value?.trim();
       if (!text && !pendingInboxPhoto) return showToast('내용을 입력해주세요.', 'info');
-      let finalSource = type;
-      if (type === 'text' && pendingInboxPhoto) finalSource = 'photo';
-
-      if (targetRepo === '미분류' || targetRepo === '') {
-          const newIdea = { id: Date.now(), text, photo: pendingInboxPhoto, source: finalSource, createdAt: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) };
-          ideaInbox.unshift(newIdea);
-          safeSetLocalStorage('idea_inbox_global', JSON.stringify(ideaInbox));
-          if (isGoogleLoggedIn()) await saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
-          renderIdeaInbox();
-          showToast('📥 인박스 저장 완료', 'ok');
-      } else {
-          let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
-          const key = 'repo_idea_' + targetRepo, imgKey = 'repo_idea_images_' + targetRepo;
-          const existingArr = parseIdeasData(localStorage.getItem(key) || '');
-          if (finalText) existingArr.push({ id: Date.now(), text: finalText, checked: false });
-          const updatedText = stringifyIdeasData(existingArr);
-          safeSetLocalStorage(key, updatedText);
-          let imgs = [];
-          try { imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs = []; } catch(e){ imgs = []; }
-          if(pendingInboxPhoto) { imgs.push(pendingInboxPhoto); safeSetLocalStorage(imgKey, JSON.stringify(imgs)); }
-          if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs });
-          showToast(`✅ [${targetRepo}] 전송 완료!`, 'ok');
-          if (currentRepo === targetRepo) loadRepoIdea();
+      let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
+      if (finalText) {
+        currentOtherIdeas.push({ id: Date.now(), text: finalText, checked: false });
       }
+      if (pendingInboxPhoto) {
+        currentOtherIdeaImages.push(pendingInboxPhoto);
+      }
+      renderOtherIdeas(); renderOtherIdeaImages(); saveOtherIdea(true);
+      showToast('✅ 미분류 보관소로 전송 완료! (설정탭에서 확인)', 'ok');
       if($('inboxTextInput')) $('inboxTextInput').value = '';
       removePendingInboxPhoto();
   };
@@ -2984,7 +2972,7 @@ ${contextConstraint}`;
       google_client_id: localStorage.getItem('google_client_id') || '',
       gemini_api_key: localStorage.getItem('gemini_api_key') || '',
       exported_at: new Date().toISOString(),
-      version: 'v8.9.20'
+      version: 'v8.9.21'
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -3060,8 +3048,61 @@ ${contextConstraint}`;
     }
   }
 
-  function setupEventListeners() {
-    // === v8.9.20 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
+  
+  // === v8.9.21 NEW: [메모] 영구 메모장 로직 ===
+  const INBOX_MEMO_KEY = 'inbox_memo_v1';
+  function loadInboxMemo() {
+    const el = $('inboxMemoInput');
+    const cnt = $('inboxMemoCount');
+    if (!el) return;
+    try {
+      const saved = localStorage.getItem(INBOX_MEMO_KEY);
+      if (saved !== null) el.value = saved;
+    } catch(e) {}
+    if (cnt) cnt.textContent = (el.value?.length || 0) + '자';
+  }
+  function saveInboxMemo() {
+    const el = $('inboxMemoInput');
+    const cnt = $('inboxMemoCount');
+    if (!el) return;
+    try { safeSetLocalStorage(INBOX_MEMO_KEY, el.value); } catch(e) {}
+    if (cnt) cnt.textContent = (el.value.length) + '자';
+  }
+  window.copyInboxMemo = async function() {
+    const el = $('inboxMemoInput');
+    if (!el || !el.value.trim()) return showToast('복사할 메모가 없습니다.', 'err');
+    try { await navigator.clipboard.writeText(el.value); showToast('📋 메모 복사 완료!', 'ok'); } catch(e){ showToast('복사 실패', 'err'); }
+  };
+  window.clearInboxMemo = function() {
+    if (confirm('[메모] 내용을 전체 비우시겠습니까? (영구 삭제)')) {
+      const el = $('inboxMemoInput');
+      if (el) el.value = '';
+      localStorage.removeItem(INBOX_MEMO_KEY);
+      const cnt = $('inboxMemoCount');
+      if (cnt) cnt.textContent = '0자';
+      showToast('메모 비움 완료', 'ok');
+    }
+  };
+  window.moveInboxMemoToOther = function() {
+    const el = $('inboxMemoInput');
+    const text = el?.value?.trim();
+    if (!text) return showToast('메모가 비어있습니다.', 'info');
+    currentOtherIdeas.push({ id: Date.now(), text, checked: false });
+    renderOtherIdeas(); saveOtherIdea(true);
+    showToast('✅ 메모가 미분류 보관소로 전송됨', 'ok');
+  };
+  window.openSettingsTabAndScrollToOther = function() {
+    switchTab('settings');
+    setTimeout(() => {
+      const target = document.querySelector('#otherIdeaList');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  };
+  // === END v8.9.21 NEW ===
+
+
+function setupEventListeners() {
+    // === v8.9.21 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
     $('parseBulkKeysBtn')?.addEventListener('click', parseBulkEnvAndApply);
     $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
     $('importKeysJsonInput')?.addEventListener('change', importKeysJsonFile);
@@ -3083,7 +3124,8 @@ ${contextConstraint}`;
         }
     }
 
-    initTheme(); loadIdeaInbox(); detectGithubUser();
+    initTheme(); loadIdeaInbox(); loadInboxMemo(); detectGithubUser();
+    $('inboxMemoInput')?.addEventListener('input', () => { saveInboxMemo(); });
     $('themeToggle')?.addEventListener('click', () => setTheme(document.documentElement.classList.contains('dark') ? 'light' : 'dark'));
     $('clearUpdateNoteBtn')?.addEventListener('click', () => { if ($('updateNoteInput')) $('updateNoteInput').value = ''; });
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
@@ -3196,10 +3238,7 @@ ${contextConstraint}`;
         }
       });
     }
-    $('inboxProjectSelect')?.addEventListener('change', e => {
-      safeSetLocalStorage('last_inbox_project', e.target.value);
-      updateInboxSelectedHint(e.target.value);
-    });
+    // v8.9.21: inboxProjectSelect removed
     window.addEventListener('pageshow', resetMobileViewportZoom);
     window.addEventListener('focus', resetMobileViewportZoom);
     document.addEventListener('visibilitychange', () => {
@@ -3214,5 +3253,5 @@ ${contextConstraint}`;
   }
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
