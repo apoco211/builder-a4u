@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.25 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.26 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.25</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.26</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -584,8 +584,7 @@
             <option value="">미분류 (선택없음)</option>
           </select>
         </div>
-        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
-      </div>
+        </div>
       <div class="flex flex-col" style="flex:1.05">
         <button id="voiceRecordBtn" type="button" onclick="toggleVoiceRecording()" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; padding:10px">
           <span class="text-[28px] mb-0.5">🎙️</span>
@@ -836,7 +835,7 @@
   }, 2000);
   // ===== End Phase 0+1 =====
 
-  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.25 (Track A - 핵심) =====
+  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.26 (Track A - 핵심) =====
   window.oneClickAutoPatch = async function() {
     try {
       const checked = currentRepoIdeas.filter(i => i.checked && i.text && i.text.trim());
@@ -891,7 +890,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.25] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.26] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -956,7 +955,7 @@ ${currentCode.substring(0, 12000)}
         } else {
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
-        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.25)`;
+        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.26)`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         if (runBtn) runBtn.innerHTML = '👁️ 4/4 미리보기 생성 중...';
@@ -2550,10 +2549,10 @@ ${contextConstraint}`;
       if (info) info.innerHTML = `선택됨: <b class="text-emerald-600 dark:text-emerald-400">${val}</b><br>→ 해당 앱으로 직행`;
     } else {
       if (hint) {
-        hint.textContent = '선택 없으면 미분류';
+        hint.textContent = '선택 없으면 AI 자동배정';
         hint.className = 'text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200';
       }
-      if (info) info.innerHTML = '선택 없으면<br>→ 미분류로 저장';
+      if (info) info.innerHTML = '선택 없으면<br>→ AI 자동배정';
     }
   }
 
@@ -3050,7 +3049,7 @@ ${contextConstraint}`;
   };
 
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null, modelOverride = null) {
-      // v8.9.25 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
+      // v8.9.26 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
       if (typeof temperature === 'string' && temperature.includes('gemini')) {
         modelOverride = temperature;
         temperature = 0.2;
@@ -3063,7 +3062,7 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.25: 모델 후보에 2.5 추가, 중복 제거
+      // v8.9.26: 모델 후보에 2.5 추가, 중복 제거
       const MODEL_CANDIDATES = [savedModel, 'gemini-2.5-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'].filter((v,i,a)=>a.indexOf(v)===i);
       
       let res = null, lastError = null, lastStatus = '';
@@ -3111,7 +3110,7 @@ ${contextConstraint}`;
 
   let ideaInbox = []; let isRecording = false; let recognition = null; let pendingInboxPhoto = null;
 
-  // ===== Voice Recording Fix v8.9.25 =====
+  // ===== Voice Recording Fix v8.9.26 =====
   window.toggleVoiceRecording = function() {
     if (isRecording) {
       stopVoiceRecording();
@@ -3183,6 +3182,10 @@ ${contextConstraint}`;
         log('🎙️ 음성 인식 종료', 'info');
         if (input && input.value.trim()) {
           showToast('✅ 음성 입력 완료: ' + input.value.substring(0,30), 'ok');
+          // iOS에서는 키보드 포커스 유지
+          try { input.focus(); } catch(e) {}
+        } else {
+          log('⚠️ 인식된 텍스트 없음', 'warn');
         }
       };
       
@@ -3190,10 +3193,24 @@ ${contextConstraint}`;
         isRecording = false;
         if (btn) { btn.style.background = '#ef4444'; btn.style.transform = 'scale(1)'; }
         if (status) status.classList.add('hidden');
+        
+        // aborted는 사용자가 직접 중단한 경우 - 에러 아님
+        if (event.error === 'aborted') {
+          log('🎙️ 음성 인식 중단됨 (정상)', 'info');
+          // 이미 onresult에서 텍스트가 있으면 유지, 없으면 조용히 종료
+          return;
+        }
+        
         let msg = event.error;
-        if (event.error === 'not-allowed') msg = '마이크 권한이 거부되었습니다. 설정에서 허용해주세요.';
-        if (event.error === 'no-speech') msg = '음성이 감지되지 않았습니다.';
+        if (event.error === 'not-allowed') msg = '마이크 권한이 거부되었습니다. 설정에서 허용해주세요. (Safari 설정 > 마이크 허용)';
+        if (event.error === 'no-speech') {
+          showToast('🎙️ 음성이 감지되지 않았습니다. 다시 말해주세요.', 'info');
+          log('⚠️ 음성 감지 안 됨', 'warn');
+          return;
+        }
         if (event.error === 'audio-capture') msg = '마이크를 찾을 수 없습니다.';
+        if (event.error === 'network') msg = '네트워크 오류 - 인터넷 연결 확인';
+        
         showToast('🎙️ 오류: ' + msg, 'err');
         log('❌ 음성 인식 오류: ' + event.error, 'err');
       };
