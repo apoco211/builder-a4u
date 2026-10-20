@@ -48,7 +48,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.19 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.20 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -69,9 +69,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.19">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.19">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.19">
+  <link rel="manifest" href="./manifest.json?v=8.9.20">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.20">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.20">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -185,7 +185,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.19</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.20</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -2924,7 +2924,127 @@ ${contextConstraint}`;
       } catch(e) {}
   };
 
+
+  function parseBulkEnvAndApply() {
+    const ta = $('bulkKeysInput');
+    if (!ta) return;
+    const raw = ta.value?.trim();
+    if (!raw) {
+      showToast('붙여넣을 .env 내용이 없습니다.', 'err');
+      return;
+    }
+    let count = 0;
+    const lines = raw.split(/\n/);
+    const applied = [];
+    for (let line of lines) {
+      line = line.trim();
+      if (!line || line.startsWith('#') || line.startsWith('//')) continue;
+      // Remove export prefix
+      line = line.replace(/^export\s+/, '');
+      const eqIdx = line.indexOf('=');
+      if (eqIdx === -1) continue;
+      let key = line.slice(0, eqIdx).trim().toUpperCase();
+      let value = line.slice(eqIdx+1).trim();
+      // Remove surrounding quotes
+      value = value.replace(/^['"]|['"]$/g, '').trim();
+      if (!value) continue;
+
+      if (['GITHUB_PAT', 'GITHUB_TOKEN', 'GH_PAT', 'GH_TOKEN', 'GITHUB_PAT_TOKEN'].includes(key)) {
+        localStorage.setItem('github_pat', value);
+        if ($('githubPatInput')) $('githubPatInput').value = value;
+        applied.push('GitHub PAT');
+        count++;
+        try { loadRepos(); detectGithubUser(); } catch(e) {}
+      } else if (['GOOGLE_CLIENT_ID', 'GOOGLE_OAUTH_CLIENT_ID', 'CLIENT_ID', 'GOOGLE_CLIENT', 'VITE_GOOGLE_CLIENT_ID'].includes(key)) {
+        localStorage.setItem('google_client_id', value);
+        if ($('googleClientIdInput')) $('googleClientIdInput').value = value;
+        applied.push('Google Client ID');
+        count++;
+        try { initGis(); } catch(e) {}
+      } else if (['GEMINI_API_KEY', 'GEMINI_KEY', 'GOOGLE_API_KEY', 'GOOGLE_GEMINI_KEY', 'VITE_GEMINI_API_KEY', 'API_KEY'].includes(key)) {
+        localStorage.setItem('gemini_api_key', value);
+        if ($('geminiApiKeyInput')) $('geminiApiKeyInput').value = value;
+        applied.push('Gemini API Key');
+        count++;
+      }
+    }
+    if (count > 0) {
+      showToast(`⚡ ${count}개 키 적용 완료: ${applied.join(', ')}`, 'ok');
+      log(`⚡ 일괄 파싱 적용 완료: ${applied.join(', ')} (${count}개)`, 'ok');
+      ta.value = '';
+    } else {
+      showToast('인식된 키가 없습니다. 형식을 확인하세요: KEY=VALUE', 'err');
+      log('⚠️ 일괄 파싱: 인식된 키 없음', 'info');
+    }
+  }
+
+  function exportKeysJson() {
+    const data = {
+      github_pat: localStorage.getItem('github_pat') || '',
+      google_client_id: localStorage.getItem('google_client_id') || '',
+      gemini_api_key: localStorage.getItem('gemini_api_key') || '',
+      exported_at: new Date().toISOString(),
+      version: 'v8.9.20'
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `builder-a4u-keys-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('💾 키 JSON 다운로드 완료', 'ok');
+    log('💾 키 JSON 내보내기 완료', 'info');
+  }
+
+  function importKeysJsonFile(event) {
+    const file = event.target?.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        let count = 0;
+        if (data.github_pat) {
+          localStorage.setItem('github_pat', data.github_pat);
+          if ($('githubPatInput')) $('githubPatInput').value = data.github_pat;
+          count++;
+        }
+        if (data.google_client_id) {
+          localStorage.setItem('google_client_id', data.google_client_id);
+          if ($('googleClientIdInput')) $('googleClientIdInput').value = data.google_client_id;
+          count++;
+        }
+        if (data.gemini_api_key) {
+          localStorage.setItem('gemini_api_key', data.gemini_api_key);
+          if ($('geminiApiKeyInput')) $('geminiApiKeyInput').value = data.gemini_api_key;
+          count++;
+        }
+        // Also support direct keys
+        if (data.GITHUB_PAT) { localStorage.setItem('github_pat', data.GITHUB_PAT); if ($('githubPatInput')) $('githubPatInput').value = data.GITHUB_PAT; count++; }
+        if (data.GOOGLE_CLIENT_ID) { localStorage.setItem('google_client_id', data.GOOGLE_CLIENT_ID); if ($('googleClientIdInput')) $('googleClientIdInput').value = data.GOOGLE_CLIENT_ID; count++; }
+        if (data.GEMINI_API_KEY) { localStorage.setItem('gemini_api_key', data.GEMINI_API_KEY); if ($('geminiApiKeyInput')) $('geminiApiKeyInput').value = data.GEMINI_API_KEY; count++; }
+
+        if (count > 0) {
+          try { loadRepos(); detectGithubUser(); initGis(); } catch(err) {}
+          showToast(`📥 ${count}개 키 복원 완료`, 'ok');
+          log(`📥 JSON 키 복원 완료: ${count}개`, 'ok');
+        } else {
+          showToast('복원할 키가 없습니다.', 'err');
+        }
+      } catch(err) {
+        showToast('JSON 파싱 실패: ' + err.message, 'err');
+        log(`❌ JSON 복원 실패: ${err.message}`, 'err');
+      }
+      event.target.value = '';
+    };
+    reader.readAsText(file);
+  }
+
   function initSettingsInputs() {
+
     ['google_client_id', 'github_pat', 'gemini_api_key'].forEach(k => {
         const el = $(k.replace(/_([a-z])/g, g => g[1].toUpperCase()) + 'Input');
         if (el && localStorage.getItem(k)) el.value = localStorage.getItem(k);
@@ -2941,6 +3061,18 @@ ${contextConstraint}`;
   }
 
   function setupEventListeners() {
+    // === v8.9.20 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
+    $('parseBulkKeysBtn')?.addEventListener('click', parseBulkEnvAndApply);
+    $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
+    $('importKeysJsonInput')?.addEventListener('change', importKeysJsonFile);
+    // Enter 키로도 일괄 적용
+    $('bulkKeysInput')?.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        parseBulkEnvAndApply();
+      }
+    });
+
     if (localStorage.getItem('migrated_v821') !== 'true') {
         localStorage.setItem('migrated_v821', 'true');
         for (let i = 0; i < localStorage.length; i++) {
