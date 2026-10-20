@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.31 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.32 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.31">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.31">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.31">
+  <link rel="manifest" href="./manifest.json?v=8.9.32">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.32">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.32">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.31</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.32</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -974,7 +974,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.31] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.32] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1031,25 +1031,55 @@ ${currentCode.substring(0, 12000)}
       });
 
       if (successCount > 0) {
+        // v8.9.32: 빌드 번호 자동 +1
+        let newVersion = null;
+        try {
+          const currentVer = getTargetAppVersion() || 'v8.9.31';
+          const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
+          if (m) {
+            const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
+            newVersion = `v${major}.${minor}.${patch+1}`;
+            // 코드 내 타이틀, h1, manifest 버전 교체
+            updatedCode = updatedCode.replace(/<title>Builder-a4u v[\d\.]+/g, `<title>Builder-a4u ${newVersion}`);
+            updatedCode = updatedCode.replace(/Builder-a4u v[\d\.]+<\/h1>/g, `Builder-a4u ${newVersion}</h1>`);
+            updatedCode = updatedCode.replace(/manifest\.json\?v=[\d\.]+/g, `manifest.json?v=${newVersion.substring(1)}`);
+            updatedCode = updatedCode.replace(/apple-touch-icon\.png\?v=[\d\.]+/g, `apple-touch-icon.png?v=${newVersion.substring(1)}`);
+            updatedCode = updatedCode.replace(/icon-192\.png\?v=[\d\.]+/g, `icon-192.png?v=${newVersion.substring(1)}`);
+            updatedCode = updatedCode.replace(/\[빌드 넘버: v[\d\.]+\]/g, `[빌드 넘버: ${newVersion}]`);
+            updatedCode = updatedCode.replace(/\(v[\d\.]+\).*?원클릭/g, `(${newVersion}) 원클릭`);
+          }
+        } catch(e) { console.warn('버전 자동 증가 실패', e); }
+
         const editor = $('codeEditor');
         if (editor) editor.value = updatedCode;
         editor?.dispatchEvent(new Event('input', {bubbles: true}));
         if (typeof saveDraftCustom === 'function') {
-          saveDraftCustom(updatedCode, `원클릭 패치 ${successCount}개 - ${ideaText.substring(0,30)}`);
+          saveDraftCustom(updatedCode, `원클릭 패치 ${successCount}개 - ${ideaText.substring(0,30)} ${newVersion||''}`);
         } else {
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
-        const buildNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)} (v8.9.31)`;
+        const baseNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)}`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.32)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
+        // v8.9.32: 클립보드에 업데이트 내용 자동 복사
+        try {
+          const clipText = `${buildNote}\n${newVersion||''}\n${ideaText}`;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(clipText).then(()=> {
+              log(`📋 클립보드 복사 완료: ${buildNote}`, 'ok');
+            }).catch(()=>{});
+          }
+        } catch(e) {}
+
         if (runBtn) runBtn.innerHTML = '👁️ 4/4 미리보기 생성 중...';
         if (typeof switchTab === 'function') switchTab('build');
         if (typeof showLivePreviewCurrent === 'function') {
-          showLivePreviewCurrent(updatedCode, `⚡ 원클릭 패치 ${successCount}/${blocks.length} 적용됨`);
+          showLivePreviewCurrent(updatedCode, `⚡ 원클릭 패치 ${successCount}/${blocks.length} 적용됨 ${newVersion||''} - 클립보드 복사됨`);
         }
         if ($('undoPatchBtn')) $('undoPatchBtn').classList.remove('hidden');
-        showToast(`🎉 ${successCount}개 패치 적용! 미리보기를 확인하세요. ${failCount>0 ? failCount+'개 실패' : ''}`, successCount>0 && failCount===0 ? 'ok' : 'info');
-        log(`🎉 원클릭 패치 완료: ${successCount}성공/${failCount}실패`, 'ok');
+        showToast(`🎉 ${successCount}개 패치 적용! ${newVersion||''} 미리보기 확인 - 클립보드 복사됨 ${failCount>0 ? failCount+'개 실패' : ''}`, successCount>0 && failCount===0 ? 'ok' : 'info');
+        log(`🎉 원클릭 패치 완료: ${successCount}성공/${failCount}실패 ${newVersion||''} - 빌드번호 자동+1, 클립보드 복사`, 'ok');
       } else {
         showToast('일치하는 코드 위치를 찾지 못했습니다.', 'err');
       }
