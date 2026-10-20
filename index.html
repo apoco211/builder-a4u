@@ -69,7 +69,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.21 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.23 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -90,9 +90,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.21">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.21">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.21">
+  <link rel="manifest" href="./manifest.json?v=8.9.23">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.23">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.23">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -206,7 +206,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.21</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.23</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -539,8 +539,20 @@
 
 <div id="tabInboxContent" style="display:none;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
-    <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">→ 미분류 보관소 직행</span></h2>
+    <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 미분류</span></h2>
     <div class="flex gap-2 mb-2 items-stretch" style="gap:8px">
+      <div class="flex flex-col justify-between" style="flex:0.95; min-width:0">
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">📁 프로젝트 선택</label>
+            <button type="button" onclick="reloadInboxProjectsAndIdeas()" class="btn btn-sm text-[9.5px] py-0.5 px-2 shadow-sm" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd;min-height:22px;">🔄 리로드</button>
+          </div>
+          <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
+            <option value="">미분류 (선택없음)</option>
+          </select>
+        </div>
+        <div id="splitSelectedInfo" class="text-[10px] text-slate-500 dark:text-slate-400 mt-2 leading-tight">선택 없으면<br>→ 미분류로 저장</div>
+      </div>
       <div class="flex flex-col" style="flex:1.05">
         <button id="voiceRecordBtn" type="button" class="btn w-full flex-1 flex flex-col items-center justify-center shadow-md transition-all select-none" style="background:#ef4444; color:white; border:none; border-radius:14px; min-height:92px; touch-action:manipulation; padding:10px">
           <span class="text-[28px] mb-0.5">🎙️</span>
@@ -548,12 +560,6 @@
           <span class="font-bold text-[10px] opacity-90">(터치 시 바로 녹음)</span>
           <span id="voiceRecStatus" class="text-[9px] mt-1 hidden">● 녹음중...</span>
         </button>
-      </div>
-      <div class="flex flex-col justify-center gap-1.5" style="flex:0.95; min-width:0">
-        <div class="text-[10px] text-slate-700 dark:text-slate-300 leading-tight p-2.5 rounded-xl bg-white dark:bg-gray-800 border border-yellow-200 dark:border-yellow-700">
-          🎯 <b>던지면</b><br>설정탭의<br><b>🌐[미분류/기타] 보관소</b>로<br>자동 저장됩니다
-        </div>
-        <button type="button" onclick="openSettingsTabAndScrollToOther()" class="btn btn-sm text-[9.5px] py-1 px-2 shadow-sm" style="background:#fef3c7;color:#92400e;border-color:#fde68a; min-height:28px">🔍 보관소 바로가기</button>
       </div>
     </div>
     <div class="bg-white dark:bg-gray-800 p-2 rounded-xl border border-yellow-300 dark:border-yellow-700 shadow-sm" style="padding:8px">
@@ -569,7 +575,7 @@
            <button type="button" onclick="pasteInboxImageFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800/50 border border-blue-200 dark:border-blue-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보 사진 붙여넣기" style="touch-action:manipulation">📋 사진붙이기</button>
            <button type="button" onclick="pasteInboxTextFromClipboard()" class="text-[10px] font-bold px-1 py-1 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-800/50 border border-emerald-200 dark:border-emerald-700 select-none flex justify-center items-center h-[26px] whitespace-nowrap" title="클립보드 텍스트 붙여넣기" style="touch-action:manipulation">📝 Text붙이기</button>
         </div>
-        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:86px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 입력 → 미분류로 직행"></textarea>
+        <textarea id="inboxTextInput" rows="3" class="textarea flex-1 text-[13px] bg-white dark:bg-gray-900 !border !border-slate-200 dark:!border-slate-600 !shadow-none !px-2.5 !py-2 focus:ring-0" style="min-height:86px; resize:vertical" placeholder="아이디어나 사진(Ctrl+V) 2~3줄 입력... (선택 없으면 미분류)"></textarea>
         <button type="button" onclick="saveIdeaInbox('text')" class="btn btn-yellow px-4 text-[13px] shadow-sm font-black shrink-0 rounded-lg mt-0.5" style="touch-action:manipulation; height:86px">🚀<br>던지기</button>
       </div>
     </div>
@@ -735,9 +741,9 @@
   function renderAITargets() {
     const container = $('aiTargetList');
     if (!container) return;
-    // 바로가기 모드: 탭하면 바로 사파리에서 해당 AI가 열림
+    // v8.9.23 FIX: iOS PWA에서 인앱이 아닌 외부 사파리로 열리도록 <a> 태그로 직접 렌더링
     container.innerHTML = AI_TARGETS.map(ai => {
-      return `<button type="button" onclick="openExternalAI('${ai.url}')" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all">🚀 ${ai.name} 바로가기</button>`;
+      return `<a href="${ai.url}" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('${ai.url}'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ${ai.name} 바로가기</a>`;
     }).join('');
     updateSmartPackageModeBadge();
   }
@@ -1878,13 +1884,33 @@ ${contextConstraint}`;
   }
 
   window.openExternalAI = function(url) {
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer external';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    try {
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: minimal-ui)').matches;
+      // v8.9.23 FIX: 외부 사파리로 강제 오픈 - a태그를 실제 DOM에 두고 진짜 클릭으로 처리
+      if (isStandalone || isIOS) {
+        // iOS PWA에서는 programmatic click보다 실제 앵커 네비게이션이 더 잘 통함
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer external';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        // 진짜 유저 제스처로 간주되도록 바로 클릭 (setTimeout 없이)
+        a.click();
+        // 백업: 0.5초 후에도 안열리면 window.open 시도
+        setTimeout(() => {
+          try { window.open(url, '_blank', 'noopener,noreferrer'); } catch(e) {}
+          try { if (a.parentNode) document.body.removeChild(a); } catch(e) {}
+        }, 500);
+      } else {
+        // 일반 브라우저는 window.open이 가장 안정적
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    } catch(e) {
+      // 최후 fallback
+      try { window.location.href = url; } catch(e2) { window.open(url, '_blank'); }
+    }
   };
 
   window.showAILauncher = function(selectedIds) {
@@ -1898,7 +1924,7 @@ ${contextConstraint}`;
       if (id === 'gemini') bgStyle = 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:border-blue-800';
       if (id === 'meta') bgStyle = 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:border-indigo-800';
       if (id === 'chatgpt') bgStyle = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/30 dark:border-emerald-800';
-      return `<button onclick="openExternalAI('${ai.url}')" class="btn w-full py-4 text-[14px] font-black shadow-sm flex items-center justify-center gap-2 border ${bgStyle}">${ai.name} 외부 열기 🚀</button>`;
+      return `<a href="${ai.url}" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('${ai.url}'); return false;" class="btn w-full py-4 text-[14px] font-black shadow-sm flex items-center justify-center gap-2 border ${bgStyle} no-underline">${ai.name} 외부 열기 🚀</a>`;
     }).join('');
     bar.classList.remove('hidden');
   };
@@ -2177,6 +2203,7 @@ ${contextConstraint}`;
   }
   
   function syncSecondaryRepoSelects(repoList) {
+    const inboxSel = $('inboxProjectSelect');
     const otherMoveSel = $('otherIdeaMoveSelect');
     const names = (repoList && repoList.length > 0)
       ? repoList.map(r => typeof r === 'string' ? r : r.name)
@@ -2184,6 +2211,19 @@ ${contextConstraint}`;
 
     if (repoList && repoList.length > 0) {
       safeSetLocalStorage('cached_repo_names', JSON.stringify(names));
+    }
+
+    if (inboxSel) {
+      const prevInboxVal = inboxSel.value || localStorage.getItem('last_inbox_project') || '';
+      inboxSel.innerHTML = '<option value="">미분류 (선택없음)</option>';
+      names.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === prevInboxVal) opt.selected = true;
+        inboxSel.appendChild(opt);
+      });
+      updateInboxSelectedHint(inboxSel.value);
     }
 
     if (otherMoveSel) {
@@ -2798,18 +2838,38 @@ ${contextConstraint}`;
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
-      // v8.9.21: 막던지기 던지면 무조건 설정탭 미분류/기타 보관소로 직행
+      // v8.9.23: 프로젝트 선택 있으면 해당 프로젝트로, 없으면 미분류/기타 보관소로 직행 (쌓인아이디어 리스트는 제거됨)
+      const inboxSel = $('inboxProjectSelect');
+      const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
       let text = textData || $('inboxTextInput')?.value?.trim();
       if (!text && !pendingInboxPhoto) return showToast('내용을 입력해주세요.', 'info');
-      let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
-      if (finalText) {
-        currentOtherIdeas.push({ id: Date.now(), text: finalText, checked: false });
+
+      if (targetRepo === '미분류' || targetRepo === '') {
+          // 선택 없으면 → 설정탭 미분류 보관소로
+          let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
+          if (finalText) {
+            currentOtherIdeas.push({ id: Date.now(), text: finalText, checked: false });
+          }
+          if (pendingInboxPhoto) {
+            currentOtherIdeaImages.push(pendingInboxPhoto);
+          }
+          renderOtherIdeas(); renderOtherIdeaImages(); saveOtherIdea(true);
+          showToast('✅ 미분류 보관소로 전송 완료!', 'ok');
+      } else {
+          // 프로젝트 선택됨 → 해당 프로젝트 아이디어로
+          let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
+          const key = 'repo_idea_' + targetRepo, imgKey = 'repo_idea_images_' + targetRepo;
+          const existingArr = parseIdeasData(localStorage.getItem(key) || '');
+          if (finalText) existingArr.push({ id: Date.now(), text: finalText, checked: false });
+          const updatedText = stringifyIdeasData(existingArr);
+          safeSetLocalStorage(key, updatedText);
+          let imgs = [];
+          try { imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs = []; } catch(e){ imgs = []; }
+          if(pendingInboxPhoto) { imgs.push(pendingInboxPhoto); safeSetLocalStorage(imgKey, JSON.stringify(imgs)); }
+          if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs });
+          showToast(`✅ [${targetRepo}] 전송 완료!`, 'ok');
+          if (currentRepo === targetRepo) loadRepoIdea();
       }
-      if (pendingInboxPhoto) {
-        currentOtherIdeaImages.push(pendingInboxPhoto);
-      }
-      renderOtherIdeas(); renderOtherIdeaImages(); saveOtherIdea(true);
-      showToast('✅ 미분류 보관소로 전송 완료! (설정탭에서 확인)', 'ok');
       if($('inboxTextInput')) $('inboxTextInput').value = '';
       removePendingInboxPhoto();
   };
@@ -2972,7 +3032,7 @@ ${contextConstraint}`;
       google_client_id: localStorage.getItem('google_client_id') || '',
       gemini_api_key: localStorage.getItem('gemini_api_key') || '',
       exported_at: new Date().toISOString(),
-      version: 'v8.9.21'
+      version: 'v8.9.23'
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -3049,7 +3109,7 @@ ${contextConstraint}`;
   }
 
   
-  // === v8.9.21 NEW: [메모] 영구 메모장 로직 ===
+  // === v8.9.23 NEW: [메모] 영구 메모장 로직 ===
   const INBOX_MEMO_KEY = 'inbox_memo_v1';
   function loadInboxMemo() {
     const el = $('inboxMemoInput');
@@ -3091,18 +3151,11 @@ ${contextConstraint}`;
     renderOtherIdeas(); saveOtherIdea(true);
     showToast('✅ 메모가 미분류 보관소로 전송됨', 'ok');
   };
-  window.openSettingsTabAndScrollToOther = function() {
-    switchTab('settings');
-    setTimeout(() => {
-      const target = document.querySelector('#otherIdeaList');
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 200);
-  };
-  // === END v8.9.21 NEW ===
+  // === END v8.9.23 NEW ===
 
 
 function setupEventListeners() {
-    // === v8.9.21 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
+    // === v8.9.23 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
     $('parseBulkKeysBtn')?.addEventListener('click', parseBulkEnvAndApply);
     $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
     $('importKeysJsonInput')?.addEventListener('change', importKeysJsonFile);
@@ -3238,7 +3291,10 @@ function setupEventListeners() {
         }
       });
     }
-    // v8.9.21: inboxProjectSelect removed
+    $('inboxProjectSelect')?.addEventListener('change', e => {
+      safeSetLocalStorage('last_inbox_project', e.target.value);
+      updateInboxSelectedHint(e.target.value);
+    });
     window.addEventListener('pageshow', resetMobileViewportZoom);
     window.addEventListener('focus', resetMobileViewportZoom);
     document.addEventListener('visibilitychange', () => {
