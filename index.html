@@ -111,7 +111,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.41 - 원스톱 AI 자동 생성 빌더 (모델 3.5 대응)</title>
+  <title>Builder-a4u v8.9.42 - 패치 위치 탐색 강화</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -132,10 +132,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.41">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.41">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.41">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.41">
+  <link rel="manifest" href="./manifest.json?v=8.9.42">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.42">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.42">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.42">
   
   <style>
     :root {
@@ -248,7 +248,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.41</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.42</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1026,7 +1026,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.41] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.42] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1522,13 +1522,7 @@ ${currentCode.substring(0, 8000)}
     const src = normalizeLineEndings(sourceCode);
     const sBlock = normalizeLineEndings(searchBlock);
     const rBlock = normalizeLineEndings(replaceBlock);
-
-    // 1. 단순 완전 일치 (Exact match)
-    if (src.includes(sBlock)) {
-      return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' };
-    }
-
-    // 2. 앞뒤 공백 제거 일치 (Trimmed match with smart indent)
+    if (src.includes(sBlock)) { return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' }; }
     const sTrim = sBlock.trim();
     if (sTrim && src.includes(sTrim)) {
       const pos = src.indexOf(sTrim);
@@ -1540,66 +1534,16 @@ ${currentCode.substring(0, 8000)}
       }
       return { success: true, code: src.replace(sTrim, () => rBlock.trim()), method: 'trimmed' };
     }
-
-    // 3. 줄 단위 퍼지 매칭 (Fuzzy line matching & 생략 부호 처리)
     const srcLines = src.split('\n');
     let sLines = sBlock.split('\n');
-
     while (sLines.length > 0 && sLines[0].trim() === '') sLines.shift();
     while (sLines.length > 0 && sLines[sLines.length - 1].trim() === '') sLines.pop();
-
     if (sLines.length === 0) return { success: false, code: sourceCode };
-
-    let ellipsisIdx = -1;
-    for (let idx = 0; idx < sLines.length; idx++) {
-      const t = sLines[idx].trim();
-      if (t === '...' || t === '// ...' || t === '/* ... */' || t === '// ... existing code ...') {
-        ellipsisIdx = idx;
-        break;
-      }
-    }
-
-    if (ellipsisIdx !== -1) {
-      const prefixLines = sLines.slice(0, ellipsisIdx);
-      const suffixLines = sLines.slice(ellipsisIdx + 1);
-
-      if (prefixLines.length > 0 && suffixLines.length > 0) {
-        for (let i = 0; i <= srcLines.length - prefixLines.length - suffixLines.length; i++) {
-          let matchPre = true;
-          for (let j = 0; j < prefixLines.length; j++) {
-            if (srcLines[i + j].trim() !== prefixLines[j].trim()) { matchPre = false; break; }
-          }
-          if (matchPre) {
-            const maxScan = Math.min(i + prefixLines.length + 300, srcLines.length - suffixLines.length);
-            for (let k = i + prefixLines.length; k <= maxScan; k++) {
-              let matchSuf = true;
-              for (let m = 0; m < suffixLines.length; m++) {
-                if (srcLines[k + m].trim() !== suffixLines[m].trim()) { matchSuf = false; break; }
-              }
-              if (matchSuf) {
-                const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
-                const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
-                const adjR = adjustBlockIndentation(rBlock, targetIndent);
-                const newLines = [...srcLines.slice(0, i), adjR, ...srcLines.slice(k + suffixLines.length)];
-                return { success: true, code: newLines.join('\n'), method: 'ellipsis' };
-              }
-            }
-          }
-        }
-      }
-    }
-
     const normLine = l => l.trim().replace(/\s+/g, ' ').replace(/["'`]/g, '"').replace(/;$/, '');
     const normSLines = sLines.map(normLine);
-
     for (let i = 0; i <= srcLines.length - sLines.length; i++) {
       let match = true;
-      for (let j = 0; j < sLines.length; j++) {
-        if (normLine(srcLines[i + j]) !== normSLines[j]) {
-          match = false;
-          break;
-        }
-      }
+      for (let j = 0; j < sLines.length; j++) { if (normLine(srcLines[i + j]) !== normSLines[j]) { match = false; break; } }
       if (match) {
         const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
         const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
@@ -1608,206 +1552,23 @@ ${currentCode.substring(0, 8000)}
         return { success: true, code: newLines.join('\n'), method: 'line_fuzzy' };
       }
     }
-
-    return { success: false, code: sourceCode };
+    const firstNonEmpty = sLines.find(l => l.trim().length > 0);
+    if (firstNonEmpty) {
+      const firstTrim = firstNonEmpty.trim();
+      const shortKey = firstTrim.substring(0, Math.min(25, firstTrim.length));
+      for (let i = 0; i < srcLines.length; i++) {
+        if (srcLines[i].trim() === firstTrim || srcLines[i].includes(shortKey) || normLine(srcLines[i]) === normLine(firstNonEmpty)) {
+          const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
+          const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
+          const adjR = adjustBlockIndentation(rBlock, targetIndent);
+          const newLines = [...srcLines.slice(0, i), adjR, ...srcLines.slice(i + sLines.length)];
+          return { success: true, code: newLines.join('\n'), method: 'first_line_fuzzy' };
+        }
+      }
+    }
+    return { success: false, code: sourceCode, method: 'not_found' };
   }
 
-  window.runSmartPatch = async function() {
-    const editor = $('codeEditor');
-    const patchEl = $('patchInput');
-    if (!editor || !patchEl) return;
-
-    let currentCode = editor.value || localStorage.getItem(getDraftCodeKey()) || '';
-    const rawPatch = patchEl.value.trim();
-
-    if (!currentCode.trim()) {
-      showToast('⏳ 원본 소스코드 동기화 중...', 'info');
-      currentCode = await syncLatestSourceFromGithub(true);
-      if (!currentCode || !currentCode.trim()) {
-        return showToast('교체할 원본 전체 코드가 없습니다.', 'err');
-      }
-    }
-    if (!rawPatch) return showToast('붙여넣은 부분 코드(패치) 내용이 없습니다.', 'err');
-
-    // 0단계: [빌드 넘버: ...] 등 빌드 요약 메모가 포함된 경우 자동 연동
-    const buildNote = extractBuildNoteFromPatch(rawPatch);
-    if (buildNote && $('updateNoteInput') && !$('updateNoteInput').value.trim()) {
-      $('updateNoteInput').value = buildNote;
-      log(`📝 빌드 요약 메모 자동 추출: ${buildNote}`, 'ok');
-    }
-
-    // 1단계: 라인 단위 상태머신 기반 SEARCH/REPLACE 블록 파싱 (들여쓰기, 주석, 마크다운 완벽 지원)
-    let blocks = parseSearchReplaceBlocks(rawPatch);
-    const runBtn = $('runSmartPatchBtn');
-    const stopBtn = $('stopSmartPatchBtn');
-    const undoBtn = $('undoPatchBtn');
-
-    // 2단계: 마커가 없으면 로컬 JS 함수/블록 직접 추출 시도 (Gemini API 불필요)
-    if (blocks.length === 0) {
-      const localMatches = tryExtractLocalFunctionPatch(rawPatch, currentCode);
-      if (localMatches.length > 0) {
-        blocks = localMatches;
-        log(`⚡ 로컬 스마트 탐색 성공: [${localMatches[0].targetName}] 함수를 감지하여 교체합니다.`, 'ok');
-      }
-    }
-
-    // 3단계: 여전히 블록을 못 찾았을 때
-    if (blocks.length === 0) {
-      // SEARCH 또는 REPLACE 마커를 쓰려고 시도한 흔적이 있다면 AI를 호출하지 않고 마커 형식 확인 안내 (무한 대기 및 먹통 방지)
-      const hasSearchMarker = /<{3,}|SEARCH|ORIGINAL/i.test(rawPatch);
-      const hasReplaceMarker = />{3,}|REPLACE|UPDATED/i.test(rawPatch);
-      if (hasSearchMarker || hasReplaceMarker) {
-        return showToast('❌ SEARCH/REPLACE 마커 구조가 올바르지 않습니다. (<<<< SEARCH, =======, >>>> REPLACE를 확인해주세요)', 'err');
-      }
-
-      // 순수 줄글/설명일 때만 Gemini AI 자동 변환 시도 (단, 15초 타임아웃 보장)
-      const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
-      if (!geminiKey) {
-        return showToast('❌ SEARCH/REPLACE 마커 형식을 감지하지 못했습니다. (SEARCH/REPLACE 포맷을 사용해주세요)', 'err');
-      }
-
-      try {
-        if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '🤖 AI가 패치 위치 분석 중...'; }
-        if (stopBtn) stopBtn.classList.remove('hidden');
-        currentPatchAbortController = new AbortController();
-        const timeoutTimer = setTimeout(() => {
-          if (currentPatchAbortController) currentPatchAbortController.abort('timeout');
-        }, 15000);
-
-        log('🤖 일반 줄글을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
-
-        const aiPrompt = `다음 원본 소스코드에서 사용자가 요청한 부분 코드/수정사항을 찾아 정확히 교체하기 위한 SEARCH/REPLACE 블록만 출력해줘. 설명 없이 오직 아래 포맷으로만 응답해:
-<<<<<<< SEARCH
-(원본에서 찾을 정확한 코드)
-=======
-(교체할 새로운 코드)
->>>>>>> REPLACE
-
-[사용자 입력 패치/설명]
-${rawPatch}
-
-[원본 코드]
-${currentCode}`;
-
-        const aiPatchText = await callGeminiAPI(aiPrompt, 0.1, false, currentPatchAbortController.signal);
-        clearTimeout(timeoutTimer);
-        blocks = parseSearchReplaceBlocks(aiPatchText);
-      } catch (e) {
-        const msg = (e === 'timeout' || e.name === 'AbortError') ? '분석 시간이 초과되었습니다. 마커를 직접 사용해주세요.' : e.message;
-        showToast('❌ 스마트 패치 변환 실패: ' + msg, 'err');
-        log('❌ 패치 실패: ' + msg, 'err');
-        return;
-      } finally {
-        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
-        if (stopBtn) stopBtn.classList.add('hidden');
-        currentPatchAbortController = null;
-      }
-    }
-
-    if (blocks.length === 0) {
-      return showToast('유효한 SEARCH/REPLACE 블록을 찾지 못했습니다.', 'err');
-    }
-
-    window.lastPrePatchCode = currentCode;
-    let updatedCode = normalizeLineEndings(currentCode);
-    let successCount = 0;
-    let failCount = 0;
-
-    blocks.forEach((b, idx) => {
-      const res = replaceWithFlexibleIndent(updatedCode, b.search, b.replace);
-      if (res.success) {
-        updatedCode = res.code;
-        successCount++;
-        log(`✅ 패치 블록 #${idx + 1} 교체 성공 (${res.method || 'smart'})`, 'ok');
-      } else {
-        failCount++;
-        log(`⚠️ 패치 블록 #${idx + 1} 일치 구간을 찾지 못함`, 'err');
-      }
-    });
-
-    if (successCount > 0) {
-      editor.value = updatedCode;
-      editor.dispatchEvent(new Event('input', { bubbles: true }));
-      saveDraftCustom(updatedCode, `스마트 패치 (${successCount}개 블록 적용)`);
-      showLivePreviewCurrent(updatedCode, `👁️ 스마트 패치 적용됨 (${successCount}/${blocks.length})`);
-      if (undoBtn) undoBtn.classList.remove('hidden');
-      if (failCount === 0) {
-        showToast(`🎉 총 ${successCount}개 부분 코드 블록이 완벽하게 교체되었습니다!`, 'ok');
-      } else {
-        showToast(`⚠️ ${successCount}개 성공, ${failCount}개 실패 (로그 확인)`, 'info');
-      }
-    } else {
-      showToast('❌ 일치하는 원본 코드 위치를 찾지 못했습니다.', 'err');
-    }
-  };
-
-  window.stopSmartPatch = function() {
-    if (currentPatchAbortController) {
-      currentPatchAbortController.abort('stopped_by_user');
-      currentPatchAbortController = null;
-      showToast('🛑 스마트 패치 분석을 중지했습니다.', 'info');
-    }
-    const runBtn = $('runSmartPatchBtn');
-    const stopBtn = $('stopSmartPatchBtn');
-    if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
-    if (stopBtn) stopBtn.classList.add('hidden');
-  };
-
-  window.undoSmartPatch = function() {
-    if (!window.lastPrePatchCode) return showToast('되돌릴 이전 코드 기록이 없습니다.', 'err');
-    const editor = $('codeEditor');
-    if (editor) editor.value = window.lastPrePatchCode;
-    saveDraftCustom(window.lastPrePatchCode, '패치 취소(Undo) 복원');
-    showLivePreviewCurrent(window.lastPrePatchCode, '👁️ 패치 취소됨 (이전 코드)');
-    window.lastPrePatchCode = null;
-    if ($('undoPatchBtn')) $('undoPatchBtn').classList.add('hidden');
-    showToast('↩️ 방금 적용한 부분 코드 교체를 취소하고 원래대로 되돌렸습니다!', 'ok');
-  };
-  
-  function safeSetLocalStorage(key, value) {
-      try {
-          localStorage.setItem(key, value);
-      } catch (e) {
-          if (e.name === 'QuotaExceededError' || e.code === 22 || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-              cleanUpOldestDrafts();
-              try { localStorage.setItem(key, value); } catch(err) {}
-          }
-      }
-  }
-
-  function cleanUpOldestDrafts() {
-      let draftKeys = [];
-      for (let i=0; i<localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k.startsWith('draft_history_') || k.startsWith('draft_code_')) draftKeys.push(k);
-      }
-      draftKeys.forEach(k => {
-          if (!k.includes(currentRepo)) localStorage.removeItem(k);
-      });
-  }
-
-  async function detectGithubUser() {
-      const pat = getGitHubPat();
-      if (!pat || pat.length < 10) return;
-      try {
-          const res = await fetch('https://api.github.com/user', {
-              headers: { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github.v3+json' }
-          });
-          if (res.ok) {
-              const data = await res.json();
-              if (data.login && data.login !== GITHUB_USER) {
-                  GITHUB_USER = data.login;
-                  localStorage.setItem('github_user', GITHUB_USER);
-              }
-          }
-      } catch(e) {}
-  }
-
-  function updateActiveRepoDisplay() {
-    const el = $('currentActiveRepoDisplay');
-    if (el) el.textContent = currentRepo;
-  }
-  
   function getTargetAppVersion() {
     const note = $('updateNoteInput')?.value || '';
     let noteMatch = note.match(/(?:빌드\s*넘버|버전|ver|v)\s*[:：]?\s*v?(\d+\.\d+(?:\.\d+)?)/i);
@@ -3381,7 +3142,7 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.41: 할당량 429 대응 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.42: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
       const FREE_TIER_HIGH_QUOTA = ['gemini-2.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
