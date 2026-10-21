@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.56 - 터치 복구 + 빌드 시에만 증가</title>
+  <title>Builder-a v8.9.58 u v8.9.57 - 사진묶음 + 부분패치복구 정리 최종</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -89,10 +89,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.56">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.56">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.56">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.56">
+  <link rel="manifest" href="./manifest.json?v=8.9.58">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.58">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.58">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.57">
   
   <style>
     :root {
@@ -206,7 +206,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.56</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a v8.9.58 u v8.9.57</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -379,10 +379,10 @@
   <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
     <div class="card mb-0">
       <h2 class="font-bold text-[11px] mb-2">⏰ 타임머신 - 과거 버전 롤백</h2>
-      <div class="flex gap-1.5 mb-2">
-        <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[30px]">🐙 GitHub 커밋</button>
-        <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[30px]">📦 로컬 드래프트</button>
-        <button onclick="restorePartialPatch()" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[30px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">♻️ 부분패치 복구</button>
+      <div class="grid grid-cols-3 gap-1 mb-2">
+        <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[9px] sm:text-[10px] w-full py-1.5 px-1 min-h-[32px] leading-tight truncate">🐙 GitHub</button>
+        <button id="showDraftHistoryBtn" class="btn btn-sm text-[9px] sm:text-[10px] w-full py-1.5 px-1 min-h-[32px] leading-tight truncate">📦 로컬</button>
+        <button onclick="restorePartialPatch()" class="btn btn-sm text-[9px] sm:text-[10px] w-full py-1.5 px-1 min-h-[32px] leading-tight truncate" style="background:#fef3c7;color:#92400e;border-color:#fde68a">♻️ 복구</button>
       </div>
       <div id="versionHistoryBox" class="version-history">
         <div class="text-[10px] text-gray-400 p-3 text-center">버튼을 눌러 과거 기록을 조회하세요</div>
@@ -708,7 +708,7 @@
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
 
-  // ===== Phase 0+1: AI 스마트 라우터 v8.9.56 (Hyper-Automation Level1) =====
+  // ===== Phase 0+1: AI 스마트 라우터 v8.9.57 (Hyper-Automation Level1) =====
   const AI_ROUTER_PROMPT_TEMPLATE = `너는 Builder-a4u 프로젝트 분류기다.
 내 저장소 목록: {{REPO_LIST}}
 저장소 별칭 정보:
@@ -745,7 +745,7 @@
       const repoList = (typeof cached_repo_names !== 'undefined' && cached_repo_names.length) ? cached_repo_names : [currentRepo];
       if (!repoList || repoList.length === 0) return {repo:null, corrected: rawText, reason:'목록 없음'};
       
-      // ★ v8.9.56: 한글 별칭 선체크 - repoList 없어도 동작하도록 수정
+      // ★ v8.9.57: 한글 별칭 선체크 - repoList 없어도 동작하도록 수정
       const lowerRaw = rawText.toLowerCase();
       // repoList가 비어있거나 현재 repo만 있을 때도 별칭은 무조건 인정
       let fullRepoList = repoList;
@@ -766,7 +766,7 @@
           if (exact) matchedRepo = exact;
           else if (partial) matchedRepo = partial;
           
-          // 오타 교정 (띄어쓰기) - v8.9.56 강화
+          // 오타 교정 (띄어쓰기) - v8.9.57 강화
           let corrected = rawText;
           corrected = corrected.replace(/하단버튼/g, '하단 버튼');
           corrected = corrected.replace(/첫번째/g, '첫 번째');
@@ -894,13 +894,13 @@
       window.saveIdeaInbox_original = saveIdeaInbox;
       window.saveIdeaInbox_direct = saveIdeaInbox;
       window.saveIdeaInbox = saveIdeaInboxWithAIRouter;
-      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.56 - 프로젝트 선택 버그 수정');
-      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.56 (한글 별칭 수정)', 'success');
+      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.57 - 프로젝트 선택 버그 수정');
+      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.57 (한글 별칭 수정)', 'success');
     }
   }, 2000);
   // ===== End Phase 0+1 =====
 
-  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.56 (Track A - 핵심) =====
+  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.57 (Track A - 핵심) =====
   window.oneClickAutoPatch = async function() {
     try {
       const checked = currentRepoIdeas.filter(i => i.checked && i.text && i.text.trim());
@@ -915,8 +915,12 @@
         if (!includeAll) return;
         ideasToUse = nonEmpty;
       }
-      const ideaText = ideasToUse.map(i => '- ' + i.text.trim()).join('\n');
-      // v8.9.56: 빌드중 태그 달기
+      const ideaText = ideasToUse.map(i => '- ' + i.text.trim() + (i.images && i.images.length ? ` [참고이미지 ${i.images.length}개 포함]` : '')).join('\n');
+      let bundledImages = [];
+      ideasToUse.forEach(i => { if (i.images && i.images.length) bundledImages.push(...i.images); });
+      if (bundledImages.length === 0 && typeof currentIdeaImages !== 'undefined' && currentIdeaImages.length > 0) { bundledImages = [...currentIdeaImages]; }
+      if (bundledImages.length > 0) { log(`📸 묶인 사진 ${bundledImages.length}개 AI 전송 준비`, 'ok'); }
+      // v8.9.57: 빌드중 태그 달기
       const buildingIds = ideasToUse.map(i => i.id);
       currentRepoIdeas.forEach(idea => {
         if (buildingIds.includes(idea.id)) {
@@ -930,7 +934,7 @@
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '⏳ 0/4 레포 검증 및 최신 코드 동기화 중...'; }
       
-      // v8.9.56 FIX: 명시적 레포 검증 + GitHub 최신 원본 강제 페치 (터치 버그 수정 포함)
+      // v8.9.57 FIX: 명시적 레포 검증 + GitHub 최신 원본 강제 페치 (터치 버그 수정 포함)
       try {
         const repoSel = $('repoSelect');
         if (repoSel && repoSel.value && repoSel.value !== currentRepo) {
@@ -1027,7 +1031,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.56] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.58] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1043,7 +1047,7 @@ ${currentCode.substring(0, 8000)}
         return;
       }
       const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
-      const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
+      const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model, bundledImages);
       
       if (runBtn) runBtn.innerHTML = '🔧 3/4 패치 적용 중...';
       log('📦 AI 응답 파싱 중...', 'info');
@@ -1085,14 +1089,14 @@ ${currentCode.substring(0, 8000)}
       });
 
       if (successCount > 0) {
-        // v8.9.56: 빌드 번호 자동 +1
+        // v8.9.57: 빌드 번호 자동 +1
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v8.9.56';
+          const currentVer = getTargetAppVersion() || 'v8.9.57';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
-            newVersion = `v${major}.${minor}.${patch}`; // v8.9.56 정리: 자동 증가 제거
+            newVersion = `v${major}.${minor}.${patch}`; // v8.9.57 정리: 자동 증가 제거
             // 코드 내 타이틀, h1, manifest 버전 교체
             updatedCode = updatedCode.replace(/<title>Builder-a4u v[\d\.]+/g, `<title>Builder-a4u ${newVersion}`);
             updatedCode = updatedCode.replace(/Builder-a4u v[\d\.]+<\/h1>/g, `Builder-a4u ${newVersion}</h1>`);
@@ -1113,7 +1117,7 @@ ${currentCode.substring(0, 8000)}
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
         const baseNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)}`;
-        // v8.9.56: 완료된 아이디어는 done으로 변경
+        // v8.9.57: 완료된 아이디어는 done으로 변경
         currentRepoIdeas.forEach(idea => {
           if (buildingIds.includes(idea.id)) {
             idea.status = 'done';
@@ -1122,10 +1126,10 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.56)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.57)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
-        // v8.9.56: 클립보드에 업데이트 내용 자동 복사
+        // v8.9.57: 클립보드에 업데이트 내용 자동 복사
         try {
           const clipText = `${buildNote}\n${newVersion||''}\n${ideaText}`;
           if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1154,7 +1158,7 @@ ${currentCode.substring(0, 8000)}
       } else if (errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError') || errMsg.includes('Load failed')) {
         errMsg = '🌐 네트워크 로드 실패.\n• 인터넷 연결 확인\n• VPN 끄고 재시도\n• API 키가 유효한지 확인\n원본: ' + errMsg;
       }
-      // v8.9.56: 실패 시 failed 태그
+      // v8.9.57: 실패 시 failed 태그
       try {
         if (typeof buildingIds !== 'undefined') {
           currentRepoIdeas.forEach(idea => {
@@ -1224,7 +1228,7 @@ ${currentCode.substring(0, 8000)}
   function renderAITargets() {
     const container = $('aiTargetList');
     if (!container) return;
-    // v8.9.56 FIX: iOS PWA에서 인앱이 아닌 외부 사파리로 열리도록 <a> 태그로 직접 렌더링
+    // v8.9.57 FIX: iOS PWA에서 인앱이 아닌 외부 사파리로 열리도록 <a> 태그로 직접 렌더링
     container.innerHTML = AI_TARGETS.map(ai => {
       return `<a href="${ai.url}" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('${ai.url}'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ${ai.name} 바로가기</a>`;
     }).join('');
@@ -1259,11 +1263,12 @@ ${currentCode.substring(0, 8000)}
             id: item.id || Date.now()+Math.random(), 
             text: item.text || '', 
             checked: !!item.checked,
-            status: item.status || null, // v8.9.56: building/done/failed
-            buildAt: item.buildAt || null
+            status: item.status || null,
+            buildAt: item.buildAt || null,
+            images: Array.isArray(item.images) ? item.images : (item.image ? [item.image] : [])
           };
         } else {
-          return { id: Date.now()+Math.random(), text: item, checked: false, status: null, buildAt: null };
+          return { id: Date.now()+Math.random(), text: item, checked: false, status: null, buildAt: null, images: [] };
         }
       });
     } catch(e) {}
@@ -1272,7 +1277,8 @@ ${currentCode.substring(0, 8000)}
       text: text.replace(/^-\s*/, ''),
       checked: false,
       status: null,
-      buildAt: null
+      buildAt: null,
+      images: []
     }));
   }
 
@@ -1568,7 +1574,7 @@ ${currentCode.substring(0, 8000)}
         }
       }
     }
-    // v8.9.56 NEW: 아이콘/이모지 기반 퍼지 매칭 (타이머 버튼 같은 경우)
+    // v8.9.57 NEW: 아이콘/이모지 기반 퍼지 매칭 (타이머 버튼 같은 경우)
     try {
       const iconRegex = /[⏱️⏰🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚🕛⏳⌚⏲️🕰️]/u;
       const extractIcons = (txt) => (txt.match(new RegExp(iconRegex, 'gu')) || []);
@@ -1800,15 +1806,45 @@ ${currentCode.substring(0, 8000)}
 
   window.renderOtherIdeas = function() {
     const container = $('otherIdeaList'); if (!container) return;
-    container.innerHTML = currentOtherIdeas.map((idea, i) => `
+    container.innerHTML = currentOtherIdeas.map((idea, i) => {
+      const imgs = idea.images || [];
+      const imgHtml = imgs.length ? `<div class="flex gap-1 flex-wrap mt-1">${imgs.map((img, imgIdx) => `
+        <div class="relative"><img src="${img}" class="w-10 h-10 rounded border object-cover cursor-pointer" onclick="viewOtherIdeaImage(${i}, ${imgIdx})"><button onclick="removeOtherIdeaImage(${i}, ${imgIdx})" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3.5 h-3.5 text-[7px] flex items-center justify-center">✕</button></div>`).join('')}<label class="w-10 h-10 rounded border border-dashed flex items-center justify-center text-[8px] cursor-pointer bg-white">+사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label></div>` : `<div class="mt-1"><label class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 border cursor-pointer">📸 사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label></div>`;
+      return `
       <div class="flex items-start gap-1.5 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
         <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(false);" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
-        <textarea class="textarea flex-1 text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(false);">${idea.text}</textarea>
+        <div class="flex-1 min-w-0">
+          <textarea class="textarea flex-1 w-full text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(false);">${idea.text}</textarea>
+          ${imgHtml}
+        </div>
         <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(false);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
       </div>
-    `).join('');
+    `}).join('');
     setTimeout(() => { container.querySelectorAll('textarea').forEach(autoResizeTextarea); }, 10);
   };
+  window.addImageToOtherIdea = async function(idx, input) {
+    if (!input.files || !input.files[0]) return;
+    try {
+      const b64 = await processImageFileToBase64(input.files[0]);
+      if (!currentOtherIdeas[idx].images) currentOtherIdeas[idx].images = [];
+      currentOtherIdeas[idx].images.push(b64);
+      renderOtherIdeas(); saveOtherIdea(false);
+      showToast('📸 미분류에도 사진 묶임!', 'ok');
+    } catch(e){}
+    input.value='';
+  };
+  window.removeOtherIdeaImage = function(idx, imgIdx) {
+    if (currentOtherIdeas[idx]?.images) {
+      currentOtherIdeas[idx].images.splice(imgIdx,1);
+      renderOtherIdeas(); saveOtherIdea(false);
+    }
+  };
+  window.viewOtherIdeaImage = function(idx, imgIdx) {
+    const img = currentOtherIdeas[idx]?.images?.[imgIdx];
+    if (!img) return;
+    const w = window.open(); if (w) w.document.write(`<img src="${img}" style="max-width:100%">`);
+  };
+
 
   window.addOtherIdea = function(text = '') {
     currentOtherIdeas.push({ id: Date.now(), text, checked: false });
@@ -1876,18 +1912,50 @@ ${currentCode.substring(0, 8000)}
       const badge = isBuilding ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 animate-pulse">🚧 빌드중</span>' : 
                     isDone ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100">✅ 완료</span>' :
                     isFailed ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-red-200 text-red-800">❌ 실패</span>' : '';
+      const imgs = idea.images || [];
+      const imgHtml = imgs.length ? `<div class="flex gap-1.5 flex-wrap mt-1.5">${imgs.map((img, imgIdx) => `
+        <div class="relative group">
+          <img src="${img}" class="w-[52px] h-[52px] rounded-lg border border-gray-200 dark:border-gray-600 object-cover cursor-pointer shadow-sm" onclick="viewIdeaImage(${i}, ${imgIdx})">
+          <button onclick="removeIdeaImage(${i}, ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] shadow border border-white opacity-90 hover:opacity-100">✕</button>
+        </div>`).join('')}<label class="w-[52px] h-[52px] rounded-lg border border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-[9px] cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100">+<span>사진</span><input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label></div>` : `<div class="mt-1.5"><label class="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-200">📸 사진 추가<input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label></div>`;
       return `
       <div class="flex items-start gap-2 p-2 rounded-xl border shadow-sm ${borderClass} transition-all">
         <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentRepoIdeas[${i}].checked=this.checked; saveRepoIdea(null, false);" class="mt-1.5 w-4 h-4 text-emerald-600 rounded cursor-pointer">
         <div class="flex-1 min-w-0">
           ${badge ? `<div class="mb-1">${badge}${idea.buildAt ? ` <span class="text-[8px] opacity-60">${new Date(idea.buildAt).toLocaleTimeString()}</span>` : ''}</div>` : ''}
           <textarea class="textarea w-full text-[12px] !min-h-[32px] !p-1.5 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentRepoIdeas[${i}].text=this.value; autoResizeTextarea(this); saveRepoIdea(null, false);">${idea.text}</textarea>
+          ${imgHtml}
         </div>
         <button onclick="currentRepoIdeas.splice(${i}, 1); renderRepoIdeas(); saveRepoIdea(null, false);" class="text-red-400 hover:text-red-600 p-1.5 text-[12px] font-bold shrink-0">✕</button>
       </div>
     `}).join('');
     setTimeout(() => { container.querySelectorAll('textarea').forEach(autoResizeTextarea); }, 10);
   };
+  
+  window.addImageToIdea = async function(ideaIdx, input) {
+    if (!input.files || !input.files[0]) return;
+    try {
+      const b64 = await processImageFileToBase64(input.files[0]);
+      if (!currentRepoIdeas[ideaIdx].images) currentRepoIdeas[ideaIdx].images = [];
+      currentRepoIdeas[ideaIdx].images.push(b64);
+      renderRepoIdeas(); saveRepoIdea(null, false);
+      showToast('📸 사진이 아이디어에 묶였습니다!', 'ok');
+    } catch(e) { showToast('사진 추가 실패', 'err'); }
+    input.value = '';
+  };
+  window.removeIdeaImage = function(ideaIdx, imgIdx) {
+    if (currentRepoIdeas[ideaIdx] && currentRepoIdeas[ideaIdx].images) {
+      currentRepoIdeas[ideaIdx].images.splice(imgIdx, 1);
+      renderRepoIdeas(); saveRepoIdea(null, false);
+    }
+  };
+  window.viewIdeaImage = function(ideaIdx, imgIdx) {
+    const img = currentRepoIdeas[ideaIdx]?.images?.[imgIdx];
+    if (!img) return;
+    const w = window.open();
+    if (w) w.document.write(`<img src="${img}" style="max-width:100%">`);
+  };
+
 
   window.addRepoIdea = function(text = '') {
     currentRepoIdeas.push({ id: Date.now(), text, checked: false });
@@ -1958,7 +2026,7 @@ ${currentCode.substring(0, 8000)}
     }
   };
   
-  // v8.9.56: 빌드중 -> 완료 수동 변경 (디버깅용)
+  // v8.9.57: 빌드중 -> 완료 수동 변경 (디버깅용)
   window.markBuildingAsDone = function() {
     currentRepoIdeas.forEach(i => { if (i.status === 'building') i.status = 'done'; });
     renderRepoIdeas(); saveRepoIdea(null, false);
@@ -2229,7 +2297,7 @@ ${contextConstraint}`;
     try {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: minimal-ui)').matches;
-      // v8.9.56 FIX: 외부 사파리로 강제 오픈 - a태그를 실제 DOM에 두고 진짜 클릭으로 처리
+      // v8.9.57 FIX: 외부 사파리로 강제 오픈 - a태그를 실제 DOM에 두고 진짜 클릭으로 처리
       if (isStandalone || isIOS) {
         // iOS PWA에서는 programmatic click보다 실제 앵커 네비게이션이 더 잘 통함
         const a = document.createElement('a');
@@ -2621,7 +2689,7 @@ ${contextConstraint}`;
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
-    // v8.9.56 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
+    // v8.9.57 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
     const getCachedNames = () => {
       try {
         const cached = JSON.parse(localStorage.getItem('cached_repo_names') || '[]');
@@ -2910,7 +2978,7 @@ ${contextConstraint}`;
     try {
       const draftKey = getDraftCodeKey();
       const success = safeSetLocalStorage(draftKey, code);
-      // v8.9.56: 부분 패치 전용 백업 키에도 저장 (리로드 시 복구용)
+      // v8.9.57: 부분 패치 전용 백업 키에도 저장 (리로드 시 복구용)
       const partialKey = draftKey + '_partial_backup';
       safeSetLocalStorage(partialKey, code);
       safeSetLocalStorage(partialKey + '_note', note);
@@ -2989,7 +3057,7 @@ ${contextConstraint}`;
       }
   }
   
-  // v8.9.56: 부분 패치 복구
+  // v8.9.57: 부분 패치 복구
   window.restorePartialPatch = function() {
     const draftKey = getDraftCodeKey();
     const partialKey = draftKey + '_partial_backup';
@@ -3016,7 +3084,7 @@ ${contextConstraint}`;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
-    // v8.9.56: 강제 새로고침 - 기존 srcdoc 제거 후 재설정
+    // v8.9.57: 강제 새로고침 - 기존 srcdoc 제거 후 재설정
     try { frame.removeAttribute('srcdoc'); } catch(e) {}
     
     const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
@@ -3054,7 +3122,7 @@ ${contextConstraint}`;
     }, 1000);
   }
   
-  // v8.9.56: 미리보기 강제 새로고침 버튼
+  // v8.9.57: 미리보기 강제 새로고침 버튼
   window.forceRefreshPreview = function() {
     const editor = $('codeEditor');
     const code = editor ? editor.value : '';
@@ -3089,7 +3157,7 @@ ${contextConstraint}`;
       showToast('GitHub PAT 필요 - 설정 탭에서 입력하세요', 'err');
       return;
     }
-    // v8.9.56 FIX: 최종 빌드 때만 버전 +1
+    // v8.9.57 FIX: 최종 빌드 때만 버전 +1
     let version = getTargetAppVersion();
     let finalVersion = version;
     try {
@@ -3119,7 +3187,7 @@ ${contextConstraint}`;
       let tempCode = codeToPush;
       tempCode = tempCode.replace(/<title>([^<]*?)\s*v?[\d\.]+\s*(.*?)<\/title>/gi, (match, p1, p2) => {
         const appName = p1.trim() || currentRepo;
-        return `<title>${appName} ${finalVersion}${p2 ? ' ' + p2 : ''}</title>`;
+        return `<title>${appName} ${finalVersion}${p v8.9.58 ? ' ' + p2 : ''}</title>`;
       });
       tempCode = tempCode.replace(/<h1([^>]*)>([^<]*?)\s*v?[\d\.]+\s*([^<]*?)<\/h1>/gi, (match, attrs, pre, post) => {
         const cleanPre = pre.trim();
@@ -3311,8 +3379,8 @@ ${contextConstraint}`;
     showToast(`↺ 복원 완료`, 'ok');
   };
 
-  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null, modelOverride = null) {
-      // v8.9.56 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
+  async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null, modelOverride = null, imagesArray = null) {
+      // v8.9.57 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
       if (typeof temperature === 'string' && temperature.includes('gemini')) {
         modelOverride = temperature;
         temperature = 0.2;
@@ -3325,9 +3393,9 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.56: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.57: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
-      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.56: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.57: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
       // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
       const STABLE_MODELS = [...FREE_TIER_HIGH_QUOTA, ...PAID_TIER];
@@ -3341,9 +3409,9 @@ ${contextConstraint}`;
       
       let res = null, lastError = null, lastStatus = '';
       const allAttempts = [];
-      // v8.9.56: 자동 폴백 강화 - 타임아웃 30초로 단축, 모든 모델 순차 시도
+      // v8.9.57: 자동 폴백 강화 - 타임아웃 30초로 단축, 모든 모델 순차 시도
       const TIMEOUT_MS = 30000;
-      // v8.9.56: 저장된 모델이 실패해도 자동으로 다음 모델로 넘어가도록 - 사용자는 선택 안 해도 됨
+      // v8.9.57: 저장된 모델이 실패해도 자동으로 다음 모델로 넘어가도록 - 사용자는 선택 안 해도 됨
       for (let modelIdx = 0; modelIdx < MODEL_CANDIDATES.length; modelIdx++) {
           const model = MODEL_CANDIDATES[modelIdx];
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
@@ -3366,10 +3434,23 @@ ${contextConstraint}`;
                 log(`🔄 [${modelIdx+1}/${MODEL_CANDIDATES.length}] ${model} (${apiVer}) 호출 중...`, 'info');
                 allAttempts.push(`${model}(${apiVer})`);
                 
+                const buildParts = () => {
+                  const parts = [{ text: prompt }];
+                  if (imagesArray && Array.isArray(imagesArray) && imagesArray.length) {
+                    imagesArray.forEach(b64 => {
+                      try {
+                        const data = b64.includes(',') ? b64.split(',')[1] : b64;
+                        const mime = b64.match(/data:(.*?);/)?.[1] || 'image/webp';
+                        parts.push({ inline_data: { mime_type: mime, data: data } });
+                      } catch(e){}
+                    });
+                  }
+                  return parts;
+                };
                 res = await fetch(url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
-                      contents: [{ parts: [{ text: prompt }] }], 
+                      contents: [{ parts: buildParts() }], 
                       generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2, maxOutputTokens: 8000 } 
                     }),
                     signal: combinedSignal
@@ -3393,10 +3474,23 @@ ${contextConstraint}`;
                     // 재시도
                     try {
                       const retryUrl = `https://generativelanguage.googleapis.com/${apiVer}/models/${model}:generateContent?key=${geminiKey}`;
+                      const buildPartsRetry = () => {
+                        const parts = [{ text: prompt }];
+                        if (imagesArray && Array.isArray(imagesArray) && imagesArray.length) {
+                          imagesArray.forEach(b64 => {
+                            try {
+                              const data = b64.includes(',') ? b64.split(',')[1] : b64;
+                              const mime = b64.match(/data:(.*?);/)?.[1] || 'image/webp';
+                              parts.push({ inline_data: { mime_type: mime, data: data } });
+                            } catch(e){}
+                          });
+                        }
+                        return parts;
+                      };
                       const retryRes = await fetch(retryUrl, {
                         method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ 
-                          contents: [{ parts: [{ text: prompt }] }], 
+                          contents: [{ parts: buildPartsRetry() }], 
                           generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2, maxOutputTokens: 8000 } 
                         }),
                         signal: combinedSignal
@@ -3472,7 +3566,7 @@ ${contextConstraint}`;
 
   let ideaInbox = []; let isRecording = false; let recognition = null; let pendingInboxPhoto = null;
 
-  // ===== Voice Recording Fix v8.9.56 =====
+  // ===== Voice Recording Fix v8.9.57 =====
   window.toggleVoiceRecording = function() {
     if (isRecording) {
       stopVoiceRecording();
@@ -3652,36 +3746,35 @@ ${contextConstraint}`;
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
-      // v8.9.56: 프로젝트 선택 있으면 해당 프로젝트로, 없으면 미분류/기타 보관소로 직행 (쌓인아이디어 리스트는 제거됨)
+      // v8.9.57: 사진+할일 묶어서 하나의 아이디어로 - 빌드 시 같이 AI에게 전달
       const inboxSel = $('inboxProjectSelect');
       const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
       let text = textData || $('inboxTextInput')?.value?.trim();
       if (!text && !pendingInboxPhoto) return showToast('내용을 입력해주세요.', 'info');
 
+      const bundledImages = pendingInboxPhoto ? [pendingInboxPhoto] : [];
+      let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
+
       if (targetRepo === '미분류' || targetRepo === '') {
-          // 선택 없으면 → 설정탭 미분류 보관소로
-          let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
-          if (finalText) {
-            currentOtherIdeas.push({ id: Date.now(), text: finalText, checked: false });
+          if (finalText || bundledImages.length) {
+            currentOtherIdeas.push({ id: Date.now(), text: finalText, checked: false, images: bundledImages, status: null, buildAt: null });
           }
-          if (pendingInboxPhoto) {
-            currentOtherIdeaImages.push(pendingInboxPhoto);
-          }
-          renderOtherIdeas(); renderOtherIdeaImages(); saveOtherIdea(true);
-          showToast('✅ 미분류 보관소로 전송 완료!', 'ok');
+          renderOtherIdeas(); saveOtherIdea(true);
+          showToast(bundledImages.length ? '✅ 사진+할일이 묶여서 미분류로 전송!' : '✅ 미분류 보관소로 전송 완료!', 'ok');
       } else {
-          // 프로젝트 선택됨 → 해당 프로젝트 아이디어로
-          let finalText = text || (pendingInboxPhoto ? '(사진 메모)' : '');
-          const key = 'repo_idea_' + targetRepo, imgKey = 'repo_idea_images_' + targetRepo;
+          const key = 'repo_idea_' + targetRepo;
           const existingArr = parseIdeasData(localStorage.getItem(key) || '');
-          if (finalText) existingArr.push({ id: Date.now(), text: finalText, checked: false });
+          if (finalText || bundledImages.length) {
+            existingArr.push({ id: Date.now(), text: finalText, checked: false, images: bundledImages, status: null, buildAt: null });
+          }
           const updatedText = stringifyIdeasData(existingArr);
           safeSetLocalStorage(key, updatedText);
-          let imgs = [];
-          try { imgs = JSON.parse(localStorage.getItem(imgKey)||'[]'); if(!Array.isArray(imgs)) imgs = []; } catch(e){ imgs = []; }
-          if(pendingInboxPhoto) { imgs.push(pendingInboxPhoto); safeSetLocalStorage(imgKey, JSON.stringify(imgs)); }
-          if (isGoogleLoggedIn()) saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs });
-          showToast(`✅ [${targetRepo}] 전송 완료!`, 'ok');
+          if (isGoogleLoggedIn()) {
+            let imgs = [];
+            try { imgs = JSON.parse(localStorage.getItem('repo_idea_images_' + targetRepo)||'[]'); } catch(e){}
+            saveDataToDrive(`[${targetRepo}]_idea_backup.json`, { text: updatedText, images: imgs });
+          }
+          showToast(bundledImages.length ? `✅ [${targetRepo}] 사진+할일 묶음 전송!` : `✅ [${targetRepo}] 전송 완료!`, 'ok');
           if (currentRepo === targetRepo) loadRepoIdea();
       }
       if($('inboxTextInput')) $('inboxTextInput').value = '';
@@ -3846,7 +3939,7 @@ ${contextConstraint}`;
       google_client_id: localStorage.getItem('google_client_id') || '',
       gemini_api_key: localStorage.getItem('gemini_api_key') || '',
       exported_at: new Date().toISOString(),
-      version: 'v8.9.56'
+      version: 'v8.9.57'
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -3916,7 +4009,7 @@ ${contextConstraint}`;
     $('geminiApiKeyInput')?.addEventListener('input', e => localStorage.setItem('gemini_api_key', e.target.value.trim()));
     
 
-    // v8.9.56: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
+    // v8.9.57: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
     let savedModelRaw = localStorage.getItem('builder_gemini_model') || '';
     if (savedModelRaw.includes('1.5') || savedModelRaw.includes('2.0-flash-lite-001') || savedModelRaw.includes('2.0-flash-001') || savedModelRaw.includes('3.1-')) {
       localStorage.setItem('builder_gemini_model', 'gemini-2.5-flash');
@@ -3941,7 +4034,7 @@ ${contextConstraint}`;
   }
 
   
-  // === v8.9.56 NEW: [메모] 영구 메모장 로직 ===
+  // === v8.9.57 NEW: [메모] 영구 메모장 로직 ===
   const INBOX_MEMO_KEY = 'inbox_memo_v1';
   function loadInboxMemo() {
     const el = $('inboxMemoInput');
@@ -3983,11 +4076,11 @@ ${contextConstraint}`;
     renderOtherIdeas(); saveOtherIdea(true);
     showToast('✅ 메모가 미분류 보관소로 전송됨', 'ok');
   };
-  // === END v8.9.56 NEW ===
+  // === END v8.9.57 NEW ===
 
 
 function setupEventListeners() {
-    // === v8.9.56 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
+    // === v8.9.57 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
     $('parseBulkKeysBtn')?.addEventListener('click', parseBulkEnvAndApply);
     $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
     $('importKeysJsonInput')?.addEventListener('change', importKeysJsonFile);
@@ -4074,7 +4167,7 @@ function setupEventListeners() {
     $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
     $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
     $('driveModalClose')?.addEventListener('click', () => { $('driveModal').style.display = 'none'; });
-    // v8.9.56 FIX: 구글 드라이브 실시간 검색 + 공유문서함 오버플로우 수정
+    // v8.9.57 FIX: 구글 드라이브 실시간 검색 + 공유문서함 오버플로우 수정
     const driveSearchInput = $('driveSearchInput');
     const driveSearchBtn = $('driveSearchBtn');
     let driveSearchDebounce = null;
@@ -4163,7 +4256,7 @@ function setupEventListeners() {
   }
   
   
-  // v8.9.56 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
+  // v8.9.57 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
   function updateActiveRepoDisplay() {
     const el = $('currentActiveRepoDisplay');
     if (el) el.textContent = currentRepo || 'builder-a4u';
