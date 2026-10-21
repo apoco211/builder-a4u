@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.39 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.40 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.39">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.39">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.39">
+  <link rel="manifest" href="./manifest.json?v=8.9.40">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.40">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.40">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.39</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.40</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1005,7 +1005,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.39] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.40] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1099,7 +1099,7 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.39)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.40)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -3360,11 +3360,19 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
-      // v8.9.39: 완전 자동 폴백 - 저장된 모델 실패해도 자동으로 다음으로, 사용자는 선택 안 해도 됨
-      // 안정적인 순서: 2.0-flash (가장 안정) → 2.5-flash → 3.1-flash → 3.1-pro → 기타
-      const STABLE_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.5-flash', 'gemini-3.1-flash-preview', 'gemini-3.1-pro-preview'];
-      const MODEL_CANDIDATES = [savedModel, ...STABLE_MODELS].filter((v,i,a)=>a.indexOf(v)===i && v).filter(m => !m.includes('1.5') && !m.includes('flash-latest') && m !== 'gemini-2.5-pro');
-      log(`🤖 자동 폴백 목록: ${MODEL_CANDIDATES.join(' → ')}`, 'info');
+      // v8.9.40: 할당량 429 대응 - 무료 할당량 높은 모델만 자동 폴백
+      // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.0-flash-lite', 'gemini-2.0-flash-lite-001'];
+      const PAID_TIER = ['gemini-2.5-flash', 'gemini-3.1-flash-preview', 'gemini-3.1-pro-preview'];
+      // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
+      const STABLE_MODELS = FREE_TIER_HIGH_QUOTA;
+      let MODEL_CANDIDATES = [savedModel, ...STABLE_MODELS].filter((v,i,a)=>a.indexOf(v)===i && v).filter(m => !m.includes('1.5') && !m.includes('flash-latest') && m !== 'gemini-2.5-pro');
+      // 만약 저장된 모델이 3.1인데 실패하면, 자동으로 무료 모델로 폴백 (3.1은 목록에서 제외되어 자동 재시도)
+      if (savedModel && savedModel.includes('3.1')) {
+        // 3.1은 할당량 낮으므로, 실패 시 바로 2.0으로 가도록 앞에 2.0 배치
+        MODEL_CANDIDATES = [savedModel, ...FREE_TIER_HIGH_QUOTA].filter((v,i,a)=>a.indexOf(v)===i);
+      }
+      log(`🤖 자동 폴백 목록: ${MODEL_CANDIDATES.join(' → ')} (무료 높은 할당량 우선)`, 'info');
       
       let res = null, lastError = null, lastStatus = '';
       const allAttempts = [];
@@ -3412,9 +3420,36 @@ ${contextConstraint}`;
                   const shortMsg = txt.substring(0,200).replace(/\n/g, ' ');
                   lastError = new Error(`모델 ${model} (${apiVer}) 실패 ${res.status}: ${shortMsg}`);
                   console.warn(lastError.message);
-                  log(`⚠️ ${model} (${apiVer}) 실패 ${res.status} → 자동 다음 모델로`, 'warn');
                   if (res.status === 429) {
-                    await new Promise(r => setTimeout(r, 1500));
+                    log(`⏳ ${model} 할당량 초과(429) - 65초 대기 후 재시도 (무료 한도 15회/분)`, 'warn');
+                    showToast(`⏳ 할당량 초과! 65초 후 자동 재시도...`, 'warn');
+                    // 429는 할당량 초과, 65초 대기 후 같은 모델 재시도 1회
+                    await new Promise(r => setTimeout(r, 65000));
+                    // 재시도
+                    try {
+                      const retryUrl = `https://generativelanguage.googleapis.com/${apiVer}/models/${model}:generateContent?key=${geminiKey}`;
+                      const retryRes = await fetch(retryUrl, {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                          contents: [{ parts: [{ text: prompt }] }], 
+                          generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2, maxOutputTokens: 8000 } 
+                        }),
+                        signal: combinedSignal
+                      });
+                      if (retryRes.ok) {
+                        res = retryRes;
+                        log(`✅ ${model} 재시도 성공!`, 'ok');
+                        modelSucceeded = true;
+                        clearTimeout(timeoutId);
+                        break;
+                      } else {
+                        log(`⚠️ ${model} 재시도도 실패 ${retryRes.status} → 다음 모델로`, 'warn');
+                      }
+                    } catch(eRetry) {
+                      log(`⚠️ ${model} 재시도 에러 → 다음 모델로`, 'warn');
+                    }
+                  } else {
+                    log(`⚠️ ${model} (${apiVer}) 실패 ${res.status} → 자동 다음 모델로`, 'warn');
                   }
                 }
             } catch(e) { 
@@ -3928,11 +3963,12 @@ ${contextConstraint}`;
       // 드롭다운 옵션 강제 교체 (1.5 제거)
       const sel = $('geminiModelSelect');
       sel.innerHTML = `
-        <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장) ✅</option>
-        <option value="gemini-2.0-flash-001">gemini-2.0-flash-001</option>
-        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
-        <option value="gemini-3.1-flash-preview">gemini-3.1-flash-preview (최신)</option>
-        <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (고성능)</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장 15RPM) ✅</option>
+        <option value="gemini-2.0-flash-001">gemini-2.0-flash-001 (15RPM)</option>
+        <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite (30RPM 가장 높음)</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash (10RPM)</option>
+        <option value="gemini-3.1-flash-preview">gemini-3.1-flash-preview (2RPM 낮음)</option>
+        <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (2RPM 낮음)</option>
       `;
       sel.value = savedModelRaw || 'gemini-2.0-flash';
       $('geminiModelSelect').value = savedModel;
