@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.37 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.39 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.37">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.37">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.37">
+  <link rel="manifest" href="./manifest.json?v=8.9.39">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.39">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.39">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.37</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.39</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -1005,7 +1005,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.37] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.39] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1099,7 +1099,7 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.37)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.39)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -3360,21 +3360,29 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
-      // v8.9.37: 유효한 모델만 - 1.5, flash-latest 제거 (404)
-      const MODEL_CANDIDATES = [savedModel, 'gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.5-flash', 'gemini-2.5-pro'].filter((v,i,a)=>a.indexOf(v)===i).filter(m => !m.includes('1.5') && !m.includes('flash-latest'));
+      // v8.9.39: 완전 자동 폴백 - 저장된 모델 실패해도 자동으로 다음으로, 사용자는 선택 안 해도 됨
+      // 안정적인 순서: 2.0-flash (가장 안정) → 2.5-flash → 3.1-flash → 3.1-pro → 기타
+      const STABLE_MODELS = ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.5-flash', 'gemini-3.1-flash-preview', 'gemini-3.1-pro-preview'];
+      const MODEL_CANDIDATES = [savedModel, ...STABLE_MODELS].filter((v,i,a)=>a.indexOf(v)===i && v).filter(m => !m.includes('1.5') && !m.includes('flash-latest') && m !== 'gemini-2.5-pro');
+      log(`🤖 자동 폴백 목록: ${MODEL_CANDIDATES.join(' → ')}`, 'info');
       
       let res = null, lastError = null, lastStatus = '';
-      // v8.9.33: 타임아웃 45초, v1beta + v1 모두 시도
-      const TIMEOUT_MS = 45000;
-      for (const model of MODEL_CANDIDATES) {
+      const allAttempts = [];
+      // v8.9.39: 자동 폴백 강화 - 타임아웃 30초로 단축, 모든 모델 순차 시도
+      const TIMEOUT_MS = 30000;
+      // v8.9.39: 저장된 모델이 실패해도 자동으로 다음 모델로 넘어가도록 - 사용자는 선택 안 해도 됨
+      for (let modelIdx = 0; modelIdx < MODEL_CANDIDATES.length; modelIdx++) {
+          const model = MODEL_CANDIDATES[modelIdx];
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
-          // v1beta와 v1 모두 시도
-          for (const apiVer of ['v1beta', 'v1']) {
+          // 3.1, 2.5는 v1beta만, 2.0은 v1beta+v1 모두
+          const versToTry = model.includes('3.1') ? ['v1beta'] : ['v1beta', 'v1'];
+          let modelSucceeded = false;
+          
+          for (const apiVer of versToTry) {
             try {
                 const url = `https://generativelanguage.googleapis.com/${apiVer}/models/${model}:generateContent?key=${geminiKey}`;
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
-                // 외부 abortSignal과 내부 timeout 모두 처리
                 const combinedSignal = abortSignal ? 
                   (() => {
                     const s = controller.signal;
@@ -3382,7 +3390,9 @@ ${contextConstraint}`;
                     return s;
                   })() : controller.signal;
 
-                log(`🔄 ${model} (${apiVer}) 호출 중...`, 'info');
+                log(`🔄 [${modelIdx+1}/${MODEL_CANDIDATES.length}] ${model} (${apiVer}) 호출 중...`, 'info');
+                allAttempts.push(`${model}(${apiVer})`);
+                
                 res = await fetch(url, {
                     method: 'POST', headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -3394,33 +3404,40 @@ ${contextConstraint}`;
                 clearTimeout(timeoutId);
                 if (res && res.ok) {
                   lastStatus = `${model} (${apiVer})`;
-                  log(`✅ ${model} 성공`, 'ok');
+                  log(`✅ ${model} 성공! (${modelIdx+1}번째 시도만에 성공)`, 'ok');
+                  modelSucceeded = true;
                   break;
                 } else {
                   const txt = await res.text().catch(()=> '');
-                  lastError = new Error(`모델 ${model} (${apiVer}) 실패 ${res.status}: ${txt.substring(0,300)}`);
+                  const shortMsg = txt.substring(0,200).replace(/\n/g, ' ');
+                  lastError = new Error(`모델 ${model} (${apiVer}) 실패 ${res.status}: ${shortMsg}`);
                   console.warn(lastError.message);
-                  if (res.status === 404) {
-                    log(`⚠️ ${model} 404 - 다음 모델 시도`, 'warn');
-                    continue; // 404면 다음 모델로
-                  }
+                  log(`⚠️ ${model} (${apiVer}) 실패 ${res.status} → 자동 다음 모델로`, 'warn');
                   if (res.status === 429) {
-                    log(`⚠️ ${model} 할당량 초과 - 2초 후 재시도`, 'warn');
-                    await new Promise(r => setTimeout(r, 2000));
+                    await new Promise(r => setTimeout(r, 1500));
                   }
                 }
             } catch(e) { 
               lastError = e; 
               if (e.name === 'AbortError') {
-                log(`⏱️ ${model} 타임아웃 (${TIMEOUT_MS/1000}초)`, 'warn');
-                lastError = new Error(`${model} 타임아웃 - 네트워크 확인`);
+                log(`⏱️ ${model} 타임아웃 (${TIMEOUT_MS/1000}초) → 다음 모델로`, 'warn');
+                lastError = new Error(`${model} 타임아웃`);
               } else {
-                console.warn('API 시도 실패', e.message);
+                log(`⚠️ ${model} 에러 ${e.message} → 다음 모델로`, 'warn');
               }
             }
             if (res && res.ok) break;
           }
-          if (res && res.ok) break;
+          if (modelSucceeded && res && res.ok) break;
+          // 실패하면 다음 모델로 자동 계속
+          if (modelIdx < MODEL_CANDIDATES.length - 1) {
+            log(`🔄 자동 폴백: 다음 모델 ${MODEL_CANDIDATES[modelIdx+1]} 시도`, 'info');
+          }
+      }
+      
+      // 모든 모델 실패 시 상세 로그
+      if (!res || !res.ok) {
+        log(`❌ 모든 모델 실패: 시도한 모델들 [${allAttempts.join(', ')}]`, 'err');
       }
       if (!res || !res.ok) {
         console.error('모든 모델 실패', lastError);
@@ -3913,8 +3930,9 @@ ${contextConstraint}`;
       sel.innerHTML = `
         <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장) ✅</option>
         <option value="gemini-2.0-flash-001">gemini-2.0-flash-001</option>
-        <option value="gemini-2.5-flash">gemini-2.5-flash (최신)</option>
-        <option value="gemini-2.5-pro">gemini-2.5-pro (고성능)</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+        <option value="gemini-3.1-flash-preview">gemini-3.1-flash-preview (최신)</option>
+        <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (고성능)</option>
       `;
       sel.value = savedModelRaw || 'gemini-2.0-flash';
       $('geminiModelSelect').value = savedModel;
