@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.33 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.36 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.33">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.33">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.33">
+  <link rel="manifest" href="./manifest.json?v=8.9.36">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.36">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.36">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.33</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.36</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -390,6 +390,7 @@
         👁️ 실시간 미리보기 화면
       </span>
       <div class="flex gap-1.5">
+        <button onclick="forceRefreshPreview()" class="btn text-[9px] py-0.5 px-2" style="background:#fef3c7;border-color:#fde68a">🔄 강제 새로고침</button>
         <button id="previewCloseBtn" class="btn text-[9px] py-0.5 px-2">✕ 숨기기</button>
       </div>
     </div>
@@ -402,6 +403,7 @@
       <div class="flex gap-1.5 mb-2">
         <button id="showGithubCommitHistoryBtn" class="btn btn-sm btn-primary text-[10px] flex-1 py-1 px-2 min-h-[30px]">🐙 GitHub 커밋</button>
         <button id="showDraftHistoryBtn" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[30px]">📦 로컬 드래프트</button>
+        <button onclick="restorePartialPatch()" class="btn btn-sm text-[10px] flex-1 py-1 px-2 min-h-[30px]" style="background:#fef3c7;color:#92400e;border-color:#fde68a">♻️ 부분패치 복구</button>
       </div>
       <div id="versionHistoryBox" class="version-history">
         <div class="text-[10px] text-gray-400 p-3 text-center">버튼을 눌러 과거 기록을 조회하세요</div>
@@ -935,14 +937,37 @@
         ideasToUse = nonEmpty;
       }
       const ideaText = ideasToUse.map(i => '- ' + i.text.trim()).join('\n');
+      // v8.9.34: 빌드중 태그 달기
+      const buildingIds = ideasToUse.map(i => i.id);
+      currentRepoIdeas.forEach(idea => {
+        if (buildingIds.includes(idea.id)) {
+          idea.status = 'building';
+          idea.buildAt = new Date().toISOString();
+        }
+      });
+      renderRepoIdeas(); saveRepoIdea(null, false);
+      log(`🚧 ${ideasToUse.length}개 아이디어에 [빌드중] 태그 부여`, 'info');
+      
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '⏳ 1/4 최신 코드 동기화 중...'; }
       log('🔄 Phase2: 최신 코드 동기화 중...', 'info');
       
-      let currentCode = '';
+      // v8.9.36: 부분 패치 날라감 버그 수정 - 로컬 드래프트 우선 사용
+      let currentCode = $('codeEditor')?.value || localStorage.getItem(getDraftCodeKey()) || '';
+      const localHadCode = currentCode && currentCode.trim().length > 0;
+      if (localHadCode) {
+        log(`📦 로컬 드래프트 사용 (${currentCode.length.toLocaleString()}자) - 부분 패치 보존`, 'info');
+      }
+      
+      // GitHub 최신 코드가 있으면 비교, 로컬이 더 새로우면 로컬 유지
       try {
-        if (typeof syncLatestSourceFromGithub === 'function') {
-          currentCode = await syncLatestSourceFromGithub(true);
+        if (typeof syncLatestSourceFromGithub === 'function' && !localHadCode) {
+          // 로컬에 코드가 없을 때만 GitHub에서 가져오기 (force=false로 로컬 보존)
+          const githubCode = await syncLatestSourceFromGithub(false);
+          if (githubCode && githubCode.trim() && !localHadCode) {
+            currentCode = githubCode;
+            log('📥 GitHub 최신 코드 동기화', 'info');
+          }
         }
       } catch(e) { log('동기화 스킵: ' + e.message, 'warn'); }
       
@@ -980,7 +1005,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.33] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.36] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1065,7 +1090,16 @@ ${currentCode.substring(0, 8000)}
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
         const baseNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)}`;
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.33)'} [${ideaText.split('\n').length}개 반영]`;
+        // v8.9.34: 완료된 아이디어는 done으로 변경
+        currentRepoIdeas.forEach(idea => {
+          if (buildingIds.includes(idea.id)) {
+            idea.status = 'done';
+            idea.checked = true; // 완료된 건 체크 유지해서 바로 삭제 가능
+          }
+        });
+        renderRepoIdeas(); saveRepoIdea(null, false);
+        
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.36)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -1097,6 +1131,18 @@ ${currentCode.substring(0, 8000)}
       } else if (errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError') || errMsg.includes('Load failed')) {
         errMsg = '🌐 네트워크 로드 실패.\n• 인터넷 연결 확인\n• VPN 끄고 재시도\n• API 키가 유효한지 확인\n원본: ' + errMsg;
       }
+      // v8.9.34: 실패 시 failed 태그
+      try {
+        if (typeof buildingIds !== 'undefined') {
+          currentRepoIdeas.forEach(idea => {
+            if (buildingIds.includes(idea.id)) {
+              idea.status = 'failed';
+            }
+          });
+          renderRepoIdeas(); saveRepoIdea(null, false);
+        }
+      } catch(e2) {}
+      
       showToast('원클릭 패치 실패: ' + errMsg, 'err');
       log('❌ 원클릭 실패: ' + (e.stack || e.message), 'err');
       if (typeof patchTimeout !== 'undefined') clearTimeout(patchTimeout);
@@ -1184,12 +1230,26 @@ ${currentCode.substring(0, 8000)}
     if (!raw || !raw.trim()) return [];
     try {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed.map(item => typeof item === 'object' ? item : { id: Date.now()+Math.random(), text: item, checked: false });
+      if (Array.isArray(parsed)) return parsed.map(item => {
+        if (typeof item === 'object') {
+          return { 
+            id: item.id || Date.now()+Math.random(), 
+            text: item.text || '', 
+            checked: !!item.checked,
+            status: item.status || null, // v8.9.34: building/done/failed
+            buildAt: item.buildAt || null
+          };
+        } else {
+          return { id: Date.now()+Math.random(), text: item, checked: false, status: null, buildAt: null };
+        }
+      });
     } catch(e) {}
     return raw.split(/\n\n|\n\s*-\s*/).map(t => t.trim()).filter(t => t).map(text => ({
       id: Date.now() + Math.random(),
       text: text.replace(/^-\s*/, ''),
-      checked: false
+      checked: false,
+      status: null,
+      buildAt: null
     }));
   }
 
@@ -1974,13 +2034,24 @@ ${currentCode}`;
   
   window.renderRepoIdeas = function() {
     const container = $('repoIdeaList'); if (!container) return;
-    container.innerHTML = currentRepoIdeas.map((idea, i) => `
-      <div class="flex items-start gap-2 p-2 rounded-xl bg-[var(--card)] border border-[var(--line)] shadow-sm">
+    container.innerHTML = currentRepoIdeas.map((idea, i) => {
+      const isBuilding = idea.status === 'building';
+      const isDone = idea.status === 'done';
+      const isFailed = idea.status === 'failed';
+      const borderClass = isBuilding ? 'border-yellow-400 bg-yellow-50 dark:bg-yellow-900/20' : isDone ? 'border-green-300 bg-green-50 dark:bg-green-900/20' : isFailed ? 'border-red-300 bg-red-50 dark:bg-red-900/20' : 'border-[var(--line)] bg-[var(--card)]';
+      const badge = isBuilding ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100 animate-pulse">🚧 빌드중</span>' : 
+                    isDone ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100">✅ 완료</span>' :
+                    isFailed ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-red-200 text-red-800">❌ 실패</span>' : '';
+      return `
+      <div class="flex items-start gap-2 p-2 rounded-xl border shadow-sm ${borderClass} transition-all">
         <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentRepoIdeas[${i}].checked=this.checked; saveRepoIdea(null, false);" class="mt-1.5 w-4 h-4 text-emerald-600 rounded cursor-pointer">
-        <textarea class="textarea flex-1 text-[12px] !min-h-[32px] !p-1.5 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentRepoIdeas[${i}].text=this.value; autoResizeTextarea(this); saveRepoIdea(null, false);">${idea.text}</textarea>
-        <button onclick="currentRepoIdeas.splice(${i}, 1); renderRepoIdeas(); saveRepoIdea(null, false);" class="text-red-400 hover:text-red-600 p-1.5 text-[12px] font-bold">✕</button>
+        <div class="flex-1 min-w-0">
+          ${badge ? `<div class="mb-1">${badge}${idea.buildAt ? ` <span class="text-[8px] opacity-60">${new Date(idea.buildAt).toLocaleTimeString()}</span>` : ''}</div>` : ''}
+          <textarea class="textarea w-full text-[12px] !min-h-[32px] !p-1.5 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentRepoIdeas[${i}].text=this.value; autoResizeTextarea(this); saveRepoIdea(null, false);">${idea.text}</textarea>
+        </div>
+        <button onclick="currentRepoIdeas.splice(${i}, 1); renderRepoIdeas(); saveRepoIdea(null, false);" class="text-red-400 hover:text-red-600 p-1.5 text-[12px] font-bold shrink-0">✕</button>
       </div>
-    `).join('');
+    `}).join('');
     setTimeout(() => { container.querySelectorAll('textarea').forEach(autoResizeTextarea); }, 10);
   };
 
@@ -2044,10 +2115,20 @@ ${currentCode}`;
   };
 
   window.clearCheckedRepoIdeas = function() {
-    if (confirm('체크된 반영 완료 항목들을 삭제하시겠습니까?')) {
+    const doneCount = currentRepoIdeas.filter(i => i.checked && i.status === 'done').length;
+    const checkedCount = currentRepoIdeas.filter(i => i.checked).length;
+    const msg = doneCount > 0 ? `완료된 ${doneCount}개 포함, 체크된 ${checkedCount}개 항목을 삭제하시겠습니까?\n(빌드중 태그가 있던 항목들이 완료되어 삭제 가능)` : `체크된 ${checkedCount}개 항목을 삭제하시겠습니까?`;
+    if (confirm(msg)) {
       currentRepoIdeas = currentRepoIdeas.filter(i => !i.checked);
       renderRepoIdeas(); saveRepoIdea(null, true); showToast('☑️ 선택된 항목 삭제 완료', 'ok');
     }
+  };
+  
+  // v8.9.34: 빌드중 -> 완료 수동 변경 (디버깅용)
+  window.markBuildingAsDone = function() {
+    currentRepoIdeas.forEach(i => { if (i.status === 'building') i.status = 'done'; });
+    renderRepoIdeas(); saveRepoIdea(null, false);
+    showToast('🚧 빌드중 → ✅ 완료로 변경', 'ok');
   };
   
   window.copyRepoIdea = async function() {
@@ -2934,36 +3015,125 @@ ${contextConstraint}`;
     const code = codeToSave || (editor && editor.value ? editor.value : '');
     if (!code) return;
     try {
-      safeSetLocalStorage(getDraftCodeKey(), code);
+      const draftKey = getDraftCodeKey();
+      const success = safeSetLocalStorage(draftKey, code);
+      // v8.9.36: 부분 패치 전용 백업 키에도 저장 (리로드 시 복구용)
+      const partialKey = draftKey + '_partial_backup';
+      safeSetLocalStorage(partialKey, code);
+      safeSetLocalStorage(partialKey + '_note', note);
+      safeSetLocalStorage(partialKey + '_time', new Date().toISOString());
+      
       let history = JSON.parse(localStorage.getItem(getDraftHistoryKey()) || '[]');
       const newEntry = { id: Date.now(), time: new Date().toLocaleString(), note: note, code: code };
       history.unshift(newEntry);
       if (history.length > 8) history = history.slice(0, 8);
       safeSetLocalStorage(getDraftHistoryKey(), JSON.stringify(history));
-      const status = $('draftStatus'); if (status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()})`;
-    } catch(e) {}
+      const status = $('draftStatus'); if (status) status.textContent = `저장됨 (${new Date().toLocaleTimeString()}) - 부분패치 백업됨`;
+      log(`💾 드래프트 저장 완료 (${code.length.toLocaleString()}자) + 부분패치 백업`, 'ok');
+      return true;
+    } catch(e) {
+      log(`❌ 저장 실패 (용량 초과?): ${e.message}`, 'err');
+      // 용량 초과 시 오래된 히스토리 삭제 후 재시도
+      try { cleanUpOldestDrafts(); } catch(e2) {}
+      try {
+        safeSetLocalStorage(getDraftCodeKey(), code);
+        return true;
+      } catch(e3) {
+        log('❌ 저장 재시도 실패', 'err');
+        return false;
+      }
+    }
   }
+  
+  function safeSetLocalStorage(key, value) {
+      try {
+          localStorage.setItem(key, value);
+          return true;
+      } catch (e) {
+          if (e.name === 'QuotaExceededError' || e.code === 22 || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+              cleanUpOldestDrafts();
+              try { localStorage.setItem(key, value); return true; } catch(err) { return false; }
+          }
+          return false;
+      }
+  }
+  
+  // v8.9.36: 부분 패치 복구
+  window.restorePartialPatch = function() {
+    const draftKey = getDraftCodeKey();
+    const partialKey = draftKey + '_partial_backup';
+    const backup = localStorage.getItem(partialKey);
+    if (!backup) return showToast('복구할 부분 패치 백업이 없습니다', 'err');
+    const note = localStorage.getItem(partialKey + '_note') || '부분 패치 백업';
+    const time = localStorage.getItem(partialKey + '_time') || '';
+    if (confirm(`부분 패치 백업을 복구하시겠습니까?\n${note}\n${time}\n\n현재 코드가 백업 코드로 교체됩니다.`)) {
+      if ($('codeEditor')) $('codeEditor').value = backup;
+      saveDraftCustom(backup, '부분 패치 복구');
+      showLivePreviewCurrent(backup, '♻️ 부분 패치 복구됨');
+      showToast('♻️ 부분 패치 복구 완료!', 'ok');
+      log('♻️ 부분 패치 백업에서 복구 완료', 'ok');
+    }
+  };
   
   function showLivePreviewCurrent(customCode = null, customTitle = null) {
     const editor = $('codeEditor');
     let code = customCode !== null ? customCode : (editor && editor.value ? editor.value : localStorage.getItem(getDraftCodeKey()));
-    if (!code || code.trim() === '') return;
+    if (!code || code.trim() === '') {
+      log('⚠️ 미리보기할 코드가 비어있습니다', 'warn');
+      return;
+    }
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
+    // v8.9.35: 강제 새로고침 - 기존 srcdoc 제거 후 재설정
+    try { frame.removeAttribute('srcdoc'); } catch(e) {}
+    
     const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
+    let finalHtml = code;
     if (isReactJsx) {
       let compName = 'App';
       const defaultFnMatch = code.match(/export\s+default\s+function\s+([A-Za-z0-9_]+)/);
       if (defaultFnMatch) compName = defaultFnMatch[1];
-      frame.srcdoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body><div id="root"></div><script type="text/babel" data-type="module">${code}<\/script></body></html>`;
-    } else {
-      frame.srcdoc = code;
+      finalHtml = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><script src="https://cdn.tailwindcss.com"><\/script><script src="https://unpkg.com/@babel/standalone/babel.min.js"><\/script></head><body><div id="root"></div><script type="text/babel" data-type="module">${code}<\/script></body></html>`;
     }
+    
+    // HTML 기본 검증 - 태그 짝 안 맞으면 경고
+    const openHtml = (finalHtml.match(/<html/g) || []).length;
+    const closeHtml = (finalHtml.match(/<\/html>/g) || []).length;
+    if (openHtml !== closeHtml && finalHtml.includes('<html')) {
+      log(`⚠️ HTML 태그 짝이 안 맞음 <html>:${openHtml} vs </html>:${closeHtml} - 미리보기 깨질 수 있음`, 'warn');
+    }
+    
+    // 강제 리로드: srcdoc + 타임스탬프
+    setTimeout(() => {
+      frame.srcdoc = finalHtml;
+      log(`👁️ 미리보기 갱신 완료 (${finalHtml.length.toLocaleString()}자)`, 'ok');
+    }, 100);
+    
     box.classList.add('active');
     const titleObj = $('previewTitle');
-    if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 실시간 미리보기 화면 (${file})`}`;
+    if (titleObj) titleObj.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 실시간 미리보기 화면 (${file}) - ${new Date().toLocaleTimeString()}`}`;
+    
+    // 1초 후 한 번 더 강제 갱신 (iframe 캐시 이슈 대응)
+    setTimeout(() => {
+      if (frame && frame.contentDocument && frame.contentDocument.body && frame.contentDocument.body.innerHTML.trim() === '') {
+        log('⚠️ 미리보기가 비어있음 - 코드 에러 가능성, 강제 재시도', 'warn');
+        frame.srcdoc = finalHtml;
+      }
+    }, 1000);
   }
+  
+  // v8.9.35: 미리보기 강제 새로고침 버튼
+  window.forceRefreshPreview = function() {
+    const editor = $('codeEditor');
+    const code = editor ? editor.value : '';
+    if (!code) return showToast('코드가 비어있습니다', 'err');
+    log('🔄 미리보기 강제 새로고침', 'info');
+    showLivePreviewCurrent(code, '🔄 강제 새로고침');
+    // 로그에 현재 코드 앞부분 표시로 디버깅
+    const hasTimerIcon = code.includes('타이머') || code.includes('timer');
+    log(`📝 현재 코드에 타이머 관련: ${hasTimerIcon ? '있음' : '없음 (패치 실패 가능성)'}`, hasTimerIcon ? 'ok' : 'warn');
+  };
   
   function hideLivePreviewBox() { const box = $('livePreviewBox'); if (box) box.classList.remove('active'); }
   
