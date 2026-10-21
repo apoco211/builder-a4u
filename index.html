@@ -42,55 +42,12 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
-</style><style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
-</style>
-<style>
-@font-face {
-  font-family: "Optimistic";
-  font-style: normal;
-  font-weight: 400 600;
-  font-display: swap;
-  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Optimistic Mono";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
-}
-:where(html) {
-  font-family: "Optimistic", system-ui, sans-serif;
-}
-:where(code, pre, kbd, samp) {
-  font-family: "Optimistic Mono", ui-monospace, monospace;
-}
 </style>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.40 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.43 - 초자동화 통합 & 패치 안정화</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,10 +68,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.40">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.40">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.40">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
+  <link rel="manifest" href="./manifest.json?v=8.9.42">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.42">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.42">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.42">
   
   <style>
     :root {
@@ -227,7 +184,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.40</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.43</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -552,11 +509,11 @@
           <label class="text-[9.5px] font-bold text-blue-600 dark:text-blue-400">🧠 AI 워크플로우 모델 선택</label>
           <div class="flex gap-1 mt-0.5">
             <select id="geminiModelSelect" class="input text-[10px] font-mono flex-1">
+              <option value="gemini-2.5-flash" selected>gemini-2.5-flash (초고속 코딩 권장 15RPM)</option>
+              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장)</option>
               <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론)</option>
-              <option value="gemini-2.5-flash" selected>gemini-2.5-flash (초고속 코딩 권장)</option>
-              <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장)</option>
-              <option value="gemini-1.5-flash">gemini-1.5-flash (안정)</option>
-              <option value="gemini-1.5-pro">gemini-1.5-pro (심층 분석)</option>
+              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량)</option>
+              <option value="gemini-2.0-flash">gemini-2.0-flash (호환)</option>
             </select>
             <button id="checkModelsBtn" class="btn btn-sm text-[9px]" style="background:#dbeafe;color:#1e40af">🔍 확인</button>
           </div>
@@ -822,7 +779,7 @@
       }
       const prompt = AI_ROUTER_PROMPT_TEMPLATE.replace('{{REPO_LIST}}', JSON.stringify(repoList)).replace('{{USER_TEXT}}', rawText.replace(/"/g,'\"'));
       if (typeof log !== 'undefined') log(`🤖 AI 라우터 분류 중: "${rawText}"`, 'info');
-      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.0-flash';
+      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.5-flash';
       const response = await callGeminiAPI(prompt, 0.2, false, null, model);
       const jsonMatch = response.match(/\{[\s\S]*\}/) || response.match(/\{[\s\S]*?\}/);
       // Actually try normal JSON extraction
@@ -1005,7 +962,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.40] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.43] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1020,7 +977,7 @@ ${currentCode.substring(0, 8000)}
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
         return;
       }
-      const model = $('geminiModelSelect')?.value || 'gemini-2.0-flash';
+      const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
       const aiResponse = await callGeminiAPI(patchPrompt, 0.2, false, null, model);
       
       if (runBtn) runBtn.innerHTML = '🔧 3/4 패치 적용 중...';
@@ -1099,7 +1056,7 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.40)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.41)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -1501,13 +1458,7 @@ ${currentCode.substring(0, 8000)}
     const src = normalizeLineEndings(sourceCode);
     const sBlock = normalizeLineEndings(searchBlock);
     const rBlock = normalizeLineEndings(replaceBlock);
-
-    // 1. 단순 완전 일치 (Exact match)
-    if (src.includes(sBlock)) {
-      return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' };
-    }
-
-    // 2. 앞뒤 공백 제거 일치 (Trimmed match with smart indent)
+    if (src.includes(sBlock)) { return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' }; }
     const sTrim = sBlock.trim();
     if (sTrim && src.includes(sTrim)) {
       const pos = src.indexOf(sTrim);
@@ -1519,274 +1470,41 @@ ${currentCode.substring(0, 8000)}
       }
       return { success: true, code: src.replace(sTrim, () => rBlock.trim()), method: 'trimmed' };
     }
-
-    // 3. 줄 단위 퍼지 매칭 (Fuzzy line matching & 생략 부호 처리)
     const srcLines = src.split('\n');
     let sLines = sBlock.split('\n');
-
     while (sLines.length > 0 && sLines[0].trim() === '') sLines.shift();
     while (sLines.length > 0 && sLines[sLines.length - 1].trim() === '') sLines.pop();
-
     if (sLines.length === 0) return { success: false, code: sourceCode };
-
-    let ellipsisIdx = -1;
-    for (let idx = 0; idx < sLines.length; idx++) {
-      const t = sLines[idx].trim();
-      if (t === '...' || t === '// ...' || t === '/* ... */' || t === '// ... existing code ...') {
-        ellipsisIdx = idx;
-        break;
-      }
-    }
-
-    if (ellipsisIdx !== -1) {
-      const prefixLines = sLines.slice(0, ellipsisIdx);
-      const suffixLines = sLines.slice(ellipsisIdx + 1);
-
-      if (prefixLines.length > 0 && suffixLines.length > 0) {
-        for (let i = 0; i <= srcLines.length - prefixLines.length - suffixLines.length; i++) {
-          let matchPre = true;
-          for (let j = 0; j < prefixLines.length; j++) {
-            if (srcLines[i + j].trim() !== prefixLines[j].trim()) { matchPre = false; break; }
-          }
-          if (matchPre) {
-            const maxScan = Math.min(i + prefixLines.length + 300, srcLines.length - suffixLines.length);
-            for (let k = i + prefixLines.length; k <= maxScan; k++) {
-              let matchSuf = true;
-              for (let m = 0; m < suffixLines.length; m++) {
-                if (srcLines[k + m].trim() !== suffixLines[m].trim()) { matchSuf = false; break; }
-              }
-              if (matchSuf) {
-                const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
-                const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
-                const adjR = adjustBlockIndentation(rBlock, targetIndent);
-                const newLines = [...srcLines.slice(0, i), adjR, ...srcLines.slice(k + suffixLines.length)];
-                return { success: true, code: newLines.join('\n'), method: 'ellipsis' };
-              }
-            }
-          }
-        }
-      }
-    }
-
     const normLine = l => l.trim().replace(/\s+/g, ' ').replace(/["'`]/g, '"').replace(/;$/, '');
     const normSLines = sLines.map(normLine);
-
     for (let i = 0; i <= srcLines.length - sLines.length; i++) {
       let match = true;
-      for (let j = 0; j < sLines.length; j++) {
-        if (normLine(srcLines[i + j]) !== normSLines[j]) {
-          match = false;
-          break;
-        }
-      }
+      for (let j = 0; j < sLines.length; j++) { if (normLine(srcLines[i + j]) !== normSLines[j]) { match = false; break; } }
       if (match) {
         const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
         const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
         const adjR = adjustBlockIndentation(rBlock, targetIndent);
-        const newLines = [...srcLines.slice(0, i), adjR, ...srcLines.slice(i + sLines.length)];
+        const newLines = [...srcLines.slice(0, i), ...adjR.split('\n'), ...srcLines.slice(i + sLines.length)];
         return { success: true, code: newLines.join('\n'), method: 'line_fuzzy' };
       }
     }
-
-    return { success: false, code: sourceCode };
+    const firstNonEmpty = sLines.find(l => l.trim().length > 0);
+    if (firstNonEmpty) {
+      const firstTrim = firstNonEmpty.trim();
+      const shortKey = firstTrim.substring(0, Math.min(25, firstTrim.length));
+      for (let i = 0; i < srcLines.length; i++) {
+        if (srcLines[i].trim() === firstTrim || srcLines[i].includes(shortKey) || normLine(srcLines[i]) === normLine(firstNonEmpty)) {
+          const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
+          const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
+          const adjR = adjustBlockIndentation(rBlock, targetIndent);
+          const newLines = [...srcLines.slice(0, i), ...adjR.split('\n'), ...srcLines.slice(i + sLines.length)];
+          return { success: true, code: newLines.join('\n'), method: 'first_line_fuzzy' };
+        }
+      }
+    }
+    return { success: false, code: sourceCode, method: 'not_found' };
   }
 
-  window.runSmartPatch = async function() {
-    const editor = $('codeEditor');
-    const patchEl = $('patchInput');
-    if (!editor || !patchEl) return;
-
-    let currentCode = editor.value || localStorage.getItem(getDraftCodeKey()) || '';
-    const rawPatch = patchEl.value.trim();
-
-    if (!currentCode.trim()) {
-      showToast('⏳ 원본 소스코드 동기화 중...', 'info');
-      currentCode = await syncLatestSourceFromGithub(true);
-      if (!currentCode || !currentCode.trim()) {
-        return showToast('교체할 원본 전체 코드가 없습니다.', 'err');
-      }
-    }
-    if (!rawPatch) return showToast('붙여넣은 부분 코드(패치) 내용이 없습니다.', 'err');
-
-    // 0단계: [빌드 넘버: ...] 등 빌드 요약 메모가 포함된 경우 자동 연동
-    const buildNote = extractBuildNoteFromPatch(rawPatch);
-    if (buildNote && $('updateNoteInput') && !$('updateNoteInput').value.trim()) {
-      $('updateNoteInput').value = buildNote;
-      log(`📝 빌드 요약 메모 자동 추출: ${buildNote}`, 'ok');
-    }
-
-    // 1단계: 라인 단위 상태머신 기반 SEARCH/REPLACE 블록 파싱 (들여쓰기, 주석, 마크다운 완벽 지원)
-    let blocks = parseSearchReplaceBlocks(rawPatch);
-    const runBtn = $('runSmartPatchBtn');
-    const stopBtn = $('stopSmartPatchBtn');
-    const undoBtn = $('undoPatchBtn');
-
-    // 2단계: 마커가 없으면 로컬 JS 함수/블록 직접 추출 시도 (Gemini API 불필요)
-    if (blocks.length === 0) {
-      const localMatches = tryExtractLocalFunctionPatch(rawPatch, currentCode);
-      if (localMatches.length > 0) {
-        blocks = localMatches;
-        log(`⚡ 로컬 스마트 탐색 성공: [${localMatches[0].targetName}] 함수를 감지하여 교체합니다.`, 'ok');
-      }
-    }
-
-    // 3단계: 여전히 블록을 못 찾았을 때
-    if (blocks.length === 0) {
-      // SEARCH 또는 REPLACE 마커를 쓰려고 시도한 흔적이 있다면 AI를 호출하지 않고 마커 형식 확인 안내 (무한 대기 및 먹통 방지)
-      const hasSearchMarker = /<{3,}|SEARCH|ORIGINAL/i.test(rawPatch);
-      const hasReplaceMarker = />{3,}|REPLACE|UPDATED/i.test(rawPatch);
-      if (hasSearchMarker || hasReplaceMarker) {
-        return showToast('❌ SEARCH/REPLACE 마커 구조가 올바르지 않습니다. (<<<< SEARCH, =======, >>>> REPLACE를 확인해주세요)', 'err');
-      }
-
-      // 순수 줄글/설명일 때만 Gemini AI 자동 변환 시도 (단, 15초 타임아웃 보장)
-      const geminiKey = localStorage.getItem('gemini_api_key')?.trim();
-      if (!geminiKey) {
-        return showToast('❌ SEARCH/REPLACE 마커 형식을 감지하지 못했습니다. (SEARCH/REPLACE 포맷을 사용해주세요)', 'err');
-      }
-
-      try {
-        if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '🤖 AI가 패치 위치 분석 중...'; }
-        if (stopBtn) stopBtn.classList.remove('hidden');
-        currentPatchAbortController = new AbortController();
-        const timeoutTimer = setTimeout(() => {
-          if (currentPatchAbortController) currentPatchAbortController.abort('timeout');
-        }, 15000);
-
-        log('🤖 일반 줄글을 감지하여 AI 스마트 패치 변환을 시작합니다...', 'info');
-
-        const aiPrompt = `다음 원본 소스코드에서 사용자가 요청한 부분 코드/수정사항을 찾아 정확히 교체하기 위한 SEARCH/REPLACE 블록만 출력해줘. 설명 없이 오직 아래 포맷으로만 응답해:
-<<<<<<< SEARCH
-(원본에서 찾을 정확한 코드)
-=======
-(교체할 새로운 코드)
->>>>>>> REPLACE
-
-[사용자 입력 패치/설명]
-${rawPatch}
-
-[원본 코드]
-${currentCode}`;
-
-        const aiPatchText = await callGeminiAPI(aiPrompt, 0.1, false, currentPatchAbortController.signal);
-        clearTimeout(timeoutTimer);
-        blocks = parseSearchReplaceBlocks(aiPatchText);
-      } catch (e) {
-        const msg = (e === 'timeout' || e.name === 'AbortError') ? '분석 시간이 초과되었습니다. 마커를 직접 사용해주세요.' : e.message;
-        showToast('❌ 스마트 패치 변환 실패: ' + msg, 'err');
-        log('❌ 패치 실패: ' + msg, 'err');
-        return;
-      } finally {
-        if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
-        if (stopBtn) stopBtn.classList.add('hidden');
-        currentPatchAbortController = null;
-      }
-    }
-
-    if (blocks.length === 0) {
-      return showToast('유효한 SEARCH/REPLACE 블록을 찾지 못했습니다.', 'err');
-    }
-
-    window.lastPrePatchCode = currentCode;
-    let updatedCode = normalizeLineEndings(currentCode);
-    let successCount = 0;
-    let failCount = 0;
-
-    blocks.forEach((b, idx) => {
-      const res = replaceWithFlexibleIndent(updatedCode, b.search, b.replace);
-      if (res.success) {
-        updatedCode = res.code;
-        successCount++;
-        log(`✅ 패치 블록 #${idx + 1} 교체 성공 (${res.method || 'smart'})`, 'ok');
-      } else {
-        failCount++;
-        log(`⚠️ 패치 블록 #${idx + 1} 일치 구간을 찾지 못함`, 'err');
-      }
-    });
-
-    if (successCount > 0) {
-      editor.value = updatedCode;
-      editor.dispatchEvent(new Event('input', { bubbles: true }));
-      saveDraftCustom(updatedCode, `스마트 패치 (${successCount}개 블록 적용)`);
-      showLivePreviewCurrent(updatedCode, `👁️ 스마트 패치 적용됨 (${successCount}/${blocks.length})`);
-      if (undoBtn) undoBtn.classList.remove('hidden');
-      if (failCount === 0) {
-        showToast(`🎉 총 ${successCount}개 부분 코드 블록이 완벽하게 교체되었습니다!`, 'ok');
-      } else {
-        showToast(`⚠️ ${successCount}개 성공, ${failCount}개 실패 (로그 확인)`, 'info');
-      }
-    } else {
-      showToast('❌ 일치하는 원본 코드 위치를 찾지 못했습니다.', 'err');
-    }
-  };
-
-  window.stopSmartPatch = function() {
-    if (currentPatchAbortController) {
-      currentPatchAbortController.abort('stopped_by_user');
-      currentPatchAbortController = null;
-      showToast('🛑 스마트 패치 분석을 중지했습니다.', 'info');
-    }
-    const runBtn = $('runSmartPatchBtn');
-    const stopBtn = $('stopSmartPatchBtn');
-    if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
-    if (stopBtn) stopBtn.classList.add('hidden');
-  };
-
-  window.undoSmartPatch = function() {
-    if (!window.lastPrePatchCode) return showToast('되돌릴 이전 코드 기록이 없습니다.', 'err');
-    const editor = $('codeEditor');
-    if (editor) editor.value = window.lastPrePatchCode;
-    saveDraftCustom(window.lastPrePatchCode, '패치 취소(Undo) 복원');
-    showLivePreviewCurrent(window.lastPrePatchCode, '👁️ 패치 취소됨 (이전 코드)');
-    window.lastPrePatchCode = null;
-    if ($('undoPatchBtn')) $('undoPatchBtn').classList.add('hidden');
-    showToast('↩️ 방금 적용한 부분 코드 교체를 취소하고 원래대로 되돌렸습니다!', 'ok');
-  };
-  
-  function safeSetLocalStorage(key, value) {
-      try {
-          localStorage.setItem(key, value);
-      } catch (e) {
-          if (e.name === 'QuotaExceededError' || e.code === 22 || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
-              cleanUpOldestDrafts();
-              try { localStorage.setItem(key, value); } catch(err) {}
-          }
-      }
-  }
-
-  function cleanUpOldestDrafts() {
-      let draftKeys = [];
-      for (let i=0; i<localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k.startsWith('draft_history_') || k.startsWith('draft_code_')) draftKeys.push(k);
-      }
-      draftKeys.forEach(k => {
-          if (!k.includes(currentRepo)) localStorage.removeItem(k);
-      });
-  }
-
-  async function detectGithubUser() {
-      const pat = getGitHubPat();
-      if (!pat || pat.length < 10) return;
-      try {
-          const res = await fetch('https://api.github.com/user', {
-              headers: { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github.v3+json' }
-          });
-          if (res.ok) {
-              const data = await res.json();
-              if (data.login && data.login !== GITHUB_USER) {
-                  GITHUB_USER = data.login;
-                  localStorage.setItem('github_user', GITHUB_USER);
-              }
-          }
-      } catch(e) {}
-  }
-
-  function updateActiveRepoDisplay() {
-    const el = $('currentActiveRepoDisplay');
-    if (el) el.textContent = currentRepo;
-  }
-  
   function getTargetAppVersion() {
     const note = $('updateNoteInput')?.value || '';
     let noteMatch = note.match(/(?:빌드\s*넘버|버전|ver|v)\s*[:：]?\s*v?(\d+\.\d+(?:\.\d+)?)/i);
@@ -3359,16 +3077,16 @@ ${contextConstraint}`;
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || localStorage.getItem('gemini_api_key') || ($('geminiApiKeyInput') && $('geminiApiKeyInput').value.trim()) || '';
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
-      const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
-      // v8.9.40: 할당량 429 대응 - 무료 할당량 높은 모델만 자동 폴백
+      const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
+      // v8.9.43: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
-      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-2.0-flash-lite', 'gemini-2.0-flash-lite-001'];
-      const PAID_TIER = ['gemini-2.5-flash', 'gemini-3.1-flash-preview', 'gemini-3.1-pro-preview'];
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.43: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
+      const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
       // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
-      const STABLE_MODELS = FREE_TIER_HIGH_QUOTA;
-      let MODEL_CANDIDATES = [savedModel, ...STABLE_MODELS].filter((v,i,a)=>a.indexOf(v)===i && v).filter(m => !m.includes('1.5') && !m.includes('flash-latest') && m !== 'gemini-2.5-pro');
+      const STABLE_MODELS = [...FREE_TIER_HIGH_QUOTA, ...PAID_TIER];
+      let MODEL_CANDIDATES = [savedModel, ...STABLE_MODELS].filter((v,i,a)=>a.indexOf(v)===i && v).filter(m => !m.includes('1.5') && !m.includes('flash-latest') && !m.includes('2.0-flash-lite-001') && !m.includes('2.0-flash-001'));
       // 만약 저장된 모델이 3.1인데 실패하면, 자동으로 무료 모델로 폴백 (3.1은 목록에서 제외되어 자동 재시도)
-      if (savedModel && savedModel.includes('3.1')) {
+      if (savedModel && (savedModel.includes('3.1') || savedModel.includes('3.5'))) {
         // 3.1은 할당량 낮으므로, 실패 시 바로 2.0으로 가도록 앞에 2.0 배치
         MODEL_CANDIDATES = [savedModel, ...FREE_TIER_HIGH_QUOTA].filter((v,i,a)=>a.indexOf(v)===i);
       }
@@ -3382,8 +3100,8 @@ ${contextConstraint}`;
       for (let modelIdx = 0; modelIdx < MODEL_CANDIDATES.length; modelIdx++) {
           const model = MODEL_CANDIDATES[modelIdx];
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
-          // 3.1, 2.5는 v1beta만, 2.0은 v1beta+v1 모두
-          const versToTry = model.includes('3.1') ? ['v1beta'] : ['v1beta', 'v1'];
+          // 3.5, 3.1, 2.5는 v1beta만, 2.0은 v1beta+v1 모두
+          const versToTry = (model.includes('3.5') || model.includes('3.1') || model.includes('2.5')) ? ['v1beta'] : ['v1beta', 'v1'];
           let modelSucceeded = false;
           
           for (const apiVer of versToTry) {
@@ -3953,22 +3671,21 @@ ${contextConstraint}`;
 
     // v8.9.31: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
     let savedModelRaw = localStorage.getItem('builder_gemini_model') || '';
-    if (savedModelRaw.includes('1.5')) {
-      localStorage.setItem('builder_gemini_model', 'gemini-2.0-flash');
-      savedModelRaw = 'gemini-2.0-flash';
-      console.log('[Migration] 1.5 모델 → 2.0-flash로 자동 변경');
+    if (savedModelRaw.includes('1.5') || savedModelRaw.includes('2.0-flash-lite-001') || savedModelRaw.includes('2.0-flash-001') || savedModelRaw.includes('3.1-')) {
+      localStorage.setItem('builder_gemini_model', 'gemini-2.5-flash');
+      savedModelRaw = 'gemini-2.5-flash';
+      console.log('[Migration] 구형 모델 → 2.5-flash로 자동 변경 (404 대응)');
     }
-    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.0-flash';
+    const savedModel = localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
     if ($('geminiModelSelect')) {
       // 드롭다운 옵션 강제 교체 (1.5 제거)
       const sel = $('geminiModelSelect');
       sel.innerHTML = `
-        <option value="gemini-2.0-flash">gemini-2.0-flash (빠름/권장 15RPM) ✅</option>
-        <option value="gemini-2.0-flash-001">gemini-2.0-flash-001 (15RPM)</option>
-        <option value="gemini-2.0-flash-lite">gemini-2.0-flash-lite (30RPM 가장 높음)</option>
-        <option value="gemini-2.5-flash">gemini-2.5-flash (10RPM)</option>
-        <option value="gemini-3.1-flash-preview">gemini-3.1-flash-preview (2RPM 낮음)</option>
-        <option value="gemini-3.1-pro-preview">gemini-3.1-pro-preview (2RPM 낮음)</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash (초고속 코딩 권장 15RPM) ✅</option>
+        <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장) ⭐</option>
+        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량 10RPM)</option>
+        <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론 10RPM)</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash (호환용)</option>
       `;
       sel.value = savedModelRaw || 'gemini-2.0-flash';
       $('geminiModelSelect').value = savedModel;
@@ -4177,5 +3894,5 @@ function setupEventListeners() {
   }
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
