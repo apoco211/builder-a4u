@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.43 - 초자동화 통합 & 패치 안정화</title>
+  <title>Builder-a4u v8.9.44 - 레포 선택 버그 긴급 수정</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -184,7 +184,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.43</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.44</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -962,7 +962,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.43] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.44] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -2486,9 +2486,29 @@ ${contextConstraint}`;
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
+    // v8.9.44 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
+    const getCachedNames = () => {
+      try {
+        const cached = JSON.parse(localStorage.getItem('cached_repo_names') || '[]');
+        return cached && cached.length > 0 ? cached : [currentRepo || 'builder-a4u'];
+      } catch(e) { return [currentRepo || 'builder-a4u']; }
+    };
     if (!pat) {
-      select.innerHTML = `<option value="${currentRepo}">${currentRepo}</option>`;
-      syncSecondaryRepoSelects();
+      const cachedNames = getCachedNames();
+      select.innerHTML = '';
+      cachedNames.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name; opt.textContent = name;
+        if (name === currentRepo) opt.selected = true;
+        select.appendChild(opt);
+      });
+      if (!cachedNames.includes(currentRepo) && currentRepo) {
+        const opt = document.createElement('option');
+        opt.value = currentRepo; opt.textContent = currentRepo; opt.selected = true;
+        select.appendChild(opt);
+      }
+      log(`📦 PAT 없음 - 캐시된 레포 ${cachedNames.length}개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)`, 'info');
+      syncSecondaryRepoSelects(cachedNames);
       loadRepoDocuments(); scanRepoFileTree(); syncLatestSourceFromGithub(); return;
     }
     try {
@@ -2508,10 +2528,30 @@ ${contextConstraint}`;
           syncSecondaryRepoSelects(repos);
         }
       } else {
-        syncSecondaryRepoSelects();
+        const cachedNames = getCachedNames ? getCachedNames() : [currentRepo];
+        select.innerHTML = '';
+        cachedNames.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name; opt.textContent = name;
+          if (name === currentRepo) opt.selected = true;
+          select.appendChild(opt);
+        });
+        log(`⚠️ GitHub API 실패 (HTTP ${res.status}) - 캐시로 폴백`, 'warn');
+        syncSecondaryRepoSelects(cachedNames);
       }
     } catch(e) {
-      syncSecondaryRepoSelects();
+      const cachedNames = (typeof getCachedNames === 'function' ? getCachedNames() : [currentRepo]);
+      try {
+        select.innerHTML = '';
+        cachedNames.forEach(name => {
+          const opt = document.createElement('option');
+          opt.value = name; opt.textContent = name;
+          if (name === currentRepo) opt.selected = true;
+          select.appendChild(opt);
+        });
+      } catch(e2) {}
+      log(`⚠️ 레포 로드 중 오류: ${e.message} - 캐시로 폴백`, 'err');
+      syncSecondaryRepoSelects(cachedNames);
     }
     if (newRepoSelect) {
         mainFile = 'index.html'; localStorage.setItem('main_file_' + currentRepo, mainFile);
@@ -3078,9 +3118,9 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.43: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.44: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
-      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.43: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.44: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
       // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
       const STABLE_MODELS = [...FREE_TIER_HIGH_QUOTA, ...PAID_TIER];
@@ -3888,7 +3928,58 @@ function setupEventListeners() {
     document.addEventListener('paste', handlePasteEvent);
   }
   
-  function startApp() {
+  
+  // v8.9.44 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
+  function updateActiveRepoDisplay() {
+    const el = $('currentActiveRepoDisplay');
+    if (el) el.textContent = currentRepo || 'builder-a4u';
+    // 탭 타이틀도 업데이트
+    try {
+      const titleEl = document.querySelector('h1');
+      if (titleEl && currentRepo) {
+        // 기존 버전 유지하면서 레포 표시
+        const base = titleEl.textContent.split(' - ')[0] || `Builder-a4u`;
+        // 버전은 유지
+      }
+    } catch(e) {}
+  }
+
+  async function detectGithubUser() {
+    const pat = getGitHubPat();
+    if (!pat || pat.length < 10) {
+      // PAT 없으면 기본값 유지
+      GITHUB_USER = localStorage.getItem('github_user') || 'apoco211';
+      return GITHUB_USER;
+    }
+    try {
+      const res = await fetch('https://api.github.com/user', {
+        headers: { Authorization: 'Bearer ' + pat, Accept: 'application/vnd.github.v3+json' },
+        cache: 'no-store'
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.login) {
+          GITHUB_USER = data.login;
+          localStorage.setItem('github_user', GITHUB_USER);
+          log(`👤 GitHub 유저 확인: ${GITHUB_USER}`, 'ok');
+          return GITHUB_USER;
+        }
+      } else {
+        const txt = await res.text();
+        if (res.status === 401) {
+          log(`⚠️ GitHub PAT 만료/무효 (401) - 설정 탭에서 재발급 필요`, 'err');
+          showToast('GitHub PAT 만료 - 재발급 필요', 'err');
+        } else {
+          log(`⚠️ GitHub 유저 확인 실패: ${res.status}`, 'warn');
+        }
+      }
+    } catch(e) {
+      log(`⚠️ GitHub 유저 확인 중 오류: ${e.message}`, 'warn');
+    }
+    return GITHUB_USER;
+  }
+
+function startApp() {
     if ($('mainFileInput')) $('mainFileInput').value = mainFile;
     updateActiveRepoDisplay(); initSettingsInputs(); setupEventListeners(); loadRepos();
   }
