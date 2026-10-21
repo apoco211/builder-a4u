@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.54 - 크로스 패치 완전 차단 + 캐시 우회</title>
+  <title>Builder-a4u v8.9.54 - 크로스 패치 완전 차단 + 터치 복구</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -929,8 +929,7 @@
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '⏳ 0/4 레포 검증 및 최신 코드 동기화 중...'; }
       
-      // v8.9.54 FIX: ① 명시적 레포 검증 및 강제 동기화 + ② GitHub 최신 코드 강제 페치
-      // 아이디어 프로젝트와 currentRepo 불일치 방지
+      // v8.9.54 FIX: 명시적 레포 검증 + GitHub 최신 원본 강제 페치 (터치 버그 수정 포함)
       try {
         const repoSel = $('repoSelect');
         if (repoSel && repoSel.value && repoSel.value !== currentRepo) {
@@ -951,12 +950,10 @@
       try {
         currentCode = await syncLatestSourceFromGithub(true);
         if (!currentCode || currentCode.trim().length < 50) {
-          // 직접 raw / contents 재시도 (sync 함수가 빈 문자열 반환했을 경우)
           log(`⚠️ syncLatestSourceFromGithub 빈 응답, raw 직접 재시도`, 'warn');
           const pat = getGitHubPat();
           const headers = { 'Accept': 'application/vnd.github.v3+json' };
           if (pat && pat.length > 10) headers['Authorization'] = (pat.startsWith('ghp_') ? 'token ' : 'Bearer ') + pat;
-          // API 재시도
           try {
             const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFileName)}?t=${Date.now()}`;
             const apiRes = await fetch(apiUrl, { headers, cache: 'no-store' });
@@ -968,7 +965,6 @@
               }
             }
           } catch(e) {}
-          // Raw fallback
           if (!currentCode || currentCode.trim().length < 50) {
             const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${targetFileName}?t=${Date.now()}`;
             const rawRes = await fetch(rawUrl, { cache: 'no-store' });
@@ -986,12 +982,10 @@
       }
       
       if (currentCode && currentCode.trim().length > 50) {
-        // 성공 시 에디터 및 로컬 드래프트 동시 즉시 갱신 (즉각적인 갱신 누락 방지)
         if ($('codeEditor')) $('codeEditor').value = currentCode;
         safeSetLocalStorage(getDraftCodeKey(), currentCode);
         log(`📥 [${currentRepo}] GitHub 최신 코드 동기화 완료 (${currentCode.length.toLocaleString()}자)`, 'ok');
       } else {
-        // 최후 fallback - force=true 실패 시에도 빈 문자열이므로 여기서 로컬 확인
         currentCode = localStorage.getItem(getDraftCodeKey()) || $('codeEditor')?.value || '';
         if (currentCode && currentCode.trim().length > 50) {
           log(`⚠️ GitHub 연결 불가로 로컬 보관 코드를 사용합니다 [${currentRepo}] (${currentCode.length.toLocaleString()}자)`, 'warn');
@@ -1000,7 +994,7 @@
       
       if (!currentCode || !currentCode.trim() || currentCode.trim().length < 50) {
         showToast(`[${currentRepo}] 원본 코드를 가져오지 못했습니다. 저장소 및 토큰을 확인하세요.`, 'err');
-        log(`❌ [${currentRepo}] 원본 코드 없음 - GitHub 토큰/레포/파일명 확인 필요`, 'err');
+        log(`❌ [${currentRepo}] 원본 코드 없음`, 'err');
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
         return;
       }
@@ -1032,7 +1026,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.48] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.45] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1097,7 +1091,7 @@ ${currentCode.substring(0, 8000)}
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
-            newVersion = `v${major}.${minor}.${patch}`; // v8.9.54 정리: 자동 증가 제거 - 빌드번호 유지
+            newVersion = `v${major}.${minor}.${patch}`; // v8.9.54 정리: 자동 증가 제거
             // 코드 내 타이틀, h1, manifest 버전 교체
             updatedCode = updatedCode.replace(/<title>Builder-a4u v[\d\.]+/g, `<title>Builder-a4u ${newVersion}`);
             updatedCode = updatedCode.replace(/Builder-a4u v[\d\.]+<\/h1>/g, `Builder-a4u ${newVersion}</h1>`);
@@ -2567,8 +2561,8 @@ ${contextConstraint}`;
     }
     return currentDraft || '';
   }
-
-  function syncSecondaryRepoSelects function syncSecondaryRepoSelects(repoList) {
+  
+  function syncSecondaryRepoSelects(repoList) {
     const inboxSel = $('inboxProjectSelect');
     const otherMoveSel = $('otherIdeaMoveSelect');
     const names = (repoList && repoList.length > 0)
