@@ -47,7 +47,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.44 - 레포 선택 버그 긴급 수정</title>
+  <title>Builder-a4u v8.9.45 - 아이콘 퍼지 탐색 & 2단계 실패 로그 강화</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -184,7 +184,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.44</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.45</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -962,7 +962,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.44] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.45] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1014,7 +1014,8 @@ ${currentCode.substring(0, 8000)}
           log(`✅ 블록 #${idx+1} 성공 (${res.method})`, 'ok');
         } else {
           failCount++;
-          log(`⚠️ 블록 #${idx+1} 실패 - 원본 위치 못 찾음`, 'err');
+          log(`⚠️ 블록 #${idx+1} 실패 - 원본 위치 못 찾음 | SEARCH: ${b.search.substring(0,80).replace(/\n/g,' ')}...`, 'err');
+          log(`🔍 힌트: 코드 에디터에서 하단버튼/타이머 관련 코드를 복사해서 패치 입력란에 직접 넣어보세요`, 'info');
         }
       });
 
@@ -1502,6 +1503,56 @@ ${currentCode.substring(0, 8000)}
         }
       }
     }
+    // v8.9.45 NEW: 아이콘/이모지 기반 퍼지 매칭 (타이머 버튼 같은 경우)
+    try {
+      const iconRegex = /[⏱️⏰🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚🕛⏳⌚⏲️🕰️]/u;
+      const extractIcons = (txt) => (txt.match(new RegExp(iconRegex, 'gu')) || []);
+      const searchIcons = extractIcons(sBlock);
+      if (searchIcons.length > 0) {
+        for (const ic of searchIcons) {
+          if (src.includes(ic)) {
+            const pos = src.indexOf(ic);
+            const lineStart = src.lastIndexOf('\n', pos);
+            const lineEnd = src.indexOf('\n', pos);
+            const line = src.substring(lineStart !== -1 ? lineStart+1 : 0, lineEnd !== -1 ? lineEnd : src.length);
+            // 해당 줄 근처 5줄을 교체 대상으로 시도
+            const startLineIdx = Math.max(0, srcLines.findIndex(l => l.includes(ic)) - 2);
+            const targetIndentMatch = srcLines[startLineIdx] ? srcLines[startLineIdx].match(/^[ \t]*/) : null;
+            const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
+            const adjR = adjustBlockIndentation(rBlock, targetIndent);
+            // 아이콘이 포함된 줄을 기준으로 주변을 교체하되, 전체 SEARCH가 아니라 아이콘 줄만 교체하는 폴백
+            // 여기서는 SEARCH 블록이 작으면 해당 줄을 통째로 교체 시도
+            if (sLines.length <= 5) {
+              const newLines = [...srcLines.slice(0, startLineIdx), ...adjR.split('\n'), ...srcLines.slice(startLineIdx + sLines.length)];
+              return { success: true, code: newLines.join('\n'), method: 'icon_fuzzy:'+ic };
+            }
+          }
+        }
+      }
+      // 텍스트 키워드 기반 (하단버튼, 타이머, 첫 번째 등)
+      const keywords = ['하단버튼','하단 버튼','타이머','timer','첫번째','첫 번째','첫번','bottom','nav','footer'];
+      const lowerSearch = sBlock.toLowerCase();
+      const hasKeyword = keywords.some(k => lowerSearch.includes(k));
+      if (hasKeyword) {
+        // 키워드가 포함된 줄 근처에서 가장 유사한 블록 찾기 (부분 일치 60% 이상)
+        let bestScore = 0, bestIdx = -1;
+        for (let i = 0; i < srcLines.length; i++) {
+          const srcNorm = normLine(srcLines[i]);
+          let score = 0;
+          for (const sl of normSLines) {
+            if (srcNorm.includes(sl) || sl.includes(srcNorm) || srcNorm.length>0 && sl.length>0 && srcNorm.split(' ').some(w=>sl.includes(w))) score++;
+          }
+          if (score > bestScore) { bestScore = score; bestIdx = i; }
+        }
+        if (bestScore >= 1 && bestIdx >=0) {
+          const targetIndentMatch = srcLines[bestIdx].match(/^[ \t]*/);
+          const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
+          const adjR = adjustBlockIndentation(rBlock, targetIndent);
+          const newLines = [...srcLines.slice(0, bestIdx), ...adjR.split('\n'), ...srcLines.slice(bestIdx + 1)];
+          return { success: true, code: newLines.join('\n'), method: 'keyword_fuzzy:'+bestScore };
+        }
+      }
+    } catch(e) { console.warn('icon fuzzy failed', e); }
     return { success: false, code: sourceCode, method: 'not_found' };
   }
 
@@ -2486,7 +2537,7 @@ ${contextConstraint}`;
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
-    // v8.9.44 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
+    // v8.9.45 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
     const getCachedNames = () => {
       try {
         const cached = JSON.parse(localStorage.getItem('cached_repo_names') || '[]');
@@ -3118,9 +3169,9 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.44: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.45: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
-      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.44: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.45: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
       // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
       const STABLE_MODELS = [...FREE_TIER_HIGH_QUOTA, ...PAID_TIER];
@@ -3929,7 +3980,7 @@ function setupEventListeners() {
   }
   
   
-  // v8.9.44 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
+  // v8.9.45 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
   function updateActiveRepoDisplay() {
     const el = $('currentActiveRepoDisplay');
     if (el) el.textContent = currentRepo || 'builder-a4u';
