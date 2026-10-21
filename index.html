@@ -111,7 +111,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.42 - 패치 위치 탐색 강화</title>
+  <title>Builder-a4u v8.9.43 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -132,10 +132,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.42">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.42">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.42">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.42">
+  <link rel="manifest" href="./manifest.json?v=8.9.43">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.43">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.43">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.43">
   
   <style>
     :root {
@@ -248,7 +248,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.42</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.43</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -573,9 +573,9 @@
           <label class="text-[9.5px] font-bold text-blue-600 dark:text-blue-400">🧠 AI 워크플로우 모델 선택</label>
           <div class="flex gap-1 mt-0.5">
             <select id="geminiModelSelect" class="input text-[10px] font-mono flex-1">
-              <option value="gemini-2.5-flash" selected>gemini-2.5-flash (초고속 코딩 권장 15RPM)</option>
-              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장)</option>
-              <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론)</option>
+              <option value="gemini-2.5-flash" selected>gemini-2.5-flash (초고속 권장 15RPM)</option>
+              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM)</option>
+              <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩)</option>
               <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량)</option>
               <option value="gemini-2.0-flash">gemini-2.0-flash (호환)</option>
             </select>
@@ -843,7 +843,7 @@
       }
       const prompt = AI_ROUTER_PROMPT_TEMPLATE.replace('{{REPO_LIST}}', JSON.stringify(repoList)).replace('{{USER_TEXT}}', rawText.replace(/"/g,'\"'));
       if (typeof log !== 'undefined') log(`🤖 AI 라우터 분류 중: "${rawText}"`, 'info');
-      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.5-flash';
+      const model = ($('geminiModelSelect') && $('geminiModelSelect').value) || 'gemini-2.0-flash';
       const response = await callGeminiAPI(prompt, 0.2, false, null, model);
       const jsonMatch = response.match(/\{[\s\S]*\}/) || response.match(/\{[\s\S]*?\}/);
       // Actually try normal JSON extraction
@@ -1026,7 +1026,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.42] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.43] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1120,7 +1120,7 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.41)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.43)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -1522,7 +1522,10 @@ ${currentCode.substring(0, 8000)}
     const src = normalizeLineEndings(sourceCode);
     const sBlock = normalizeLineEndings(searchBlock);
     const rBlock = normalizeLineEndings(replaceBlock);
-    if (src.includes(sBlock)) { return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' }; }
+
+    if (src.includes(sBlock)) {
+      return { success: true, code: src.replace(sBlock, () => rBlock), method: 'exact' };
+    }
     const sTrim = sBlock.trim();
     if (sTrim && src.includes(sTrim)) {
       const pos = src.indexOf(sTrim);
@@ -1539,6 +1542,35 @@ ${currentCode.substring(0, 8000)}
     while (sLines.length > 0 && sLines[0].trim() === '') sLines.shift();
     while (sLines.length > 0 && sLines[sLines.length - 1].trim() === '') sLines.pop();
     if (sLines.length === 0) return { success: false, code: sourceCode };
+    let ellipsisIdx = -1;
+    for (let idx = 0; idx < sLines.length; idx++) {
+      const t = sLines[idx].trim();
+      if (t === '...' || t === '// ...' || t === '/* ... */' || t === '// ... existing code ...') { ellipsisIdx = idx; break; }
+    }
+    if (ellipsisIdx !== -1) {
+      const prefixLines = sLines.slice(0, ellipsisIdx);
+      const suffixLines = sLines.slice(ellipsisIdx + 1);
+      if (prefixLines.length > 0 && suffixLines.length > 0) {
+        for (let i = 0; i <= srcLines.length - prefixLines.length - suffixLines.length; i++) {
+          let matchPre = true;
+          for (let j = 0; j < prefixLines.length; j++) { if (srcLines[i + j].trim() !== prefixLines[j].trim()) { matchPre = false; break; } }
+          if (matchPre) {
+            const maxScan = Math.min(i + prefixLines.length + 300, srcLines.length - suffixLines.length);
+            for (let k = i + prefixLines.length; k <= maxScan; k++) {
+              let matchSuf = true;
+              for (let m = 0; m < suffixLines.length; m++) { if (srcLines[k + m].trim() !== suffixLines[m].trim()) { matchSuf = false; break; } }
+              if (matchSuf) {
+                const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
+                const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
+                const adjR = adjustBlockIndentation(rBlock, targetIndent);
+                const newLines = [...srcLines.slice(0, i), adjR, ...srcLines.slice(k + suffixLines.length)];
+                return { success: true, code: newLines.join('\n'), method: 'ellipsis' };
+              }
+            }
+          }
+        }
+      }
+    }
     const normLine = l => l.trim().replace(/\s+/g, ' ').replace(/["'`]/g, '"').replace(/;$/, '');
     const normSLines = sLines.map(normLine);
     for (let i = 0; i <= srcLines.length - sLines.length; i++) {
@@ -1552,12 +1584,13 @@ ${currentCode.substring(0, 8000)}
         return { success: true, code: newLines.join('\n'), method: 'line_fuzzy' };
       }
     }
+    // v8.9.43 NEW: first-line fallback - 첫 줄만 맞아도 교체 (sudataxi-k 처럼 SEARCH가 약간 달라도)
     const firstNonEmpty = sLines.find(l => l.trim().length > 0);
     if (firstNonEmpty) {
       const firstTrim = firstNonEmpty.trim();
       const shortKey = firstTrim.substring(0, Math.min(25, firstTrim.length));
       for (let i = 0; i < srcLines.length; i++) {
-        if (srcLines[i].trim() === firstTrim || srcLines[i].includes(shortKey) || normLine(srcLines[i]) === normLine(firstNonEmpty)) {
+        if (srcLines[i].trim() === firstTrim || (shortKey.length >= 8 && srcLines[i].includes(shortKey)) || normLine(srcLines[i]) === normLine(firstNonEmpty)) {
           const targetIndentMatch = srcLines[i].match(/^[ \t]*/);
           const targetIndent = targetIndentMatch ? targetIndentMatch[0] : '';
           const adjR = adjustBlockIndentation(rBlock, targetIndent);
@@ -3142,7 +3175,7 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.42: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.43: 모델 3.5 + 패치 탐색 강화 429 대응 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
       const FREE_TIER_HIGH_QUOTA = ['gemini-2.5-flash', 'gemini-3.5-flash-lite', 'gemini-2.5-flash-lite', 'gemini-2.0-flash'];
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
@@ -3164,7 +3197,6 @@ ${contextConstraint}`;
       for (let modelIdx = 0; modelIdx < MODEL_CANDIDATES.length; modelIdx++) {
           const model = MODEL_CANDIDATES[modelIdx];
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
-          // 3.5, 3.1, 2.5는 v1beta만, 2.0은 v1beta+v1 모두
           const versToTry = (model.includes('3.5') || model.includes('3.1') || model.includes('2.5')) ? ['v1beta'] : ['v1beta', 'v1'];
           let modelSucceeded = false;
           
@@ -3745,10 +3777,10 @@ ${contextConstraint}`;
       // 드롭다운 옵션 강제 교체 (1.5 제거)
       const sel = $('geminiModelSelect');
       sel.innerHTML = `
-        <option value="gemini-2.5-flash">gemini-2.5-flash (초고속 코딩 권장 15RPM) ✅</option>
-        <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장) ⭐</option>
-        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량 10RPM)</option>
-        <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론 10RPM)</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash (초고속 권장 15RPM) ✅</option>
+        <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM) ⭐</option>
+        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량)</option>
+        <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩 10RPM)</option>
         <option value="gemini-2.0-flash">gemini-2.0-flash (호환용)</option>
       `;
       sel.value = savedModelRaw || 'gemini-2.0-flash';
