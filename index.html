@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.58 - 사진묶음 + 빌드넘버 버그 수정</title>
+  <title>Builder-a4u v8.9.61 - 막던지기 사진+글+음성 묶음 분류</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -89,10 +89,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.58">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.58">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.58">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.58">
+  <link rel="manifest" href="./manifest.json?v=8.9.61">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.61">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.61">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.60">
   
   <style>
     :root {
@@ -206,7 +206,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.58</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.61</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -708,7 +708,7 @@
   let currentRepoIdeas = [];
   let currentOtherIdeas = [];
 
-  // ===== Phase 0+1: AI 스마트 라우터 v8.9.58 (Hyper-Automation Level1) =====
+  // ===== Phase 0+1: AI 스마트 라우터 v8.9.60 (Hyper-Automation Level1) =====
   const AI_ROUTER_PROMPT_TEMPLATE = `너는 Builder-a4u 프로젝트 분류기다.
 내 저장소 목록: {{REPO_LIST}}
 저장소 별칭 정보:
@@ -745,7 +745,7 @@
       const repoList = (typeof cached_repo_names !== 'undefined' && cached_repo_names.length) ? cached_repo_names : [currentRepo];
       if (!repoList || repoList.length === 0) return {repo:null, corrected: rawText, reason:'목록 없음'};
       
-      // ★ v8.9.58: 한글 별칭 선체크 - repoList 없어도 동작하도록 수정
+      // ★ v8.9.60: 한글 별칭 선체크 - repoList 없어도 동작하도록 수정
       const lowerRaw = rawText.toLowerCase();
       // repoList가 비어있거나 현재 repo만 있을 때도 별칭은 무조건 인정
       let fullRepoList = repoList;
@@ -766,7 +766,7 @@
           if (exact) matchedRepo = exact;
           else if (partial) matchedRepo = partial;
           
-          // 오타 교정 (띄어쓰기) - v8.9.58 강화
+          // 오타 교정 (띄어쓰기) - v8.9.60 강화
           let corrected = rawText;
           corrected = corrected.replace(/하단버튼/g, '하단 버튼');
           corrected = corrected.replace(/첫번째/g, '첫 번째');
@@ -838,21 +838,27 @@
 
   let _originalSaveIdeaInbox = null;
   async function saveIdeaInboxWithAIRouter(type) {
-    // 런타임에 원본 함수 가져오기 (캡쳐 시점 버그 방지)
+    // v8.9.60 FIX: 사진+글/음성 묶음 - 사진만 있어도 던지기 가능
     const origFunc = window.saveIdeaInbox_original || _originalSaveIdeaInbox || window._originalInboxFunc;
     const textInput = $('inboxTextInput');
     const projectSelect = $('inboxProjectSelect');
     const aiToggle = $('aiSmartRouterToggle');
     const rawText = (textInput && textInput.value || '').trim();
-    if (!rawText) {
-      if (typeof showToast === 'function') showToast('💡 아이디어를 입력하세요', 'warn');
+    const hasPhoto = typeof pendingInboxPhoto !== 'undefined' && pendingInboxPhoto;
+    if (!rawText && !hasPhoto) {
+      if (typeof showToast === 'function') showToast('💡 아이디어를 입력하거나 사진을 첨부하세요', 'warn');
       return;
     }
-    // ★ 프로젝트가 선택되어 있으면 무조건 해당 프로젝트로 직행 (AI 무시)
+    // ★ v8.9.60: 사진+글 묶음 - 프로젝트 선택 있으면 무조건 해당 프로젝트로 직행 (AI 무시)
     if (projectSelect && projectSelect.value) {
       if (origFunc) return origFunc(type);
-      // fallback 직접 저장
       if (typeof window.saveIdeaInbox_direct === 'function') return window.saveIdeaInbox_direct(type);
+    }
+    // 사진만 있고 글 없으면 AI 분류 건너뛰고 바로 저장 (사진 메모)
+    if (!rawText && hasPhoto) {
+      if (origFunc) return origFunc(type);
+      if (typeof window.saveIdeaInbox_direct === 'function') return window.saveIdeaInbox_direct(type);
+      return;
     }
     if (!aiToggle || !aiToggle.checked) {
       if (origFunc) return origFunc(type);
@@ -894,13 +900,13 @@
       window.saveIdeaInbox_original = saveIdeaInbox;
       window.saveIdeaInbox_direct = saveIdeaInbox;
       window.saveIdeaInbox = saveIdeaInboxWithAIRouter;
-      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.58 - 프로젝트 선택 버그 수정');
-      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.58 (한글 별칭 수정)', 'success');
+      console.log('[Phase1] saveIdeaInbox AI 라우터로 오버라이드 완료 v8.9.60 - 프로젝트 선택 버그 수정');
+      if (typeof log !== 'undefined') log('🤖 AI 스마트 라우터 활성화 v8.9.60 (한글 별칭 수정)', 'success');
     }
   }, 2000);
   // ===== End Phase 0+1 =====
 
-  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.58 (Track A - 핵심) =====
+  // ===== Phase 2: Level2 인앱 원클릭 자동 패치 v8.9.60 (Track A - 핵심) =====
   window.oneClickAutoPatch = async function() {
     try {
       const checked = currentRepoIdeas.filter(i => i.checked && i.text && i.text.trim());
@@ -920,7 +926,7 @@
       ideasToUse.forEach(i => { if (i.images && i.images.length) bundledImages.push(...i.images); });
       if (bundledImages.length === 0 && typeof currentIdeaImages !== 'undefined' && currentIdeaImages.length > 0) { bundledImages = [...currentIdeaImages]; }
       if (bundledImages.length > 0) { log(`📸 묶인 사진 ${bundledImages.length}개 AI 전송 준비`, 'ok'); }
-      // v8.9.58: 빌드중 태그 달기
+      // v8.9.60: 빌드중 태그 달기
       const buildingIds = ideasToUse.map(i => i.id);
       currentRepoIdeas.forEach(idea => {
         if (buildingIds.includes(idea.id)) {
@@ -934,7 +940,7 @@
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '⏳ 0/4 레포 검증 및 최신 코드 동기화 중...'; }
       
-      // v8.9.58 FIX: 명시적 레포 검증 + GitHub 최신 원본 강제 페치 (터치 버그 수정 포함)
+      // v8.9.60 FIX: 명시적 레포 검증 + GitHub 최신 원본 강제 페치 (터치 버그 수정 포함)
       try {
         const repoSel = $('repoSelect');
         if (repoSel && repoSel.value && repoSel.value !== currentRepo) {
@@ -1031,7 +1037,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.58] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.61] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1089,14 +1095,14 @@ ${currentCode.substring(0, 8000)}
       });
 
       if (successCount > 0) {
-        // v8.9.58: 빌드 번호 자동 +1
+        // v8.9.60: 빌드 번호 자동 +1
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v8.9.58';
+          const currentVer = getTargetAppVersion() || 'v8.9.60';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
-            newVersion = `v${major}.${minor}.${patch}`; // v8.9.58 정리: 자동 증가 제거
+            newVersion = `v${major}.${minor}.${patch}`; // v8.9.60 정리: 자동 증가 제거
             // 코드 내 타이틀, h1, manifest 버전 교체
             updatedCode = updatedCode.replace(/<title>Builder-a4u v[\d\.]+/g, `<title>Builder-a4u ${newVersion}`);
             updatedCode = updatedCode.replace(/Builder-a4u v[\d\.]+<\/h1>/g, `Builder-a4u ${newVersion}</h1>`);
@@ -1117,7 +1123,7 @@ ${currentCode.substring(0, 8000)}
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
         const baseNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)}`;
-        // v8.9.58: 완료된 아이디어는 done으로 변경
+        // v8.9.60: 완료된 아이디어는 done으로 변경
         currentRepoIdeas.forEach(idea => {
           if (buildingIds.includes(idea.id)) {
             idea.status = 'done';
@@ -1126,10 +1132,10 @@ ${currentCode.substring(0, 8000)}
         });
         renderRepoIdeas(); saveRepoIdea(null, false);
         
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.58)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.60)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
-        // v8.9.58: 클립보드에 업데이트 내용 자동 복사
+        // v8.9.60: 클립보드에 업데이트 내용 자동 복사
         try {
           const clipText = `${buildNote}\n${newVersion||''}\n${ideaText}`;
           if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -1158,7 +1164,7 @@ ${currentCode.substring(0, 8000)}
       } else if (errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError') || errMsg.includes('Load failed')) {
         errMsg = '🌐 네트워크 로드 실패.\n• 인터넷 연결 확인\n• VPN 끄고 재시도\n• API 키가 유효한지 확인\n원본: ' + errMsg;
       }
-      // v8.9.58: 실패 시 failed 태그
+      // v8.9.60: 실패 시 failed 태그
       try {
         if (typeof buildingIds !== 'undefined') {
           currentRepoIdeas.forEach(idea => {
@@ -1228,7 +1234,7 @@ ${currentCode.substring(0, 8000)}
   function renderAITargets() {
     const container = $('aiTargetList');
     if (!container) return;
-    // v8.9.58 FIX: iOS PWA에서 인앱이 아닌 외부 사파리로 열리도록 <a> 태그로 직접 렌더링
+    // v8.9.60 FIX: iOS PWA에서 인앱이 아닌 외부 사파리로 열리도록 <a> 태그로 직접 렌더링
     container.innerHTML = AI_TARGETS.map(ai => {
       return `<a href="${ai.url}" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('${ai.url}'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ${ai.name} 바로가기</a>`;
     }).join('');
@@ -1574,7 +1580,7 @@ ${currentCode.substring(0, 8000)}
         }
       }
     }
-    // v8.9.58 NEW: 아이콘/이모지 기반 퍼지 매칭 (타이머 버튼 같은 경우)
+    // v8.9.60 NEW: 아이콘/이모지 기반 퍼지 매칭 (타이머 버튼 같은 경우)
     try {
       const iconRegex = /[⏱️⏰🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚🕛⏳⌚⏲️🕰️]/u;
       const extractIcons = (txt) => (txt.match(new RegExp(iconRegex, 'gu')) || []);
@@ -1808,13 +1814,13 @@ ${currentCode.substring(0, 8000)}
     const container = $('otherIdeaList'); if (!container) return;
     container.innerHTML = currentOtherIdeas.map((idea, i) => {
       const imgs = idea.images || [];
-      const imgHtml = imgs.length ? `<div class="flex gap-1 flex-wrap mt-1">${imgs.map((img, imgIdx) => `
-        <div class="relative"><img src="${img}" class="w-10 h-10 rounded border object-cover cursor-pointer" onclick="viewOtherIdeaImage(${i}, ${imgIdx})"><button onclick="removeOtherIdeaImage(${i}, ${imgIdx})" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3.5 h-3.5 text-[7px] flex items-center justify-center">✕</button></div>`).join('')}<label class="w-10 h-10 rounded border border-dashed flex items-center justify-center text-[8px] cursor-pointer bg-white">+사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label></div>` : `<div class="mt-1"><label class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 border cursor-pointer">📸 사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label></div>`;
+      const imgHtml = imgs.length ? `<div class="flex gap-1 flex-wrap mt-1 items-center">${imgs.map((img, imgIdx) => `
+        <div class="relative"><img src="${img}" class="w-10 h-10 rounded border object-cover cursor-pointer" onclick="viewOtherIdeaImage(${i}, ${imgIdx})"><button onclick="removeOtherIdeaImage(${i}, ${imgIdx})" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-3.5 h-3.5 text-[7px] flex items-center justify-center">✕</button></div>`).join('')}<label class="w-10 h-10 rounded border border-dashed flex items-center justify-center text-[8px] cursor-pointer bg-white">+사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label><button onclick="pasteImageToOtherIdea(${i})" class="h-10 px-1.5 rounded border border-blue-200 bg-blue-50 text-[8px] font-bold text-blue-600">📋<br>붙여</button></div>` : `<div class="mt-1 flex gap-1"><label class="text-[9px] px-2 py-0.5 rounded-full bg-gray-100 border cursor-pointer">📸 사진<input type="file" accept="image/*" class="hidden" onchange="addImageToOtherIdea(${i}, this)"></label><button onclick="pasteImageToOtherIdea(${i})" class="text-[9px] px-2 py-0.5 rounded-full bg-blue-50 border border-blue-200 text-blue-600">📋 붙여넣기</button></div>`;
       return `
       <div class="flex items-start gap-1.5 p-2 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
         <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentOtherIdeas[${i}].checked=this.checked; saveOtherIdea(false);" class="mt-1 w-4 h-4 text-blue-600 rounded cursor-pointer">
         <div class="flex-1 min-w-0">
-          <textarea class="textarea flex-1 w-full text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); saveOtherIdea(false);">${idea.text}</textarea>
+          <textarea class="textarea flex-1 w-full text-[11.5px] !min-h-[28px] !p-1 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" onfocus="window._lastFocusedOtherIdx=${i}" oninput="currentOtherIdeas[${i}].text=this.value; autoResizeTextarea(this); window._lastFocusedOtherIdx=${i}; saveOtherIdea(false);">${idea.text}</textarea>
           ${imgHtml}
         </div>
         <button onclick="currentOtherIdeas.splice(${i}, 1); renderOtherIdeas(); saveOtherIdea(false);" class="text-red-400 hover:text-red-600 p-1 text-[12px] font-bold">✕</button>
@@ -1913,17 +1919,17 @@ ${currentCode.substring(0, 8000)}
                     isDone ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-100">✅ 완료</span>' :
                     isFailed ? '<span class="inline-flex items-center gap-1 text-[9px] font-black px-1.5 py-0.5 rounded-full bg-red-200 text-red-800">❌ 실패</span>' : '';
       const imgs = idea.images || [];
-      const imgHtml = imgs.length ? `<div class="flex gap-1.5 flex-wrap mt-1.5">${imgs.map((img, imgIdx) => `
+      const imgHtml = imgs.length ? `<div class="flex gap-1.5 flex-wrap mt-1.5 items-center">${imgs.map((img, imgIdx) => `
         <div class="relative group">
           <img src="${img}" class="w-[52px] h-[52px] rounded-lg border border-gray-200 dark:border-gray-600 object-cover cursor-pointer shadow-sm" onclick="viewIdeaImage(${i}, ${imgIdx})">
           <button onclick="removeIdeaImage(${i}, ${imgIdx})" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] shadow border border-white opacity-90 hover:opacity-100">✕</button>
-        </div>`).join('')}<label class="w-[52px] h-[52px] rounded-lg border border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-[9px] cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100">+<span>사진</span><input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label></div>` : `<div class="mt-1.5"><label class="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-200">📸 사진 추가<input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label></div>`;
+        </div>`).join('')}<label class="w-[52px] h-[52px] rounded-lg border border-dashed border-gray-300 dark:border-gray-600 flex flex-col items-center justify-center text-[9px] cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100">+<span>사진</span><input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label><button onclick="pasteImageToIdea(${i})" class="h-[52px] px-2 rounded-lg border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 text-[9px] font-bold hover:bg-blue-100 flex flex-col items-center justify-center gap-0.5">📋<span>붙여</span></button></div>` : `<div class="mt-1.5 flex gap-1.5"><label class="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 cursor-pointer hover:bg-gray-200">📸 사진<input type="file" accept="image/*" class="hidden" onchange="addImageToIdea(${i}, this)"></label><button onclick="pasteImageToIdea(${i})" class="inline-flex items-center gap-1 text-[10px] px-2 py-1 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 text-blue-600 dark:text-blue-400 hover:bg-blue-100">📋 붙여넣기</button></div>`;
       return `
       <div class="flex items-start gap-2 p-2 rounded-xl border shadow-sm ${borderClass} transition-all">
         <input type="checkbox" ${idea.checked ? 'checked' : ''} onchange="currentRepoIdeas[${i}].checked=this.checked; saveRepoIdea(null, false);" class="mt-1.5 w-4 h-4 text-emerald-600 rounded cursor-pointer">
         <div class="flex-1 min-w-0">
           ${badge ? `<div class="mb-1">${badge}${idea.buildAt ? ` <span class="text-[8px] opacity-60">${new Date(idea.buildAt).toLocaleTimeString()}</span>` : ''}</div>` : ''}
-          <textarea class="textarea w-full text-[12px] !min-h-[32px] !p-1.5 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" oninput="currentRepoIdeas[${i}].text=this.value; autoResizeTextarea(this); saveRepoIdea(null, false);">${idea.text}</textarea>
+          <textarea class="textarea w-full text-[12px] !min-h-[32px] !p-1.5 resize-none overflow-hidden bg-transparent border-none shadow-none focus:ring-0" rows="1" onfocus="window._lastFocusedIdeaIdx=${i}" oninput="currentRepoIdeas[${i}].text=this.value; autoResizeTextarea(this); window._lastFocusedIdeaIdx=${i}; saveRepoIdea(null, false);" data-idea-idx="${i}">${idea.text}</textarea>
           ${imgHtml}
         </div>
         <button onclick="currentRepoIdeas.splice(${i}, 1); renderRepoIdeas(); saveRepoIdea(null, false);" class="text-red-400 hover:text-red-600 p-1.5 text-[12px] font-bold shrink-0">✕</button>
@@ -1954,7 +1960,62 @@ ${currentCode.substring(0, 8000)}
     if (!img) return;
     const w = window.open();
     if (w) w.document.write(`<img src="${img}" style="max-width:100%">`);
+  }
+  window.pasteImageToIdea = async function(ideaIdx) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.read) {
+        const items = await navigator.clipboard.read();
+        let added = 0;
+        for (const item of items) {
+          for (const type of item.types) {
+            if (type.startsWith('image/')) {
+              const blob = await item.getType(type);
+              const b64 = await processImageFileToBase64(blob);
+              if (!currentRepoIdeas[ideaIdx].images) currentRepoIdeas[ideaIdx].images = [];
+              currentRepoIdeas[ideaIdx].images.push(b64);
+              added++;
+            }
+          }
+        }
+        if (added > 0) {
+          renderRepoIdeas(); saveRepoIdea(null, false);
+          showToast(`📋 ${added}개 사진 붙여넣기 완료!`, 'ok');
+          return;
+        }
+      }
+      showToast('클립보드에 이미지가 없거나 권한 필요. 캡쳐 후 Ctrl+V로 직접 붙여넣기 해보세요.', 'info');
+    } catch(e) {
+      showToast('붙여넣기 실패: 클립보드 권한 허용 필요 (Ctrl+V 직접 시도)', 'err');
+    }
   };
+  window.pasteImageToOtherIdea = async function(idx) {
+    try {
+      if (navigator.clipboard && navigator.clipboard.read) {
+        const items = await navigator.clipboard.read();
+        let added = 0;
+        for (const item of items) {
+          for (const type of item.types) {
+            if (type.startsWith('image/')) {
+              const blob = await item.getType(type);
+              const b64 = await processImageFileToBase64(blob);
+              if (!currentOtherIdeas[idx].images) currentOtherIdeas[idx].images = [];
+              currentOtherIdeas[idx].images.push(b64);
+              added++;
+            }
+          }
+        }
+        if (added > 0) {
+          renderOtherIdeas(); saveOtherIdea(false);
+          showToast(`📋 ${added}개 사진 붙여넣기 완료!`, 'ok');
+          return;
+        }
+      }
+      showToast('클립보드 이미지 없음 - Ctrl+V 직접', 'info');
+    } catch(e) {
+      showToast('붙여넣기 실패', 'err');
+    }
+  };
+;
 
 
   window.addRepoIdea = function(text = '') {
@@ -2026,7 +2087,7 @@ ${currentCode.substring(0, 8000)}
     }
   };
   
-  // v8.9.58: 빌드중 -> 완료 수동 변경 (디버깅용)
+  // v8.9.60: 빌드중 -> 완료 수동 변경 (디버깅용)
   window.markBuildingAsDone = function() {
     currentRepoIdeas.forEach(i => { if (i.status === 'building') i.status = 'done'; });
     renderRepoIdeas(); saveRepoIdea(null, false);
@@ -2163,6 +2224,21 @@ ${currentCode.substring(0, 8000)}
     const items = (e.clipboardData || window.clipboardData)?.items;
     if (!items) return;
     let handled = false;
+    // v8.9.60: 설정탭에서 아이디어 카드에 포커스가 있으면 그 카드에 붙이기
+    const activeEl = document.activeElement;
+    const focusedIdeaIdx = activeEl && activeEl.closest ? (() => {
+      const card = activeEl.closest('[data-idea-idx]');
+      if (card) return parseInt(card.getAttribute('data-idea-idx'));
+      // textarea에서 아이디어 인덱스 추출
+      const txt = activeEl.tagName === 'TEXTAREA' ? activeEl : null;
+      if (txt && txt.closest) {
+        const parent = txt.closest('.flex.items-start');
+        // try to find index via currentRepoIdeas reference - fallback use last focused
+        return window._lastFocusedIdeaIdx;
+      }
+      return null;
+    })() : null;
+
     for (let i = 0; i < items.length; i++) {
       const item = items[i];
       if (item.kind === 'file' && item.type.startsWith('image/')) {
@@ -2172,16 +2248,44 @@ ${currentCode.substring(0, 8000)}
           handled = true;
         } else if (settingsVisible) {
           processImageFileToBase64(blob).then(b64 => {
-            const activeEl = document.activeElement;
-            const inOther = activeEl && activeEl.closest && activeEl.closest('#otherIdeaList, #otherIdeaImageContainer');
-            if (inOther) { currentOtherIdeaImages.push(b64); renderOtherIdeaImages(); saveOtherIdea(false); }
-            else { currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); }
+            // 포커스된 아이디어가 있으면 그 아이디어에 묶음
+            if (typeof focusedIdeaIdx === 'number' && !isNaN(focusedIdeaIdx) && currentRepoIdeas[focusedIdeaIdx]) {
+              if (!currentRepoIdeas[focusedIdeaIdx].images) currentRepoIdeas[focusedIdeaIdx].images = [];
+              currentRepoIdeas[focusedIdeaIdx].images.push(b64);
+              renderRepoIdeas(); saveRepoIdea(null, false);
+            } else if (window._lastFocusedOtherIdx != null && currentOtherIdeas[window._lastFocusedOtherIdx]) {
+              if (!currentOtherIdeas[window._lastFocusedOtherIdx].images) currentOtherIdeas[window._lastFocusedOtherIdx].images = [];
+              currentOtherIdeas[window._lastFocusedOtherIdx].images.push(b64);
+              renderOtherIdeas(); saveOtherIdea(false);
+            } else {
+              const activeEl2 = document.activeElement;
+              const inOther = activeEl2 && activeEl2.closest && activeEl2.closest('#otherIdeaList, #otherIdeaImageContainer');
+              if (inOther) { 
+                if (window._lastFocusedOtherIdx != null) {
+                  if (!currentOtherIdeas[window._lastFocusedOtherIdx].images) currentOtherIdeas[window._lastFocusedOtherIdx].images = [];
+                  currentOtherIdeas[window._lastFocusedOtherIdx].images.push(b64);
+                  renderOtherIdeas(); saveOtherIdea(false);
+                } else {
+                  currentOtherIdeaImages.push(b64); renderOtherIdeaImages(); saveOtherIdea(false); 
+                }
+              }
+              else { 
+                // 포커스 없으면 현재 아이디어에 추가하지 않고 전역 이미지에만 - 하지만 이제는 마지막 포커스된 아이디어에 넣음
+                if (window._lastFocusedIdeaIdx != null && currentRepoIdeas[window._lastFocusedIdeaIdx]) {
+                  if (!currentRepoIdeas[window._lastFocusedIdeaIdx].images) currentRepoIdeas[window._lastFocusedIdeaIdx].images = [];
+                  currentRepoIdeas[window._lastFocusedIdeaIdx].images.push(b64);
+                  renderRepoIdeas(); saveRepoIdea(null, false);
+                } else {
+                  currentIdeaImages.push(b64); renderIdeaImages(); saveRepoIdea(); 
+                }
+              }
+            }
           });
           handled = true;
         }
       }
     }
-    if (handled) { e.preventDefault(); showToast('📸 이미지가 추가되었습니다. (썸네일 클릭하면 크게 보기)', 'ok'); }
+    if (handled) { e.preventDefault(); showToast('📸 이미지가 해당 아이디어에 묶였습니다! (썸네일 클릭하면 크게 보기)', 'ok'); }
   }
   
   function initTheme() {
@@ -2297,7 +2401,7 @@ ${contextConstraint}`;
     try {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches || window.matchMedia('(display-mode: minimal-ui)').matches;
-      // v8.9.58 FIX: 외부 사파리로 강제 오픈 - a태그를 실제 DOM에 두고 진짜 클릭으로 처리
+      // v8.9.60 FIX: 외부 사파리로 강제 오픈 - a태그를 실제 DOM에 두고 진짜 클릭으로 처리
       if (isStandalone || isIOS) {
         // iOS PWA에서는 programmatic click보다 실제 앵커 네비게이션이 더 잘 통함
         const a = document.createElement('a');
@@ -2689,7 +2793,7 @@ ${contextConstraint}`;
   async function loadRepos(newRepoSelect = null) {
     const select = $('repoSelect'); if (!select) return;
     const pat = getGitHubPat();
-    // v8.9.58 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
+    // v8.9.60 FIX: PAT 없어도 캐시된 레포 목록으로 선택 가능하게
     const getCachedNames = () => {
       try {
         const cached = JSON.parse(localStorage.getItem('cached_repo_names') || '[]');
@@ -2978,7 +3082,7 @@ ${contextConstraint}`;
     try {
       const draftKey = getDraftCodeKey();
       const success = safeSetLocalStorage(draftKey, code);
-      // v8.9.58: 부분 패치 전용 백업 키에도 저장 (리로드 시 복구용)
+      // v8.9.60: 부분 패치 전용 백업 키에도 저장 (리로드 시 복구용)
       const partialKey = draftKey + '_partial_backup';
       safeSetLocalStorage(partialKey, code);
       safeSetLocalStorage(partialKey + '_note', note);
@@ -3057,7 +3161,7 @@ ${contextConstraint}`;
       }
   }
   
-  // v8.9.58: 부분 패치 복구
+  // v8.9.60: 부분 패치 복구
   window.restorePartialPatch = function() {
     const draftKey = getDraftCodeKey();
     const partialKey = draftKey + '_partial_backup';
@@ -3084,7 +3188,7 @@ ${contextConstraint}`;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
-    // v8.9.58: 강제 새로고침 - 기존 srcdoc 제거 후 재설정
+    // v8.9.60: 강제 새로고침 - 기존 srcdoc 제거 후 재설정
     try { frame.removeAttribute('srcdoc'); } catch(e) {}
     
     const isReactJsx = file.endsWith('.jsx') || file.endsWith('.tsx') || (!file.endsWith('.html') && (code.includes('import React') || code.includes("from 'react'")));
@@ -3122,7 +3226,7 @@ ${contextConstraint}`;
     }, 1000);
   }
   
-  // v8.9.58: 미리보기 강제 새로고침 버튼
+  // v8.9.60: 미리보기 강제 새로고침 버튼
   window.forceRefreshPreview = function() {
     const editor = $('codeEditor');
     const code = editor ? editor.value : '';
@@ -3157,7 +3261,7 @@ ${contextConstraint}`;
       showToast('GitHub PAT 필요 - 설정 탭에서 입력하세요', 'err');
       return;
     }
-    // v8.9.58 FIX: 최종 빌드 때만 버전 +1
+    // v8.9.60 FIX: 최종 빌드 때만 버전 +1
     let version = getTargetAppVersion();
     let finalVersion = version;
     try {
@@ -3185,7 +3289,7 @@ ${contextConstraint}`;
     // 최종 빌드 시 코드 내 버전 교체
     try {
       let tempCode = codeToPush;
-      // v8.9.58 FIX: Builder-a4u 안의 4가 버전으로 잘못 매칭되는 버그 수정 - \d+\.\d+\.\d+ 패턴만 인식
+      // v8.9.60 FIX: Builder-a4u 안의 4가 버전으로 잘못 매칭되는 버그 수정 - \d+\.\d+\.\d+ 패턴만 인식
       tempCode = tempCode.replace(/<title>(.*?)\s+v?\d+\.\d+\.\d+\s*(.*?)<\/title>/gi, (match, p1, p2) => {
         let appName = p1.trim();
         // a4u 같은 경우 p1이 Builder-a 로 잘리면 복구
@@ -3398,7 +3502,7 @@ ${contextConstraint}`;
   };
 
   async function callGeminiAPI(prompt, temperature = 0.2, parseJSON = true, abortSignal = null, modelOverride = null, imagesArray = null) {
-      // v8.9.58 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
+      // v8.9.60 fix: 2번째 인자가 모델 문자열이면 모델로 인식 (하위호환)
       if (typeof temperature === 'string' && temperature.includes('gemini')) {
         modelOverride = temperature;
         temperature = 0.2;
@@ -3411,9 +3515,9 @@ ${contextConstraint}`;
       if (!geminiKey) throw new Error("설정 탭에서 Gemini API 키를 먼저 입력해주세요.");
       const selectModel = $('geminiModelSelect') && $('geminiModelSelect').value;
       const savedModel = modelOverride || selectModel || localStorage.getItem('builder_gemini_model') || 'gemini-2.5-flash';
-      // v8.9.58: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
+      // v8.9.60: 패치 위치 탐색 강화 + 3.5 모델 - 무료 할당량 높은 모델만 자동 폴백
       // 2.0-flash는 15RPM, 3.1은 2RPM으로 낮음 → 무료 유저는 2.0만 사용
-      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.58: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
+      const FREE_TIER_HIGH_QUOTA = ['gemini-2.0-flash', 'gemini-2.5-flash-lite']; // v8.9.60: 무료 높은 할당량만 - 3.5는 RPM 낮아 제외
       const PAID_TIER = ['gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-3.5-flash', 'gemini-3.5-flash-lite'];
       // 자동 폴백은 무료 높은 할당량 모델만, 3.1은 수동 선택 시에만 시도
       const STABLE_MODELS = [...FREE_TIER_HIGH_QUOTA, ...PAID_TIER];
@@ -3427,9 +3531,9 @@ ${contextConstraint}`;
       
       let res = null, lastError = null, lastStatus = '';
       const allAttempts = [];
-      // v8.9.58: 자동 폴백 강화 - 타임아웃 30초로 단축, 모든 모델 순차 시도
+      // v8.9.60: 자동 폴백 강화 - 타임아웃 30초로 단축, 모든 모델 순차 시도
       const TIMEOUT_MS = 30000;
-      // v8.9.58: 저장된 모델이 실패해도 자동으로 다음 모델로 넘어가도록 - 사용자는 선택 안 해도 됨
+      // v8.9.60: 저장된 모델이 실패해도 자동으로 다음 모델로 넘어가도록 - 사용자는 선택 안 해도 됨
       for (let modelIdx = 0; modelIdx < MODEL_CANDIDATES.length; modelIdx++) {
           const model = MODEL_CANDIDATES[modelIdx];
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
@@ -3584,7 +3688,7 @@ ${contextConstraint}`;
 
   let ideaInbox = []; let isRecording = false; let recognition = null; let pendingInboxPhoto = null;
 
-  // ===== Voice Recording Fix v8.9.58 =====
+  // ===== Voice Recording Fix v8.9.60 =====
   window.toggleVoiceRecording = function() {
     if (isRecording) {
       stopVoiceRecording();
@@ -3764,7 +3868,7 @@ ${contextConstraint}`;
   };
 
   window.saveIdeaInbox = async function(type = 'text', textData = '') {
-      // v8.9.58: 사진+할일 묶어서 하나의 아이디어로 - 빌드 시 같이 AI에게 전달
+      // v8.9.60: 사진+할일 묶어서 하나의 아이디어로 - 빌드 시 같이 AI에게 전달
       const inboxSel = $('inboxProjectSelect');
       const targetRepo = (inboxSel && inboxSel.value) ? inboxSel.value : '미분류';
       let text = textData || $('inboxTextInput')?.value?.trim();
@@ -3957,7 +4061,7 @@ ${contextConstraint}`;
       google_client_id: localStorage.getItem('google_client_id') || '',
       gemini_api_key: localStorage.getItem('gemini_api_key') || '',
       exported_at: new Date().toISOString(),
-      version: 'v8.9.58'
+      version: 'v8.9.60'
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -4027,7 +4131,7 @@ ${contextConstraint}`;
     $('geminiApiKeyInput')?.addEventListener('input', e => localStorage.setItem('gemini_api_key', e.target.value.trim()));
     
 
-    // v8.9.58: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
+    // v8.9.60: 1.5 모델 마이그레이션 - 1.5 선택되어 있으면 2.0-flash로 강제 변경
     let savedModelRaw = localStorage.getItem('builder_gemini_model') || '';
     if (savedModelRaw.includes('1.5') || savedModelRaw.includes('2.0-flash-lite-001') || savedModelRaw.includes('2.0-flash-001') || savedModelRaw.includes('3.1-')) {
       localStorage.setItem('builder_gemini_model', 'gemini-2.5-flash');
@@ -4052,7 +4156,7 @@ ${contextConstraint}`;
   }
 
   
-  // === v8.9.58 NEW: [메모] 영구 메모장 로직 ===
+  // === v8.9.60 NEW: [메모] 영구 메모장 로직 ===
   const INBOX_MEMO_KEY = 'inbox_memo_v1';
   function loadInboxMemo() {
     const el = $('inboxMemoInput');
@@ -4094,11 +4198,11 @@ ${contextConstraint}`;
     renderOtherIdeas(); saveOtherIdea(true);
     showToast('✅ 메모가 미분류 보관소로 전송됨', 'ok');
   };
-  // === END v8.9.58 NEW ===
+  // === END v8.9.60 NEW ===
 
 
 function setupEventListeners() {
-    // === v8.9.58 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
+    // === v8.9.60 FIX: 일괄 적용 및 키 관리 리스너 (원래 빠져있었음) ===
     $('parseBulkKeysBtn')?.addEventListener('click', parseBulkEnvAndApply);
     $('exportKeysJsonBtn')?.addEventListener('click', exportKeysJson);
     $('importKeysJsonInput')?.addEventListener('change', importKeysJsonFile);
@@ -4185,7 +4289,7 @@ function setupEventListeners() {
     $('showDraftHistoryBtn')?.addEventListener('click', loadDraftHistory);
     $('googleLoginBtn')?.addEventListener('click', handleGoogleLogin);
     $('driveModalClose')?.addEventListener('click', () => { $('driveModal').style.display = 'none'; });
-    // v8.9.58 FIX: 구글 드라이브 실시간 검색 + 공유문서함 오버플로우 수정
+    // v8.9.60 FIX: 구글 드라이브 실시간 검색 + 공유문서함 오버플로우 수정
     const driveSearchInput = $('driveSearchInput');
     const driveSearchBtn = $('driveSearchBtn');
     let driveSearchDebounce = null;
@@ -4274,7 +4378,7 @@ function setupEventListeners() {
   }
   
   
-  // v8.9.58 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
+  // v8.9.60 FIX: 누락된 함수 복구 - 레포 선택 안되는 버그 수정
   function updateActiveRepoDisplay() {
     const el = $('currentActiveRepoDisplay');
     if (el) el.textContent = currentRepo || 'builder-a4u';
