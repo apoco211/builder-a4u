@@ -90,7 +90,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.32 - 원스톱 AI 자동 생성 빌더</title>
+  <title>Builder-a4u v8.9.33 - 원스톱 AI 자동 생성 빌더</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -111,9 +111,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.32">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.32">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.32">
+  <link rel="manifest" href="./manifest.json?v=8.9.33">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.33">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.33">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=512">
   
   <style>
@@ -227,7 +227,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.32</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.33</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -955,8 +955,14 @@
         return;
       }
 
-      if (runBtn) runBtn.innerHTML = '🤖 2/4 AI가 패치 작성 중...';
-      log('🤖 Phase2: AI 패치 생성 중 (gemini-2.5-flash)...', 'info');
+      if (runBtn) runBtn.innerHTML = '🤖 2/4 AI가 패치 작성 중... (최대 45초)';
+      log('🤖 Phase2: AI 패치 생성 중... 타임아웃 45초', 'info');
+      // 타임아웃 컨트롤러 생성
+      const patchController = new AbortController();
+      const patchTimeout = setTimeout(() => {
+        patchController.abort();
+        log('⏱️ 패치 생성 타임아웃 - 네트워크 또는 API 키 확인', 'err');
+      }, 50000);
 
       const fileName = $('mainFileInput')?.value || mainFile || 'index.html';
       const patchPrompt = `너는 Builder-a4u 시니어 프론트엔드 개발자다.
@@ -974,13 +980,13 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.32] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v8.9.33] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
 
-[원본 코드 (앞부분 12000자)]
-${currentCode.substring(0, 12000)}
+[원본 코드 (앞부분 8000자)]
+${currentCode.substring(0, 8000)}
 `;
 
       const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || $('geminiApiKeyInput')?.value?.trim();
@@ -1059,7 +1065,7 @@ ${currentCode.substring(0, 12000)}
           safeSetLocalStorage(getDraftCodeKey(), updatedCode);
         }
         const baseNote = (typeof extractBuildNoteFromPatch === 'function' ? extractBuildNoteFromPatch(aiResponse) : null) || `feat: ${ideaText.split('\n')[0].substring(0,60)}`;
-        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.32)'} [${ideaText.split('\n').length}개 반영]`;
+        const buildNote = `${baseNote} ${newVersion ? `(${newVersion})` : '(v8.9.33)'} [${ideaText.split('\n').length}개 반영]`;
         if ($('updateNoteInput')) $('updateNoteInput').value = buildNote;
         
         // v8.9.32: 클립보드에 업데이트 내용 자동 복사
@@ -1085,9 +1091,17 @@ ${currentCode.substring(0, 12000)}
       }
     } catch (e) {
       console.error(e);
-      showToast('원클릭 패치 실패: ' + e.message, 'err');
+      let errMsg = e.message;
+      if (e.name === 'AbortError' || errMsg.includes('timeout') || errMsg.includes('타임아웃')) {
+        errMsg = '⏱️ AI 응답 시간 초과 (45초). 네트워크 확인 또는 API 할당량 확인.\n• 설정 탭에서 모델을 gemini-2.0-flash로 변경\n• API 키 재발급 시도';
+      } else if (errMsg.includes('Failed to fetch') || errMsg.includes('NetworkError') || errMsg.includes('Load failed')) {
+        errMsg = '🌐 네트워크 로드 실패.\n• 인터넷 연결 확인\n• VPN 끄고 재시도\n• API 키가 유효한지 확인\n원본: ' + errMsg;
+      }
+      showToast('원클릭 패치 실패: ' + errMsg, 'err');
       log('❌ 원클릭 실패: ' + (e.stack || e.message), 'err');
+      if (typeof patchTimeout !== 'undefined') clearTimeout(patchTimeout);
     } finally {
+      if (typeof patchTimeout !== 'undefined') clearTimeout(patchTimeout);
       const runBtn = $('oneClickPatchBtn');
       if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
     }
@@ -3180,24 +3194,63 @@ ${contextConstraint}`;
       const MODEL_CANDIDATES = [savedModel, 'gemini-2.0-flash', 'gemini-2.5-pro', 'gemini-2.0-flash', 'gemini-2.0-flash-001', 'gemini-flash-latest'].filter((v,i,a)=>a.indexOf(v)===i).filter(m => !m.includes('1.5'));
       
       let res = null, lastError = null, lastStatus = '';
+      // v8.9.33: 타임아웃 45초, v1beta + v1 모두 시도
+      const TIMEOUT_MS = 45000;
       for (const model of MODEL_CANDIDATES) {
           if (abortSignal && abortSignal.aborted) throw new Error('중지됨');
-          try {
-              const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${geminiKey}`;
-              res = await fetch(url, {
-                  method: 'POST', headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2 } }),
-                  signal: abortSignal
-              });
-              if (res && res.ok) {
-                lastStatus = model;
-                break;
+          // v1beta와 v1 모두 시도
+          for (const apiVer of ['v1beta', 'v1']) {
+            try {
+                const url = `https://generativelanguage.googleapis.com/${apiVer}/models/${model}:generateContent?key=${geminiKey}`;
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), TIMEOUT_MS);
+                // 외부 abortSignal과 내부 timeout 모두 처리
+                const combinedSignal = abortSignal ? 
+                  (() => {
+                    const s = controller.signal;
+                    abortSignal.addEventListener('abort', () => controller.abort());
+                    return s;
+                  })() : controller.signal;
+
+                log(`🔄 ${model} (${apiVer}) 호출 중...`, 'info');
+                res = await fetch(url, {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                      contents: [{ parts: [{ text: prompt }] }], 
+                      generationConfig: { temperature: typeof temperature === 'number' ? temperature : 0.2, maxOutputTokens: 8000 } 
+                    }),
+                    signal: combinedSignal
+                });
+                clearTimeout(timeoutId);
+                if (res && res.ok) {
+                  lastStatus = `${model} (${apiVer})`;
+                  log(`✅ ${model} 성공`, 'ok');
+                  break;
+                } else {
+                  const txt = await res.text().catch(()=> '');
+                  lastError = new Error(`모델 ${model} (${apiVer}) 실패 ${res.status}: ${txt.substring(0,300)}`);
+                  console.warn(lastError.message);
+                  if (res.status === 404) {
+                    log(`⚠️ ${model} 404 - 다음 모델 시도`, 'warn');
+                    continue; // 404면 다음 모델로
+                  }
+                  if (res.status === 429) {
+                    log(`⚠️ ${model} 할당량 초과 - 2초 후 재시도`, 'warn');
+                    await new Promise(r => setTimeout(r, 2000));
+                  }
+                }
+            } catch(e) { 
+              lastError = e; 
+              if (e.name === 'AbortError') {
+                log(`⏱️ ${model} 타임아웃 (${TIMEOUT_MS/1000}초)`, 'warn');
+                lastError = new Error(`${model} 타임아웃 - 네트워크 확인`);
               } else {
-                const txt = await res.text().catch(()=> '');
-                lastError = new Error(`모델 ${model} 실패 ${res.status}: ${txt.substring(0,200)}`);
-                console.warn(lastError.message);
+                console.warn('API 시도 실패', e.message);
               }
-          } catch(e) { lastError = e; console.warn('API 시도 실패', e.message); }
+            }
+            if (res && res.ok) break;
+          }
+          if (res && res.ok) break;
       }
       if (!res || !res.ok) {
         console.error('모든 모델 실패', lastError);
