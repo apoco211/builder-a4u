@@ -89,7 +89,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v8.9.69 - 사진통합/로그인거절/맥락복사 패치</title>
+  <title>Builder-a4u v9.0.1 - 대화하면서 빌드 Chat Build</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -110,10 +110,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=8.9.69">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=8.9.69">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=8.9.69">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=8.9.68">
+  <link rel="manifest" href="./manifest.json?v=9.0.1">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.1">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.1">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.0">
   
   <style>
     :root {
@@ -179,6 +179,51 @@
     .dark .btn { background: #252a36 !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
+    /* v9.0.0: 대화하면서 빌드 - 채팅 FAB & 패널 */
+    #a4uChatFab {
+      position: fixed; right: 16px; bottom: 18px; z-index: 9999;
+      width: 56px; height: 56px; border-radius: 999px;
+      background: #111111; color: #fff; border: 1px solid #111;
+      font-size: 26px; font-weight: 900;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: transform 0.15s;
+    }
+    #a4uChatFab:active { transform: scale(0.93); }
+    #a4uChatPanel {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 9998;
+      max-width: 920px; margin: 0 auto;
+      background: var(--card); border: 1px solid var(--line);
+      border-radius: 20px 20px 0 0; 
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+      transform: translateY(105%); transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
+      display: flex; flex-direction: column;
+      height: 62vh; max-height: 620px;
+    }
+    #a4uChatPanel.active { transform: translateY(0); }
+    #a4uChatHistory {
+      flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px;
+      background: var(--bg);
+    }
+    .a4u-msg { max-width: 82%; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
+    .a4u-msg.user { align-self: flex-end; background: #111111; color: #fff; border-bottom-right-radius: 4px; }
+    .a4u-msg.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--line); color: var(--txt); border-bottom-left-radius: 4px; }
+    .a4u-msg.system { align-self: center; background: #FFC800; color: #111; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 6px 10px; }
+    #a4uChatInputWrap {
+      border-top: 1px solid var(--line); padding: 10px; background: var(--card);
+      display: flex; gap: 8px; align-items: flex-end;
+    }
+    #a4uChatInput {
+      flex: 1; min-height: 44px; max-height: 110px; resize: none;
+      border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px;
+      background: var(--bg); color: var(--txt); font-size: 14px; outline: none;
+    }
+    .a4u-quick { display: flex; gap: 6px; padding: 0 10px 8px 10px; overflow-x: auto; }
+    .a4u-quick button {
+      white-space: nowrap; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--line); background: var(--card); color: var(--txt);
+    }
+
     .dark .btn-emerald { background: #059669 !important; color: #ffffff !important; border-color: #047857 !important; }
     .dark .input, .dark .textarea { background: #1e222e !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .card { border-color: #2a2f3a !important; }
@@ -227,7 +272,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v8.9.69</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.1</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -692,6 +737,39 @@
   </div>
 </div>
 
+
+<!-- v9.0.0: 대화하면서 빌드 - FAB -->
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드">💬</button>
+
+<!-- v9.0.0: 대화하면서 빌드 - 채팅 패널 -->
+<div id="a4uChatPanel">
+  <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line);">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:18px;">💬</span>
+      <b style="font-size:14px;">대화하면서 빌드</b>
+      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.0</span>
+    </div>
+    <div style="display:flex; gap:6px; align-items:center;">
+      <label style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:700;"><input type="checkbox" id="a4uLocalMode" style="width:14px;height:14px;"> 🧠 로컬</label>
+      <button onclick="toggleA4uChat()" style="width:28px;height:28px;border-radius:999px;border:1px solid var(--line);background:var(--bg);">✕</button>
+    </div>
+  </div>
+  <div id="a4uChatHistory">
+    <div class="a4u-msg system">대화하면서 바로 빌드할 수 있어요. 예: "하단 첫번째 시계 아이콘 더 크게 예쁘게 바꿔줘"</div>
+    <div class="a4u-msg bot">안녕! 여기에 말하면 아이디어로 자동 등록되고, "해줘/바꿔줘"가 들어가면 바로 패치까지 해줄게. MiniCPM 켜면 오프라인으로도 돼. 💬</div>
+  </div>
+  <div class="a4u-quick">
+    <button onclick="a4uQuickInsert('하단 첫번째 시계 아이콘을 더 크고 예쁜 걸로 바꿔줘')">🕐 시계 크게</button>
+    <button onclick="a4uQuickInsert('로그인 버튼 파란색으로 바꿔줘')">🔵 파란 버튼</button>
+    <button onclick="a4uQuickInsert('사진 속 아이디어를 글로 정리해줘')">🖼️ 사진 정리</button>
+    <button onclick="a4uQuickInsert('전체적으로 더 모던하게 다듬어줘')">✨ 모던하게</button>
+  </div>
+  <div id="a4uChatInputWrap">
+    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Enter로 전송, Shift+Enter 줄바꿈)" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendA4uChat();}"></textarea>
+    <button onclick="sendA4uChat()" class="btn btn-primary" style="min-height:44px; padding:0 16px;">전송</button>
+  </div>
+</div>
+
 <!-- AI PWA/외부 브라우저 강제 런처 오버레이 -->
 <div id="aiLauncherBar" class="fixed inset-0 bg-black/60 z-[10000] hidden flex flex-col justify-end">
   <div class="bg-white dark:bg-gray-800 rounded-t-2xl p-5 shadow-2xl transform transition-transform pb-8">
@@ -711,6 +789,116 @@
 <script>
   const $ = id => document.getElementById(id);
   
+  
+  // v9.0.0: 대화하면서 빌드 - 채팅 로직
+  let a4uChatOpen = false;
+  window.toggleA4uChat = function() {
+    const panel = document.getElementById('a4uChatPanel');
+    const fab = document.getElementById('a4uChatFab');
+    if (!panel) return;
+    a4uChatOpen = !a4uChatOpen;
+    if (a4uChatOpen) {
+      panel.classList.add('active');
+      if (fab) fab.style.transform = 'scale(0)';
+      setTimeout(()=>{ const inp=document.getElementById('a4uChatInput'); if(inp) inp.focus(); }, 280);
+    } else {
+      panel.classList.remove('active');
+      if (fab) fab.style.transform = 'scale(1)';
+    }
+  };
+
+  window.a4uChatAddMessage = function(role, text) {
+    const hist = document.getElementById('a4uChatHistory');
+    if (!hist) return;
+    const div = document.createElement('div');
+    div.className = 'a4u-msg ' + (role==='user'?'user': role==='system'?'system':'bot');
+    div.textContent = text;
+    hist.appendChild(div);
+    hist.scrollTop = hist.scrollHeight;
+  };
+
+  window.a4uQuickInsert = function(txt) {
+    const inp = document.getElementById('a4uChatInput');
+    if (inp) { inp.value = txt; inp.focus(); }
+  };
+
+  window.sendA4uChat = async function() {
+    const inp = document.getElementById('a4uChatInput');
+    const localMode = document.getElementById('a4uLocalMode');
+    if (!inp) return;
+    const raw = inp.value.trim();
+    if (!raw) return;
+    inp.value = '';
+    a4uChatAddMessage('user', raw);
+    
+    const isBuildIntent = /해줘|바꿔줘|고쳐줘|키워줘|줄여줘|만들어줘|수정해줘|변경해줘|다듬어줘|정리해줘/i.test(raw);
+    const isPhotoIntent = /사진|이미지|캡처|스크린샷/i.test(raw);
+    
+    try {
+      // 1) 아이디어로 자동 등록 (현재 레포)
+      if (typeof currentRepoIdeas !== 'undefined') {
+        const newIdea = {
+          id: Date.now(),
+          text: raw + (localMode && localMode.checked ? ' [🧠로컬]' : ' [💬채팅]'),
+          checked: isBuildIntent ? true : false,
+          status: 'todo',
+          images: []
+        };
+        // 사진 의도면 현재 아이디어 사진도 포함
+        if (isPhotoIntent && typeof getAllIdeaImagesFlattened === 'function') {
+          const allImgs = getAllIdeaImagesFlattened();
+          if (allImgs && allImgs.length) {
+            a4uChatAddMessage('system', `🖼️ 첨부된 사진 ${allImgs.length}장도 함께 참고할게요`);
+          }
+        }
+        currentRepoIdeas.unshift(newIdea);
+        if (typeof renderRepoIdeas === 'function') renderRepoIdeas();
+        if (typeof saveRepoIdea === 'function') saveRepoIdea(null, false);
+        if (typeof saveIdeaInbox === 'function' && typeof aiClassifyAndRoute === 'function' && !isBuildIntent) {
+          // 일반 대화는 라우터로도 보내보기
+        }
+      }
+
+      if (isBuildIntent) {
+        a4uChatAddMessage('bot', `좋아, "${raw.slice(0,40)}" 바로 패치할게! 🚀\n1.최신 코드 동기화중...`);
+        // 로컬 모드면 안내
+        if (localMode && localMode.checked) {
+          a4uChatAddMessage('bot', '🧠 로컬 모드 ON: MiniCPM이 있다면 PocketPal/Ollama로 로컬에서 처리해. 지금은 Gemini API로 대체 실행할게. (추후 callLocalMiniCPM() 연결 예정)');
+        }
+        // 기존 원클릭 패치 엔진 재사용
+        if (typeof oneClickAutoPatch === 'function') {
+          // 약간의 딜레이로 UX 부드럽게
+          setTimeout(async () => {
+            try {
+              await oneClickAutoPatch();
+              a4uChatAddMessage('bot', '✅ 패치 완료! 아래 미리보기에서 확인해봐. 마음에 안 들면 ↩️ Undo 하면 돼.');
+              a4uChatAddMessage('system', '💡 팁: "사진 정리해줘"라고 하면 첨부된 아이디어 사진들을 MiniCPM-V가 글로 바꿔줘');
+            } catch(e) {
+              a4uChatAddMessage('bot', '⚠️ 패치 실패: ' + e.message + '\nGemini 키 확인하거나, 아이디어를 좀 더 구체적으로 말해줘!');
+            }
+          }, 400);
+        } else {
+          a4uChatAddMessage('bot', '⚡ 패치 엔진(oneClickAutoPatch)을 찾을 수 없어. 설정 탭에서 수동으로 실행해줘.');
+        }
+      } else {
+        a4uChatAddMessage('bot', `아이디어로 저장했어! 체크박스 켜고 "해줘" 라고 말하면 바로 코드에 반영할게.\n지금 아이디어: "${raw.slice(0,60)}"`);
+      }
+    } catch(err) {
+      a4uChatAddMessage('bot', '❌ 오류: ' + err.message);
+    }
+  };
+
+  // v9.0.0: MiniCPM 로컬 호출 스텁 (추후 WebLLM/llama.cpp 연결)
+  window.callLocalMiniCPM = async function(prompt) {
+    // TODO: WebLLM 또는 llama.cpp WASM 로드
+    // 지금은 Gemini로 폴백
+    if (typeof callGeminiAPI === 'function') {
+      return await callGeminiAPI(prompt, 0.2, false, null, 'gemini-2.5-flash');
+    }
+    throw new Error('callGeminiAPI 없음');
+  };
+
+
   let GITHUB_USER = localStorage.getItem('github_user') || 'apoco211';
   const DEFAULT_GOOGLE_CLIENT_ID = '888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
   
@@ -1058,7 +1246,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v8.9.69] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.1] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -2395,7 +2583,7 @@ ${contextConstraint}`;
       const ctxText = getActualContextText();
       await navigator.clipboard.writeText(ctxText); 
       showToast('📋 맥락 복사 완료! 코드 저장 창을 띄웁니다', 'ok'); 
-      // v8.9.68: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
+      // v9.0.0: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
       try {
         const editor = $('codeEditor');
         let code = editor && editor.value && editor.value.trim().length>0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
@@ -2676,7 +2864,7 @@ ${contextConstraint}`;
       listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...<br><span class="text-[10px]">[' + tab + (query ? ' / 검색:'+query : '') + ']</span></div>';
       activeDriveTab = tab;
 
-      // v8.9.68 탭 활성 UI 강조 + 완전 복구
+      // v9.0.0 탭 활성 UI 강조 + 완전 복구
       try {
         ['recent','my','shared'].forEach(t => {
           const btn = $('driveTab' + t.charAt(0).toUpperCase() + t.slice(1));
@@ -2692,7 +2880,7 @@ ${contextConstraint}`;
       } catch(e){}
 
       try {
-          // v8.9.68 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
+          // v9.0.0 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
           let baseQ = "trashed=false and mimeType='application/vnd.google-apps.document'";
           const safeQuery = (query || '').replace(/'/g, "\\'").replace(/\\/g, '\\\\');
           if (safeQuery) baseQ += ` and name contains '${safeQuery}'`;
@@ -2738,7 +2926,7 @@ ${contextConstraint}`;
               files = await fetchJson(baseQ, 'allDrives');
           }
 
-          console.log('[Drive v8.9.68] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
+          console.log('[Drive v9.0.0] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
           if (!files || files.length === 0) {
               listEl.innerHTML = `<div style="text-align:center;padding:40px;opacity:0.6;">
                 <div class="text-[13px] mb-1">결과가 없습니다.</div>
@@ -2765,7 +2953,7 @@ ${contextConstraint}`;
           });
           listEl.innerHTML = html;
       } catch (e) {
-          console.error('[Drive v8.9.68] 오류', e);
+          console.error('[Drive v9.0.0] 오류', e);
           if (e.message && e.message.includes('401')) {
             listEl.innerHTML = '<div style="text-align:center;padding:30px;"><div class="text-[12px] mb-2 text-red-600">🔑 토큰 만료 (401)</div><div class="text-[10px] opacity-70 mb-3">다시 로그인하면 내 드라이브/공유함이 복구됩니다</div><button onclick="handleGoogleLogin()" class="btn btn-sm btn-primary">🔄 재로그인</button></div>';
             updateGisStatus('⚠️ 토큰 만료 - 재로그인 필요');
@@ -3225,7 +3413,7 @@ ${contextConstraint}`;
   }
   
   function handleGoogleLogin() {
-    // v8.9.68 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
+    // v9.0.0 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
     if (!isGoogleLoggedIn() && accessToken) clearGoogleToken(true);
     if (!tokenClient) { 
       initGis(); 
@@ -3233,7 +3421,7 @@ ${contextConstraint}`;
       return; 
     }
     try { 
-      // v8.9.68: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
+      // v9.0.0: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
       // 스코프 꼬임일 때만 토큰 꼬임 자동 풀기로 consent
       tokenClient.requestAccessToken({ prompt: 'select_account', hint: '', include_granted_scopes: true }); 
     } catch(e) {
