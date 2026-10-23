@@ -89,7 +89,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.1 - 대화하면서 빌드 Chat Build</title>
+  <title>Builder-a4u v9.0.5 - 클립보드 붙여넣기 강화</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -110,9 +110,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.1">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.1">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.1">
+  <link rel="manifest" href="./manifest.json?v=9.0.5">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.5">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.5">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.0">
   
   <style>
@@ -179,7 +179,7 @@
     .dark .btn { background: #252a36 !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
-    /* v9.0.0: 대화하면서 빌드 - 채팅 FAB & 패널 */
+    /* v9.0.4: 대화하면서 빌드 - 채팅 FAB & 패널 */
     #a4uChatFab {
       position: fixed; right: 16px; bottom: 18px; z-index: 9999;
       width: 56px; height: 56px; border-radius: 999px;
@@ -272,7 +272,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.1</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.5</h1>
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -733,21 +733,41 @@
          </div>
       </div>
       <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 & 자동 배포</button>
+    
+  
+  <!-- v9.0.4: 간단 카피박스 -->
+  <div class="card" style="border:2px solid #111111;">
+    <div class="flex justify-between items-center mb-2">
+      <h2 class="font-black text-[13px]">📦 v9.0.4 카피박스</h2>
+      <span class="badge" style="background:#111;color:#fff;">간단 복사</span>
+    </div>
+    <div class="flex flex-col gap-2">
+      <div class="flex gap-2 items-center">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1" value="v9.0.4" readonly onclick="this.select()">
+        <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2 px-3 text-[11px]">📋 버전 복사</button>
+      </div>
+      <div class="flex gap-2">
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[90px] flex-1" readonly onclick="this.select()">v9.0.4 - 대화하면서 빌드 Chat Build
+- 💬 채팅 패널 추가 (FAB)
+- 🧠 로컬 AI 모드 stub
+- ⚡ 말하면 바로 패치+미리보기</textarea>
+        <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] h-[90px]">📋 내용 복사</button>
+      </div>
     </div>
   </div>
-</div>
 
 
-<!-- v9.0.0: 대화하면서 빌드 - FAB -->
+
+<!-- v9.0.4: 대화하면서 빌드 - FAB -->
 <button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드">💬</button>
 
-<!-- v9.0.0: 대화하면서 빌드 - 채팅 패널 -->
+<!-- v9.0.4: 대화하면서 빌드 - 채팅 패널 -->
 <div id="a4uChatPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line);">
     <div style="display:flex; align-items:center; gap:8px;">
       <span style="font-size:18px;">💬</span>
       <b style="font-size:14px;">대화하면서 빌드</b>
-      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.0</span>
+      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.4</span>
     </div>
     <div style="display:flex; gap:6px; align-items:center;">
       <label style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:700;"><input type="checkbox" id="a4uLocalMode" style="width:14px;height:14px;"> 🧠 로컬</label>
@@ -756,7 +776,7 @@
   </div>
   <div id="a4uChatHistory">
     <div class="a4u-msg system">대화하면서 바로 빌드할 수 있어요. 예: "하단 첫번째 시계 아이콘 더 크게 예쁘게 바꿔줘"</div>
-    <div class="a4u-msg bot">안녕! 여기에 말하면 아이디어로 자동 등록되고, "해줘/바꿔줘"가 들어가면 바로 패치까지 해줄게. MiniCPM 켜면 오프라인으로도 돼. 💬</div>
+    <div class="a4u-msg bot">안녕! 여기에 말하면 아이디어로 자동 등록되고, "해줘/바꿔줘"가 들어가면 바로 패치까지 해줄게. 사진 붙여넣기도 돼! 📸💬</div>
   </div>
   <div class="a4u-quick">
     <button onclick="a4uQuickInsert('하단 첫번째 시계 아이콘을 더 크고 예쁜 걸로 바꿔줘')">🕐 시계 크게</button>
@@ -764,8 +784,10 @@
     <button onclick="a4uQuickInsert('사진 속 아이디어를 글로 정리해줘')">🖼️ 사진 정리</button>
     <button onclick="a4uQuickInsert('전체적으로 더 모던하게 다듬어줘')">✨ 모던하게</button>
   </div>
+  <div id="a4uChatImagePreview" style="display:none; padding:8px 10px; background:var(--bg); border-top:1px solid var(--line); flex-wrap:wrap; gap:6px;"></div>
   <div id="a4uChatInputWrap">
-    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Enter로 전송, Shift+Enter 줄바꿈)" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendA4uChat();}"></textarea>
+    <label class="btn btn-sm" style="min-height:44px; padding:0 10px; background:var(--bg);" title="사진 첨부">📸<input type="file" id="a4uChatImageInput" accept="image/*" multiple class="hidden" onchange="handleA4uChatImageSelect(this)"></label>
+    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Ctrl+V로 사진 붙여넣기, 드래그앤드롭도 가능)" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendA4uChat();}" onpaste="handleA4uChatPaste(event)"></textarea>
     <button onclick="sendA4uChat()" class="btn btn-primary" style="min-height:44px; padding:0 16px;">전송</button>
   </div>
 </div>
@@ -790,7 +812,7 @@
   const $ = id => document.getElementById(id);
   
   
-  // v9.0.0: 대화하면서 빌드 - 채팅 로직
+  // v9.0.4: 대화하면서 빌드 - 채팅 로직
   let a4uChatOpen = false;
   window.toggleA4uChat = function() {
     const panel = document.getElementById('a4uChatPanel');
@@ -827,9 +849,27 @@
     const localMode = document.getElementById('a4uLocalMode');
     if (!inp) return;
     const raw = inp.value.trim();
-    if (!raw) return;
+    const hasImages = window.a4uChatImages && window.a4uChatImages.length>0;
+    if (!raw && !hasImages) return;
+    const imagesToSend = hasImages ? [...a4uChatImages] : [];
     inp.value = '';
-    a4uChatAddMessage('user', raw);
+    // 이미지 미리보기 초기화는 전송 후에
+    if (raw) a4uChatAddMessage('user', raw + (hasImages?` [📸 ${hasImages}장]`:''));
+    else if (hasImages) a4uChatAddMessage('user', `[📸 사진 ${hasImages}장] 이 사진 참고해서 바꿔줘`);
+    if (hasImages && typeof a4uChatImages !== 'undefined') {
+      // 채팅에 썸네일도 보여주기
+      const hist = document.getElementById('a4uChatHistory');
+      if (hist) {
+        const div = document.createElement('div');
+        div.className = 'a4u-msg user';
+        div.style.display='flex';
+        div.style.gap='4px';
+        div.style.flexWrap='wrap';
+        div.innerHTML = imagesToSend.map(img=>`<img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #fff;">`).join('');
+        hist.appendChild(div);
+        hist.scrollTop = hist.scrollHeight;
+      }
+    }
     
     const isBuildIntent = /해줘|바꿔줘|고쳐줘|키워줘|줄여줘|만들어줘|수정해줘|변경해줘|다듬어줘|정리해줘/i.test(raw);
     const isPhotoIntent = /사진|이미지|캡처|스크린샷/i.test(raw);
@@ -839,11 +879,14 @@
       if (typeof currentRepoIdeas !== 'undefined') {
         const newIdea = {
           id: Date.now(),
-          text: raw + (localMode && localMode.checked ? ' [🧠로컬]' : ' [💬채팅]'),
+          text: raw + (localMode && localMode.checked ? ' [🧠로컬]' : ' [💬채팅]') + (hasImages?` [이미지 ${imagesToSend.length}장]`:''),
           checked: isBuildIntent ? true : false,
           status: 'todo',
-          images: []
+          images: imagesToSend
         };
+        // 채팅 이미지 비우기
+        window.a4uChatImages = [];
+        renderA4uChatImages();
         // 사진 의도면 현재 아이디어 사진도 포함
         if (isPhotoIntent && typeof getAllIdeaImagesFlattened === 'function') {
           const allImgs = getAllIdeaImagesFlattened();
@@ -888,7 +931,37 @@
     }
   };
 
-  // v9.0.0: MiniCPM 로컬 호출 스텁 (추후 WebLLM/llama.cpp 연결)
+  // v9.0.4: MiniCPM 로컬 호출 스텁 (추후 WebLLM/llama.cpp 연결)
+  
+  // v9.0.4: 카피박스 기능
+  window.copyToClipboard = async function(text, label) {
+    try {
+      await navigator.clipboard.writeText(text);
+      if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료: ' + text, 'ok');
+    } catch(e) {
+      const ta = document.createElement('textarea');
+      ta.value = text; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+      if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료', 'ok');
+    }
+  };
+  window.copyChangelog = function(mode) {
+    const box = document.getElementById('changelogCopyBox');
+    if (!box) return;
+    let txt = box.value;
+    if (mode==='short') {
+      txt = `v9.0.4 - 대화하면서 빌드 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+    }
+    copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
+  };
+  window.copyVersionAndChangelog = function() {
+    const v = 'v9.0.4';
+    const box = document.getElementById('changelogCopyBox');
+    const ch = box ? box.value : '';
+    const full = `${v}\n\n${ch}`;
+    copyToClipboard(full, '버전+변경사항');
+  };
+
   window.callLocalMiniCPM = async function(prompt) {
     // TODO: WebLLM 또는 llama.cpp WASM 로드
     // 지금은 Gemini로 폴백
@@ -1163,52 +1236,65 @@
       } catch(e) {}
       
       const targetFileName = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-      log(`🔄 [${currentRepo}/${targetFileName}] 최신 원본 코드 GitHub 강제 요청 중...`, 'info');
-      if (runBtn) runBtn.innerHTML = `⏳ 0/4 [${currentRepo}] 최신 코드 가져오는 중...`;
-      
+      // v9.0.4 FIX: 최근 빌드된 코드를 먼저 로드 - GitHub보다 로컬 에디터/드래프트 우선
       let currentCode = '';
-      try {
-        currentCode = await syncLatestSourceFromGithub(true);
-        if (!currentCode || currentCode.trim().length < 50) {
-          log(`⚠️ syncLatestSourceFromGithub 빈 응답, raw 직접 재시도`, 'warn');
-          const pat = getGitHubPat();
-          const headers = { 'Accept': 'application/vnd.github.v3+json' };
-          if (pat && pat.length > 10) headers['Authorization'] = (pat.startsWith('ghp_') ? 'token ' : 'Bearer ') + pat;
-          try {
-            const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFileName)}?t=${Date.now()}`;
-            const apiRes = await fetch(apiUrl, { headers, cache: 'no-store' });
-            if (apiRes.ok) {
-              const data = await apiRes.json();
-              if (data.content) {
-                const cleanB64 = data.content.replace(/\s/g, '');
-                currentCode = new TextDecoder().decode(Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0)));
+      const editorCode = $('codeEditor')?.value?.trim() || '';
+      const draftCode = localStorage.getItem(getDraftCodeKey()) || '';
+      const isChatBuild = typeof window._isChatBuild !== 'undefined' && window._isChatBuild;
+      
+      if (editorCode && editorCode.length > 100) {
+        // 채팅 빌드면 무조건 에디터 코드가 최근 빌드
+        currentCode = editorCode;
+        log(`📥 [${currentRepo}/${targetFileName}] 최근 빌드된 로컬 에디터 코드 사용 (${currentCode.length.toLocaleString()}자) - GitHub 무시`, 'ok');
+        if (runBtn) runBtn.innerHTML = `⏳ 0/4 [${currentRepo}] 로컬 최신 빌드 로드 완료`;
+      } else if (draftCode && draftCode.length > 100 && !isChatBuild) {
+        currentCode = draftCode;
+        log(`📥 [${currentRepo}] 로컬 드래프트 코드 사용 (${currentCode.length.toLocaleString()}자)`, 'ok');
+      } else {
+        log(`🔄 [${currentRepo}/${targetFileName}] 에디터가 비어있어 GitHub에서 최신 원본 가져오는 중...`, 'info');
+        if (runBtn) runBtn.innerHTML = `⏳ 0/4 [${currentRepo}] GitHub에서 가져오는 중...`;
+        try {
+          currentCode = await syncLatestSourceFromGithub(true);
+          if (!currentCode || currentCode.trim().length < 50) {
+            log(`⚠️ syncLatestSourceFromGithub 빈 응답, raw 직접 재시도`, 'warn');
+            const pat = getGitHubPat();
+            const headers = { 'Accept': 'application/vnd.github.v3+json' };
+            if (pat && pat.length > 10) headers['Authorization'] = (pat.startsWith('ghp_') ? 'token ' : 'Bearer ') + pat;
+            try {
+              const apiUrl = `https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFileName)}?t=${Date.now()}`;
+              const apiRes = await fetch(apiUrl, { headers, cache: 'no-store' });
+              if (apiRes.ok) {
+                const data = await apiRes.json();
+                if (data.content) {
+                  const cleanB64 = data.content.replace(/\s/g, '');
+                  currentCode = new TextDecoder().decode(Uint8Array.from(atob(cleanB64), c => c.charCodeAt(0)));
+                }
+              }
+            } catch(e) {}
+            if (!currentCode || currentCode.trim().length < 50) {
+              const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${targetFileName}?t=${Date.now()}`;
+              const rawRes = await fetch(rawUrl, { cache: 'no-store' });
+              if (rawRes.ok) {
+                currentCode = await rawRes.text();
+              } else {
+                const rawUrl2 = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${targetFileName}?t=${Date.now()}`;
+                const rawRes2 = await fetch(rawUrl2, { cache: 'no-store' });
+                if (rawRes2.ok) currentCode = await rawRes2.text();
               }
             }
-          } catch(e) {}
-          if (!currentCode || currentCode.trim().length < 50) {
-            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/main/${targetFileName}?t=${Date.now()}`;
-            const rawRes = await fetch(rawUrl, { cache: 'no-store' });
-            if (rawRes.ok) {
-              currentCode = await rawRes.text();
-            } else {
-              const rawUrl2 = `https://raw.githubusercontent.com/${GITHUB_USER}/${currentRepo}/master/${targetFileName}?t=${Date.now()}`;
-              const rawRes2 = await fetch(rawUrl2, { cache: 'no-store' });
-              if (rawRes2.ok) currentCode = await rawRes2.text();
-            }
           }
+        } catch (err) {
+          log(`⚠️ GitHub 직접 요청 실패: ${err.message}`, 'warn');
         }
-      } catch (err) {
-        log(`⚠️ GitHub 직접 요청 실패: ${err.message}`, 'warn');
-      }
-      
-      if (currentCode && currentCode.trim().length > 50) {
-        if ($('codeEditor')) $('codeEditor').value = currentCode;
-        safeSetLocalStorage(getDraftCodeKey(), currentCode);
-        log(`📥 [${currentRepo}] GitHub 최신 코드 동기화 완료 (${currentCode.length.toLocaleString()}자)`, 'ok');
-      } else {
-        currentCode = localStorage.getItem(getDraftCodeKey()) || $('codeEditor')?.value || '';
         if (currentCode && currentCode.trim().length > 50) {
-          log(`⚠️ GitHub 연결 불가로 로컬 보관 코드를 사용합니다 [${currentRepo}] (${currentCode.length.toLocaleString()}자)`, 'warn');
+          if ($('codeEditor')) $('codeEditor').value = currentCode;
+          safeSetLocalStorage(getDraftCodeKey(), currentCode);
+          log(`📥 [${currentRepo}] GitHub 코드 동기화 완료 (${currentCode.length.toLocaleString()}자)`, 'ok');
+        } else {
+          currentCode = draftCode || editorCode || '';
+          if (currentCode && currentCode.trim().length > 50) {
+            log(`⚠️ GitHub 불가로 로컬 보관 코드 사용 [${currentRepo}] (${currentCode.length.toLocaleString()}자)`, 'warn');
+          }
         }
       }
       
@@ -1246,7 +1332,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.1] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.5] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1281,8 +1367,10 @@ ${currentCode.substring(0, 8000)}
       if (blocks.length === 0) {
         showToast('AI가 유효한 패치를 만들지 못했습니다. 로그 확인', 'err');
         log('❌ 파싱 실패, AI 원문: ' + aiResponse.substring(0,800), 'err');
+        window._lastPatchResult = { successCount:0, failCount:1, updatedCode:null, aiResponse, blocks:[] };
         if (runBtn) { runBtn.disabled = false; runBtn.innerHTML = '⚡ 체크 항목 즉시 코드 반영 (10초 컷) - 외부 AI 방문 0회'; }
-        return;
+        window._isChatBuild = false;
+      return window._lastPatchResult;
       }
 
       window.lastPrePatchCode = currentCode;
@@ -1362,9 +1450,21 @@ ${currentCode.substring(0, 8000)}
         if ($('undoPatchBtn')) $('undoPatchBtn').classList.remove('hidden');
         showToast(`🎉 ${successCount}개 패치 적용! ${newVersion||''} 미리보기 확인 - 클립보드 복사됨 ${failCount>0 ? failCount+'개 실패' : ''}`, successCount>0 && failCount===0 ? 'ok' : 'info');
         log(`🎉 원클릭 패치 완료: ${successCount}성공/${failCount}실패 ${newVersion||''} - 빌드번호 자동+1, 클립보드 복사`, 'ok');
+        // v9.0.4: 결과를 전역에 저장해서 채팅창에서 확인 가능
+        window._lastPatchResult = { successCount, failCount, updatedCode, aiResponse, blocks };
+        // v9.0.4: 실패가 있으면 채팅에 상세 로그
+        if (failCount>0) {
+          log(`⚠️ ${failCount}개 블록 실패 - SEARCH 코드가 원본에 없음. 코드 에디터에 하단버튼/아이콘 관련 코드를 직접 넣거나, 아이디어를 더 구체적으로 써주세요`, 'err');
+        }
+
       } else {
-        showToast('일치하는 코드 위치를 찾지 못했습니다.', 'err');
+        showToast('일치하는 코드 위치를 찾지 못했습니다. 로그 확인 - SEARCH 코드 불일치', 'err');
+        window._lastPatchResult = { successCount:0, failCount:blocks.length, updatedCode, aiResponse, blocks };
+        window._isChatBuild = false;
+      return window._lastPatchResult;
       }
+      window._isChatBuild = false;
+      return window._lastPatchResult;
     } catch (e) {
       console.error(e);
       let errMsg = e.message;
@@ -2583,7 +2683,7 @@ ${contextConstraint}`;
       const ctxText = getActualContextText();
       await navigator.clipboard.writeText(ctxText); 
       showToast('📋 맥락 복사 완료! 코드 저장 창을 띄웁니다', 'ok'); 
-      // v9.0.0: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
+      // v9.0.4: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
       try {
         const editor = $('codeEditor');
         let code = editor && editor.value && editor.value.trim().length>0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
@@ -2864,7 +2964,7 @@ ${contextConstraint}`;
       listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...<br><span class="text-[10px]">[' + tab + (query ? ' / 검색:'+query : '') + ']</span></div>';
       activeDriveTab = tab;
 
-      // v9.0.0 탭 활성 UI 강조 + 완전 복구
+      // v9.0.4 탭 활성 UI 강조 + 완전 복구
       try {
         ['recent','my','shared'].forEach(t => {
           const btn = $('driveTab' + t.charAt(0).toUpperCase() + t.slice(1));
@@ -2880,7 +2980,7 @@ ${contextConstraint}`;
       } catch(e){}
 
       try {
-          // v9.0.0 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
+          // v9.0.4 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
           let baseQ = "trashed=false and mimeType='application/vnd.google-apps.document'";
           const safeQuery = (query || '').replace(/'/g, "\\'").replace(/\\/g, '\\\\');
           if (safeQuery) baseQ += ` and name contains '${safeQuery}'`;
@@ -2926,7 +3026,7 @@ ${contextConstraint}`;
               files = await fetchJson(baseQ, 'allDrives');
           }
 
-          console.log('[Drive v9.0.0] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
+          console.log('[Drive v9.0.4] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
           if (!files || files.length === 0) {
               listEl.innerHTML = `<div style="text-align:center;padding:40px;opacity:0.6;">
                 <div class="text-[13px] mb-1">결과가 없습니다.</div>
@@ -2953,7 +3053,7 @@ ${contextConstraint}`;
           });
           listEl.innerHTML = html;
       } catch (e) {
-          console.error('[Drive v9.0.0] 오류', e);
+          console.error('[Drive v9.0.4] 오류', e);
           if (e.message && e.message.includes('401')) {
             listEl.innerHTML = '<div style="text-align:center;padding:30px;"><div class="text-[12px] mb-2 text-red-600">🔑 토큰 만료 (401)</div><div class="text-[10px] opacity-70 mb-3">다시 로그인하면 내 드라이브/공유함이 복구됩니다</div><button onclick="handleGoogleLogin()" class="btn btn-sm btn-primary">🔄 재로그인</button></div>';
             updateGisStatus('⚠️ 토큰 만료 - 재로그인 필요');
@@ -3413,7 +3513,7 @@ ${contextConstraint}`;
   }
   
   function handleGoogleLogin() {
-    // v9.0.0 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
+    // v9.0.4 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
     if (!isGoogleLoggedIn() && accessToken) clearGoogleToken(true);
     if (!tokenClient) { 
       initGis(); 
@@ -3421,7 +3521,7 @@ ${contextConstraint}`;
       return; 
     }
     try { 
-      // v9.0.0: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
+      // v9.0.4: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
       // 스코프 꼬임일 때만 토큰 꼬임 자동 풀기로 consent
       tokenClient.requestAccessToken({ prompt: 'select_account', hint: '', include_granted_scopes: true }); 
     } catch(e) {
