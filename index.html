@@ -89,7 +89,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.9 - 미리보기 삐져나옴 fix</title>
+  <title>Builder-a4u v9.0.12 - 채팅 아이콘 아래로 복구</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -110,9 +110,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.9">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.9">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.9">
+  <link rel="manifest" href="./manifest.json?v=9.0.12">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.12">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.12">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.0">
   
   <style>
@@ -133,8 +133,8 @@
     }
     .sticky-header {
       position: sticky; top: 0; z-index: 99;
-      background: var(--bg); margin: -14px -14px 14px -14px;
-      padding: 14px 14px 10px 14px; border-bottom: 1px solid var(--line);
+      background: var(--bg); margin: 0 0 14px 0;
+      padding: 14px 14px 10px 14px; border-bottom: 1px solid var(--line); width: 100%; box-sizing: border-box;
       box-shadow: 0 4px 10px rgba(0,0,0,0.03); transition: background 0.2s, border-color 0.2s;
     }
     .dark .sticky-header { box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
@@ -179,22 +179,18 @@
     .dark .btn { background: #252a36 !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
-    /* v9.0.8: 대화하면서 빌드 - 채팅 FAB & 패널 */
+    /* v9.0.11: 대화하면서 빌드 - 채팅 FAB & 패널 */
     #a4uChatFab {
-      /* v9.0.8: 강제 가시성 */
-      display:flex !important; visibility:visible !important; opacity:1 !important;
-
-      position: fixed; right: 16px; bottom: 18px; z-index: 9999;
-      width: 56px; height: 56px; border-radius: 999px;
-      background: #111111; color: #fff; border: 1px solid #111;
-      font-size: 26px; font-weight: 900;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; transition: transform 0.15s;
+      position: fixed !important; right: 16px !important; bottom: 90px !important; z-index: 10001 !important;
+      width: 64px !important; height: 64px !important; border-radius: 999px !important;
+      background: #111 !important; color: #fff !important; border: 3px solid #FFC800 !important;
+      font-size: 32px !important; box-shadow: 0 8px 28px rgba(0,0,0,0.4) !important;
+      display: flex !important; align-items: center !important; justify-content: center !important;
+      cursor: pointer !important; visibility: visible !important; opacity: 1 !important;
     }
-    #a4uChatFab:active { transform: scale(0.93); }
+    #a4uChatFab:active { transform: scale(0.93) !important; }
     #a4uChatPanel {
-      position: fixed; left: 0; right: 0; bottom: 0; z-index: 9998;
+      position: fixed; left: 0; right: 0; bottom: 0; /* v9.0.11 원래대로 아래에서 올라옴 */ z-index: 9998;
       max-width: 920px; margin: 0 auto;
       background: var(--card); border: 1px solid var(--line);
       border-radius: 20px 20px 0 0; 
@@ -251,9 +247,11 @@
     }
     .live-preview-box { border: 2px solid #10b981; border-radius: 16px; overflow: hidden; margin-top: 12px; background: #ffffff; display: none; max-width: 100%; box-sizing: border-box; }
     .live-preview-box iframe { width: 100% !important; max-width: 100% !important; border: none !important; display: block; overflow-x: hidden; }
-    /* v9.0.8: 삐져나옴 방지 - sticky-header가 iframe 안에서 -14px 마진으로 삐져나오는 버그 fix */
+    /* v9.0.11: 삐져나옴 방지 - sticky-header가 iframe 안에서 -14px 마진으로 삐져나오는 버그 fix */
     #livePreviewFrame { width: 100%; max-width: 100%; overflow: hidden; }
-    body { overflow-x: hidden; }
+    body { overflow-x: hidden; max-width: 100vw; box-sizing: border-box; }
+    * { box-sizing: border-box; }
+    html { overflow-x: hidden; }
     .card { overflow: hidden; max-width: 100%; box-sizing: border-box; }
     .live-preview-box.active { display: block; }
     .live-preview-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: #f8fafc; border-bottom: 1px solid var(--line); font-size: 12px; font-weight: 800; }
@@ -280,8 +278,8 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.9</h1>
-      <button id="openChatFallbackBtn" style="background:#111 !important;color:#FFC800 !important;border:2px solid #FFC800 !important;font-weight:900 !important;" onclick="toggleA4uChat()" class="btn btn-sm ml-2" style="background:#111;color:#fff;border-color:#FFC800;">💬 채팅</button>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.12</h1>
+      
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
         <span id="currentActiveRepoDisplay" class="text-blue-600 dark:text-blue-400">builder-a4u</span>
@@ -745,24 +743,24 @@
       <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 & 자동 배포</button>
     
   
-    <!-- v9.0.8: 간단 카피박스 - 개선 -->
+    <!-- v9.0.11: 간단 카피박스 - 개선 -->
   <div class="card" style="border:2px solid #111111;">
     <div class="flex justify-between items-center mb-3">
-      <h2 class="font-black text-[13px] flex items-center gap-2">📦 v9.0.8 카피박스 <span class="text-[10px] opacity-60">클릭하면 전체 선택</span></h2>
+      <h2 class="font-black text-[13px] flex items-center gap-2">📦 v9.0.11 카피박스 <span class="text-[10px] opacity-60">클릭하면 전체 선택</span></h2>
       <span class="badge" style="background:#111;color:#fff;">원클릭 복사</span>
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.8" readonly onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.11" readonly onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly onclick="this.select()">v9.0.8 - 미리보기 삐져나옴 fix
-- 🐛 버그픽스: 미리보기가 왼쪽으로 삐져나오던 오버플로우 fix (스크린샷 제보)
-- 📐 CSS: live-preview-box overflow hidden, iframe 100% 제한, sticky-header -14px 마진 오버라이드
-- 💬 FAB: bottom 90px, z-index 10001, 노란 테두리로 무조건 표시 유지
-- 📁 파일 업로드: 에디터 드래그앤드롭 유지
-- 📦 카피박스: 원클릭 복사</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly onclick="this.select()">v9.0.11 - 채팅 아이콘 아래로 복구
+- 💬 원래대로: 아래쪽 플로팅 아이콘으로 복구 (bottom 90px, 64px, 노란테두리)
+- ❌ 상단 채팅 버튼 제거: 위에 있던 임시 버튼 삭제, 원래 UI로
+- 🐛 삐져나옴 fix 유지: sticky-header margin 0, overflow hidden 유지
+- 📁 파일 올리기: 에디터 드랍 지원 유지
+- ⌨️ 단축키: 백틱(`) 또는 Ctrl+K로도 채팅 열기 가능</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -776,16 +774,19 @@
 
 
 
-<!-- v9.0.8: 대화하면서 빌드 - FAB -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드">💬</button>
+<!-- v9.0.11: 대화하면서 빌드 - FAB -->
+<!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
+<!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position:fixed !important; right:16px !important; bottom:90px !important; z-index:10001 !important; width:64px !important; height:64px !important; border-radius:999px !important; background:#111 !important; color:#fff !important; border:3px solid #FFC800 !important; font-size:32px !important; box-shadow:0 8px 28px rgba(0,0,0,0.4) !important; display:flex !important; align-items:center !important; justify-content:center !important; cursor:pointer !important;">💬</button>
+<div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
-<!-- v9.0.8: 대화하면서 빌드 - 채팅 패널 -->
+<!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
 <div id="a4uChatPanel">
   <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line);">
     <div style="display:flex; align-items:center; gap:8px;">
       <span style="font-size:18px;">💬</span>
       <b style="font-size:14px;">대화하면서 빌드</b>
-      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.8</span>
+      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.11</span>
     </div>
     <div style="display:flex; gap:6px; align-items:center;">
       <label style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:700;"><input type="checkbox" id="a4uLocalMode" style="width:14px;height:14px;"> 🧠 로컬</label>
@@ -828,9 +829,10 @@
   
 <script>
   const $ = id => document.getElementById(id);
+  let a4uChatOpen = false; // v9.0.11 single definition
   
   
-  // v9.0.8: 대화하면서 빌드 - 채팅 로직
+  // v9.0.11: 대화하면서 빌드 - 채팅 로직
   let a4uChatOpen = false;
   window.toggleA4uChat = function() {
     const panel = document.getElementById('a4uChatPanel');
@@ -848,7 +850,7 @@
   };
 
   
-  // v9.0.8: 채팅창 강제 열기 + 단축키
+  // v9.0.11: 채팅창 강제 열기 + 단축키
   window.forceOpenChat = function() {
     const panel = document.getElementById('a4uChatPanel');
     if (panel) {
@@ -878,6 +880,34 @@
       }
     }
   }, 2000);
+
+
+
+  // v9.0.11: 확정 toggle - 중복 방지, 무조건 작동
+  window.a4uChatOpen = false;
+  window.toggleA4uChat = function() {
+    try {
+      const panel = document.getElementById('a4uChatPanel');
+      const fab = document.getElementById('a4uChatFab');
+      const label = document.getElementById('a4uChatFabLabel');
+      if (!panel) { console.error('chat panel not found'); return; }
+      window.a4uChatOpen = !window.a4uChatOpen;
+      if (window.a4uChatOpen) {
+        panel.classList.add('active');
+        if (fab) { fab.style.transform = 'scale(0)'; fab.style.opacity='0'; }
+        if (label) label.style.display='none';
+        setTimeout(()=>{ const inp=document.getElementById('a4uChatInput'); if(inp) inp.focus(); }, 300);
+      } else {
+        panel.classList.remove('active');
+        if (fab) { fab.style.transform = 'scale(1)'; fab.style.opacity='1'; }
+        if (label) label.style.display='block';
+      }
+    } catch(e) { console.error('toggle error', e); }
+  };
+  window.forceOpenChat = function() {
+    const panel = document.getElementById('a4uChatPanel');
+    if (panel) { panel.classList.add('active'); window.a4uChatOpen=true; }
+  };
 
 
   window.a4uChatAddMessage = function(role, text) {
@@ -982,9 +1012,9 @@
     }
   };
 
-  // v9.0.8: MiniCPM 로컬 호출 스텁 (추후 WebLLM/llama.cpp 연결)
+  // v9.0.11: MiniCPM 로컬 호출 스텁 (추후 WebLLM/llama.cpp 연결)
   
-  // v9.0.8: 카피박스 기능
+  // v9.0.11: 카피박스 기능
   window.copyToClipboard = async function(text, label) {
     try {
       await navigator.clipboard.writeText(text);
@@ -1001,12 +1031,12 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.8 - 대화하면서 빌드 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.11 - 대화하면서 빌드 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.8';
+    const v = 'v9.0.11';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1287,7 +1317,7 @@
       } catch(e) {}
       
       const targetFileName = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-      // v9.0.8 FIX: 최근 빌드된 코드를 먼저 로드 - GitHub보다 로컬 에디터/드래프트 우선
+      // v9.0.11 FIX: 최근 빌드된 코드를 먼저 로드 - GitHub보다 로컬 에디터/드래프트 우선
       let currentCode = '';
       const editorCode = $('codeEditor')?.value?.trim() || '';
       const draftCode = localStorage.getItem(getDraftCodeKey()) || '';
@@ -1383,7 +1413,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.9] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.12] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1501,9 +1531,9 @@ ${currentCode.substring(0, 8000)}
         if ($('undoPatchBtn')) $('undoPatchBtn').classList.remove('hidden');
         showToast(`🎉 ${successCount}개 패치 적용! ${newVersion||''} 미리보기 확인 - 클립보드 복사됨 ${failCount>0 ? failCount+'개 실패' : ''}`, successCount>0 && failCount===0 ? 'ok' : 'info');
         log(`🎉 원클릭 패치 완료: ${successCount}성공/${failCount}실패 ${newVersion||''} - 빌드번호 자동+1, 클립보드 복사`, 'ok');
-        // v9.0.8: 결과를 전역에 저장해서 채팅창에서 확인 가능
+        // v9.0.11: 결과를 전역에 저장해서 채팅창에서 확인 가능
         window._lastPatchResult = { successCount, failCount, updatedCode, aiResponse, blocks };
-        // v9.0.8: 실패가 있으면 채팅에 상세 로그
+        // v9.0.11: 실패가 있으면 채팅에 상세 로그
         if (failCount>0) {
           log(`⚠️ ${failCount}개 블록 실패 - SEARCH 코드가 원본에 없음. 코드 에디터에 하단버튼/아이콘 관련 코드를 직접 넣거나, 아이디어를 더 구체적으로 써주세요`, 'err');
         }
@@ -2805,7 +2835,7 @@ ${contextConstraint}`;
       const ctxText = getActualContextText();
       await navigator.clipboard.writeText(ctxText); 
       showToast('📋 맥락 복사 완료! 코드 저장 창을 띄웁니다', 'ok'); 
-      // v9.0.8: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
+      // v9.0.11: 맥락 복사 후 현재 코드 날짜 없이 저장 창 자동 오픈
       try {
         const editor = $('codeEditor');
         let code = editor && editor.value && editor.value.trim().length>0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
@@ -3086,7 +3116,7 @@ ${contextConstraint}`;
       listEl.innerHTML = '<div style="text-align:center;padding:40px;opacity:0.6;">⏳ 문서를 불러오는 중...<br><span class="text-[10px]">[' + tab + (query ? ' / 검색:'+query : '') + ']</span></div>';
       activeDriveTab = tab;
 
-      // v9.0.8 탭 활성 UI 강조 + 완전 복구
+      // v9.0.11 탭 활성 UI 강조 + 완전 복구
       try {
         ['recent','my','shared'].forEach(t => {
           const btn = $('driveTab' + t.charAt(0).toUpperCase() + t.slice(1));
@@ -3102,7 +3132,7 @@ ${contextConstraint}`;
       } catch(e){}
 
       try {
-          // v9.0.8 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
+          // v9.0.11 완전 복구: drive.readonly + supportsAllDrives + includeItemsFromAllDrives + corpora
           let baseQ = "trashed=false and mimeType='application/vnd.google-apps.document'";
           const safeQuery = (query || '').replace(/'/g, "\\'").replace(/\\/g, '\\\\');
           if (safeQuery) baseQ += ` and name contains '${safeQuery}'`;
@@ -3148,7 +3178,7 @@ ${contextConstraint}`;
               files = await fetchJson(baseQ, 'allDrives');
           }
 
-          console.log('[Drive v9.0.8] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
+          console.log('[Drive v9.0.11] 검색 결과:', files.length, '개, 탭:', tab, '쿼리:', baseQ);
           if (!files || files.length === 0) {
               listEl.innerHTML = `<div style="text-align:center;padding:40px;opacity:0.6;">
                 <div class="text-[13px] mb-1">결과가 없습니다.</div>
@@ -3175,7 +3205,7 @@ ${contextConstraint}`;
           });
           listEl.innerHTML = html;
       } catch (e) {
-          console.error('[Drive v9.0.8] 오류', e);
+          console.error('[Drive v9.0.11] 오류', e);
           if (e.message && e.message.includes('401')) {
             listEl.innerHTML = '<div style="text-align:center;padding:30px;"><div class="text-[12px] mb-2 text-red-600">🔑 토큰 만료 (401)</div><div class="text-[10px] opacity-70 mb-3">다시 로그인하면 내 드라이브/공유함이 복구됩니다</div><button onclick="handleGoogleLogin()" class="btn btn-sm btn-primary">🔄 재로그인</button></div>';
             updateGisStatus('⚠️ 토큰 만료 - 재로그인 필요');
@@ -3635,7 +3665,7 @@ ${contextConstraint}`;
   }
   
   function handleGoogleLogin() {
-    // v9.0.8 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
+    // v9.0.11 FIX: 거절(팝업 차단) 방지 - setTimeout 제거, 사용자 제스처 직결
     if (!isGoogleLoggedIn() && accessToken) clearGoogleToken(true);
     if (!tokenClient) { 
       initGis(); 
@@ -3643,7 +3673,7 @@ ${contextConstraint}`;
       return; 
     }
     try { 
-      // v9.0.8: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
+      // v9.0.11: 일반 로그인은 select_account로 먼저 시도 (consent보다 거절률 낮음)
       // 스코프 꼬임일 때만 토큰 꼬임 자동 풀기로 consent
       tokenClient.requestAccessToken({ prompt: 'select_account', hint: '', include_granted_scopes: true }); 
     } catch(e) {
@@ -3787,7 +3817,7 @@ ${contextConstraint}`;
       log(`⚠️ HTML 태그 짝이 안 맞음 <html>:${openHtml} vs </html>:${closeHtml} - 미리보기 깨질 수 있음`, 'warn');
     }
     
-    // v9.0.8: 미리보기가 builder-a4u 자기 자신일 때 삐져나옴 방지용 CSS 주입
+    // v9.0.11: 미리보기가 builder-a4u 자기 자신일 때 삐져나옴 방지용 CSS 주입
     if (finalHtml.includes('sticky-header') && finalHtml.includes('Builder-a4u')) {
       const fixCss = `<style>
         body { max-width: 100% !important; padding: 0 !important; margin: 0 !important; overflow-x: hidden !important; }
