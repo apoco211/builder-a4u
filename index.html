@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.20 - - Pages 자동 활성화 & 자동증가 복구</title>
+  <title>Builder-a4u v9.0.22 - - Pages 자동 활성화 & 모달 스크롤 수정</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -88,10 +88,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.20">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.20">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.20">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.19">
+  <link rel="manifest" href="./manifest.json?v=9.0.22">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.22">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.22">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.21">
   
   <style>
     :root {
@@ -262,9 +262,13 @@
     .version-history { max-height: 280px; overflow-y: auto; border: 1px solid var(--line); border-radius: 12px; padding: 6px; background: var(--bg); }
     .version-item { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); cursor: pointer; margin-bottom: 6px; background: var(--card); font-size: 11px; }
     @media (min-width: 640px) { .version-item { flex-direction: row; align-items: center; justify-content: space-between; } }
-    .drive-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 12px; }
-    .drive-modal-content { background: #ffffff; border-radius: 16px; max-width: 800px; width: 100%; max-width: min(800px, 95vw); max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; }
-    .drive-modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .drive-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 12px; overscroll-behavior: contain; }
+    /* v9.0.21 fix: 모달 내부 스크롤이 배경으로 빠지는 현상 수정 */
+    .drive-modal-content { background: #ffffff; border-radius: 16px; max-width: 800px; width: 100%; max-width: min(800px, 95vw); max-height: 85vh; max-height: 85dvh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; }
+    .drive-modal-content .p-5, #aiRepoModal .p-5 { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; min-height: 0; }
+    .drive-modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; flex: 1; min-height: 0; }
+    #aiRepoModal .drive-modal-content { max-height: 90vh; max-height: 90dvh; }
+    body.modal-open { overflow: hidden; height: 100vh; touch-action: none; }
     .dark .drive-modal-content { background: #1e222f; color: #ffffff; }
     .drive-modal-header { padding: 16px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; }
     .drive-file { padding: 10px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: 1px solid transparent; transition: background 0.15s ease; }
@@ -280,7 +284,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.20</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.22</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -1390,7 +1394,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.20] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.22] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -4101,6 +4105,40 @@ ${contextConstraint}`;
   }
 
 
+
+  // v9.0.21 fix: 모달 열릴 때 배경 스크롤 막기
+  (function(){
+    function lockBody(){ document.body.classList.add('modal-open'); }
+    function unlockBody(){ document.body.classList.remove('modal-open'); }
+    // aiRepoModal 감시
+    const origDisplay = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'style');
+    const aiModal = document.getElementById('aiRepoModal');
+    if (!aiModal) return;
+    const observer = new MutationObserver(()=>{
+      const isVisible = aiModal.style.display !== 'none' && aiModal.style.display !== '';
+      if (isVisible) lockBody(); else {
+        // 다른 모달도 열려있는지 체크
+        const driveModal = document.getElementById('driveModal');
+        const driveVisible = driveModal && driveModal.style.display !== 'none' && driveModal.style.display !== '';
+        if (!driveVisible) unlockBody();
+      }
+    });
+    observer.observe(aiModal, { attributes: true, attributeFilter: ['style'] });
+    const driveModal = document.getElementById('driveModal');
+    if (driveModal) observer.observe(driveModal, { attributes: true, attributeFilter: ['style'] });
+    // 배경 터치로 닫을 때 스크롤 전파 방지
+    document.addEventListener('touchmove', function(e){
+      const target = e.target;
+      if (target && target.closest && target.closest('.drive-modal')) {
+        const content = target.closest('.drive-modal-content');
+        if (!content || !target.closest('.drive-modal-content .p-5, .drive-modal-body')) {
+          // 모달 배경에서 스크롤 시도하면 막기
+          if (document.body.classList.contains('modal-open')) e.preventDefault();
+        }
+      }
+    }, { passive: false });
+  })();
+
   async function writeOrAppendToGoogleDoc(docId, newText, mode = 'append') {
     if (!isGoogleLoggedIn() || !docId) return false;
     try {
@@ -4644,7 +4682,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.20 - - Pages 자동 활성화 & 자동증가 복구</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.22 - - Pages 자동 활성화 & 모달 스크롤 수정</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
