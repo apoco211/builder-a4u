@@ -21,11 +21,32 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.16 - 자동증가 복구 & 대화창 복구</title>
+  <title>Builder-a4u v9.0.18 - - 자동증가 복구 & 대화창 복구</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -46,9 +67,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.16">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.16">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.16">
+  <link rel="manifest" href="./manifest.json?v=9.0.18">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.18">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.18">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.16">
   
   <style>
@@ -115,6 +136,28 @@
     .dark .btn { background: #252a36 !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
+
+    /* v9.0.17 fix: 전체붙여넣기 박스 삐져나옴 방지 */
+    #codeEditor, #patchInput, #updateNoteInput, #inboxTextInput, #inboxMemoInput {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      resize: vertical !important;
+      overflow-wrap: anywhere !important;
+      word-break: break-word !important;
+    }
+    #tabBuildContent .flex.justify-between {
+      flex-wrap: wrap !important;
+    }
+    #tabBuildContent .flex.justify-between > p {
+      min-width: 0 !important;
+      flex: 1 1 auto !important;
+    }
+    #tabBuildContent .flex.justify-between > div {
+      flex-wrap: wrap !important;
+      justify-content: flex-end !important;
+      max-width: 100% !important;
+    }
+
     /* v9.0.11: 대화하면서 빌드 - 채팅 FAB & 패널 */
     #a4uChatFab {
       position: fixed !important; right: 16px !important; bottom: 90px !important; z-index: 10001 !important;
@@ -216,7 +259,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.16</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.18</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -324,9 +367,9 @@
       <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 소스코드 편집기 & 실시간 미리보기</h2>
       <span id="draftStatus" class="text-[9.5px] opacity-60">대기중</span>
     </div>
-    <div class="flex justify-between items-center mb-2 gap-1.5">
-      <p class="text-[10px] opacity-70 truncate">파일 올리거나 붙여넣어 바로 미리보기 가능</p>
-      <div class="flex gap-1 shrink-0">
+    <div class="flex flex-wrap justify-between items-center mb-2 gap-1.5">
+      <p class="text-[10px] opacity-70 truncate flex-1 min-w-0">파일 올리거나 붙여넣어 바로 미리보기 가능</p>
+      <div class="flex flex-wrap gap-1 shrink-0 justify-end max-w-full">
         <label class="btn btn-sm py-1 px-2 text-[10px] cursor-pointer" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📁 파일 올리기<input type="file" id="codeFileInput" accept=".html,.htm,.jsx,.tsx,.js,.txt,.json" class="hidden" onchange="handleCodeFileUpload(this)"></label>
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 다운로드</button>
         <button id="clearCodeBtn" class="btn btn-sm py-1 px-2 text-[10px]" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 비우기</button>
@@ -1326,7 +1369,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.13] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.18] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -2050,7 +2093,7 @@ window.downloadCodeAsTextDoc = function(autoMode = false) {
     let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey());
     
     if (!code || code.trim().length === 0) { showToast('다운로드할 소스코드가 없습니다.', 'err'); return false; }
-    const defaultName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}_${new Date().toISOString().slice(0,10)}.txt`;
+    const defaultName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}.txt`;
     const fileName = autoMode === true ? defaultName : prompt('💾 다운로드할 파일명을 입력하세요:', defaultName);
     if (!fileName) return false;
   
@@ -3475,6 +3518,11 @@ ${contextConstraint}`;
   };
   
   function clearGoogleToken(silent=false) {
+    try {
+      if (accessToken && typeof google !== 'undefined' && google.accounts && google.accounts.oauth2) {
+        google.accounts.oauth2.revoke(accessToken, () => {});
+      }
+    } catch(e) {}
     accessToken = ''; tokenExpiry = 0;
     localStorage.removeItem('google_access_token');
     localStorage.removeItem('google_token_expiry');
@@ -3515,7 +3563,7 @@ ${contextConstraint}`;
       tokenClient = google.accounts.oauth2.initTokenClient({
         client_id: getGoogleClientId(),
         scope: 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/documents openid https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-        include_granted_scopes: true,
+        include_granted_scopes: false,
         prompt: '',
         callback: (resp) => {
           if (resp && resp.access_token) {
@@ -3529,14 +3577,20 @@ ${contextConstraint}`;
             autoRestoreDocsFromDrive(true);
             showToast('🟢 Google 로그인 완료!', 'ok');
           } else if (resp && resp.error) {
-            accessToken = ''; tokenExpiry = 0;
-            localStorage.removeItem('google_access_token');
-            localStorage.removeItem('google_token_expiry');
             console.warn('[GIS] error', resp.error);
-            if (resp.error === 'access_denied' || resp.error === 'popup_closed') {
+            if (resp.error === 'access_denied' || resp.error === 'popup_closed' || resp.error === 'popup_failed_to_open') {
+              if (resp.error !== 'access_denied') {
+                updateGisStatus('⚠️ 팝업 필요 - 재로그인 시도');
+                showToast('🔄 팝업으로 재로그인 시도 중...', 'info');
+                try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e){}
+                return;
+              }
               updateGisStatus('⚠️ 로그인 거절됨 - 토큰 꼬임 풀기 시도');
               showToast('⚠️ 로그인 거절/팝업 차단: 상단 [토큰 꼬임 자동 풀기]를 눌러보세요. 팝업 차단을 해제하세요.', 'err');
             } else {
+              accessToken = ''; tokenExpiry = 0;
+              localStorage.removeItem('google_access_token');
+              localStorage.removeItem('google_token_expiry');
               updateGisStatus('⚠️ 로그인 오류 - 토큰 꼬임 자동 풀기 사용');
             }
           }
@@ -3563,17 +3617,38 @@ ${contextConstraint}`;
       showToast('🔄 Google 모듈 로딩 중... 1초 뒤 다시 눌러주세요', 'info');
       return; 
     }
+    // v9.0.17: 팝업 폴백 전략 - silent 먼저, 실패하면 select_account 팝업
     try { 
-      // 스코프 꼬임일 때만 토큰 꼬임 자동 풀기로 consent
-      tokenClient.requestAccessToken({ prompt: 'select_account', hint: '', include_granted_scopes: true }); 
+      if (isGoogleLoggedIn()) {
+        tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: true }); 
+      } else {
+        tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: true }); 
+        setTimeout(() => {
+          if (!isGoogleLoggedIn()) {
+            try { tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); } catch(e){}
+          }
+        }, 800);
+      }
     } catch(e) {
       try{ 
-        tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: true }); 
+        tokenClient.requestAccessToken({ prompt: 'select_account', include_granted_scopes: false }); 
       } catch(e2) {
-        try{ tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: true }); } catch(e3) {}
+        try{ tokenClient.requestAccessToken({ prompt: 'consent', include_granted_scopes: false }); } catch(e3) {}
       }
     }
   }
+  
+  // v9.0.17: 50분마다 자동 갱신 (팝업 없이)
+  setInterval(() => {
+    try {
+      if (isGoogleLoggedIn() && tokenExpiry && (tokenExpiry - Date.now() < 10*60*1000)) {
+        if (tokenClient) {
+          tokenClient.requestAccessToken({ prompt: '', include_granted_scopes: true });
+          console.log('[GIS] auto silent refresh 시도');
+        }
+      }
+    } catch(e) {}
+  }, 50*60*1000);
   
   function saveDraftCustom(codeToSave, note = '수동 저장') {
     const editor = $('codeEditor');
@@ -3776,7 +3851,7 @@ ${contextConstraint}`;
       const mv = version.match(/v?(\d+)\.(\d+)\.(\d+)/);
       if (mv) {
         const major = parseInt(mv[1]), minor = parseInt(mv[2]), patch = parseInt(mv[3]);
-        finalVersion = `v${major}.${minor}.${patch+1}`; // v9.0.16 fix: 업데이트 시 자동 +1 복구 - 네 요청대로 빌드번호는 올림
+        finalVersion = `v${major}.${minor}.${patch+1}`; // v9.0.17 fix: 업데이트 시 자동 +1 복구 - 네 요청대로 빌드번호는 올림
       }
     } catch(e) {}
     
@@ -4471,7 +4546,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.16 - 자동증가 복구 & 대화창 복구</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.18 - - 자동증가 복구 & 대화창 복구</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
@@ -4933,5 +5008,5 @@ function startApp() {
   }
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
 </html>
