@@ -105,7 +105,7 @@
   <link rel="manifest" href="./manifest.json?v=9.0.24">
   <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.24">
   <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.24">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.23">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.24">
   
   <style>
     :root {
@@ -321,14 +321,14 @@
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
     <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
-    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
+    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700 active" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent">
+<div id="tabProjectContent" style="display: none;">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -389,7 +389,7 @@
   </div>
 </div>
   
-<div id="tabBuildContent" style="display:none;">
+<div id="tabBuildContent" style="display: none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -487,12 +487,12 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:46:25] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:46:25] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:58:15] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:58:15] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:58:17] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display:none;">
+<div id="tabSettingsContent" style="display: none;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -506,9 +506,9 @@
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
-        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 기본 모드 대기</span>
+        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 통합 .txt 고정 파일명 모드 - 안내 문구 자동 복사</span>
       </div>
-      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"></div>
+      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://gemini.google.com/app'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♊ Gemini 바로가기</a><a href="https://www.meta.ai/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://www.meta.ai/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♾️ Meta AI 바로가기</a><a href="https://grok.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://grok.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🌌 Grok 바로가기</a><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://chatgpt.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 💬 ChatGPT 바로가기</a><a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://claude.ai/new'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🧡 Claude 바로가기</a></div>
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
@@ -526,7 +526,7 @@
   
   <div class="card mb-4" style="border:2px solid #8b5cf6">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 다음 업데이트 아이디어 (영구 저장)</h2>
+      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
       <button onclick="clearCheckedRepoIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
@@ -579,7 +579,7 @@
     <div id="otherIdeaList" class="flex flex-col gap-2 mb-3 max-h-[200px] overflow-y-auto pr-1"></div>
     <div id="otherIdeaImageContainer" class="idea-img-container mb-3"></div>
     <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2.5 text-[11px] border-dashed border-2 rounded-xl" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
-    <button onclick="saveOtherIdea(true)" class="btn btn-sm w-full py-2.5 mt-2 text-[11px] font-bold rounded-xl" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 변경사항 수동 저장 (미분류)</button>
+    <button onclick="saveOtherIdea(event)" class="btn btn-sm w-full py-2.5 mt-2 text-[11px] font-bold rounded-xl" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 변경사항 수동 저장 (미분류)</button>
   </div>
 
   <div class="card mb-4">
@@ -639,7 +639,7 @@
   </div>
 </div>
 
-<div id="tabInboxContent" style="display:none;">
+<div id="tabInboxContent" style="display: block;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -791,7 +791,7 @@
 <!-- v9.0.11: 대화하면서 빌드 - FAB -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position:fixed !important; right:16px !important; bottom:90px !important; z-index:10001 !important; width:64px !important; height:64px !important; border-radius:999px !important; background:#111 !important; color:#fff !important; border:3px solid #FFC800 !important; font-size:32px !important; box-shadow:0 8px 28px rgba(0,0,0,0.4) !important; display:flex !important; align-items:center !important; justify-content:center !important; cursor:pointer !important;">💬</button>
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position: fixed !important; right: 16px !important; bottom: 90px; z-index: 10001 !important; width: 64px !important; height: 64px !important; border-radius: 999px !important; background: rgb(17, 17, 17) !important; color: rgb(255, 255, 255) !important; border: 3px solid rgb(255, 200, 0) !important; font-size: 32px !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 28px !important; display: flex; align-items: center !important; justify-content: center !important; cursor: pointer !important; visibility: visible; opacity: 1;">💬</button>
 <div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
 <!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
@@ -2478,11 +2478,26 @@ window.downloadCodeAsTextDoc = function(autoMode = false) {
     renderOtherIdeas(); saveOtherIdea(false);
   };
 
-  window.saveOtherIdea = async function(triggerDrive = true) {
+  window.saveOtherIdea = async function(btnEvent, triggerDrive = true) {
+    if (typeof btnEvent === 'boolean') { triggerDrive = btnEvent; btnEvent = null; }
     const val = stringifyIdeasData(currentOtherIdeas);
     safeSetLocalStorage('repo_idea_기타', val);
     safeSetLocalStorage('repo_idea_images_기타', JSON.stringify(currentOtherIdeaImages));
-    if(triggerDrive && isGoogleLoggedIn()) await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: currentOtherIdeaImages });
+    if (triggerDrive) {
+      showToast('💡 [미분류] 아이디어가 로컬에 저장되었습니다!', 'ok');
+      log('💾 [미분류] 로컬 저장 완료', 'ok');
+      if (isGoogleLoggedIn()) {
+        const btn = btnEvent ? (btnEvent.currentTarget || btnEvent.target) : null;
+        const originalText = btn ? btn.innerHTML : '';
+        if (btn) btn.innerHTML = '☁️ 백업 중...';
+        const success = await saveDataToDrive('[기타]_idea_backup.json', { text: val, images: currentOtherIdeaImages });
+        if (btn) btn.innerHTML = originalText;
+        if (success) {
+          showToast('☁️ [미분류] 구글 드라이브에도 동기화 완료!', 'ok');
+          log('☁️ [미분류] 드라이브 백업 완료', 'ok');
+        }
+      }
+    }
   };
   
   window.clearOtherIdea = function() {
