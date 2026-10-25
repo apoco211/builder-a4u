@@ -1,6 +1,25 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head><style>
+<html lang="ko"><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -67,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.22 - - Pages 자동 활성화 & 모달 스크롤 수정</title>
+  <title>Builder-a4u v9.0.25 - - AI 부분 코드 스마트 교체 복구</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -77,21 +96,16 @@
   </script>
   
   <!-- Google Identity Services 라이브러리 -->
-  <script 
-    id="gsi-client-script" 
-    src="https://accounts.google.com/gsi/client" 
-    async 
-    defer 
-    onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();">
+  <script id="gsi-client-script" src="https://accounts.google.com/gsi/client" async="" defer="" onload="window._gisLoaded=true; if(typeof initGis==='function') initGis();">
   </script>
   
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.22">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.22">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.22">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.21">
+  <link rel="manifest" href="./manifest.json?v=9.0.25">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.25">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.25">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.23">
   
   <style>
     :root {
@@ -284,7 +298,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.22</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.25</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -303,7 +317,7 @@
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
     <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 & 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
@@ -311,7 +325,7 @@
 <div id="tabProjectContent">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
-      <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 & 대상 파일 감지</h2>
+      <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
       <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 w-full">
         <button onclick="$('aiRepoModal').style.display='flex'" class="btn btn-sm text-[10px] py-1 px-2 btn-emerald animate-pulse shadow-md w-full sm:w-auto">➕ 새 프로젝트 AI</button>
         <button id="openLiveSiteBtn" onclick="openLiveSite()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">🌐 라이브 오픈</button>
@@ -325,15 +339,11 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-3">
       <div>
         <label class="text-[10px] font-bold block mb-1">GitHub 저장소 (Repo)</label>
-        <select id="repoSelect" class="input text-[12px]">
-          <option value="builder-a4u">builder-a4u</option>
-        </select>
+        <select id="repoSelect" class="input text-[12px]"><option value="builder-a4u">builder-a4u</option></select>
       </div>
       <div>
         <label class="text-[10px] font-bold block mb-1">📁 레포 파일 자동 감지</label>
-        <select id="fileTreeSelect" class="input text-[12px]">
-          <option value="">스캔 중...</option>
-        </select>
+        <select id="fileTreeSelect" class="input text-[12px]"><option value="index.html">index.html (기본값)</option></select>
       </div>
       <div>
         <label class="text-[10px] font-bold block mb-1">작업 대상 파일명 (영구 저장)</label>
@@ -352,14 +362,14 @@
             <span class="font-bold">📝 메인1: 히스토리 기록</span>
             <button onclick="openDriveModal('main1')" class="btn btn-sm text-[8px] py-0.5 px-1.5">📁 Drive 탐색</button>
           </div>
-          <div id="mainDoc1Container" class="opacity-80 truncate">연결된 문서 없음</div>
+          <div id="mainDoc1Container" class="opacity-80 truncate"><span class="opacity-50">연결된 문서 없음</span></div>
         </div>
         <div class="p-2 rounded-lg border bg-[var(--card)]" style="border-color:var(--line)">
           <div class="flex justify-between items-center mb-1">
             <span class="font-bold">📦 메인2: 최신 소스 백업</span>
             <button onclick="openDriveModal('main2')" class="btn btn-sm text-[8px] py-0.5 px-1.5">📁 Drive 탐색</button>
           </div>
-          <div id="mainDoc2Container" class="opacity-80 truncate">연결된 문서 없음</div>
+          <div id="mainDoc2Container" class="opacity-80 truncate"><span class="opacity-50">연결된 문서 없음</span></div>
         </div>
       </div>
       <div class="mt-2 pt-2 border-t space-y-1.5" style="border-color:var(--line)">
@@ -367,9 +377,7 @@
           <span class="font-bold text-[10.5px] text-purple-600 dark:text-purple-400">📁 추가 참조 구글 문서 (N개)</span>
           <button onclick="openDriveModal('extra')" class="btn btn-sm text-[8.5px] py-0.5 px-2" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">+ 문서 Drive 선택</button>
         </div>
-        <div id="extraDocsContainer" class="space-y-1">
-          <div class="text-[9.5px] opacity-50 italic">추가 연결된 문서가 없습니다.</div>
-        </div>
+        <div id="extraDocsContainer" class="space-y-1"><div class="text-[9.5px] opacity-50 italic">추가 연결된 문서가 없습니다.</div></div>
       </div>
     </div>
   </div>
@@ -378,7 +386,7 @@
 <div id="tabBuildContent" style="display:none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
-      <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 & 빌드 요약 메모</h2>
+      <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
       <div class="flex gap-1 items-center">
         <button id="clearUpdateNoteBtn" class="btn btn-sm text-[9.5px] py-0.5 px-2" style="background:#fff1f2;color:#e11d48;border-color:#fecdd3">🗑️ 지우기</button>
         <button id="pasteUpdateNoteBtn" class="btn btn-sm text-[9.5px] py-0.5 px-2" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 붙여넣기</button>
@@ -389,7 +397,7 @@
   
   <div class="card" style="border:2px solid #10b981">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 소스코드 편집기 & 실시간 미리보기</h2>
+      <h2 class="font-bold text-[13px] text-emerald-600 dark:text-emerald-400">💻 소스코드 편집기 &amp; 실시간 미리보기</h2>
       <span id="draftStatus" class="text-[9.5px] opacity-60">대기중</span>
     </div>
     <div class="flex flex-wrap justify-between items-center mb-2 gap-1.5">
@@ -437,7 +445,7 @@
       </div>
       <div class="flex gap-1.5 w-full">
         <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[11px] hidden">🔑 구글 연동(로그인)</button>
-        <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 & 이중 백업</button>
+        <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 &amp; 이중 백업</button>
       </div>
     </div>
   </div>
@@ -473,7 +481,7 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[오후 5:19:06] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[오후 5:19:06] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">[오후 5:19:08] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -483,7 +491,7 @@
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
-        <button onclick="generateSmartPrompt()" class="btn py-2.5 px-3 text-[11px] btn-emerald animate-pulse shadow-md w-full">🚀 원버튼 패키지 & AI 출격</button>
+        <button onclick="generateSmartPrompt()" class="btn py-2.5 px-3 text-[11px] btn-emerald animate-pulse shadow-md w-full">🚀 원버튼 패키지 &amp; AI 출격</button>
         <button onclick="copyFullContext()" class="btn py-2.5 px-3 text-[11px] btn-primary w-full">📋 맥락만 복사</button>
         <button onclick="resetCustomContext()" class="btn py-2.5 px-2 text-[11px] w-full" style="background:#f1f5f9;color:#475569;border-color:#cbd5e1">🔄 기본 맥락 복구</button>
       </div>
@@ -520,7 +528,7 @@
       <button onclick="copyRepoIdea()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe">📋 선택 복사</button>
       <label class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full cursor-pointer flex justify-center items-center" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
         📸 사진 첨부
-        <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple>
+        <input type="file" id="ideaImageInput" accept="image/*" class="hidden" multiple="">
       </label>
       <button onclick="pasteIdeaImageFromClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full" style="background:#ecfdf5;color:#047857;border-color:#a7f3d0">📋 사진붙여넣기</button>
       <button onclick="copyMergedImagesToClipboard()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full btn-yellow">🖼️ 사진 통합 복사</button>
@@ -552,14 +560,12 @@
       <div class="grid grid-cols-2 gap-1.5">
         <label class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg cursor-pointer flex justify-center items-center" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">
           📸 사진 첨부
-          <input type="file" id="otherIdeaImageInput" accept="image/*" class="hidden" multiple onchange="handleOtherIdeaImageUpload(this)">
+          <input type="file" id="otherIdeaImageInput" accept="image/*" class="hidden" multiple="" onchange="handleOtherIdeaImageUpload(this)">
         </label>
         <button onclick="pasteOtherIdeaImageFromClipboard()" class="btn btn-sm py-2 px-2 text-[10px] font-bold rounded-lg" style="background:#ecfdf5;color:#047857;border:1px solid #a7f3d0">📋 사진 붙여넣기</button>
       </div>
       <div class="flex gap-1.5 items-center">
-        <select id="otherIdeaMoveSelect" class="input text-[11px] py-2 h-auto min-h-[36px] flex-1 rounded-lg">
-          <option value="">프로젝트 선택...</option>
-        </select>
+        <select id="otherIdeaMoveSelect" class="input text-[11px] py-2 h-auto min-h-[36px] flex-1 rounded-lg"><option value="">프로젝트 선택...</option><option value="builder-a4u">builder-a4u</option></select>
         <button onclick="moveSelectedOtherIdeas()" class="btn btn-sm py-2 px-3 text-[11px] font-black rounded-lg shadow-sm shrink-0" style="background:#3b82f6;color:white;border-color:#2563eb; min-height:36px">🚀 선택 항목 이동</button>
       </div>
     </div>
@@ -567,10 +573,11 @@
     <div id="otherIdeaList" class="flex flex-col gap-2 mb-3 max-h-[200px] overflow-y-auto pr-1"></div>
     <div id="otherIdeaImageContainer" class="idea-img-container mb-3"></div>
     <button onclick="addOtherIdea()" class="btn btn-sm w-full py-2.5 text-[11px] border-dashed border-2 rounded-xl" style="background:var(--bg);color:var(--muted);border-color:var(--line)">➕ 새 아이디어 추가</button>
+    <button onclick="saveOtherIdea(true)" class="btn btn-sm w-full py-2.5 mt-2 text-[11px] font-bold rounded-xl" style="background:#e9d5ff;color:#581c87;border-color:#d8b4fe">💾 변경사항 수동 저장 (미분류)</button>
   </div>
 
   <div class="card mb-4">
-    <h2 class="font-bold text-[12px] mb-3">⚙️ GitHub & Google & AI 설정</h2>
+    <h2 class="font-bold text-[12px] mb-3">⚙️ GitHub &amp; Google &amp; AI 설정</h2>
     <div class="space-y-3">
       <div>
         <h3 class="font-bold text-[11px] mb-1.5">⚡ 스마트 API 일괄 파싱 (.env 통째로 붙여넣기)</h3>
@@ -611,12 +618,12 @@
           <label class="text-[9.5px] font-bold text-blue-600 dark:text-blue-400">🧠 AI 워크플로우 모델 선택</label>
           <div class="flex gap-1 mt-0.5">
             <select id="geminiModelSelect" class="input text-[10px] font-mono flex-1">
-              <option value="gemini-2.5-flash" selected>gemini-2.5-flash (초고속 코딩 권장 15RPM)</option>
-              <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장)</option>
-              <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론)</option>
-              <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량)</option>
-              <option value="gemini-2.0-flash">gemini-2.0-flash (호환)</option>
-            </select>
+        <option value="gemini-2.5-flash">gemini-2.5-flash (초고속 코딩 권장 15RPM) ✅</option>
+        <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite (신형 경량 30RPM - 구글 권장) ⭐</option>
+        <option value="gemini-2.5-flash-lite">gemini-2.5-flash-lite (경량 10RPM)</option>
+        <option value="gemini-2.5-pro">gemini-2.5-pro (최강 코딩/추론 10RPM)</option>
+        <option value="gemini-2.0-flash">gemini-2.0-flash (호환용)</option>
+      </select>
             <button id="checkModelsBtn" class="btn btn-sm text-[9px]" style="background:#dbeafe;color:#1e40af">🔍 확인</button>
           </div>
           <div id="availableModelsBox" class="log mt-1 hidden text-[9px]"></div>
@@ -630,7 +637,7 @@
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
-      <input type="checkbox" id="aiSmartRouterToggle" class="w-3.5 h-3.5 text-emerald-600 rounded" checked>
+      <input type="checkbox" id="aiSmartRouterToggle" class="w-3.5 h-3.5 text-emerald-600 rounded" checked="">
       <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🤖 AI 스마트 라우터 ON (자동 분류 + 오타 교정)</span>
       <span id="aiRouterStatus" class="text-[9px] px-1.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 ml-auto">ON</span>
     </label>
@@ -641,9 +648,7 @@
             <label class="text-[10px] font-bold text-slate-600 dark:text-slate-400">📁 프로젝트 선택</label>
             <button type="button" onclick="reloadInboxProjectsAndIdeas()" class="btn btn-sm text-[9.5px] py-0.5 px-2 shadow-sm" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd;min-height:22px;">🔄 리로드</button>
           </div>
-          <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px">
-            <option value="">미분류 (선택없음)</option>
-          </select>
+          <select id="inboxProjectSelect" class="input text-[12px] py-2" style="min-height:40px"><option value="">미분류 (선택없음)</option><option value="builder-a4u">builder-a4u</option></select>
         </div>
         </div>
       <div class="flex flex-col" style="flex:1.05">
@@ -727,7 +732,7 @@
         <label class="text-[11px] font-bold block mb-1.5 text-purple-600">1. 어떤 앱을 만들고 싶으신가요? (기획 의도) <span class="text-red-500">*</span></label>
         <textarea id="aiRepoDescInput" class="textarea h-[70px] text-[13px]" placeholder="예: 택시 기사님들을 위한 콜 알림 앱. 노란색 테마."></textarea>
         <button id="aiRecommendBtn" onclick="recommendAIAttributes()" class="btn btn-sm w-full mt-2 py-2" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">
-          🤖 AI 네이밍 & 아이콘 추천받기
+          🤖 AI 네이밍 &amp; 아이콘 추천받기
         </button>
       </div>
       <div id="aiRepoSuggestions" class="hidden p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 space-y-3">
@@ -746,7 +751,7 @@
             </div>
          </div>
       </div>
-      <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 & 자동 배포</button>
+      <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 &amp; 자동 배포</button>
     
     <!-- v9.0.11: 간단 카피박스 - 개선 -->
   <div class="card" style="border:2px solid #111111;">
@@ -756,16 +761,16 @@
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.11" readonly onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.24" readonly="" onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly onclick="this.select()">v9.0.11 - 채팅 아이콘 아래로 복구
-- 💬 원래대로: 아래쪽 플로팅 아이콘으로 복구 (bottom 90px, 64px, 노란테두리)
-- ❌ 상단 채팅 버튼 제거: 위에 있던 임시 버튼 삭제, 원래 UI로
-- 🐛 삐져나옴 fix 유지: sticky-header margin 0, overflow hidden 유지
-- 📁 파일 올리기: 에디터 드랍 지원 유지
-- ⌨️ 단축키: 백틱(`) 또는 Ctrl+K로도 채팅 열기 가능</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.24 - 스마트 교체 복구 + 미분류 수동저장 &amp; 버전표기 완전 수정
+- 🔧 누락된 runSmartPatch/undoSmartPatch/stopSmartPatch 완전 복구
+- 📦 SEARCH/REPLACE + 함수 단위 + AI 변환 3단계 지원
+- 🛑 중지/Undo/미리보기 완전 연동
+- 💾 [미분류] 보관소에 수동 저장 버튼 추가
+- 🏷️ h1/타이틀/manifest/복사박스 버전표기 v9.0.24로 완전 통일</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -780,7 +785,7 @@
 <!-- v9.0.11: 대화하면서 빌드 - FAB -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position:fixed !important; right:16px !important; bottom:90px !important; z-index:10001 !important; width:64px !important; height:64px !important; border-radius:999px !important; background:#111 !important; color:#fff !important; border:3px solid #FFC800 !important; font-size:32px !important; box-shadow:0 8px 28px rgba(0,0,0,0.4) !important; display:flex !important; align-items:center !important; justify-content:center !important; cursor:pointer !important;">💬</button>
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position: fixed !important; right: 16px !important; bottom: 90px; z-index: 10001 !important; width: 64px !important; height: 64px !important; border-radius: 999px !important; background: rgb(17, 17, 17) !important; color: rgb(255, 255, 255) !important; border: 3px solid rgb(255, 200, 0) !important; font-size: 32px !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 28px !important; display: flex; align-items: center !important; justify-content: center !important; cursor: pointer !important; visibility: visible; opacity: 1;">💬</button>
 <div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
 <!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
@@ -808,8 +813,8 @@
   </div>
   <div id="a4uChatImagePreview" style="display:none; padding:8px 10px; background:var(--bg); border-top:1px solid var(--line); flex-wrap:wrap; gap:6px;"></div>
   <div id="a4uChatInputWrap">
-    <label class="btn btn-sm" style="min-height:44px; padding:0 10px; background:var(--bg);" title="사진 첨부">📸<input type="file" id="a4uChatImageInput" accept="image/*" multiple class="hidden" onchange="handleA4uChatImageSelect(this)"></label>
-    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Ctrl+V로 사진 붙여넣기, 드래그앤드롭도 가능)" rows="1" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendA4uChat();}" onpaste="handleA4uChatPaste(event)"></textarea>
+    <label class="btn btn-sm" style="min-height:44px; padding:0 10px; background:var(--bg);" title="사진 첨부">📸<input type="file" id="a4uChatImageInput" accept="image/*" multiple="" class="hidden" onchange="handleA4uChatImageSelect(this)"></label>
+    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Ctrl+V로 사진 붙여넣기, 드래그앤드롭도 가능)" rows="1" onkeydown="if(event.key==='Enter'&amp;&amp;!event.shiftKey){event.preventDefault();sendA4uChat();}" onpaste="handleA4uChatPaste(event)"></textarea>
     <button onclick="sendA4uChat()" class="btn btn-primary" style="min-height:44px; padding:0 16px;">전송</button>
   </div>
 </div>
@@ -1021,12 +1026,12 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.11 - 대화하면서 빌드 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.24 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.11';
+    const v = 'v9.0.24';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1394,7 +1399,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.22] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.25] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1456,7 +1461,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v8.9.64';
+          const currentVer = getTargetAppVersion() || 'v9.0.24';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -1661,6 +1666,183 @@ ${currentCode.substring(0, 8000)}
     const panel = $('smartPatchPanel');
     if (!panel) return;
     panel.classList.toggle('hidden');
+  };
+
+  window.undoSmartPatch = function() {
+    if (!window.lastPrePatchCode) {
+      showToast('↩️ 되돌릴 이전 코드가 없습니다.', 'err');
+      return;
+    }
+    const editor = $('codeEditor');
+    if (editor) {
+      editor.value = window.lastPrePatchCode;
+      editor.dispatchEvent(new Event('input', {bubbles:true}));
+    }
+    safeSetLocalStorage(getDraftCodeKey(), window.lastPrePatchCode);
+    if (typeof showLivePreviewCurrent === 'function') {
+      showLivePreviewCurrent(window.lastPrePatchCode, '↩️ 교체 취소 - 이전 코드로 복구됨');
+    }
+    const undoBtn = $('undoPatchBtn');
+    if (undoBtn) undoBtn.classList.add('hidden');
+    showToast('↩️ 이전 코드로 복구되었습니다.', 'ok');
+    log('↩️ 스마트 교체 Undo 완료', 'ok');
+  };
+
+  window.stopSmartPatch = function() {
+    if (window.currentPatchAbortController) {
+      try { window.currentPatchAbortController.abort(); } catch(e){}
+      window.currentPatchAbortController = null;
+    }
+    if (typeof currentPatchAbortController !== 'undefined' && currentPatchAbortController) {
+      try { currentPatchAbortController.abort(); } catch(e){}
+      currentPatchAbortController = null;
+    }
+    const runBtn = $('runSmartPatchBtn');
+    const stopBtn = $('stopSmartPatchBtn');
+    if (runBtn) { runBtn.disabled = false; runBtn.classList.remove('hidden'); runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+    if (stopBtn) stopBtn.classList.add('hidden');
+    showToast('🛑 작동 중지됨', 'info');
+    log('🛑 스마트 패치 중지 요청', 'warn');
+  };
+
+  window.runSmartPatch = async function() {
+    const patchEl = $('patchInput');
+    const rawPatch = patchEl ? patchEl.value.trim() : '';
+    if (!rawPatch) {
+      showToast('교체할 부분 코드를 입력하세요.', 'err');
+      return;
+    }
+    const editor = $('codeEditor');
+    let currentCode = editor && editor.value && editor.value.trim().length > 100 ? editor.value : (localStorage.getItem(getDraftCodeKey()) || '');
+    if (!currentCode || currentCode.trim().length < 50) {
+      try {
+        log('🔄 에디터가 비어있어 GitHub에서 최신 코드 가져오는 중... (스마트 교체)', 'info');
+        currentCode = await syncLatestSourceFromGithub(true);
+      } catch(e){}
+    }
+    if (!currentCode || currentCode.trim().length < 50) {
+      showToast('원본 코드를 찾을 수 없습니다. 코드 에디터를 확인하세요.', 'err');
+      return;
+    }
+
+    const runBtn = $('runSmartPatchBtn');
+    const stopBtn = $('stopSmartPatchBtn');
+    if (runBtn) { runBtn.disabled = true; runBtn.innerHTML = '⏳ 패치 처리 중...'; runBtn.classList.add('hidden'); }
+    if (stopBtn) stopBtn.classList.remove('hidden');
+
+    const abortCtrl = new AbortController();
+    window.currentPatchAbortController = abortCtrl;
+    try { currentPatchAbortController = abortCtrl; } catch(e){}
+
+    try {
+      let blocks = [];
+      if (rawPatch.includes('<<<<<') || rawPatch.includes('SEARCH') || rawPatch.includes('=====') ) {
+        blocks = parseSearchReplaceBlocks(rawPatch);
+        log(`📦 SEARCH/REPLACE 블록 ${blocks.length}개 파싱됨`, 'info');
+      }
+      if (blocks.length === 0) {
+        const fnBlocks = tryExtractLocalFunctionPatch(rawPatch, currentCode);
+        if (fnBlocks && fnBlocks.length > 0) {
+          blocks = fnBlocks;
+          log(`🔧 함수 단위 패치 감지: ${fnBlocks[0].targetName} 교체`, 'ok');
+        }
+      }
+      if (blocks.length === 0) {
+        log('🤖 일반 텍스트 감지 - AI가 SEARCH/REPLACE로 변환 중...', 'info');
+        if (runBtn) runBtn.innerHTML = '🤖 AI 변환 중... (최대 30초)';
+        const fileName = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
+        const convertPrompt = `너는 Builder-a4u 코드 패치 변환기다.
+작업: 사용자 입력(설명 또는 코드 조각)을 원본 코드 기준으로 SEARCH/REPLACE 블록으로 정확히 변환하라.
+
+규칙:
+- 반드시 아래 포맷만 출력:
+<<<<< SEARCH
+(원본에서 찾을 정확한 코드 3~15줄)
+=======
+(교체할 새로운 코드)
+>>>>> REPLACE
+- SEARCH는 원본에 100% 존재하는 코드만 사용
+- 여러 곳 수정 시 블록 여러 개 출력 가능
+- 설명 금지, 마크다운 금지
+
+[대상 파일]: ${fileName}
+[원본 코드 앞 8000자]:
+${currentCode.substring(0,8000)}
+
+[사용자 요청/붙여넣은 코드]:
+${rawPatch}
+`;
+        const geminiKey = localStorage.getItem('gemini_api_key')?.trim() || $('geminiApiKeyInput')?.value?.trim();
+        if (!geminiKey) {
+          showToast('Gemini API 키가 없습니다. 설정에서 입력하거나 SEARCH/REPLACE 형식으로 직접 입력하세요.', 'err');
+          throw new Error('Gemini API 키 없음');
+        }
+        const model = $('geminiModelSelect')?.value || 'gemini-2.5-flash';
+        const aiResp = await callGeminiAPI(convertPrompt, 0.2, false, abortCtrl.signal, model, null);
+        log(`📥 AI 변환 응답 수신 (${aiResp.length}자)`, 'ok');
+        blocks = parseSearchReplaceBlocks(aiResp);
+        if (blocks.length === 0 && aiResp.includes('<!DOCTYPE html>')) {
+          const fullMatch = aiResp.match(/<!DOCTYPE html>[\s\S]*<\/html>/i);
+          if (fullMatch) {
+            blocks = [{ search: currentCode, replace: fullMatch[0] }];
+            log('⚠️ AI가 전체 코드를 반환 - 전체 교체로 처리', 'warn');
+          }
+        }
+        if (blocks.length === 0) {
+          log('❌ AI 변환 실패, 원문: ' + aiResp.substring(0,600), 'err');
+          throw new Error('AI가 유효한 SEARCH/REPLACE 블록을 만들지 못했습니다. 더 구체적으로 적어주세요.');
+        }
+      }
+
+      window.lastPrePatchCode = currentCode;
+      let updatedCode = normalizeLineEndings(currentCode);
+      let successCount = 0;
+      let failCount = 0;
+      blocks.forEach((b, idx) => {
+        const res = replaceWithFlexibleIndent(updatedCode, b.search, b.replace);
+        if (res.success) {
+          updatedCode = res.code;
+          successCount++;
+          log(`✅ 블록 #${idx+1} 성공 (${res.method})`, 'ok');
+        } else {
+          failCount++;
+          log(`⚠️ 블록 #${idx+1} 실패 - 위치 못 찾음 SEARCH: ${b.search.substring(0,80).replace(/\n/g,' ')}...`, 'err');
+        }
+      });
+
+      if (successCount > 0) {
+        if (editor) { editor.value = updatedCode; editor.dispatchEvent(new Event('input', {bubbles:true})); }
+        if (typeof saveDraftCustom === 'function') {
+          saveDraftCustom(updatedCode, `스마트 교체 ${successCount}개 적용`);
+        } else {
+          safeSetLocalStorage(getDraftCodeKey(), updatedCode);
+        }
+        if (typeof showLivePreviewCurrent === 'function') {
+          showLivePreviewCurrent(updatedCode, `⚡ 스마트 교체 ${successCount}/${blocks.length} 적용됨`);
+        }
+        const undoBtn = $('undoPatchBtn');
+        if (undoBtn) undoBtn.classList.remove('hidden');
+        showToast(`🎉 ${successCount}개 교체 성공! ${failCount>0? failCount+'개 실패':''}`, successCount>0 && failCount===0 ? 'ok':'info');
+        log(`🎉 스마트 교체 완료: ${successCount}성공/${failCount}실패`, 'ok');
+      } else {
+        showToast('일치하는 위치를 찾지 못했습니다. SEARCH 코드를 원본과 100% 일치시켜주세요.', 'err');
+        log('❌ 모든 블록 실패 - SEARCH 불일치', 'err');
+      }
+    } catch(e) {
+      if (e.name === 'AbortError' || (e.message && e.message.includes('중지'))) {
+        log('🛑 사용자에 의해 중지됨', 'warn');
+        showToast('🛑 중지되었습니다.', 'info');
+      } else {
+        console.error(e);
+        showToast('스마트 교체 실패: ' + e.message, 'err');
+        log('❌ 스마트 교체 실패: ' + (e.stack || e.message), 'err');
+      }
+    } finally {
+      window.currentPatchAbortController = null;
+      try { currentPatchAbortController = null; } catch(e){}
+      if (runBtn) { runBtn.disabled = false; runBtn.classList.remove('hidden'); runBtn.innerHTML = '🔍 기존 코드에서 위치 찾아서 자동 교체하기'; }
+      if (stopBtn) stopBtn.classList.add('hidden');
+    }
   };
 
   function extractBuildNoteFromPatch(text) {
@@ -4682,7 +4864,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.22 - - Pages 자동 활성화 & 모달 스크롤 수정</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.25 - - AI 부분 코드 스마트 교체 복구</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
@@ -5144,5 +5326,5 @@ function startApp() {
   }
   window.onload = startApp;
 </script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
-</html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
+</div></div></div></body></html>
