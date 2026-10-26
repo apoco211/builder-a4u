@@ -86,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.27 - - 폴더 자동 생성 지원</title>
+  <title>Builder-a4u v9.0.29 - - 폴더 자동 생성 지원</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -102,10 +102,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.27">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.27">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.27">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.27">
+  <link rel="manifest" href="./manifest.json?v=9.0.29">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.29">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.29">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.29">
   
   <style>
     :root {
@@ -172,7 +172,7 @@
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
 
-    /* v9.0.27 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
+    /* v9.0.29 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
     #codeEditor, #patchInput, #updateNoteInput, #inboxTextInput, #inboxMemoInput {
       max-width: 100% !important;
       box-sizing: border-box !important;
@@ -304,7 +304,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.27</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.29</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -321,14 +321,14 @@
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent" style="display: none;">
+<div id="tabProjectContent">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -389,7 +389,7 @@
   </div>
 </div>
   
-<div id="tabBuildContent" style="display: none;">
+<div id="tabBuildContent" style="display:none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -456,9 +456,12 @@
       <div class="flex gap-1.5 w-full mt-2">
         <input id="multiFileTargetDir" class="input text-[11px] flex-1" placeholder="📁 대상 폴더 (예: src/components/ 또는 assets/ - 비우면 루트)" value="">
         <label for="multiFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">📦 다중 파일+폴더 일괄 업빌드</label>
-        <input type="file" id="multiFileInput" multiple="" accept=".html,.htm,.js,.jsx,.ts,.tsx,.json,.css,.png,.jpg,.jpeg,.webp,.svg" class="hidden" onchange="handleMultiFileBuild(this)">
+        <input type="file" id="multiFileInput" multiple="" accept="*/*" class="hidden" onchange="handleMultiFileBuild(this)">
       </div>
-      <div class="text-[10px] text-gray-500 mt-1">💡 폴더 자동 생성: 대상 폴더에 <code>new-folder/</code> 입력하고 파일 선택하면 자동 생성. 기존 폴더면 그 안에 업로드.</div>
+      <div class="text-[10px] text-gray-500 mt-1 leading-relaxed">
+      💡 폴더 자동 생성: 대상 폴더에 <code>new-folder/</code> 입력하고 파일 선택하면 자동 생성. 기존 폴더면 그 안에 업로드.<br>
+      📱 iPhone: 다운로드한 파일이 안 보이면 파일 선택 후 <b>찾아보기 → 나의 iPhone → 다운로드</b> 폴더로 들어가면 있어요. 필터 제거했으니 이제 다 보입니다.
+      </div>
     </div>
   </div>
   
@@ -493,12 +496,12 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:47:21] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:47:21] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:47:23] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:04:34] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:04:34] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display: block;">
+<div id="tabSettingsContent" style="display:none;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -512,9 +515,9 @@
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
-        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 통합 .txt 고정 파일명 모드 - 안내 문구 자동 복사</span>
+        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 기본 모드 대기</span>
       </div>
-      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://gemini.google.com/app'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♊ Gemini 바로가기</a><a href="https://www.meta.ai/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://www.meta.ai/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♾️ Meta AI 바로가기</a><a href="https://grok.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://grok.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🌌 Grok 바로가기</a><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://chatgpt.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 💬 ChatGPT 바로가기</a><a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://claude.ai/new'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🧡 Claude 바로가기</a></div>
+      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"></div>
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
@@ -532,7 +535,7 @@
   
   <div class="card mb-4" style="border:2px solid #8b5cf6">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
+      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 다음 업데이트 아이디어 (영구 저장)</h2>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
       <button onclick="clearCheckedRepoIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
@@ -773,18 +776,17 @@
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.27" readonly="" onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.29" readonly="" onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.27 - 파일올리고 미리보기 후 통합빌드 꼬임 해결
-- 🔗 에디터 코드 + 선택 파일들을 1개 커밋으로 통합 빌드 (원자적 푸시)
-- 👁️ 파일로 불러오기 → 미리보기 → 통합빌드 시 미리보기한 에디터 코드가 그대로 포함됨 (덮어쓰기 없음)
-- 📦 통합빌드 시 index.html은 에디터 버전, js/manifest 등은 선택 파일 버전으로 자동 병합
-- ⚠️ 같은 이름 중복 시 선택 파일이 우선한다는 경고 로그 추가
-- 🚀 Git Data API 사용: tree→commit→ref 1커밋으로 여러 파일 푸시, 실패 시 개별 PUT 폴백
-- 🏷️ v9.0.26 → v9.0.27 버전업
-[빌드 넘버: v9.0.27]</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.29 - 미리보기 안 뜨는 버그 수정
+- 🐛 미리보기 확정 후 같은 코드면 return해서 박스가 안 뜨던 버그 수정
+- 👁️ 숨기기 후 다시 미리보기 확정 눌러도 박스가 다시 뜨도록 강제 active 추가
+- 🔄 해시 같아도 박스가 숨겨져 있으면 다시 표시하도록 로직 변경
+- 📁 파일 업로드 시 커스텀 코드로 미리보기 강제 갱신 유지
+- 🏷️ v9.0.28 → v9.0.29
+[빌드 넘버: v9.0.29]</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -799,7 +801,7 @@
 <!-- v9.0.11: 대화하면서 빌드 - FAB -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position: fixed !important; right: 16px !important; bottom: 90px; z-index: 10001 !important; width: 64px !important; height: 64px !important; border-radius: 999px !important; background: rgb(17, 17, 17) !important; color: rgb(255, 255, 255) !important; border: 3px solid rgb(255, 200, 0) !important; font-size: 32px !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 28px !important; display: flex; align-items: center !important; justify-content: center !important; cursor: pointer !important; visibility: visible; opacity: 1;">💬</button>
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position:fixed !important; right:16px !important; bottom:90px !important; z-index:10001 !important; width:64px !important; height:64px !important; border-radius:999px !important; background:#111 !important; color:#fff !important; border:3px solid #FFC800 !important; font-size:32px !important; box-shadow:0 8px 28px rgba(0,0,0,0.4) !important; display:flex !important; align-items:center !important; justify-content:center !important; cursor:pointer !important;">💬</button>
 <div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
 <!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
@@ -1040,12 +1042,12 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.27 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.29 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.27';
+    const v = 'v9.0.29';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1413,7 +1415,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.27] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.29] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1475,7 +1477,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.27';
+          const currentVer = getTargetAppVersion() || 'v9.0.29';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -3996,7 +3998,17 @@ ${contextConstraint}`;
     }
     if (window._perfPaused) { log('⏸️ 경량모드: 미리보기 일시정지 중', 'info'); return; }
     const codeHash = code.length + '_' + code.substring(0,100);
-    if (window._lastPreviewHash === codeHash && !customCode) return;
+    const boxEarly = $('livePreviewBox');
+    if (window._lastPreviewHash === codeHash && !customCode) {
+      // 같은 코드라도 박스가 숨겨져 있으면 다시 보여줘야 함 - v9.0.29 버그 수정
+      if (boxEarly && !boxEarly.classList.contains('active')) {
+        boxEarly.classList.add('active');
+        const titleObjEarly = $('previewTitle');
+        if (titleObjEarly) titleObjEarly.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 미리보기 (${$('mainFileInput')?.value?.trim() || 'index.html'}) - ${new Date().toLocaleTimeString()}`}`;
+        log('👁️ 숨겨진 미리보기 다시 표시 (같은 코드)', 'info');
+      }
+      return;
+    }
     window._lastPreviewHash = codeHash;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
@@ -4052,7 +4064,24 @@ ${contextConstraint}`;
     log(`📝 현재 코드에 타이머 관련: ${hasTimerIcon ? '있음' : '없음 (패치 실패 가능성)'}`, hasTimerIcon ? 'ok' : 'warn');
   };
   
-  function hideLivePreviewBox() { const box = $('livePreviewBox'); if (box) box.classList.remove('active'); }
+  function hideLivePreviewBox() { 
+    const box = $('livePreviewBox'); 
+    if (box) {
+      box.classList.remove('active'); 
+      log('👁️ 미리보기 숨김', 'info');
+    }
+  }
+  // v9.0.29: 미리보기 확정 버튼이 같은 코드여도 항상 박스를 다시 띄우도록 강제
+  window.forceShowPreviewBox = function() {
+    const box = $('livePreviewBox');
+    if (box) box.classList.add('active');
+    const code = $('codeEditor')?.value || localStorage.getItem(getDraftCodeKey()) || '';
+    if (code) {
+      window._lastPreviewHash = null; // 해시 초기화해서 무조건 갱신
+      showLivePreviewCurrent(code, '👁️ 미리보기 확정');
+    }
+  };
+
   
 
   window.handleMultiFileBuild = async function(input) {
@@ -4206,7 +4235,7 @@ ${contextConstraint}`;
       const mv = version.match(/v?(\d+)\.(\d+)\.(\d+)/);
       if (mv) {
         const major = parseInt(mv[1]), minor = parseInt(mv[2]), patch = parseInt(mv[3]);
-        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.27 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
+        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.29 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
       }
     } catch(e) {}
     
@@ -5012,7 +5041,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.27 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.29 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
@@ -5274,7 +5303,7 @@ function setupEventListeners() {
     $('pasteUpdateNoteBtn')?.addEventListener('click', () => smartPasteToTarget($('updateNoteInput')));
     $('clearCodeBtn')?.addEventListener('click', () => { if ($('codeEditor')) $('codeEditor').value = ''; localStorage.removeItem(getDraftCodeKey()); });
     $('pasteClipboardBtn')?.addEventListener('click', () => smartPasteToTarget($('codeEditor'), val => { saveDraftCustom(val, '붙여넣기'); showLivePreviewCurrent(); }));
-    $('previewCheckBtn')?.addEventListener('click', () => { const c = $('codeEditor')?.value || ''; if (c.trim()) { saveDraftCustom(c, '미리보기 확정'); showLivePreviewCurrent(); } });
+    $('previewCheckBtn')?.addEventListener('click', () => { const c = $('codeEditor')?.value || ''; if (c.trim()) { saveDraftCustom(c, '미리보기 확정'); window._lastPreviewHash = null; showLivePreviewCurrent(c, '👁️ 미리보기 확정'); } });
     $('capturePreviewBtn')?.addEventListener('click', capturePreviewScreen);
     $('previewCloseBtn')?.addEventListener('click', hideLivePreviewBox);
     $('refreshRepoBtn')?.addEventListener('click', () => { loadRepos(); scanRepoFileTree(); });
