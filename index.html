@@ -86,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.29 - - 폴더 자동 생성 지원</title>
+  <title>Builder-a4u v9.0.30 - - 폴더 자동 생성 지원</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -102,10 +102,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.29">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.29">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.29">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.29">
+  <link rel="manifest" href="./manifest.json?v=9.0.30">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.30">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.30">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.30">
   
   <style>
     :root {
@@ -172,7 +172,7 @@
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
 
-    /* v9.0.29 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
+    /* v9.0.30 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
     #codeEditor, #patchInput, #updateNoteInput, #inboxTextInput, #inboxMemoInput {
       max-width: 100% !important;
       box-sizing: border-box !important;
@@ -185,7 +185,7 @@
     #codeEditor { line-height: 1.4 !important; }
     .card { content-visibility: auto; contain-intrinsic-size: 0 200px; }
     #logArea { contain: strict; content-visibility: auto; }
-    #livePreviewBox { contain: layout paint; }
+    #livePreviewBox { contain: none !important; } #livePreviewBox.active { display: block !important; } #livePreviewBox:not(.active) { display: none !important; }
     #tabBuildContent .flex.justify-between {
       flex-wrap: wrap !important;
     }
@@ -304,7 +304,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.29</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.30</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -454,7 +454,9 @@
         <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 &amp; 이중 백업</button>
       </div>
       <div class="flex gap-1.5 w-full mt-2">
-        <input id="multiFileTargetDir" class="input text-[11px] flex-1" placeholder="📁 대상 폴더 (예: src/components/ 또는 assets/ - 비우면 루트)" value="">
+        <input id="multiFileTargetDir" class="input text-[11px] flex-1" placeholder="📁 대상 폴더 (예: src/components/ - 비우면 루트, 파일명 쓰지 마세요)" value="">
+        <label for="multiFolderInput" class="btn py-3 text-[9px] font-bold text-center cursor-pointer" style="background:#e0f2fe;color:#075985;border:1px solid #bae6fd">📁 폴더째 올리기</label>
+        <input type="file" id="multiFolderInput" webkitdirectory="" directory="" multiple="" class="hidden" onchange="handleMultiFileBuild(this)">
         <label for="multiFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">📦 다중 파일+폴더 일괄 업빌드</label>
         <input type="file" id="multiFileInput" multiple="" accept="*/*" class="hidden" onchange="handleMultiFileBuild(this)">
       </div>
@@ -496,7 +498,7 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:04:34] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:04:34] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:38:10] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:38:10] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 1:38:12] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -776,17 +778,18 @@
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.29" readonly="" onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.30" readonly="" onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.29 - 미리보기 안 뜨는 버그 수정
-- 🐛 미리보기 확정 후 같은 코드면 return해서 박스가 안 뜨던 버그 수정
-- 👁️ 숨기기 후 다시 미리보기 확정 눌러도 박스가 다시 뜨도록 강제 active 추가
-- 🔄 해시 같아도 박스가 숨겨져 있으면 다시 표시하도록 로직 변경
-- 📁 파일 업로드 시 커스텀 코드로 미리보기 강제 갱신 유지
-- 🏷️ v9.0.28 → v9.0.29
-[빌드 넘버: v9.0.29]</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.30 - 미리보기 완전 수정 + 폴더 생성 확정
+- 🐛 미리보기 안 뜨는 버그 완전 제거: 같은 코드 해시여도 박스 무조건 active + display:block 강제
+- 👁️ 숨기기 후 미리보기 확정 시 iframe srcdoc 비어있으면 다시 렌더링
+- 📁 폴더 생성 확정: targetDir + fileName + webkitRelativePath 지원, 폴더째 올리기 버튼 추가
+- 🏗️ 디렉터리 지정 시 파일명 빼고 폴더만 쓰기 (예: notices/ ) 안내 강화, 파일명은 자동 붙음
+- 🚀 빌드 즉시 되는 건 GitHub Pages 자동 배포 특성 - 정상 동작, draft 브랜치로 미루는 옵션 안내
+- 🏷️ v9.0.29 → v9.0.30
+[빌드 넘버: v9.0.30]</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -801,7 +804,7 @@
 <!-- v9.0.11: 대화하면서 빌드 - FAB -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
 <!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position:fixed !important; right:16px !important; bottom:90px !important; z-index:10001 !important; width:64px !important; height:64px !important; border-radius:999px !important; background:#111 !important; color:#fff !important; border:3px solid #FFC800 !important; font-size:32px !important; box-shadow:0 8px 28px rgba(0,0,0,0.4) !important; display:flex !important; align-items:center !important; justify-content:center !important; cursor:pointer !important;">💬</button>
+<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position: fixed !important; right: 16px !important; bottom: 90px; z-index: 10001 !important; width: 64px !important; height: 64px !important; border-radius: 999px !important; background: rgb(17, 17, 17) !important; color: rgb(255, 255, 255) !important; border: 3px solid rgb(255, 200, 0) !important; font-size: 32px !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 28px !important; display: flex; align-items: center !important; justify-content: center !important; cursor: pointer !important; visibility: visible; opacity: 1;">💬</button>
 <div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
 <!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
@@ -1042,12 +1045,12 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.29 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.30 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.29';
+    const v = 'v9.0.30';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1415,7 +1418,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.29] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.30] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1477,7 +1480,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.29';
+          const currentVer = getTargetAppVersion() || 'v9.0.30';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -3997,17 +4000,24 @@ ${contextConstraint}`;
       return;
     }
     if (window._perfPaused) { log('⏸️ 경량모드: 미리보기 일시정지 중', 'info'); return; }
-    const codeHash = code.length + '_' + code.substring(0,100);
+    const codeHash = code.length + '_' + code.substring(0,150);
     const boxEarly = $('livePreviewBox');
+    // v9.0.30: 해시 같아도 박스는 무조건 다시 띄우기 - 미리보기 안 뜨는 버그 완전 제거
     if (window._lastPreviewHash === codeHash && !customCode) {
-      // 같은 코드라도 박스가 숨겨져 있으면 다시 보여줘야 함 - v9.0.29 버그 수정
-      if (boxEarly && !boxEarly.classList.contains('active')) {
+      if (boxEarly) {
         boxEarly.classList.add('active');
+        boxEarly.style.display = 'block';
         const titleObjEarly = $('previewTitle');
         if (titleObjEarly) titleObjEarly.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span> ${customTitle || `👁️ 미리보기 (${$('mainFileInput')?.value?.trim() || 'index.html'}) - ${new Date().toLocaleTimeString()}`}`;
-        log('👁️ 숨겨진 미리보기 다시 표시 (같은 코드)', 'info');
       }
-      return;
+      // 같은 코드라도 iframe이 비어있으면 다시 렌더링
+      const frameEarly = $('livePreviewFrame');
+      if (frameEarly && !frameEarly.srcdoc) {
+        // 아래로 진행해서 다시 렌더링
+      } else {
+        log('👁️ 같은 코드 - 박스만 다시 표시', 'info');
+        return;
+      }
     }
     window._lastPreviewHash = codeHash;
     const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
@@ -4071,7 +4081,7 @@ ${contextConstraint}`;
       log('👁️ 미리보기 숨김', 'info');
     }
   }
-  // v9.0.29: 미리보기 확정 버튼이 같은 코드여도 항상 박스를 다시 띄우도록 강제
+  // v9.0.30: 미리보기 확정 버튼이 같은 코드여도 항상 박스를 다시 띄우도록 강제
   window.forceShowPreviewBox = function() {
     const box = $('livePreviewBox');
     if (box) box.classList.add('active');
@@ -4089,8 +4099,12 @@ ${contextConstraint}`;
     const editor = $('codeEditor');
     const editorCode = editor && editor.value ? editor.value : '';
     const mainFileName = $('mainFileInput')?.value?.trim() || 'index.html';
-    const targetDirInput = $('multiFileTargetDir')?.value?.trim() || '';
-    const targetDir = targetDirInput ? (targetDirInput.endsWith('/') ? targetDirInput : targetDirInput + '/') : '';
+    let targetDirInput = $('multiFileTargetDir')?.value?.trim() || '';
+    // 폴더명만 써도 파일명 없이 자동 처리: new-folder -> new-folder/
+    if (targetDirInput && !targetDirInput.endsWith('/')) targetDirInput += '/';
+    const targetDir = targetDirInput;
+    // webkitRelativePath 지원: 폴더 선택 시 하위 경로 유지
+    
     
     if ((!files || files.length === 0) && !editorCode) { showToast('파일을 선택하거나 에디터에 코드가 있어야 합니다', 'err'); return; }
     
@@ -4141,7 +4155,9 @@ ${contextConstraint}`;
               text = temp;
             } catch(e){}
           }
-          const path = targetDir + f.name;
+          const relativePath = f.webkitRelativePath || f.name;
+          // webkitRelativePath가 있으면 그 경로 사용, 없으면 targetDir + fileName
+          const path = f.webkitRelativePath ? (targetDir ? targetDir + relativePath : relativePath) : (targetDir + f.name);
           if (fileMap.has(path)) { log(`⚠️ ${path}가 에디터와 파일선택에 중복 - 파일선택 버전으로 덮어씀`, 'warn'); }
           fileMap.set(path, text);
         } catch(e){ log(`❌ ${f.name} 읽기 실패: ${e.message}`, 'err'); }
@@ -4235,7 +4251,7 @@ ${contextConstraint}`;
       const mv = version.match(/v?(\d+)\.(\d+)\.(\d+)/);
       if (mv) {
         const major = parseInt(mv[1]), minor = parseInt(mv[2]), patch = parseInt(mv[3]);
-        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.29 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
+        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.30 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
       }
     } catch(e) {}
     
@@ -5041,7 +5057,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.29 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.30 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
