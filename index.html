@@ -82,11 +82,32 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.32 - - 폴더 자동 생성 지원</title>
+  <title>Builder-a4u v9.0.37 - - - 폴더 자동 생성 지원</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -102,9 +123,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.32">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.32">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.32">
+  <link rel="manifest" href="./manifest.json?v=9.0.37">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.37">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.37">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.32">
   
   <style>
@@ -200,50 +221,21 @@
     }
 
     /* v9.0.11: 대화하면서 빌드 - 채팅 FAB & 패널 */
-    #a4uChatFab {
-      position: fixed !important; right: 16px !important; bottom: 90px !important; z-index: 10001 !important;
-      width: 64px !important; height: 64px !important; border-radius: 999px !important;
-      background: #111 !important; color: #fff !important; border: 3px solid #FFC800 !important;
-      font-size: 32px !important; box-shadow: 0 8px 28px rgba(0,0,0,0.4) !important;
-      display: flex !important; align-items: center !important; justify-content: center !important;
-      cursor: pointer !important; visibility: visible !important; opacity: 1 !important;
-    }
-    #a4uChatFab:active { transform: scale(0.93) !important; }
-    #a4uChatPanel {
-      position: fixed; left: 0; right: 0; bottom: 0; /* v9.0.11 원래대로 아래에서 올라옴 */ z-index: 9998;
-      max-width: 920px; margin: 0 auto;
-      background: var(--card); border: 1px solid var(--line);
-      border-radius: 20px 20px 0 0; 
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
-      transform: translateY(105%); transition: transform 0.28s cubic-bezier(.2,.8,.2,1);
-      display: flex; flex-direction: column;
-      height: 62vh; max-height: 620px;
-    }
-    #a4uChatPanel.active { transform: translateY(0); }
-    #a4uChatFab{ display:flex !important; visibility:visible !important; opacity:1 !important; transform:scale(1) !important; }
-    #a4uChatFabLabel{ display:block !important; visibility:visible !important; opacity:1 !important; }
-    #a4uChatHistory {
-      flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px;
-      background: var(--bg);
-    }
-    .a4u-msg { max-width: 82%; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.5; word-break: break-word; white-space: pre-wrap; }
-    .a4u-msg.user { align-self: flex-end; background: #111111; color: #fff; border-bottom-right-radius: 4px; }
-    .a4u-msg.bot { align-self: flex-start; background: var(--card); border: 1px solid var(--line); color: var(--txt); border-bottom-left-radius: 4px; }
-    .a4u-msg.system { align-self: center; background: #FFC800; color: #111; font-size: 11px; font-weight: 800; border-radius: 999px; padding: 6px 10px; }
-    #a4uChatInputWrap {
-      border-top: 1px solid var(--line); padding: 10px; background: var(--card);
-      display: flex; gap: 8px; align-items: flex-end;
-    }
-    #a4uChatInput {
-      flex: 1; min-height: 44px; max-height: 110px; resize: none;
-      border: 1px solid var(--line); border-radius: 12px; padding: 11px 12px;
-      background: var(--bg); color: var(--txt); font-size: 14px; outline: none;
-    }
-    .a4u-quick { display: flex; gap: 6px; padding: 0 10px 8px 10px; overflow-x: auto; }
-    .a4u-quick button {
-      white-space: nowrap; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 999px;
-      border: 1px solid var(--line); background: var(--card); color: var(--txt);
-    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     .dark .btn-emerald { background: #059669 !important; color: #ffffff !important; border-color: #047857 !important; }
     .dark .input, .dark .textarea { background: #1e222e !important; color: #e2e8f0 !important; border-color: #3a4152 !important; }
@@ -304,7 +296,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.32</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.37</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -500,7 +492,7 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:58] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -780,18 +772,18 @@
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.32" readonly="" onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.36" readonly="" onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.32 - 빌드 내용 팝업 확인 후 빌드 (중요)
-- 🚨 [중요] 파일 올리고 최종빌드 누르면 빌드 내용 팝업 보고 확인 후 빌드되도록 변경
-- 👁️ 단일 빌드 팝업: 프로젝트, 빌드번호, 대상파일, 코드크기, 코드 미리보기 800자, 경고문구 표시
-- 📦 다중 파일 팝업: 프로젝트, 빌드번호, 대상폴더, 파일수, 파일목록 전체, 1커밋으로 푸시 안내
-- 🚫 팝업에서 취소하면 빌드 안 됨 - 실수로 바로 빌드되는 문제 완전 해결
-- 🎨 디자인: 폴더 입력칸 위, 버튼 2개 아래 유지
-- 🏷️ v9.0.31 → v9.0.32
-[빌드 넘버: v9.0.32]</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.36 - 원버튼 패키지 최종 fix (클립보드는 안내만, 파일에 소스 포함)
+- 🐛 님 지적 반영: 클립보드에 5000줄 전체 코드 넣으면 대화방 터짐
+- ✅ 클립보드에는 안내문구만 복사 (원래 설계대로)
+- ✅ 파일에는 맥락+아이디어+최신 전체 소스코드 반드시 포함 (에디터 비어있으면 GitHub에서 강제 로드)
+- 원인: 기존엔 에디터 비어있을 때 code=''로 txt가 빈 소스 상태로 생성되던 버그
+- 수정: 에디터→5개 localStorage 키→GitHub 동기화로 코드 확보 보장
+- 🏷️ v9.0.35 → v9.0.36
+[빌드 넘버: v9.0.37]</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -803,42 +795,13 @@
     <p class="text-[10px] opacity-60 mt-2 text-center">인풋 클릭 → 자동 전체 선택 → 복사 버튼으로 클립보드 복사</p>
   </div>
 
-<!-- v9.0.11: 대화하면서 빌드 - FAB -->
-<!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<!-- v9.0.11: 대화하면서 빌드 - FAB 원래대로 아래 플로팅 -->
-<button id="a4uChatFab" onclick="toggleA4uChat()" title="대화하면서 빌드 - 원래 아래쪽 아이콘" style="position: fixed !important; right: 16px !important; bottom: 90px; z-index: 10001 !important; width: 64px !important; height: 64px !important; border-radius: 999px !important; background: rgb(17, 17, 17) !important; color: rgb(255, 255, 255) !important; border: 3px solid rgb(255, 200, 0) !important; font-size: 32px !important; box-shadow: rgba(0, 0, 0, 0.4) 0px 8px 28px !important; display: flex; align-items: center !important; justify-content: center !important; cursor: pointer !important; visibility: visible; opacity: 1;">💬</button>
-<div id="a4uChatFabLabel" style="position:fixed; right:16px; bottom:64px; z-index:10001; background:#FFC800; color:#111; font-size:10px; font-weight:900; padding:2px 8px; border-radius:999px; box-shadow:0 2px 8px rgba(0,0,0,0.2); pointer-events:none;">채팅으로 빌드</div>
 
-<!-- v9.0.11: 대화하면서 빌드 - 채팅 패널 -->
-<div id="a4uChatPanel">
-  <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line);">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span style="font-size:18px;">💬</span>
-      <b style="font-size:14px;">대화하면서 빌드</b>
-      <span class="badge" style="background:#10b981;color:#fff;border-color:#059669;">v9.0.11</span>
-    </div>
-    <div style="display:flex; gap:6px; align-items:center;">
-      <label style="display:flex; align-items:center; gap:4px; font-size:11px; font-weight:700;"><input type="checkbox" id="a4uLocalMode" style="width:14px;height:14px;"> 🧠 로컬</label>
-      <button onclick="toggleA4uChat()" style="width:28px;height:28px;border-radius:999px;border:1px solid var(--line);background:var(--bg);">✕</button>
-    </div>
-  </div>
-  <div id="a4uChatHistory">
-    <div class="a4u-msg system">대화하면서 바로 빌드할 수 있어요. 예: "하단 첫번째 시계 아이콘 더 크게 예쁘게 바꿔줘"</div>
-    <div class="a4u-msg bot">안녕! 여기에 말하면 아이디어로 자동 등록되고, "해줘/바꿔줘"가 들어가면 바로 패치까지 해줄게. 사진 붙여넣기도 돼! 📸💬</div>
-  </div>
-  <div class="a4u-quick">
-    <button onclick="a4uQuickInsert('하단 첫번째 시계 아이콘을 더 크고 예쁜 걸로 바꿔줘')">🕐 시계 크게</button>
-    <button onclick="a4uQuickInsert('로그인 버튼 파란색으로 바꿔줘')">🔵 파란 버튼</button>
-    <button onclick="a4uQuickInsert('사진 속 아이디어를 글로 정리해줘')">🖼️ 사진 정리</button>
-    <button onclick="a4uQuickInsert('전체적으로 더 모던하게 다듬어줘')">✨ 모던하게</button>
-  </div>
-  <div id="a4uChatImagePreview" style="display:none; padding:8px 10px; background:var(--bg); border-top:1px solid var(--line); flex-wrap:wrap; gap:6px;"></div>
-  <div id="a4uChatInputWrap">
-    <label class="btn btn-sm" style="min-height:44px; padding:0 10px; background:var(--bg);" title="사진 첨부">📸<input type="file" id="a4uChatImageInput" accept="image/*" multiple="" class="hidden" onchange="handleA4uChatImageSelect(this)"></label>
-    <textarea id="a4uChatInput" placeholder="이렇게 해줘... (Ctrl+V로 사진 붙여넣기, 드래그앤드롭도 가능)" rows="1" onkeydown="if(event.key==='Enter'&amp;&amp;!event.shiftKey){event.preventDefault();sendA4uChat();}" onpaste="handleA4uChatPaste(event)"></textarea>
-    <button onclick="sendA4uChat()" class="btn btn-primary" style="min-height:44px; padding:0 16px;">전송</button>
-  </div>
-</div>
+
+
+
+
+
+
 
 <!-- AI PWA/외부 브라우저 강제 런처 오버레이 -->
 <div id="aiLauncherBar" class="fixed inset-0 bg-black/60 z-[10000] hidden flex flex-col justify-end">
@@ -858,179 +821,9 @@
   
 <script>
   const $ = id => document.getElementById(id);
-  let a4uChatOpen = false; // v9.0.13 fix: 중복 선언 제거 - 터치 불능 버그 수정
-  window.toggleA4uChat = function() {
-    const panel = document.getElementById('a4uChatPanel');
-    const fab = document.getElementById('a4uChatFab');
-    if (!panel) return;
-    a4uChatOpen = !a4uChatOpen;
-    if (a4uChatOpen) {
-      panel.classList.add('active');
-      if (fab) fab.style.transform = 'scale(0)';
-      setTimeout(()=>{ const inp=document.getElementById('a4uChatInput'); if(inp) inp.focus(); }, 280);
-    } else {
-      panel.classList.remove('active');
-      if (fab) fab.style.transform = 'scale(1)';
-    }
-  };
-
-  window.forceOpenChat = function() {
-    const panel = document.getElementById('a4uChatPanel');
-    if (panel) {
-      panel.classList.add('active');
-      window.a4uChatOpen = true;
-      const fab = document.getElementById('a4uChatFab');
-      if (fab) fab.style.transform = 'scale(0)';
-    }
-  };
-  document.addEventListener('keydown', (e)=>{
-    if (e.key==='`' || (e.ctrlKey && e.key==='k')) {
-      e.preventDefault();
-      toggleA4uChat();
-    }
-  });
-  // 페이지 로드 2초 후 FAB가 안 보이면 자동 복구
-  setTimeout(()=>{
-    const fab = document.getElementById('a4uChatFab');
-    if (fab) {
-      const rect = fab.getBoundingClientRect();
-      if (rect.width===0 || rect.top>window.innerHeight) {
-        console.warn('FAB not visible, forcing visible');
-        fab.style.display='flex';
-        fab.style.visibility='visible';
-        fab.style.opacity='1';
-        fab.style.bottom='90px';
-      }
-    }
-  }, 2000);
-
-  window.a4uChatOpen = false;
-  window.toggleA4uChat = function() {
-    try {
-      const panel = document.getElementById('a4uChatPanel');
-      const fab = document.getElementById('a4uChatFab');
-      const label = document.getElementById('a4uChatFabLabel');
-      if (!panel) { console.error('chat panel not found'); return; }
-      window.a4uChatOpen = !window.a4uChatOpen;
-      if (window.a4uChatOpen) {
-        panel.classList.add('active');
-        if (fab) { fab.style.transform = 'scale(0)'; fab.style.opacity='0'; }
-        if (label) label.style.display='none';
-        setTimeout(()=>{ const inp=document.getElementById('a4uChatInput'); if(inp) inp.focus(); }, 300);
-      } else {
-        panel.classList.remove('active');
-        if (fab) { fab.style.transform = 'scale(1)'; fab.style.opacity='1'; }
-        if (label) label.style.display='block';
-      }
-    } catch(e) { console.error('toggle error', e); }
-  };
-  window.forceOpenChat = function() {
-    const panel = document.getElementById('a4uChatPanel');
-    if (panel) { panel.classList.add('active'); window.a4uChatOpen=true; }
-  };
-
-  window.a4uChatAddMessage = function(role, text) {
-    const hist = document.getElementById('a4uChatHistory');
-    if (!hist) return;
-    const div = document.createElement('div');
-    div.className = 'a4u-msg ' + (role==='user'?'user': role==='system'?'system':'bot');
-    div.textContent = text;
-    hist.appendChild(div);
-    hist.scrollTop = hist.scrollHeight;
-  };
-
-  window.a4uQuickInsert = function(txt) {
-    const inp = document.getElementById('a4uChatInput');
-    if (inp) { inp.value = txt; inp.focus(); }
-  };
-
-  window.sendA4uChat = async function() {
-    const inp = document.getElementById('a4uChatInput');
-    const localMode = document.getElementById('a4uLocalMode');
-    if (!inp) return;
-    const raw = inp.value.trim();
-    const hasImages = window.a4uChatImages && window.a4uChatImages.length>0;
-    if (!raw && !hasImages) return;
-    const imagesToSend = hasImages ? [...a4uChatImages] : [];
-    inp.value = '';
-    // 이미지 미리보기 초기화는 전송 후에
-    if (raw) a4uChatAddMessage('user', raw + (hasImages?` [📸 ${hasImages}장]`:''));
-    else if (hasImages) a4uChatAddMessage('user', `[📸 사진 ${hasImages}장] 이 사진 참고해서 바꿔줘`);
-    if (hasImages && typeof a4uChatImages !== 'undefined') {
-      // 채팅에 썸네일도 보여주기
-      const hist = document.getElementById('a4uChatHistory');
-      if (hist) {
-        const div = document.createElement('div');
-        div.className = 'a4u-msg user';
-        div.style.display='flex';
-        div.style.gap='4px';
-        div.style.flexWrap='wrap';
-        div.innerHTML = imagesToSend.map(img=>`<img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:8px;border:1px solid #fff;">`).join('');
-        hist.appendChild(div);
-        hist.scrollTop = hist.scrollHeight;
-      }
-    }
     
-    const isBuildIntent = /해줘|바꿔줘|고쳐줘|키워줘|줄여줘|만들어줘|수정해줘|변경해줘|다듬어줘|정리해줘/i.test(raw);
-    const isPhotoIntent = /사진|이미지|캡처|스크린샷/i.test(raw);
-    
-    try {
-      // 1) 아이디어로 자동 등록 (현재 레포)
-      if (typeof currentRepoIdeas !== 'undefined') {
-        const newIdea = {
-          id: Date.now(),
-          text: raw + (localMode && localMode.checked ? ' [🧠로컬]' : ' [💬채팅]') + (hasImages?` [이미지 ${imagesToSend.length}장]`:''),
-          checked: isBuildIntent ? true : false,
-          status: 'todo',
-          images: imagesToSend
-        };
-        // 채팅 이미지 비우기
-        window.a4uChatImages = [];
-        renderA4uChatImages();
-        // 사진 의도면 현재 아이디어 사진도 포함
-        if (isPhotoIntent && typeof getAllIdeaImagesFlattened === 'function') {
-          const allImgs = getAllIdeaImagesFlattened();
-          if (allImgs && allImgs.length) {
-            a4uChatAddMessage('system', `🖼️ 첨부된 사진 ${allImgs.length}장도 함께 참고할게요`);
-          }
-        }
-        currentRepoIdeas.unshift(newIdea);
-        if (typeof renderRepoIdeas === 'function') renderRepoIdeas();
-        if (typeof saveRepoIdea === 'function') saveRepoIdea(null, false);
-        if (typeof saveIdeaInbox === 'function' && typeof aiClassifyAndRoute === 'function' && !isBuildIntent) {
-          // 일반 대화는 라우터로도 보내보기
-        }
-      }
 
-      if (isBuildIntent) {
-        a4uChatAddMessage('bot', `좋아, "${raw.slice(0,40)}" 바로 패치할게! 🚀\n1.최신 코드 동기화중...`);
-        // 로컬 모드면 안내
-        if (localMode && localMode.checked) {
-          a4uChatAddMessage('bot', '🧠 로컬 모드 ON: MiniCPM이 있다면 PocketPal/Ollama로 로컬에서 처리해. 지금은 Gemini API로 대체 실행할게. (추후 callLocalMiniCPM() 연결 예정)');
-        }
-        // 기존 원클릭 패치 엔진 재사용
-        if (typeof oneClickAutoPatch === 'function') {
-          // 약간의 딜레이로 UX 부드럽게
-          setTimeout(async () => {
-            try {
-              await oneClickAutoPatch();
-              a4uChatAddMessage('bot', '✅ 패치 완료! 아래 미리보기에서 확인해봐. 마음에 안 들면 ↩️ Undo 하면 돼.');
-              a4uChatAddMessage('system', '💡 팁: "사진 정리해줘"라고 하면 첨부된 아이디어 사진들을 MiniCPM-V가 글로 바꿔줘');
-            } catch(e) {
-              a4uChatAddMessage('bot', '⚠️ 패치 실패: ' + e.message + '\nGemini 키 확인하거나, 아이디어를 좀 더 구체적으로 말해줘!');
-            }
-          }, 400);
-        } else {
-          a4uChatAddMessage('bot', '⚡ 패치 엔진(oneClickAutoPatch)을 찾을 수 없어. 설정 탭에서 수동으로 실행해줘.');
-        }
-      } else {
-        a4uChatAddMessage('bot', `아이디어로 저장했어! 체크박스 켜고 "해줘" 라고 말하면 바로 코드에 반영할게.\n지금 아이디어: "${raw.slice(0,60)}"`);
-      }
-    } catch(err) {
-      a4uChatAddMessage('bot', '❌ 오류: ' + err.message);
-    }
-  };
-
+  
   window.copyToClipboard = async function(text, label) {
     try {
       await navigator.clipboard.writeText(text);
@@ -1047,26 +840,19 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.32 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.33 - 채팅탭 삭제 + 맥락복사/디렉터리 빌드 Fix\n- 🗑️ 채팅 FAB/패널 삭제\n- 📋 맥락복사 시 자동 다운로드로 수정\n- 📁 디렉터리 빌드 mainPath 버그 수정 + 바이너리 지원`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.32';
+    const v = 'v9.0.36';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
     copyToClipboard(full, '버전+변경사항');
   };
 
-  window.callLocalMiniCPM = async function(prompt) {
-    // TODO: WebLLM 또는 llama.cpp WASM 로드
-    // 지금은 Gemini로 폴백
-    if (typeof callGeminiAPI === 'function') {
-      return await callGeminiAPI(prompt, 0.2, false, null, 'gemini-2.5-flash');
-    }
-    throw new Error('callGeminiAPI 없음');
-  };
+  
 
   let GITHUB_USER = localStorage.getItem('github_user') || 'apoco211';
   const DEFAULT_GOOGLE_CLIENT_ID = '888946226553-slfvr63ei4trs1k9pibokscola24uhvl.apps.googleusercontent.com';
@@ -1420,7 +1206,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.32] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.37] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1482,7 +1268,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.32';
+          const currentVer = getTargetAppVersion() || 'v9.0.36';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -2235,15 +2021,34 @@ ${rawPatch}
     try {
       const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
       const url = URL.createObjectURL(blob);
+      const fileName = customFileName.endsWith('.txt') || customFileName.endsWith('.html') ? customFileName : customFileName + '.txt';
       const a = document.createElement('a');
       a.href = url;
-      a.download = customFileName.endsWith('.txt') || customFileName.endsWith('.html') ? customFileName : customFileName + '.txt';
-      document.body.appendChild(a); 
-      a.click(); 
-      document.body.removeChild(a);
-      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      a.download = fileName;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      // iOS Safari 대응: download 속성이 무시될 수 있으므로 클릭 후 fallback
+      try {
+        a.click();
+      } catch(e) {
+        window.open(url, '_blank');
+      }
+      setTimeout(() => {
+        try { document.body.removeChild(a); } catch(e){}
+        URL.revokeObjectURL(url);
+      }, 1500);
+      // iOS에서는 다운로드 대신 새 창 열림을 감지하기 위해 true 반환
       return true;
-    } catch (e) { return false; }
+    } catch (e) {
+      try {
+        // 최후 fallback: data URI로 열기
+        const blob2 = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+        const url2 = URL.createObjectURL(blob2);
+        window.open(url2, '_blank');
+        setTimeout(() => URL.revokeObjectURL(url2), 5000);
+        return true;
+      } catch(e2) { return false; }
+    }
   }
   
   window.handleCodeFileUpload = async function(input) {
@@ -2980,7 +2785,7 @@ window.downloadCodeAsTextDoc = function(autoMode = false) {
       }).join('\n') + '\n';
     }
   
-    const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.`;
+    const contextConstraint = `[핵심 작업 원칙]\n⚠️ 브라우저 메모리 부족(앱 멈춤) 방지를 위해, 채팅창 화면에 긴 전체 코드를 절대 직접 텍스트로 타이핑해서 출력하지 마.\n⚠️ 특별한 요청이 없는 한 기존의 UI 디자인과 기존 기능은 절대 임의로 변경하거나 누락시키지 마.\n⚠️ [v9.0.33 중요] 새 프로젝트 생성 시 채팅탭/채팅 FAB/대화하면서 빌드 기능 절대 포함 금지 - builder-a4u에서 해당 기능 삭제됨. 새 앱에는 채팅 관련 UI 넣지 마.`;
 
     return `[${repo} (${appVersion}) 작업 맥락 (via Builder-a4u v8.2.7)]
   📌 프로젝트(Repo): ${repo}
@@ -3020,21 +2825,47 @@ ${contextConstraint}`;
   window.copyFullContext = async function() {
     try { 
       const ctxText = getActualContextText();
-      await navigator.clipboard.writeText(ctxText); 
-      showToast('📋 맥락 복사 완료! 코드 저장 창을 띄웁니다', 'ok'); 
+      let copied = false;
+      try {
+        await navigator.clipboard.writeText(ctxText);
+        copied = true;
+      } catch(clipErr) {
+        // fallback: textarea execCommand
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = ctxText;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          copied = true;
+        } catch(e2) {}
+      }
+      showToast(copied ? '📋 맥락 복사 완료!' : '📋 맥락 복사 시도', copied ? 'ok' : 'info');
+
+      // v9.0.33 Fix: prompt 제거 -> 자동 다운로드로 변경 (iPhone/PWA에서 prompt 안뜨는 버그 해결)
       try {
         const editor = $('codeEditor');
         let code = editor && editor.value && editor.value.trim().length>0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
         if (code && code.trim().length>0) {
           const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-          const defaultName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}.txt`; // 날짜 제거
-          const fileName = prompt('💾 현재 버전 코드를 저장할 파일명을 입력하세요 (날짜 없음):', defaultName);
-          if (fileName) {
-            const ok = downloadTextPayload(code, fileName);
-            if (ok) showToast('💾 코드 파일 저장 완료!', 'ok');
+          const defaultName = `${currentRepo}_${targetFile.replace(/[\/\\]/g, '_')}.txt`;
+          // 자동 다운로드 (프롬프트 없이)
+          const ok = downloadTextPayload(code, defaultName);
+          if (ok) {
+            showToast(`💾 ${defaultName} 자동 다운로드 시작!`, 'ok');
+          } else {
+            showToast('⚠️ 자동 다운로드 실패 - 수동으로 코드 복사 탭 이용', 'warn');
           }
+        } else {
+          showToast('📋 맥락만 복사됨 (에디터 코드 없음)', 'info');
         }
-      } catch(e2) { console.warn('코드 저장 창 오류', e2); }
+      } catch(e2) { 
+        console.warn('코드 자동 저장 오류', e2);
+        showToast('📋 맥락 복사됨 (코드 저장 실패)', 'info');
+      }
     } 
     catch (e) { showToast('복사 실패: ' + e.message, 'err'); }
   };
@@ -3137,7 +2968,7 @@ ${contextConstraint}`;
     if (bar) bar.classList.add('hidden');
   };
 
-  window.generateSmartPrompt = async function() {
+    window.generateSmartPrompt = async function() {
     resetMobileViewportZoom();
     let ideasArr = parseIdeasData(localStorage.getItem('repo_idea_' + currentRepo) || '');
     const nonEmptyIdeas = ideasArr.filter(i => i.text && i.text.trim().length > 0);
@@ -3167,29 +2998,105 @@ ${contextConstraint}`;
 
     const editor = $('codeEditor');
     const targetFile = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
-    let code = editor && editor.value && editor.value.trim().length > 0 ? editor.value : localStorage.getItem(getDraftCodeKey()) || '';
-    const dateStr = new Date().toISOString().slice(0,10);
+    // v9.0.35 Robust: 여러 키에서 코드 찾기
+    let code = '';
+    if (editor && editor.value && editor.value.trim().length > 50) {
+      code = editor.value;
+      if (typeof log === 'function') log(`📥 에디터에서 코드 발견 (${code.length.toLocaleString()}자)`, 'info');
+    } else {
+      // localStorage 여러 키 시도
+      const keysToTry = [
+        getDraftCodeKey(),
+        `draft_code_${currentRepo}_${targetFile}`,
+        `draft_code_${currentRepo}_index.html`,
+        `draft_code_builder-a4u_index.html`,
+        `draft_code_${currentRepo}_${mainFile || 'index.html'}`
+      ];
+      for (const k of keysToTry) {
+        try {
+          const v = localStorage.getItem(k);
+          if (v && v.trim().length > 50) {
+            code = v;
+            if (typeof log === 'function') log(`📥 localStorage [${k}]에서 코드 발견 (${code.length.toLocaleString()}자)`, 'info');
+            break;
+          }
+        } catch(e){}
+      }
+    }
+    
+    // v9.0.34 Fix: 에디터가 비어있으면 GitHub에서 최신 코드 강제 동기화 (원버튼 패키지 소스코드 누락 버그 수정)
+    if (!code || code.trim().length < 50) {
+      try {
+        if (typeof log === 'function') log('🔄 에디터/로컬 모두 비어있어 GitHub에서 최신 코드 가져오는 중... (원버튼 패키지)', 'info');
+        if (typeof showToast === 'function') showToast('📥 최신 코드 GitHub에서 불러오는 중...', 'info');
+        if (typeof syncLatestSourceFromGithub === 'function') {
+          const latest = await syncLatestSourceFromGithub(true);
+          if (latest && latest.trim().length > 50) {
+            code = latest;
+            if (typeof log === 'function') log(`✅ GitHub 코드 로드 성공 (${code.length.toLocaleString()}자)`, 'ok');
+            if (editor) editor.value = latest;
+          } else {
+            if (typeof log === 'function') log(`⚠️ GitHub에서 가져온 코드도 비어있음 (${latest ? latest.length : 0}자)`, 'warn');
+          }
+        } else {
+          if (typeof log === 'function') log('❌ syncLatestSourceFromGithub 함수 없음', 'err');
+        }
+      } catch(e) { 
+        if (typeof log === 'function') log(`⚠️ GitHub 코드 로드 실패: ${e.message}`, 'warn'); 
+      }
+    }
+
+    if (!code || code.trim().length < 50) {
+      if (typeof showToast === 'function') showToast('❌ 소스코드를 찾을 수 없습니다. 먼저 [새로고침]이나 코드 에디터에 코드를 붙여넣어 주세요.', 'err');
+      if (typeof log === 'function') log('❌ 원버튼 패키지: 소스코드 없음 - 에디터/로컬/GitHub 모두 비어있음', 'err');
+      // 빈 코드라도 패키지는 생성하되, 경고 포함
+      code = `/* ❌ 소스코드를 찾을 수 없습니다. builder-a4u 에디터가 비어있습니다. GitHub에서 ${currentRepo}/${targetFile} 파일을 확인하세요. */\n` + (code || '');
+    }
 
     const combinedPayload = `${promptText}\n\n==================================================\n📁 [현재 버전 전체 소스코드: ${targetFile}]\n==================================================\n${code}`;
-    const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}.txt`; // 날짜 제거 - 동일 파일명으로 덮어쓰기
-
+    const combinedFileName = `${currentRepo}_통합프롬프트_및_${targetFile.replace(/[\/\\]/g, '_')}.txt`;
     const guideText = `첨부한 txt 파일 안에 [작업 맥락]과 [현재 소스코드]가 같이 있다. 반드시 txt 안의 [AI 전용 지시사항] 순서대로 먼저 방향성부터 제시해줘`;
 
     try {
-      downloadTextPayload(combinedPayload, combinedFileName);
+      // 1. 파일 다운로드: 맥락+아이디어+최신 전체 소스코드 포함 (v9.0.36 핵심 - 파일에 소스 반드시 포함)
+      const dlOk = downloadTextPayload(combinedPayload, combinedFileName);
+      if (!dlOk && typeof log === 'function') log('⚠️ 파일 다운로드 실패 - 수동 확인 필요', 'warn');
+
       resetMobileViewportZoom();
+
+      // 2. 클립보드: 안내문구만 복사 (5000줄 전체 코드를 대화창에 붙이면 터지므로)
       try {
         await navigator.clipboard.writeText(guideText);
-        showToast(`📋 안내 문구 클립보드 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
-        log(`✅ 스마트 패키지 생성 완료 - 안내 문구 복사됨: "${guideText}"`, 'ok');
+        if (typeof showToast === 'function') showToast(`📋 안내문구 복사 & [통합 .txt] 다운로드 완료! (소스 ${code.length.toLocaleString()}자는 파일 안에 포함)`, 'ok');
+        if (typeof log === 'function') log(`✅ 원버튼 패키지: 파일 ${combinedFileName} (${combinedPayload.length.toLocaleString()}자, 소스 ${code.length.toLocaleString()}자) 다운로드 + 안내문구 복사`, 'ok');
       } catch(clipErr) {
-        showToast(`📁 [통합 .txt] 다운로드 완료! (클립보드 복사 실패 - 수동 복사)`, 'info');
-        log(`⚠️ 클립보드 복사 실패: ${clipErr.message}`, 'info');
-        log(`📋 복사할 문구: ${guideText}`, 'info');
+        try {
+          const ta = document.createElement('textarea');
+          ta.value = guideText;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+          if (typeof showToast === 'function') showToast(`📋 안내문구 복사 & [통합 .txt] 다운로드 완료!`, 'ok');
+        } catch(e2) {
+          if (typeof showToast === 'function') showToast(`📁 [통합 .txt] 다운로드 완료! (클립보드 복사 실패 - 파일 확인)`, 'info');
+          if (typeof log === 'function') log(`⚠️ 클립보드 복사 실패: ${e2.message} / 안내문구: ${guideText}`, 'info');
+        }
       }
+
+      // 3. AI 런처 표시
+      try {
+        const selectedAIs = typeof getSelectedAITargets === 'function' ? getSelectedAITargets() : [];
+        if (selectedAIs && selectedAIs.length > 0 && typeof showAILauncher === 'function') {
+          showAILauncher(selectedAIs);
+        }
+      } catch(e){}
+
     } catch (e) {
-      showToast('❌ 패키징 중 오류: ' + e.message, 'err');
-      log(`❌ 패키징 오류: ${e.message}`, 'err');
+      if (typeof showToast === 'function') showToast('❌ 패키징 중 오류: ' + e.message, 'err');
+      if (typeof log === 'function') log(`❌ 패키징 오류: ${e.message}`, 'err');
     }
   };
 
@@ -4123,7 +4030,6 @@ ${contextConstraint}`;
     if (targetDirInput && !targetDirInput.endsWith('/')) targetDirInput += '/';
     const targetDir = targetDirInput;
     
-    
     if ((!files || files.length === 0) && !editorCode) { showToast('파일을 선택하거나 에디터에 코드가 있어야 합니다', 'err'); return; }
     
     const pat = getGitHubPat();
@@ -4133,7 +4039,21 @@ ${contextConstraint}`;
     try { const mv = version.match(/v?(\d+)\.(\d+)\.(\d+)/); if (mv) { finalVersion = `v${mv[1]}.${mv[2]}.${mv[3]}`; } } catch(e){}
     const userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] 통합 빌드 (${finalVersion})`;
     
-    const fileMap = new Map();
+    // v9.0.33: fileMap 구조 개선 - 바이너리 지원
+    const fileMap = new Map(); // path -> {content, base64}
+    
+    const readAsBase64 = (file) => new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const res = reader.result;
+        const b64 = typeof res === 'string' ? res.split(',')[1] : '';
+        resolve(b64);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    
+    const isTextFile = (name) => /\.(html?|htm|css|js|jsx|tsx|json|txt|md|svg|xml|csv)$/i.test(name);
     
     if (editorCode) {
       let code = editorCode;
@@ -4147,7 +4067,7 @@ ${contextConstraint}`;
         });
         temp = temp.replace(/<h1([^>]*)>(.*?)\s+v?\d+\.\d+\.\d+\s*(.*?)<\/h1>/gi, (m,attrs,pre,post)=>{
           let cleanPre = pre.trim(); if (cleanPre.endsWith('-a') || cleanPre==='Builder-a' || cleanPre==='Builder') cleanPre='Builder-a4u';
-          let cleanPost = (post||'').trim().replace(/^v?\d+\.\d+\.\d+.*/i,'').trim();
+          let cleanPost = (post||'').trim().replace(/^v?\d+\.\d+.*/i,'').trim();
           return `<h1${attrs}>${cleanPre} ${finalVersion}${cleanPost ? ' '+cleanPost : ''}</h1>`;
         });
         temp = temp.replace(/manifest\.json\?v=[\d\.]+/g, `manifest.json?v=${finalVersion.substring(1)}`);
@@ -4156,36 +4076,55 @@ ${contextConstraint}`;
         temp = temp.replace(/\[빌드 넘버:\s*v?[\d\.]+\]/gi, `[빌드 넘버: ${finalVersion}]`);
         code = temp;
       } catch(e){ log(`⚠️ 에디터 버전 치환 실패: ${e.message}`, 'warn'); }
-      const mainPath = targetDir + mainFileName;
-      fileMap.set(mainPath, code);
+      // v9.0.33 FIX: 에디터 코드는 루트 mainFileName으로 고정 - targetDir로 잘못 들어가는 버그 수정
+      const mainPath = mainFileName;
+      fileMap.set(mainPath, {content: code, base64: null});
       log(`📝 에디터 코드 포함: ${mainPath} (${code.length.toLocaleString()}자) - 미리보기한 그 코드`, 'info');
     }
     
     if (files && files.length > 0) {
       for (let f of files) {
         try {
-          let text = await f.text();
-          if (f.name.endsWith('.html') || f.name.endsWith('.htm')) {
-            try {
-              let temp = text;
-              temp = temp.replace(/manifest\.json\?v=[\d\.]+/g, `manifest.json?v=${finalVersion.substring(1)}`);
-              temp = temp.replace(/\[빌드 넘버:\s*v?[\d\.]+\]/gi, `[빌드 넘버: ${finalVersion}]`);
-              text = temp;
-            } catch(e){}
+          const rawRelative = f.webkitRelativePath || f.name;
+          let path = '';
+          if (f.webkitRelativePath) {
+            // 경로 중복 방지: targetDir가 이미 relativePath에 포함되면 중복 제거
+            if (targetDir && rawRelative.startsWith(targetDir)) {
+              path = rawRelative;
+            } else {
+              path = targetDir ? targetDir + rawRelative : rawRelative;
+            }
+          } else {
+            path = targetDir ? targetDir + f.name : f.name;
           }
-          const relativePath = f.webkitRelativePath || f.name;
-          // webkitRelativePath가 있으면 그 경로 사용, 없으면 targetDir + fileName
-          const path = f.webkitRelativePath ? (targetDir ? targetDir + relativePath : relativePath) : (targetDir + f.name);
-          if (fileMap.has(path)) { log(`⚠️ ${path}가 에디터와 파일선택에 중복 - 파일선택 버전으로 덮어씀`, 'warn'); }
-          fileMap.set(path, text);
+          path = path.replace(/\/\//g, '/').replace(/^\//, '');
+          
+          if (isTextFile(f.name)) {
+            let text = await f.text();
+            if (f.name.endsWith('.html') || f.name.endsWith('.htm')) {
+              try {
+                let temp = text;
+                temp = temp.replace(/manifest\.json\?v=[\d\.]+/g, `manifest.json?v=${finalVersion.substring(1)}`);
+                temp = temp.replace(/\[빌드 넘버:\s*v?[\d\.]+\]/gi, `[빌드 넘버: ${finalVersion}]`);
+                text = temp;
+              } catch(e){}
+            }
+            if (fileMap.has(path)) { log(`⚠️ ${path}가 에디터와 파일선택에 중복 - 파일선택 버전으로 덮어씀`, 'warn'); }
+            fileMap.set(path, {content: text, base64: null});
+          } else {
+            const b64 = await readAsBase64(f);
+            if (fileMap.has(path)) { log(`⚠️ ${path} 중복 - 바이너리 덮어씀`, 'warn'); }
+            fileMap.set(path, {content: null, base64: b64});
+            log(`📎 바이너리 포함: ${path} (${f.size} bytes)`, 'info');
+          }
         } catch(e){ log(`❌ ${f.name} 읽기 실패: ${e.message}`, 'err'); }
       }
     }
     
     if (fileMap.size === 0) { showToast('올릴 파일이 없습니다', 'err'); return; }
     
-    // v9.0.32: 빌드 내용 팝업 확인 - 파일 올리자마자 바로 빌드되지 않고 확인 후 빌드
-    const fileListForConfirm = Array.from(fileMap.entries()).map(([path, content]) => ({ path, content }));
+    // v9.0.32: 빌드 내용 팝업 확인
+    const fileListForConfirm = Array.from(fileMap.entries()).map(([path, obj]) => ({ path, content: obj.content || `[바이너리 ${obj.base64 ? (obj.base64.length/1024).toFixed(1)+'KB' : '0'}]` }));
     const confirmedMulti = await showBuildConfirmModal('multi', { 
       repo: currentRepo || 'builder-a4u', 
       ver: finalVersion, 
@@ -4214,10 +4153,13 @@ ${contextConstraint}`;
       const commitData = await commitRes.json();
       const baseTreeSha = commitData.tree.sha;
       const treeItems = [];
-      for (let [path, content] of fileMap.entries()) {
-        let base64Content = '';
-        try { base64Content = window.btoa(unescape(encodeURIComponent(content))); } catch(e) {
-          const bytes = new TextEncoder().encode(content); let binary=''; for(let j=0;j<bytes.byteLength;j+=1024) binary+=String.fromCharCode.apply(null, bytes.subarray(j, Math.min(j+1024, bytes.byteLength))); base64Content = window.btoa(binary);
+      for (let [path, obj] of fileMap.entries()) {
+        let base64Content = obj.base64;
+        if (!base64Content) {
+          const content = obj.content || '';
+          try { base64Content = window.btoa(unescape(encodeURIComponent(content))); } catch(e) {
+            const bytes = new TextEncoder().encode(content); let binary=''; for(let j=0;j<bytes.byteLength;j+=1024) binary+=String.fromCharCode.apply(null, bytes.subarray(j, Math.min(j+1024, bytes.byteLength))); base64Content = window.btoa(binary);
+          }
         }
         const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/blobs`, { method: 'POST', headers, body: JSON.stringify({ content: base64Content, encoding: 'base64' }) });
         if (!blobRes.ok) throw new Error(`${path} blob 생성 실패: ` + await blobRes.text());
@@ -4241,9 +4183,13 @@ ${contextConstraint}`;
       log(`❌ 통합 빌드 실패, 개별 푸시로 폴백: ${e.message}`, 'err');
       const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
       let ok=0, fail=0;
-      for (let [path, content] of fileMap.entries()) {
+      for (let [path, obj] of fileMap.entries()) {
         try {
-          let base64Content = ''; try { base64Content = window.btoa(unescape(encodeURIComponent(content))); } catch(e2) { const bytes = new TextEncoder().encode(content); let binary=''; for(let j=0;j<bytes.byteLength;j+=1024) binary+=String.fromCharCode.apply(null, bytes.subarray(j, Math.min(j+1024, bytes.byteLength))); base64Content = window.btoa(binary); }
+          let base64Content = obj.base64;
+          if (!base64Content) {
+            const content = obj.content || '';
+            try { base64Content = window.btoa(unescape(encodeURIComponent(content))); } catch(e2) { const bytes = new TextEncoder().encode(content); let binary=''; for(let j=0;j<bytes.byteLength;j+=1024) binary+=String.fromCharCode.apply(null, bytes.subarray(j, Math.min(j+1024, bytes.byteLength))); base64Content = window.btoa(binary); }
+          }
           let sha=null; try { const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path.split('/').map(encodeURIComponent).join('/')}`, { headers }); if (getRes.ok) { const j=await getRes.json(); sha=j.sha; } } catch(e){}
           const body = { message: `${userNote} - ${path}`, content: base64Content, branch: 'main' }; if (sha) body.sha=sha;
           const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${path.split('/').map(encodeURIComponent).join('/')}`, { method: 'PUT', headers, body: JSON.stringify(body) });
@@ -5091,7 +5037,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.32 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1>
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.37 - - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1>
   <!-- v9.0.32: 빌드 내용 확인 팝업 - 중요 -->
   <div id="buildConfirmModal" class="fixed inset-0 z-[10002] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
     <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-[560px] max-h-[85vh] flex flex-col overflow-hidden border-2 border-yellow-400">
@@ -5590,4 +5536,4 @@ function startApp() {
   </div>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-</div></div></div></body></html>
+</div></div></div><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
