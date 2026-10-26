@@ -86,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.25 - - PC경량화+버전고정+다중빌드 완전체</title>
+  <title>Builder-a4u v9.0.26 - - 폴더 자동 생성 지원</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -102,10 +102,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.25">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.25">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.25">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.25">
+  <link rel="manifest" href="./manifest.json?v=9.0.26">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.26">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.26">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.26">
   
   <style>
     :root {
@@ -172,7 +172,7 @@
     .dark .btn-primary { background: #e2e8f0 !important; color: #0f1115 !important; border-color: #e2e8f0 !important; }
     .dark .btn-yellow { background: #FFC800 !important; color: #111111 !important; border-color: #FFC800 !important; }
 
-    /* v9.0.25 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
+    /* v9.0.26 perf: PC 크롬 textarea 버벅임 방지 + 카드 가상화 */
     #codeEditor, #patchInput, #updateNoteInput, #inboxTextInput, #inboxMemoInput {
       max-width: 100% !important;
       box-sizing: border-box !important;
@@ -304,7 +304,7 @@
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.25</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.26</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -454,9 +454,11 @@
         <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 &amp; 이중 백업</button>
       </div>
       <div class="flex gap-1.5 w-full mt-2">
-        <label for="multiFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">📦 index+js+manifest 일괄 업빌드 (다중 파일 선택)</label>
+        <input id="multiFileTargetDir" class="input text-[11px] flex-1" placeholder="📁 대상 폴더 (예: src/components/ 또는 assets/ - 비우면 루트)" value="">
+        <label for="multiFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#f3e8ff;color:#6b21a8;border:1px solid #e9d5ff">📦 다중 파일+폴더 일괄 업빌드</label>
         <input type="file" id="multiFileInput" multiple="" accept=".html,.htm,.js,.jsx,.ts,.tsx,.json,.css,.png,.jpg,.jpeg,.webp,.svg" class="hidden" onchange="handleMultiFileBuild(this)">
       </div>
+      <div class="text-[10px] text-gray-500 mt-1">💡 폴더 자동 생성: 대상 폴더에 <code>new-folder/</code> 입력하고 파일 선택하면 자동 생성. 기존 폴더면 그 안에 업로드.</div>
     </div>
   </div>
   
@@ -491,7 +493,7 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:17:11] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:17:11] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:17:13] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:00:52] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:00:52] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 12:00:54] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -771,18 +773,18 @@
     </div>
     <div class="flex flex-col gap-2.5">
       <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.25" readonly="" onclick="this.select()">
+        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.26" readonly="" onclick="this.select()">
         <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
       </div>
       <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.25 - 정식 버전업 (PC경량화+버전고정 유지)
-- 🏷️ v9.0.24 → v9.0.25 정식 버전업 (수동 지정)
-- 🐛 빌드 시 자동 +1 제거 유지: 미리보기 25면 최종빌드도 25 유지
-- ⚡ PC 크롬 경량화 유지: 로그 120개 제한, 저장 3개 제한, 미리보기 캐시
-- 🔧 스마트 교체 3종 복구 유지, 미분류 저장 피드백 유지
-- 📦 다중 파일 일괄 빌드 유지: index+js+manifest 한 번에 푸시
-- 🏷️ 타이틀/h1/manifest/icon v9.0.25로 완전 통일
-[빌드 넘버: v9.0.25]</textarea>
+        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.26 - 폴더 자동 생성 지원
+- 📁 [신규] 디렉터리 자동 생성: 파일 경로에 / 포함 시 폴더 자동 생성 (GitHub Contents API 특성)
+- 🔧 encodeURIComponent 버그 수정: / 인코딩 안 되도록 split/map/join으로 변경, 폴더 생성 정상화
+- 📦 다중 파일 일괄 빌드에 대상 폴더 입력 추가: 예) src/components/ 입력 후 파일 선택 시 해당 폴더에 업로드
+- 🏗️ 단일 파일 빌드도 폴더 경로 지원: mainFileInput에 assets/images/logo.png 입력 시 폴더 자동 생성
+- 🏷️ 빈 폴더는 GitHub에서 허용 안 됨, 최소 .gitkeep 파일 필요 - 안내 문구 추가
+- 🏷️ v9.0.25 → v9.0.26 버전업, 타이틀/h1/manifest v9.0.26 통일
+[빌드 넘버: v9.0.26]</textarea>
         <div class="flex flex-col gap-1.5">
           <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
           <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
@@ -1038,12 +1040,12 @@
     if (!box) return;
     let txt = box.value;
     if (mode==='short') {
-      txt = `v9.0.25 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
+      txt = `v9.0.26 - 스마트 교체 복구 + 미분류 수동저장 & 버전표기 수정 Chat Build\n- 💬 채팅 패널 추가 (FAB)\n- 🧠 로컬 AI 모드 stub\n- ⚡ 말하면 바로 패치+미리보기\n- MiniCPM 1B 오프라인 준비`;
     }
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.25';
+    const v = 'v9.0.26';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1411,7 +1413,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.25] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.26] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1473,7 +1475,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.25';
+          const currentVer = getTargetAppVersion() || 'v9.0.26';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -4069,9 +4071,11 @@ ${contextConstraint}`;
     showToast(`📦 ${files.length}개 파일 일괄 업로드 시작!`, 'info');
     const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
     let successCount = 0; let failCount = 0;
+    const targetDirInput = $('multiFileTargetDir')?.value?.trim() || '';
+    const targetDir = targetDirInput ? (targetDirInput.endsWith('/') ? targetDirInput : targetDirInput + '/') : '';
     for (let i=0; i<files.length; i++) {
       const file = files[i];
-      const fileName = file.name;
+      const fileName = targetDir + file.name;
       log(`➡️ [${i+1}/${files.length}] ${fileName} 업로드 준비...`, 'info');
       try {
         let text = await file.text();
@@ -4151,7 +4155,7 @@ ${contextConstraint}`;
       const mv = version.match(/v?(\d+)\.(\d+)\.(\d+)/);
       if (mv) {
         const major = parseInt(mv[1]), minor = parseInt(mv[2]), patch = parseInt(mv[3]);
-        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.25 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
+        finalVersion = `v${major}.${minor}.${patch}`; // v9.0.26 fix: 자동 +1 제거 - 패치에서 지정한 버전 그대로 유지
       }
     } catch(e) {}
     
@@ -4234,7 +4238,7 @@ ${contextConstraint}`;
       log(`🔍 기존 파일 SHA 조회 중...`, 'info');
       let fileSha = null;
       try {
-        const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { headers });
+        const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${targetFile.split('/').map(encodeURIComponent).join('/')}`, { headers });
         if (getRes.ok) {
           const j = await getRes.json();
           fileSha = j.sha;
@@ -4250,7 +4254,7 @@ ${contextConstraint}`;
       if (fileSha) payload.sha = fileSha;
 
       log(`⬆️ GitHub PUT 요청 전송 중...`, 'info');
-      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${encodeURIComponent(targetFile)}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${targetFile.split('/').map(encodeURIComponent).join('/')}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
       const putText = await putRes.text();
       let putJson = null;
       try { putJson = JSON.parse(putText); } catch(e) {}
@@ -4957,7 +4961,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.25 - - PC경량화+버전고정+다중빌드 완전체</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.26 - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1></body></html>`, false);
         }
         showToast('🎉 PWA 세팅 완료!', 'ok');
     } catch(e) { showToast('실패: ' + e.message, 'err'); }
