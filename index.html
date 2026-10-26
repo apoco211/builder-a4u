@@ -107,7 +107,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.37 - - - 폴더 자동 생성 지원</title>
+  <title>Builder-a4u v9.0.38 - - - 폴더 자동 생성 지원</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -123,9 +123,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.37">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.37">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.37">
+  <link rel="manifest" href="./manifest.json?v=9.0.38">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.38">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.38">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.32">
   
   <style>
@@ -275,6 +275,8 @@
     .version-item { display: flex; flex-direction: column; gap: 6px; padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); cursor: pointer; margin-bottom: 6px; background: var(--card); font-size: 11px; }
     @media (min-width: 640px) { .version-item { flex-direction: row; align-items: center; justify-content: space-between; } }
     .drive-modal { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 12px; overscroll-behavior: contain; }
+body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; }
+.drive-modal-content { max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
     /* v9.0.21 fix: 모달 내부 스크롤이 배경으로 빠지는 현상 수정 */
     .drive-modal-content { background: #ffffff; border-radius: 16px; max-width: 800px; width: 100%; max-width: min(800px, 95vw); max-height: 85vh; max-height: 85dvh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); overflow: hidden; }
     .drive-modal-content .p-5, #aiRepoModal .p-5 { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; min-height: 0; }
@@ -291,12 +293,12 @@
     .idea-img-remove { position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
   </style>
 </head>
-<body>
+<body class="" style="">
   
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.37</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.38</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -325,7 +327,7 @@
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
       <div class="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 w-full">
-        <button onclick="$('aiRepoModal').style.display='flex'" class="btn btn-sm text-[10px] py-1 px-2 btn-emerald animate-pulse shadow-md w-full sm:w-auto">➕ 새 프로젝트 AI</button>
+        <button onclick="openAIRepoModal()" class="btn btn-sm text-[10px] py-1 px-2 btn-emerald animate-pulse shadow-md w-full sm:w-auto">➕ 새 프로젝트 AI</button>
         <button id="openLiveSiteBtn" onclick="openLiveSite()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">🌐 라이브 오픈</button>
         <button onclick="copyLiveSiteUrl()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🔗 주소 복사</button>
         <button onclick="setupPWA()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅</button>
@@ -442,7 +444,7 @@
         <button id="capturePreviewBtn" class="btn btn-emerald py-3 text-[11px] flex-1">📸 화면캡처</button>
       </div>
       <div class="flex gap-1.5 w-full">
-        <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[11px] hidden">🔑 구글 연동(로그인)</button>
+        <button id="bottomGoogleLoginBtn" onclick="handleGoogleLogin()" class="btn btn-primary flex-1 py-3 text-[11px] hidden" style="display: inline-flex;">🔑 구글 연동(로그인)</button>
         <button id="buildBtn" class="btn btn-yellow flex-1 py-3 text-[12px] font-black shadow-lg">🚀 최종 빌드 &amp; 이중 백업</button>
       </div>
       <div class="flex flex-col gap-2 w-full mt-2">
@@ -492,7 +494,7 @@
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:15:58] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -730,13 +732,13 @@
   </div>
 </div>
 
-<div id="aiRepoModal" class="drive-modal" style="display:none;">
+<div id="aiRepoModal" class="drive-modal" style="display: none;">
   <div class="drive-modal-content" style="max-width: 500px;">
     <div class="drive-modal-header border-b border-gray-200 dark:border-gray-700">
       <div class="font-bold flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
         <span>✨</span> AI 프로젝트 자동 설계소
       </div>
-      <button onclick="$('aiRepoModal').style.display='none'" class="btn text-[12px] py-1">✕</button>
+      <button onclick="closeAIRepoModal()" class="btn text-[12px] py-1">✕</button>
     </div>
     <div class="p-5 space-y-4">
       <div>
@@ -763,45 +765,46 @@
          </div>
       </div>
       <button id="aiFinalCreateBtn" onclick="createNewProjectWithAI()" class="btn btn-emerald w-full mt-2 py-3 text-[13px] font-black shadow-md opacity-50 cursor-not-allowed">🚀 이 설정으로 프로젝트 생성 &amp; 자동 배포</button>
-    
-    <!-- v9.0.11: 간단 카피박스 - 개선 -->
-  <div class="card" style="border:2px solid #111111;">
-    <div class="flex justify-between items-center mb-3">
-      <h2 class="font-black text-[13px] flex items-center gap-2">📦 v9.0.11 카피박스 <span class="text-[10px] opacity-60">클릭하면 전체 선택</span></h2>
-      <span class="badge" style="background:#111;color:#fff;">원클릭 복사</span>
     </div>
-    <div class="flex flex-col gap-2.5">
-      <div class="flex gap-2 items-center">
-        <input id="simpleVersionBox" class="input font-mono font-black text-[13px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300" value="v9.0.36" readonly="" onclick="this.select()">
-        <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-4 text-[11px] min-w-[90px]">📋 버전 복사</button>
-      </div>
-      <div class="flex gap-2">
-        <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[150px] flex-1 !bg-gray-50 dark:!bg-gray-800" readonly="" onclick="this.select()">v9.0.36 - 원버튼 패키지 최종 fix (클립보드는 안내만, 파일에 소스 포함)
-- 🐛 님 지적 반영: 클립보드에 5000줄 전체 코드 넣으면 대화방 터짐
-- ✅ 클립보드에는 안내문구만 복사 (원래 설계대로)
-- ✅ 파일에는 맥락+아이디어+최신 전체 소스코드 반드시 포함 (에디터 비어있으면 GitHub에서 강제 로드)
-- 원인: 기존엔 에디터 비어있을 때 code=''로 txt가 빈 소스 상태로 생성되던 버그
-- 수정: 에디터→5개 localStorage 키→GitHub 동기화로 코드 확보 보장
-- 🏷️ v9.0.35 → v9.0.36
-[빌드 넘버: v9.0.37]</textarea>
-        <div class="flex flex-col gap-1.5">
-          <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2 px-3 text-[11px] min-w-[90px] h-[56px]">📋 내용 복사</button>
-          <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value + '
+  </div>
+</div>
 
-' + document.getElementById('simpleChangelogBox').value, '버전+내용')" class="btn btn-emerald py-2 px-3 text-[10px] min-w-[90px] h-[56px]">📦 전체 복사</button>
+  <!-- v9.0.38: 카피박스 - 모달 밖으로 분리 (고정 버그 수정) -->
+  <!-- v9.0.37: 카피박스 개선 - 빌드번호/업데이트내역 원클릭 복사 -->
+  <div class="card" style="border:2px solid #111111; background:#fff; box-shadow:0 4px 12px rgba(0,0,0,0.1);">
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="font-black text-[14px] flex items-center gap-2">📦 v9.0.38 카피박스 <span class="text-[10px] opacity-60 font-normal">클릭하면 전체 선택 → 원클릭 복사</span></h2>
+      <span class="badge" style="background:#111;color:#fff; font-size:10px;">원클릭 복사</span>
+    </div>
+    <div class="flex flex-col gap-3">
+      <div>
+        <label class="text-[11px] font-bold block mb-1.5">🏷️ 빌드번호 (버전)</label>
+        <div class="flex gap-2 items-center">
+          <input id="simpleVersionBox" class="input font-mono font-black text-[14px] flex-1 !bg-yellow-50 dark:!bg-yellow-900/20 border-yellow-300 py-2.5" value="v9.0.38" readonly="" onclick="this.select()">
+          <button onclick="copyToClipboard(document.getElementById('simpleVersionBox').value, '버전')" class="btn btn-primary py-2.5 px-5 text-[12px] min-w-[100px] font-bold">📋 버전 복사</button>
+        </div>
+      </div>
+      <div>
+        <label class="text-[11px] font-bold block mb-1.5">📝 업데이트 내역 (체인지로그)</label>
+        <div class="flex gap-2">
+          <textarea id="simpleChangelogBox" class="textarea font-mono text-[11px] h-[180px] flex-1 !bg-gray-50 dark:!bg-gray-800 leading-relaxed" readonly="" onclick="this.select()">v9.0.38 - AI 프로젝트 자동 설계소 모달 고정 버그 fix + 카피박스 분리
+- 🐛 [Fix] 스크린샷 제보: AI 프로젝트 자동 설계소 화면이 고정되고 뒷화면이 움직이는 버그
+- 원인: 카피박스 div가 aiRepoModal 안에 중첩되어 모달이 닫혀도 카피박스가 모달 안에 갇힘 + 닫는 div 2개 누락
+- ✅ 수정: aiRepoModal 닫는 태그 2개 추가, 카피박스를 모달 밖으로 완전 분리
+- ✅ 수정: 모달 열 때 body scroll lock (overflow:hidden + position:fixed) + 닫을 때 복구
+- ✅ 수정: drive-modal-content에 max-height 90vh + overflow-y auto 추가
+- ✅ Title/H1/version 전부 v9.0.38로 통일
+- 🏷️ v9.0.37 → v9.0.38
+[빌드 넘버: v9.0.38]</textarea>
+          <div class="flex flex-col gap-2">
+            <button onclick="copyToClipboard(document.getElementById('simpleChangelogBox').value, '업데이트 내용')" class="btn btn-yellow py-2.5 px-4 text-[11px] min-w-[100px] h-[56px] font-bold">📋 내용 복사</button>
+            <button onclick="copyVersionAndChangelog()" class="btn btn-emerald py-2.5 px-4 text-[11px] min-w-[100px] h-[56px] font-bold">📦 전체 복사<br><span style="font-size:9px; opacity:0.8;">버전+내용</span></button>
+          </div>
         </div>
       </div>
     </div>
-    <p class="text-[10px] opacity-60 mt-2 text-center">인풋 클릭 → 자동 전체 선택 → 복사 버튼으로 클립보드 복사</p>
+    <p class="text-[10px] opacity-60 mt-3 text-center">💡 인풋/텍스트박스 클릭 → 자동 전체 선택 → 오른쪽 복사 버튼으로 클립보드 복사</p>
   </div>
-
-
-
-
-
-
-
-
 
 <!-- AI PWA/외부 브라우저 강제 런처 오버레이 -->
 <div id="aiLauncherBar" class="fixed inset-0 bg-black/60 z-[10000] hidden flex flex-col justify-end">
@@ -827,14 +830,53 @@
   window.copyToClipboard = async function(text, label) {
     try {
       await navigator.clipboard.writeText(text);
-      if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료: ' + text, 'ok');
+      if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료!', 'ok');
     } catch(e) {
-      const ta = document.createElement('textarea');
-      ta.value = text; document.body.appendChild(ta); ta.select();
-      document.execCommand('copy'); document.body.removeChild(ta);
-      if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료', 'ok');
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (typeof showToast === 'function') showToast('📋 ' + label + ' 복사 완료! (fallback)', 'ok');
+      } catch(e2) {
+        if (typeof showToast === 'function') showToast('❌ 복사 실패: ' + e2.message, 'err');
+      }
     }
   };
+  window.copyVersionAndChangelog = function() {
+    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.38';
+    const ch = document.getElementById('simpleChangelogBox')?.value || '';
+    const full = `${v}\n\n${ch}`;
+    copyToClipboard(full, '버전+내용');
+  }
+
+  window.openAIRepoModal = function() {
+    const modal = $('aiRepoModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      document.body.classList.add('modal-open');
+      // iOS Safari: prevent background scroll
+      document.body.style.top = `-${window.scrollY}px`;
+    }
+  };
+  window.closeAIRepoModal = function() {
+    const modal = $('aiRepoModal');
+    if (modal) {
+      modal.style.display = 'none';
+      const scrollY = document.body.style.top;
+      document.body.classList.remove('modal-open');
+      document.body.style.top = '';
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      }
+    }
+  };
+
+;
   window.copyChangelog = function(mode) {
     const box = document.getElementById('changelogCopyBox');
     if (!box) return;
@@ -845,7 +887,7 @@
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.36';
+    const v = 'v9.0.38';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1206,7 +1248,7 @@
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.37] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.38] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1268,7 +1310,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.36';
+          const currentVer = getTargetAppVersion() || 'v9.0.38';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -5037,7 +5079,7 @@ ${contextConstraint}`;
         await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
         await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
         if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.37 - - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1>
+            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.38 - - - 폴더 자동 생성 지원</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1>
   <!-- v9.0.32: 빌드 내용 확인 팝업 - 중요 -->
   <div id="buildConfirmModal" class="fixed inset-0 z-[10002] hidden items-center justify-center p-4" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
     <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-[560px] max-h-[85vh] flex flex-col overflow-hidden border-2 border-yellow-400">
@@ -5536,4 +5578,4 @@ function startApp() {
   </div>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-</div></div></div><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
