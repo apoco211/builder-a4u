@@ -44,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.48 - - ZIP 자동 해제 + 전체 파일 업로드</title>
+  <title>Builder-a4u v9.0.50 - - PWA 전체 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -92,9 +92,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.48">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.48">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.48">
+  <link rel="manifest" href="./manifest.json?v=9.0.50">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.50">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.50">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
   
   <style>
@@ -262,7 +262,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     .idea-img-remove { position: absolute; top: -6px; right: -6px; background: #ef4444; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
   </style>
 <style>
-    /* v9.0.47 FIX: 미리보기 박스가 다른 탭에서도 보이도록 강제 */
+    /* v9.0.50 FIX: 미리보기 박스가 다른 탭에서도 보이도록 강제 */
     #livePreviewBox.active { display:block !important; visibility:visible !important; opacity:1 !important; }
     #tabBuildContent #livePreviewBox { position:relative; z-index:100; }
 </style>
@@ -273,7 +273,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.48</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.50</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -290,14 +290,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent" style="display: none;">
+<div id="tabProjectContent">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -358,7 +358,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
   
-<div id="tabBuildContent" style="display: none;">
+<div id="tabBuildContent" style="display:none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -479,12 +479,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:21:07] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:21:07] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:21:09] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:09:51] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:09:51] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display: block;">
+<div id="tabSettingsContent" style="display:none;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -498,9 +498,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
-        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 통합 .txt 고정 파일명 모드 - 안내 문구 자동 복사</span>
+        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 기본 모드 대기</span>
       </div>
-      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://gemini.google.com/app'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♊ Gemini 바로가기</a><a href="https://www.meta.ai/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://www.meta.ai/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♾️ Meta AI 바로가기</a><a href="https://grok.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://grok.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🌌 Grok 바로가기</a><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://chatgpt.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 💬 ChatGPT 바로가기</a><a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://claude.ai/new'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🧡 Claude 바로가기</a></div>
+      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"></div>
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
@@ -518,7 +518,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   
   <div class="card mb-4" style="border:2px solid #8b5cf6">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
+      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 다음 업데이트 아이디어 (영구 저장)</h2>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
       <button onclick="clearCheckedRepoIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
@@ -754,7 +754,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
 
-  <!-- v9.0.47: 카피박스 - 모달 밖으로 분리 (고정 버그 수정) -->
+  <!-- v9.0.50: 카피박스 - 모달 밖으로 분리 (고정 버그 수정) -->
   <!-- v9.0.37: 카피박스 개선 - 빌드번호/업데이트내역 원클릭 복사 -->
   <!-- v9.0.40 FIX: 카피박스 UI 완전 삭제 (모든 탭에 떠 있던 버그) -->
 
@@ -801,7 +801,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     }
   };
   window.copyVersionAndChangelog = function() {
-    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.47';
+    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.50';
     const ch = document.getElementById('simpleChangelogBox')?.value || '';
     const full = `${v}\n\n${ch}`;
     copyToClipboard(full, '버전+내용');
@@ -840,7 +840,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.47';
+    const v = 'v9.0.50';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1201,7 +1201,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.48] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.50] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1263,7 +1263,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.47';
+          const currentVer = getTargetAppVersion() || 'v9.0.50';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -2979,7 +2979,7 @@ ${contextConstraint}`;
     }
   };
 
-  // v9.0.47 FIX: buildConfirmModal hidden+flex 충돌 완전 수정 + Promise 기반 확인 모달
+  // v9.0.50 FIX: buildConfirmModal hidden+flex 충돌 완전 수정 + Promise 기반 확인 모달
   (function(){
     let _buildConfirmResolver = null;
     window.showBuildConfirmModal = function(type, data) {
@@ -2992,7 +2992,7 @@ ${contextConstraint}`;
           const files = data.files || [];
           const targetDir = data.targetDir || '';
           const repo = data.repo || currentRepo || 'builder-a4u';
-          const ver = data.ver || 'v9.0.47';
+          const ver = data.ver || 'v9.0.50';
           const editorIncluded = data.editorIncluded;
           const note = data.note || '';
           let html = `<div class="space-y-3">`;
@@ -3007,7 +3007,7 @@ ${contextConstraint}`;
           });
           html += `</div></div>`;
           content.innerHTML = html;
-          // v9.0.47: hidden 제거 + flex 추가 방식으로 표시
+          // v9.0.50: hidden 제거 + flex 추가 방식으로 표시
           modal.classList.remove('hidden');
           modal.classList.add('flex');
           modal.style.display = 'flex';
@@ -4002,7 +4002,7 @@ ${contextConstraint}`;
     const frame = $('livePreviewFrame'); const box = $('livePreviewBox');
     if (!frame || !box) return;
 
-    // v9.0.47 FIX: 부모 탭이 숨겨져 있어도 미리보기가 보이도록 빌드탭 강제 활성화
+    // v9.0.50 FIX: 부모 탭이 숨겨져 있어도 미리보기가 보이도록 빌드탭 강제 활성화
     try {
       if (typeof switchTab === 'function') {
         const buildTab = document.getElementById('tabBuildContent');
@@ -4277,7 +4277,31 @@ ${contextConstraint}`;
   };
 
   
-  // v9.0.47 NEW: ZIP 압축 파일 자동 해제 후 커밋 (디렉터리 구조 그대로 반영)
+  // v9.0.50: ZIP 압축 + 미리보기 지원 (디렉터리 구조 그대로 + 앱에서 미리보기)
+  window._lastZipFileMap = null; // ZIP 파일맵 전역 보관 (미리보기용)
+  window.previewZipFile = function(filePath) {
+    if (!window._lastZipFileMap) return showToast('ZIP 파일맵 없음', 'err');
+    const obj = window._lastZipFileMap.get(filePath);
+    if (!obj) return showToast('파일을 찾을 수 없음: ' + filePath, 'err');
+    const content = obj.content || '';
+    if (!content) return showToast('바이너리 파일은 미리보기 불가', 'err');
+    // 에디터에도 표시
+    const editor = $('codeEditor');
+    if (editor) { editor.value = content; if ($('mainFileInput')) $('mainFileInput').value = filePath.split('/').pop(); }
+    if (typeof switchTab === 'function') switchTab('build');
+    const box = $('livePreviewBox');
+    if (box) { box.classList.add('active'); box.style.display='block'; box.style.visibility='visible'; }
+    window._lastPreviewHash = null;
+    // v9.0.45 로직 재사용
+    if (typeof showLivePreviewCurrent === 'function') {
+      showLivePreviewCurrent(content, `📦 ZIP 미리보기: ${filePath}`);
+    } else {
+      const frame = $('livePreviewFrame');
+      if (frame) frame.srcdoc = content;
+    }
+    log(`👁️ ZIP 미리보기: ${filePath}`, 'ok');
+  };
+  
   window.handleZipUpload = async function(input) {
     const file = input.files && input.files[0];
     if (!file) return;
@@ -4286,8 +4310,7 @@ ${contextConstraint}`;
       return;
     }
     if (typeof JSZip === 'undefined') {
-      showToast('JSZip 라이브러리 로드 중... 잠시 후 다시 시도', 'info');
-      // CDN 동적 로드 재시도
+      showToast('JSZip 로드 중...', 'info');
       await new Promise((res, rej) => {
         const s = document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
@@ -4311,7 +4334,6 @@ ${contextConstraint}`;
         if (zipEntry.dir) continue;
         let finalPath = relativePath.replace(/\\/g, '/').replace(/\/\//g, '/').replace(/^\//, '').replace(/\.\.\//g, '');
         if (!finalPath || finalPath.includes('..')) continue;
-        // targetDir가 있으면 앞에 붙이되 중복 방지
         if (targetDir && !finalPath.startsWith(targetDir)) {
           finalPath = targetDir + finalPath;
         }
@@ -4331,28 +4353,72 @@ ${contextConstraint}`;
       log(`✅ ZIP 해제 완료: ${count}개 파일`, 'ok');
       if (fileMap.size === 0) { showToast('ZIP 안에 파일이 없습니다', 'err'); input.value=''; return; }
       
-      // 에디터 코드도 포함할지 확인 (기존 로직과 동일)
+      // 전역 보관 (미리보기용)
+      window._lastZipFileMap = fileMap;
+      
+      // HTML 파일 찾기 (미리보기용)
+      const htmlFiles = Array.from(fileMap.keys()).filter(p => p.toLowerCase().endsWith('.html') || p.toLowerCase().endsWith('.htm'));
+      let previewFile = null;
+      if (htmlFiles.length > 0) {
+        // 우선순위: index.html 루트 > index.html 포함 > 첫 번째 html
+        previewFile = htmlFiles.find(p => p === 'index.html') || 
+                      htmlFiles.find(p => p.toLowerCase() === 'index.html') ||
+                      htmlFiles.find(p => p.endsWith('/index.html')) ||
+                      htmlFiles[0];
+      }
+      
+      // 미리보기 UI 생성
+      const previewBoxId = 'zipPreviewSelector';
+      let selectorDiv = document.getElementById(previewBoxId);
+      if (!selectorDiv) {
+        selectorDiv = document.createElement('div');
+        selectorDiv.id = previewBoxId;
+        selectorDiv.className = 'mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 rounded-xl';
+        const zipInputParent = input.parentElement;
+        if (zipInputParent && zipInputParent.parentElement) {
+          zipInputParent.parentElement.insertBefore(selectorDiv, zipInputParent.nextSibling);
+        }
+      }
+      let htmlList = `<div class="flex justify-between items-center mb-2"><span class="font-bold text-[11px]">📦 ZIP 미리보기 (${count}개 파일)</span><button onclick="document.getElementById('${previewBoxId}').classList.add('hidden')" class="text-[10px]">✕</button></div>`;
+      htmlList += `<div class="max-h-[160px] overflow-y-auto space-y-1">`;
+      Array.from(fileMap.keys()).slice(0, 50).forEach(p => {
+        const isHtml = p.toLowerCase().endsWith('.html') || p.toLowerCase().endsWith('.htm');
+        const icon = isHtml ? '🌐' : (p.includes('.github') ? '⚙️' : '📄');
+        const btnClass = isHtml ? 'bg-white hover:bg-yellow-50 border-yellow-200' : 'bg-white/50 hover:bg-gray-50';
+        htmlList += `<div class="flex items-center justify-between p-1.5 rounded border ${btnClass} text-[10px]"><span class="truncate flex-1">${icon} ${p}</span>${isHtml ? `<button onclick="previewZipFile('${p.replace(/'/g, "\'")}')" class="ml-2 px-2 py-0.5 bg-yellow-400 rounded text-[9px] font-bold">미리보기</button>` : ''}</div>`;
+      });
+      if (fileMap.size > 50) htmlList += `<div class="text-[9px] opacity-60 text-center mt-1">... 외 ${fileMap.size - 50}개</div>`;
+      htmlList += `</div>`;
+      if (previewFile) {
+        htmlList += `<div class="mt-2 flex gap-1"><button onclick="previewZipFile('${previewFile.replace(/'/g, "\'")}')" class="btn btn-yellow flex-1 py-2 text-[11px] font-bold">👁️ ${previewFile} 미리보기</button><button onclick="if($('codeEditor')) {$('codeEditor').value = window._lastZipFileMap.get('${previewFile.replace(/'/g, "\'")}').content; showToast('에디터에 로드됨','ok');}" class="btn flex-1 py-2 text-[10px]">📝 에디터로</button></div>`;
+      }
+      selectorDiv.innerHTML = htmlList;
+      selectorDiv.classList.remove('hidden');
+      
+      // 자동 미리보기: index.html이 있으면 바로 띄우기
+      if (previewFile) {
+        setTimeout(() => { window.previewZipFile(previewFile); }, 300);
+        log(`👁️ 자동 미리보기: ${previewFile}`, 'ok');
+      }
+      
+      // 에디터 코드 포함 여부 (기존 로직)
       const editor = $('codeEditor');
       const editorCode = editor && editor.value ? editor.value : '';
       if (editorCode && editorCode.trim().length > 0) {
         const mainFileName = $('mainFileInput')?.value?.trim() || 'index.html';
-        // 에디터 코드는 루트에 덮어쓰기 방지: ZIP에 같은 파일이 있으면 ZIP 우선
         if (!fileMap.has(mainFileName)) {
           fileMap.set(mainFileName, {content: editorCode, base64: null});
           log(`📝 에디터 코드 추가: ${mainFileName}`, 'info');
-        } else {
-          log(`⚠️ 에디터 코드 ${mainFileName}는 ZIP에 이미 있어 제외`, 'warn');
         }
       }
       
-      // 미리보기 모달
+      // 커밋 확인 모달
       const fileListForConfirm = Array.from(fileMap.entries()).map(([p, o]) => ({ path: p, content: o.content ? o.content.slice(0,200) : `[바이너리]` }));
       const version = getTargetAppVersion();
       const userNote = $('updateNoteInput')?.value?.trim() || `🚀 [${currentRepo}] ZIP 업로드 ${file.name} (${version})`;
       const confirmed = await showBuildConfirmModal('zip', { repo: currentRepo, ver: version, targetDir, files: fileListForConfirm, editorIncluded: false, note: userNote + ` - ZIP ${count}개` });
-      if (!confirmed) { log('🚫 ZIP 업로드 취소됨', 'info'); input.value=''; return; }
+      if (!confirmed) { log('🚫 ZIP 업로드 취소됨', 'info'); return; }
       
-      // 기존 multi-file push 로직 재사용: fileMap을 그대로 pushFileMapToGitHub으로
       await window.pushFileMapToGitHub(fileMap, userNote);
       
     } catch(e) {
@@ -4360,7 +4426,8 @@ ${contextConstraint}`;
       showToast(`ZIP 실패: ${e.message}`, 'err');
       console.error(e);
     } finally {
-      input.value = '';
+      // input.value는 커밋 후에 비우지 말고 유지 (재시도 가능) - pushFileMap에서 처리
+      // input.value = '';
     }
   };
   
@@ -5224,89 +5291,267 @@ ${contextConstraint}`;
   };
 
   window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
-    const pat = getGitHubPat(); if (!pat || pat.length < 10) return showToast('GitHub PAT 필요', 'err');
+    const pat = getGitHubPat(); 
+    if (!pat || pat.length < 10) return showToast('GitHub PAT 필요 - 설정 탭에서 입력', 'err');
     const targetPwaRepo = presetRepoName || currentRepo;
-    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?`)) return;
-    showToast(`✨ PWA 세팅 중...`, 'info');
-    const pwaName = targetPwaRepo, shortName = targetPwaRepo.substring(0, 10);
-    const themeColor = presetIconOptions?.color || '#10b981', centerEmoji = presetIconOptions?.emoji || '✨';
+    if (!targetPwaRepo) return showToast('대상 레포가 없습니다', 'err');
+    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?\n아이콘, manifest.json, sw.js가 생성/업데이트 됩니다.`)) return;
+    showToast(`✨ PWA 세팅 중... ${targetPwaRepo}`, 'info');
+    log(`🔧 PWA 세팅 시작: ${targetPwaRepo}`, 'info');
+    const pwaName = targetPwaRepo;
+    const shortName = targetPwaRepo.substring(0, 12);
+    const themeColor = presetIconOptions?.color || window.aiIconOptions?.color || '#10b981';
+    const centerEmoji = presetIconOptions?.emoji || window.aiIconOptions?.emoji || '✨';
+    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.50');
+    
+    // v9.0.50 FIX: 이모지 캔버스 렌더링 개선 (이모지 폰트 포함)
     const createIconBase64 = (size) => {
-        const cvs = document.createElement('canvas'); cvs.width = size; cvs.height = size;
-        const ctx = cvs.getContext('2d'); ctx.fillStyle = themeColor; ctx.fillRect(0, 0, size, size);
-        ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.font = `bold ${size/2}px sans-serif`; ctx.fillText(centerEmoji, size/2, size/2);
-        return cvs.toDataURL('image/png').split(',')[1];
+        try {
+          const cvs = document.createElement('canvas'); 
+          cvs.width = size; cvs.height = size;
+          const ctx = cvs.getContext('2d'); 
+          // 배경
+          ctx.fillStyle = themeColor; 
+          ctx.fillRect(0, 0, size, size);
+          // 이모지 중앙 - 이모지 폰트 스택 사용
+          ctx.fillStyle = '#ffffff'; 
+          ctx.textAlign = 'center'; 
+          ctx.textBaseline = 'middle';
+          // 크기에 따라 폰트 크기 조정 (이모지가 꽉 차게)
+          const fontSize = Math.floor(size * 0.55);
+          ctx.font = `bold ${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+          ctx.fillText(centerEmoji, size/2, size/2 + Math.floor(size*0.02));
+          return cvs.toDataURL('image/png').split(',')[1];
+        } catch(e) {
+          console.error('아이콘 생성 실패', e);
+          // 폴백: 단색
+          const cvs = document.createElement('canvas'); cvs.width = size; cvs.height = size;
+          const ctx = cvs.getContext('2d'); ctx.fillStyle = themeColor; ctx.fillRect(0,0,size,size);
+          return cvs.toDataURL('image/png').split(',')[1];
+        }
     };
+    
     const pushFile = async (path, content, isBase64 = false) => {
-        let encodedContent = isBase64 ? content : btoa(unescape(encodeURIComponent(content)));
+        let encodedContent = isBase64 ? content : (() => {
+          try { return btoa(unescape(encodeURIComponent(content))); }
+          catch(e) {
+            const bytes = new TextEncoder().encode(content); let bin=''; 
+            for(let i=0;i<bytes.length;i+=1024) bin+=String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i+1024, bytes.length))); 
+            return btoa(bin);
+          }
+        })();
         const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
         let sha = null;
-        try { const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers }); if (res.ok) sha = (await res.json()).sha; } catch(e) {}
-        const payload = { message: 'PWA', content: encodedContent }; if (sha) payload.sha = sha;
-        await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
-    };
-    try {
-        await pushFile('icon-192.png', createIconBase64(192), true); await pushFile('icon-512.png', createIconBase64(512), true);
-        const manifest = { name: pwaName, short_name: shortName, start_url: "./index.html", display: "standalone", scope: "./", background_color: "#ffffff", theme_color: themeColor, icons: [{ src: "./icon-192.png", sizes: "192x192", type: "image/png" }, { src: "./icon-512.png", sizes: "512x512", type: "image/png" }] };
-        await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
-        await pushFile('sw.js', `self.addEventListener('install', e => self.skipWaiting());`, false);
-        if (presetRepoName) {
-            await pushFile('index.html', `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><title>Builder-a4u v9.0.48 - - 폴더 자동 생성 지원 (Preview Fixed)</title><link rel="manifest" href="./manifest.json"></head><body><h1>${centerEmoji} ${pwaName}</h1>
-  <!-- v9.0.32: 빌드 내용 확인 팝업 - 중요 -->
-  <div id="buildConfirmModal" class="fixed inset-0 z-[10002] hidden" style="display:none" style="background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
-    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-[560px] max-h-[85vh] flex flex-col overflow-hidden border-2 border-yellow-400">
-      <div class="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-200 flex justify-between items-center">
-        <h3 class="font-black text-[14px] flex items-center gap-2">🚀 최종 빌드 내용 확인</h3>
-        <button onclick="closeBuildConfirmModal(false)" class="btn text-[12px] py-1 px-2">✕ 닫기</button>
-      </div>
-      <div id="buildConfirmContent" class="p-4 overflow-y-auto text-[11px] leading-relaxed space-y-3 flex-1">
-        <!-- 동적 내용 -->
-      </div>
-      <div class="p-3 bg-gray-50 dark:bg-gray-800 border-t flex gap-2 justify-end">
-        <button onclick="closeBuildConfirmModal(false)" class="btn flex-1 py-3 text-[12px] font-bold">🚫 취소</button>
-        <button id="buildConfirmOkBtn" onclick="closeBuildConfirmModal(true)" class="btn btn-yellow flex-1 py-3 text-[12px] font-black">✅ 확인 - 빌드 진행</button>
-      </div>
-    </div>
-  </div>
-
-</body></html>`, false);
+        try { 
+          const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers }); 
+          if (res.ok) { const j = await res.json(); sha = j.sha; }
+        } catch(e) {}
+        const payload = { message: `✨ PWA ${path} ${finalVersion} ${centerEmoji}`, content: encodedContent, branch: 'main' }; 
+        if (sha) payload.sha = sha;
+        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
+        if (!putRes.ok) {
+          const errText = await putRes.text();
+          log(`❌ ${path} 푸시 실패: ${errText.slice(0,200)}`, 'err');
+          throw new Error(`${path} 실패: ${errText.slice(0,150)}`);
         }
-        showToast('🎉 PWA 세팅 완료!', 'ok');
-    } catch(e) { showToast('실패: ' + e.message, 'err'); }
+        log(`✅ PWA 파일: ${path}`, 'ok');
+        return true;
+    };
+    
+    try {
+        // 1. 아이콘 3종 생성 (192, 512, 180 apple)
+        log(`🎨 아이콘 생성: ${centerEmoji} ${themeColor}`, 'info');
+        await pushFile('icon-192.png', createIconBase64(192), true); 
+        await new Promise(r=>setTimeout(r, 400));
+        await pushFile('icon-512.png', createIconBase64(512), true);
+        await new Promise(r=>setTimeout(r, 400));
+        await pushFile('apple-touch-icon.png', createIconBase64(180), true);
+        await new Promise(r=>setTimeout(r, 400));
+        
+        // 2. manifest.json - v9.0.50 FIX: 버전 동적화 + 아이콘 전체 포함
+        const manifest = { 
+          name: pwaName, 
+          short_name: shortName, 
+          description: `${pwaName} - ${centerEmoji} ${themeColor} 테마`,
+          start_url: "./index.html", 
+          display: "standalone", 
+          scope: "./", 
+          background_color: "#ffffff", 
+          theme_color: themeColor, 
+          icons: [
+            { src: "./icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
+            { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+            { src: "./apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+          ] 
+        };
+        await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
+        await new Promise(r=>setTimeout(r, 400));
+        
+        // 3. sw.js - v9.0.50 FIX: 실제 캐시 로직 포함
+        const swContent = `const CACHE_NAME = '${pwaName}-${finalVersion}';
+const urlsToCache = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+self.addEventListener('install', e => {
+  self.skipWaiting();
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache)));
+});
+self.addEventListener('activate', e => {
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))));
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});`;
+        await pushFile('sw.js', swContent, false);
+        await new Promise(r=>setTimeout(r, 400));
+        
+        // 4. index.html 처리
+        if (presetRepoName) {
+          // 신규 AI 프로젝트용 클린 PWA 템플릿 (빌더 모달 HTML 제거 - 기존 버그)
+          const cleanIndexHtml = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${pwaName} ${centerEmoji}</title>
+<meta name="theme-color" content="${themeColor}">
+<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${finalVersion.replace('v','')}">
+<style>
+  body { margin:0; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; }
+  .icon { width:120px; height:120px; background:${themeColor}; border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:64px; box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+  h1 { margin:24px 0 8px; font-size:28px; font-weight:900; }
+  p { opacity:0.6; font-size:14px; }
+  .badge { margin-top:16px; padding:6px 12px; background:${themeColor}; color:#fff; border-radius:999px; font-size:12px; font-weight:700; }
+</style>
+</head>
+<body>
+<div class="icon">${centerEmoji}</div>
+<h1>${pwaName}</h1>
+<p>AI가 생성한 PWA 앱 - ${finalVersion}</p>
+<div class="badge">${themeColor} ${centerEmoji}</div>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').then(r=>console.log('SW ok', r.scope)).catch(e=>console.log('SW fail', e)));
+}
+<\/script>
+</body>
+</html>`;
+          await pushFile('index.html', cleanIndexHtml, false);
+        } else {
+          // 기존 프로젝트 PWA 세팅: 에디터 코드에 PWA 태그 주입 시도
+          const editor = $('codeEditor');
+          if (editor && editor.value) {
+            let code = editor.value;
+            if (!code.includes('manifest.json')) {
+              code = code.replace('</head>', `<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">\n<meta name="theme-color" content="${themeColor}">\n</head>`);
+              if (!code.includes('serviceWorker')) {
+                code = code.replace('</body>', `<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js')}<\/script>\n</body>`);
+              }
+              editor.value = code;
+              log('📝 에디터에 PWA 태그 자동 주입', 'info');
+              if (typeof showLivePreviewCurrent === 'function') showLivePreviewCurrent(code, 'PWA 태그 주입');
+            }
+          }
+        }
+        
+        showToast(`🎉 PWA 세팅 완료! ${centerEmoji} ${pwaName}`, 'ok');
+        log(`🎉 PWA 세팅 완료: ${targetPwaRepo} / ${themeColor} ${centerEmoji}`, 'ok');
+    } catch(e) { 
+      console.error(e);
+      showToast('PWA 실패: ' + e.message, 'err'); 
+      log(`❌ PWA 세팅 실패: ${e.message}`, 'err');
+    }
   };
 
   window.recommendAIAttributes = async function() {
      const desc = $('aiRepoDescInput').value.trim();
      if (!desc) return showToast('기획을 적어주세요!', 'err');
-     const btn = $('aiRecommendBtn'); btn.innerHTML = '🤖 추천 중...'; btn.disabled = true;
+     const btn = $('aiRecommendBtn'); 
+     const originalText = btn.innerHTML;
+     btn.innerHTML = '🤖 AI가 네이밍 & 아이콘 분석 중...'; 
+     btn.disabled = true;
      try {
-         const res = await callGeminiAPI(`앱 기획: ${desc}\n응답 순수 JSON: {"names": ["app-1", "app-2"], "emoji": "🚀", "color": "#10b981"}`, 0.2);
-         if (res && res.names) {
-             $('aiRepoNameBadges').innerHTML = res.names.map(n => `<span onclick="$('aiRepoNameInput').value='${n}'" class="badge cursor-pointer bg-gray-100 p-1">${n}</span>`).join('');
+         // v9.0.50 FIX: 아이콘 프리뷰 업데이트 로직 추가
+         const prompt = `당신은 앱 네이밍 & 아이콘 디자이너입니다. 아래 기획을 보고 JSON만 응답하세요.
+앱 기획: ${desc}
+규칙:
+- names: 영문 소문자, 하이픈 포함 3개 추천 (예: taxi-call-pro, driver-alert)
+- emoji: 기획에 가장 어울리는 이모지 1개
+- color: 어울리는 HEX 컬러 1개 (예: #f59e0b)
+응답 형식 순수 JSON: {"names": ["app-1", "app-2", "app-3"], "emoji": "🚕", "color": "#f59e0b"}`;
+         const res = await callGeminiAPI(prompt, 0.3);
+         console.log('AI 추천 결과:', res);
+         if (res && res.names && res.names.length > 0) {
+             // 레포 이름 배지
+             $('aiRepoNameBadges').innerHTML = res.names.map(n => `<span onclick="$('aiRepoNameInput').value='${n}'; window._lastSelectedRepoName='${n}'" class="badge cursor-pointer bg-purple-50 hover:bg-purple-100 border border-purple-200 p-1.5 px-2 rounded-full text-[11px]">${n}</span>`).join('');
              $('aiRepoNameInput').value = res.names[0];
+             window._lastSelectedRepoName = res.names[0];
+             
+             // v9.0.50 FIX: 아이콘 프리뷰 업데이트 (기존 버그: 업데이트 코드가 없었음)
+             const emoji = res.emoji || '✨';
+             const color = res.color || '#10b981';
+             window.aiIconOptions = { color: color, emoji: emoji };
+             const iconBox = $('aiIconPreviewBox');
+             if (iconBox) {
+               iconBox.style.background = color;
+               iconBox.textContent = emoji;
+               iconBox.style.transition = 'all 0.3s ease';
+               iconBox.style.transform = 'scale(1.1)';
+               setTimeout(() => { iconBox.style.transform = 'scale(1)'; }, 300);
+             }
+             log(`🎨 AI 아이콘 추천: ${emoji} ${color}`, 'ok');
+             
              $('aiRepoSuggestions').classList.remove('hidden');
              $('aiFinalCreateBtn').classList.remove('opacity-50', 'cursor-not-allowed');
              $('aiFinalCreateBtn').disabled = false;
+             showToast(`🎨 ${emoji} 아이콘 & ${res.names[0]} 추천 완료!`, 'ok');
+         } else {
+             showToast('AI 응답 형식이 올바르지 않습니다', 'err');
+             log(`⚠️ AI 응답 이상: ${JSON.stringify(res).slice(0,200)}`, 'warn');
          }
-     } catch(e) { showToast('추천 실패', 'err'); }
-     finally { btn.innerHTML = '🤖 AI 추천받기'; btn.disabled = false; }
+     } catch(e) { 
+         console.error(e);
+         showToast('추천 실패: ' + e.message, 'err'); 
+         log(`❌ AI 추천 실패: ${e.message}`, 'err');
+     }
+     finally { btn.innerHTML = originalText; btn.disabled = false; }
   };
 
   window.createNewProjectWithAI = async function() {
       const repoName = $('aiRepoNameInput')?.value?.trim();
-      if (!repoName || !/^[a-zA-Z0-9-]+$/.test(repoName)) return showToast('영문 레포 이름을 입력하세요.', 'err');
+      if (!repoName || !/^[a-zA-Z0-9-]+$/.test(repoName)) return showToast('영문 레포 이름을 입력하세요. (소문자, 숫자, 하이픈만)', 'err');
       const pat = getGitHubPat();
-      if (!pat) return showToast('PAT 필요', 'err');
+      if (!pat) return showToast('PAT 필요 - 설정 탭에서 입력', 'err');
+      const iconOpts = window.aiIconOptions || { color: '#10b981', emoji: '✨' };
+      log(`🚀 AI 프로젝트 생성: ${repoName} / 아이콘 ${iconOpts.emoji} ${iconOpts.color}`, 'info');
       $('aiRepoModal').style.display = 'none';
       try {
-          await fetch('https://api.github.com/user/repos', {
+          showToast(`🚀 ${repoName} 생성 중...`, 'info');
+          const createRes = await fetch('https://api.github.com/user/repos', {
               method: 'POST',
               headers: { 'Authorization': 'Bearer ' + pat, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' },
               body: JSON.stringify({ name: repoName, private: false, auto_init: true })
           });
-          await setupPWA(repoName);
+          if (!createRes.ok) {
+            const err = await createRes.text();
+            throw new Error(`레포 생성 실패: ${err.slice(0,200)}`);
+          }
+          log(`✅ 레포 생성 성공: ${repoName}`, 'ok');
+          // v9.0.50 FIX: 아이콘 옵션 전달 (기존 버그: 전달 안 함)
+          await setupPWA(repoName, iconOpts);
+          showToast(`🎉 ${repoName} 생성 & PWA 세팅 완료!`, 'ok');
           loadRepos(repoName);
-      } catch(e) {}
+          // 에디터에 아이콘 정보 표시
+          const editor = $('codeEditor');
+          if (editor) {
+            editor.value = `<!-- ${repoName} - ${iconOpts.emoji} ${iconOpts.color} -->\n` + (editor.value || '');
+          }
+      } catch(e) {
+        console.error(e);
+        showToast(`생성 실패: ${e.message}`, 'err');
+        log(`❌ AI 프로젝트 생성 실패: ${e.message}`, 'err');
+        $('aiRepoModal').style.display = 'flex';
+      }
   };
 
   function parseBulkEnvAndApply() {
@@ -5537,7 +5782,7 @@ function setupEventListeners() {
       if (typeof switchTab === 'function') switchTab('build');
       saveDraftCustom(c, '미리보기 확정'); 
       window._lastPreviewHash = null; 
-      // v9.0.47 FIX: 빌드탭으로 강제 전환 + 박스 강제 표시 + 2중 렌더링 보장
+      // v9.0.50 FIX: 빌드탭으로 강제 전환 + 박스 강제 표시 + 2중 렌더링 보장
       const box = $('livePreviewBox');
       if (box) { box.classList.add('active'); box.style.display='block'; }
       showLivePreviewCurrent(c, '👁️ 미리보기 확정');
@@ -5545,7 +5790,7 @@ function setupEventListeners() {
       setTimeout(() => {
         const frame = $('livePreviewFrame');
         if (frame && (!frame.srcdoc || frame.srcdoc.length < 50)) {
-          console.log('v9.0.47: iframe 비어있어 재시도');
+          console.log('v9.0.50: iframe 비어있어 재시도');
           window._lastPreviewHash = null;
           showLivePreviewCurrent(c, '👁️ 미리보기 확정 (재시도)');
         }
