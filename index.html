@@ -44,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.50 - - PWA 전체 Fix</title>
+  <title>Builder-a4u v9.0.52 - - ZIP 버튼 항상 표시 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -92,9 +92,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.50">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.50">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.50">
+  <link rel="manifest" href="./manifest.json?v=9.0.52">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.52">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.52">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
   
   <style>
@@ -273,7 +273,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.50</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.52</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -290,14 +290,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
-    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
+    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full active">🚀 앱빌드</button>
     <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent">
+<div id="tabProjectContent" style="display: none;">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -358,7 +358,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
   
-<div id="tabBuildContent" style="display:none;">
+<div id="tabBuildContent" style="display: block;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -431,14 +431,17 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
           <input type="file" id="multiFileInput" multiple="" accept="*/*" class="hidden" onchange="handleMultiFileBuild(this)">
         </div>
 <div id="pathPreviewBox" class="mt-2 p-2 bg-gray-50 dark:bg-gray-800/50 border rounded-lg text-[10px] hidden"><div class="font-bold mb-1">📁 [원본 → 최종 경로] 미리보기</div>
+<div id="pathPreviewContent" class="space-y-0.5 max-h-[120px] overflow-y-auto"></div></div>
 
-        <div class="flex gap-2 w-full mt-2">
+      <!-- v9.0.52 FIX: ZIP 버튼이 hidden 박스 안에 있던 버그 수정 - 항상 보이도록 밖으로 이동 -->
+      <div class="mt-3">
+        <div class="flex gap-2 w-full">
           <label for="zipFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">📦 ZIP 압축파일 올리기 (자동 해제)</label>
           <input type="file" id="zipFileInput" accept=".zip" class="hidden" onchange="handleZipUpload(this)">
         </div>
         <p class="text-[9px] opacity-60 mt-1">💡 ZIP 안에 폴더 구조가 그대로 있으면 GitHub에 그대로 반영됩니다. 예: src/components/Button.tsx</p>
+      </div>
 
-<div id="pathPreviewContent" class="space-y-0.5 max-h-[120px] overflow-y-auto"></div></div>
 
       </div>
       <div class="text-[10px] text-gray-500 mt-1 leading-relaxed">
@@ -479,7 +482,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:09:51] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:09:51] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -801,7 +804,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     }
   };
   window.copyVersionAndChangelog = function() {
-    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.50';
+    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.52';
     const ch = document.getElementById('simpleChangelogBox')?.value || '';
     const full = `${v}\n\n${ch}`;
     copyToClipboard(full, '버전+내용');
@@ -840,7 +843,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.50';
+    const v = 'v9.0.52';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1201,7 +1204,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.50] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.52] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1263,7 +1266,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.50';
+          const currentVer = getTargetAppVersion() || 'v9.0.52';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -2992,7 +2995,7 @@ ${contextConstraint}`;
           const files = data.files || [];
           const targetDir = data.targetDir || '';
           const repo = data.repo || currentRepo || 'builder-a4u';
-          const ver = data.ver || 'v9.0.50';
+          const ver = data.ver || 'v9.0.52';
           const editorIncluded = data.editorIncluded;
           const note = data.note || '';
           let html = `<div class="space-y-3">`;
@@ -5302,7 +5305,7 @@ ${contextConstraint}`;
     const shortName = targetPwaRepo.substring(0, 12);
     const themeColor = presetIconOptions?.color || window.aiIconOptions?.color || '#10b981';
     const centerEmoji = presetIconOptions?.emoji || window.aiIconOptions?.emoji || '✨';
-    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.50');
+    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.52');
     
     // v9.0.50 FIX: 이모지 캔버스 렌더링 개선 (이모지 폰트 포함)
     const createIconBase64 = (size) => {
