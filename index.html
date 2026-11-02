@@ -1,4 +1,4 @@
-<html lang="ko"><head><style>
+<html lang="ko" class="dark"><head><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -44,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.53 - - PWA 아이콘 벌크 푸시 Fix</title>
+  <title>Builder-a4u v9.0.55 - - PWA 아이콘 벌크 푸시 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -92,9 +92,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.53">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.53">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.53">
+  <link rel="manifest" href="./manifest.json?v=9.0.55">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.55">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.55">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
   
   <style>
@@ -273,7 +273,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.53</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.55</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -281,7 +281,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
       </div>
     </div>
     <div class="flex gap-1 items-stretch shrink-0">
-      <button id="themeToggle" class="btn w-[32px] h-auto !min-h-[32px] p-0 flex items-center justify-center text-[15px] rounded-lg shrink-0" title="주야간 전환">🌙</button>
+      <button id="themeToggle" class="btn w-[32px] h-auto !min-h-[32px] p-0 flex items-center justify-center text-[15px] rounded-lg shrink-0" title="주야간 전환">☀️</button>
       <div id="topGoogleStatusBadge" onclick="handleTopBadgeClick()" class="inline-flex flex-col items-center justify-center px-2 py-0.5 rounded-lg text-[8.5px] font-bold leading-tight cursor-pointer transition-all duration-200 shadow-sm shrink-0 min-w-[64px] min-h-[32px]" style="background:#64748b;color:#fff" title="클릭 시 Google 로그인 실행 / 설정">
         <span class="badge-main">⚪ 로그인 필요</span>
         <span class="badge-sub text-[7.5px] opacity-80 leading-none"></span>
@@ -290,14 +290,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent">
+<div id="tabProjectContent" style="display: none;">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -358,7 +358,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
   
-<div id="tabBuildContent" style="display:none;">
+<div id="tabBuildContent" style="display: none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -433,7 +433,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div id="pathPreviewBox" class="mt-2 p-2 bg-gray-50 dark:bg-gray-800/50 border rounded-lg text-[10px] hidden"><div class="font-bold mb-1">📁 [원본 → 최종 경로] 미리보기</div>
 <div id="pathPreviewContent" class="space-y-0.5 max-h-[120px] overflow-y-auto"></div></div>
 
-      <!-- v9.0.53 FIX: ZIP 버튼이 hidden 박스 안에 있던 버그 수정 - 항상 보이도록 밖으로 이동 -->
+      <!-- v9.0.55 FIX: ZIP 버튼이 hidden 박스 안에 있던 버그 수정 - 항상 보이도록 밖으로 이동 -->
       <div class="mt-3">
         <div class="flex gap-2 w-full">
           <label for="zipFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">📦 ZIP 압축파일 올리기 (자동 해제)</label>
@@ -482,12 +482,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:24:51] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:24:51] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display:none;">
+<div id="tabSettingsContent" style="display: block;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -501,9 +501,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     <div class="p-2.5 mb-2 rounded-xl border bg-[var(--bg)]" style="border-color:var(--line)">
       <div class="flex justify-between items-center mb-2 flex-wrap gap-1">
         <span class="text-[10.5px] font-bold text-emerald-700 dark:text-emerald-400">🎯 원버튼 실행 시 자동 오픈할 AI 선택 (복수 선택 가능)</span>
-        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 기본 모드 대기</span>
+        <span id="smartPackageModeBadge" class="text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">📝 통합 .txt 고정 파일명 모드 - 안내 문구 자동 복사</span>
       </div>
-      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"></div>
+      <div id="aiTargetList" class="grid grid-cols-2 sm:grid-cols-3 gap-2 w-full"><a href="https://gemini.google.com/app" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://gemini.google.com/app'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♊ Gemini 바로가기</a><a href="https://www.meta.ai/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://www.meta.ai/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 ♾️ Meta AI 바로가기</a><a href="https://grok.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://grok.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🌌 Grok 바로가기</a><a href="https://chatgpt.com/" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://chatgpt.com/'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 💬 ChatGPT 바로가기</a><a href="https://claude.ai/new" target="_blank" rel="noopener noreferrer external" onclick="event.preventDefault(); openExternalAI('https://claude.ai/new'); return false;" class="ai-chip w-full justify-center py-2.5 px-3 text-[11.5px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-300 dark:hover:border-blue-700 rounded-xl shadow-sm transition-all flex items-center justify-center no-underline">🚀 🧡 Claude 바로가기</a></div>
     </div>
 
     <p class="text-[10px] opacity-75 mb-2 leading-relaxed">
@@ -521,7 +521,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   
   <div class="card mb-4" style="border:2px solid #8b5cf6">
     <div class="flex justify-between items-center mb-2 card-header-mobile-col">
-      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 다음 업데이트 아이디어 (영구 저장)</h2>
+      <h2 id="repoIdeaTitle" class="font-bold text-[13px] text-purple-600 dark:text-purple-400 break-words leading-tight">💡 [builder-a4u] 다음 업데이트 아이디어 (영구 저장)</h2>
     </div>
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
       <button onclick="clearCheckedRepoIdeas()" class="btn btn-sm py-1.5 px-2 text-[10.5px] w-full shadow-sm" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">☑️ 선택 지우기</button>
@@ -804,7 +804,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     }
   };
   window.copyVersionAndChangelog = function() {
-    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.53';
+    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.55';
     const ch = document.getElementById('simpleChangelogBox')?.value || '';
     const full = `${v}\n\n${ch}`;
     copyToClipboard(full, '버전+내용');
@@ -843,7 +843,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.53';
+    const v = 'v9.0.55';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1204,7 +1204,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.53] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.55] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1266,7 +1266,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.53';
+          const currentVer = getTargetAppVersion() || 'v9.0.55';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -2995,7 +2995,7 @@ ${contextConstraint}`;
           const files = data.files || [];
           const targetDir = data.targetDir || '';
           const repo = data.repo || currentRepo || 'builder-a4u';
-          const ver = data.ver || 'v9.0.53';
+          const ver = data.ver || 'v9.0.55';
           const editorIncluded = data.editorIncluded;
           const note = data.note || '';
           let html = `<div class="space-y-3">`;
@@ -4435,57 +4435,160 @@ ${contextConstraint}`;
   };
   
   // 공통 커밋 로직 분리 (multi-file과 zip이 함께 사용)
+    // 공통 커밋 로직 분리 (multi-file과 zip이 함께 사용) - v9.0.55 FIX: 404 Not Found 대응 강화
+    // v9.0.55 FIX: 404 원인 정확히 찾기 - workflow 파일은 일단 포함해서 시도, 실패 시에만 제외
   window.pushFileMapToGitHub = async function(fileMap, userNote) {
     const pat = getGitHubPat();
     if (!pat) { showToast('PAT 필요', 'err'); return; }
-    const hasWorkflow = Array.from(fileMap.keys()).some(p => p.startsWith('.github/workflows/'));
-    if (hasWorkflow) log(`⚠️ .github/workflows 포함 - PAT에 workflow 권한 필요`, 'warn');
-    try {
-      const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
-      let refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/main`, { headers });
-      let branch = 'main';
-      if (!refRes.ok) { refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/master`, { headers }); branch='master'; }
-      if (!refRes.ok) throw new Error(`ref 조회 실패: ${await refRes.text()}`);
-      const baseSha = (await refRes.json()).object.sha;
-      const commitData = await (await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/commits/${baseSha}`, { headers })).json();
-      const baseTreeSha = commitData.tree.sha;
-      log(`🔍 base ${baseSha.substring(0,7)} / tree ${baseTreeSha.substring(0,7)}`, 'info');
-      const treeItems = [];
-      for (let [p, obj] of fileMap.entries()) {
-        let b64 = obj.base64;
-        if (!b64) {
-          try { b64 = btoa(unescape(encodeURIComponent(obj.content||''))); } catch(e) {
-            const bytes = new TextEncoder().encode(obj.content||''); let bin=''; for(let i=0;i<bytes.length;i+=1024) bin+=String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i+1024, bytes.length))); b64=btoa(bin);
-          }
-        }
-        const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/blobs`, { method:'POST', headers, body: JSON.stringify({ content: b64, encoding:'base64' }) });
-        if (!blobRes.ok) throw new Error(`${p} blob 실패: ${await blobRes.text()}`);
-        const blobSha = (await blobRes.json()).sha;
-        treeItems.push({ path: p, mode:'100644', type:'blob', sha: blobSha });
-        log(`➡️ blob ${p}`, 'info');
+    
+    const originalSize = fileMap.size;
+    let filteredMap = new Map();
+    let skipped = [];
+    for (let [p, obj] of fileMap.entries()) {
+      const lower = p.toLowerCase();
+      if (lower.includes('__macosx') || lower.includes('.ds_store') || lower.includes('thumbs.db') || p.startsWith('.git/') || p.includes('/.git/') || p.includes('.DS_Store')) {
+        skipped.push(p);
+        continue;
       }
-      let treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems }) });
-      let treeData;
-      if (!treeRes.ok) {
-        const err1 = await treeRes.text(); log(`⚠️ tree 실패, 재시도: ${err1}`, 'warn');
-        treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ tree: treeItems }) });
-        if (!treeRes.ok) throw new Error(`tree 실패: ${err1} / ${await treeRes.text()}`);
-        treeData = await treeRes.json();
-      } else treeData = await treeRes.json();
-      const commitRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/commits`, { method:'POST', headers, body: JSON.stringify({ message: userNote, tree: treeData.sha, parents:[baseSha] }) });
-      if (!commitRes.ok) throw new Error(`commit 실패: ${await commitRes.text()}`);
-      const newCommit = await commitRes.json();
-      const refUpdate = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs/heads/${branch}`, { method:'PATCH', headers, body: JSON.stringify({ sha: newCommit.sha }) });
-      if (!refUpdate.ok) throw new Error(`ref 업데이트 실패: ${await refUpdate.text()}`);
-      log(`🎉 ZIP 커밋 완료: ${branch} ${newCommit.sha.substring(0,7)}`, 'ok');
-      showToast(`🎉 ${fileMap.size}개 파일 커밋 완료!`, 'ok');
+      if (p.trim() === '' || p.startsWith('/') || p.includes('..') || p.includes('\\')) {
+        skipped.push(p + ' (경로 오류)');
+        continue;
+      }
+      filteredMap.set(p, obj);
+    }
+    if (skipped.length > 0) {
+      log(`⚠️ ${skipped.length}개 시스템 파일 제외: ${skipped.slice(0,3).join(', ')}`, 'warn');
+    }
+    
+    if (filteredMap.size === 0) {
+      showToast('푸시할 파일이 없습니다', 'err');
+      return;
+    }
+    
+    const doPush = async (mapToPush, attemptLabel) => {
+      try {
+        const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+        try { if (typeof detectGithubUser === 'function') await detectGithubUser(); } catch(e){}
+        
+        let refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/main`, { headers });
+        let branch = 'main';
+        if (!refRes.ok) { refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/master`, { headers }); branch='master'; }
+        if (!refRes.ok) throw new Error(`ref 조회 실패 (${refRes.status}) - 레포 ${GITHUB_USER}/${currentRepo} 확인`);
+        
+        const baseSha = (await refRes.json()).object.sha;
+        const commitData = await (await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/commits/${baseSha}`, { headers })).json();
+        const baseTreeSha = commitData.tree.sha;
+        log(`🔍 [${attemptLabel}] base ${baseSha.substring(0,7)} / tree ${baseTreeSha.substring(0,7)} / ${branch} / ${mapToPush.size}개 파일`, 'info');
+        
+        const treeItems = [];
+        let idx = 0;
+        for (let [p, obj] of mapToPush.entries()) {
+          let b64 = obj.base64;
+          if (!b64) {
+            try { b64 = btoa(unescape(encodeURIComponent(obj.content||''))); } catch(e) {
+              const bytes = new TextEncoder().encode(obj.content||''); let bin=''; for(let i=0;i<bytes.length;i+=1024) bin+=String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i+1024, bytes.length))); b64=btoa(bin);
+            }
+          }
+          if (!b64) b64 = btoa('');
+          
+          const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/blobs`, { method:'POST', headers, body: JSON.stringify({ content: b64, encoding:'base64' }) });
+          if (!blobRes.ok) throw new Error(`${p} blob 실패: ${await blobRes.text()}`);
+          const blobSha = (await blobRes.json()).sha;
+          treeItems.push({ path: p, mode:'100644', type:'blob', sha: blobSha });
+          idx++;
+          if (idx % 30 === 0) log(`➡️ blob ${idx}/${mapToPush.size}`, 'info');
+        }
+        
+        log(`🌲 tree 생성: ${treeItems.length}개`, 'info');
+        if (treeItems.length > 0) log(`   예시: ${treeItems.slice(0,3).map(t=>t.path).join(', ')}`, 'info');
+        
+        let treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems }) });
+        let treeData;
+        if (!treeRes.ok) {
+          const err1 = await treeRes.text();
+          log(`⚠️ tree base_tree 실패: ${err1.slice(0,250)}`, 'warn');
+          treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ tree: treeItems }) });
+          if (!treeRes.ok) {
+            const err2 = await treeRes.text();
+            throw new Error(`tree 실패: ${err1.slice(0,120)} / ${err2.slice(0,120)}`);
+          }
+          treeData = await treeRes.json();
+        } else treeData = await treeRes.json();
+        
+        const commitRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/commits`, { method:'POST', headers, body: JSON.stringify({ message: userNote, tree: treeData.sha, parents:[baseSha] }) });
+        if (!commitRes.ok) throw new Error(`commit 실패: ${await commitRes.text()}`);
+        const newCommit = await commitRes.json();
+        
+        const refUpdate = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/refs/heads/${branch}`, { method:'PATCH', headers, body: JSON.stringify({ sha: newCommit.sha }) });
+        if (!refUpdate.ok) throw new Error(`ref 업데이트 실패: ${await refUpdate.text()}`);
+        
+        log(`🎉 커밋 완료: ${branch} ${newCommit.sha.substring(0,7)} - ${mapToPush.size}개 파일`, 'ok');
+        showToast(`🎉 ${mapToPush.size}개 파일 커밋 완료!`, 'ok');
+        return true;
+      } catch(e) {
+        log(`❌ [${attemptLabel}] 실패: ${e.message}`, 'err');
+        throw e;
+      }
+    };
+    
+    try {
+      // 1차: 모든 파일 포함 시도 (workflow 권한 있으면 성공해야 함)
+      await doPush(filteredMap, '전체 파일');
     } catch(e) {
-      log(`❌ pushFileMap 실패: ${e.message}`, 'err');
-      showToast(`커밋 실패: ${e.message}`, 'err');
+      const hasWorkflow = Array.from(filteredMap.keys()).some(p => p.startsWith('.github/workflows/'));
+      if (hasWorkflow && e.message.includes('Not Found')) {
+        log(`💡 workflow 파일 때문에 404 가능성 - workflow 제외하고 재시도`, 'warn');
+        const withoutWorkflow = new Map();
+        for (let [k,v] of filteredMap.entries()) {
+          if (!k.startsWith('.github/workflows/')) withoutWorkflow.set(k,v);
+        }
+        const wfFiles = Array.from(filteredMap.keys()).filter(k=>k.startsWith('.github/workflows/'));
+        showToast(`⚠️ workflow ${wfFiles.length}개 때문에 실패 - 제외하고 재시도`, 'info');
+        try {
+          await doPush(withoutWorkflow, 'workflow 제외');
+          showToast(`✅ workflow 제외하고 ${withoutWorkflow.size}개 성공! workflow는 PAT 권한 재확인 필요`, 'ok');
+          log(`ℹ️ 제외된 workflow: ${wfFiles.join(', ')}`, 'warn');
+          log(`💡 해결: github.com/settings/tokens 에서 토큰에 workflow 체크 후 다시 시도`, 'info');
+          return;
+        } catch(e2) {
+          log(`❌ workflow 제외해도 실패: ${e2.message}`, 'err');
+        }
+      }
+      
+      // 2차: 개별 푸시 폴백 제안
+      if (confirm(`벌크 푸시 실패: ${e.message.slice(0,100)}\n개별 파일로 나눠서 시도할까요? (느리지만 파일별 오류 확인 가능)`)) {
+        try {
+          const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+          let refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/main`, { headers });
+          let branch = 'main';
+          if (!refRes.ok) { refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/git/ref/heads/master`, { headers }); branch='master'; }
+          
+          let success=0, fail=0;
+          for (let [p, obj] of filteredMap.entries()) {
+            try {
+              let b64 = obj.base64 || btoa(unescape(encodeURIComponent(obj.content||'')));
+              let sha=null;
+              try {
+                const getRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${p.split('/').map(encodeURIComponent).join('/')}?t=${Date.now()}`, { headers });
+                if (getRes.ok) sha = (await getRes.json()).sha;
+              } catch(e){}
+              const payload = { message: `${userNote} - ${p}`, content: b64, branch };
+              if (sha) payload.sha = sha;
+              const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/contents/${p.split('/').map(encodeURIComponent).join('/')}`, { method:'PUT', headers, body: JSON.stringify(payload) });
+              if (putRes.ok) { success++; log(`✅ ${p}`, 'ok'); }
+              else { fail++; const t = await putRes.text(); log(`❌ ${p} 실패: ${t.slice(0,150)}`, 'err'); }
+              await new Promise(r=>setTimeout(r, 500));
+            } catch(e2) { fail++; log(`❌ ${p} 예외: ${e2.message}`, 'err'); }
+          }
+          showToast(`개별 푸시: 성공 ${success}, 실패 ${fail}`, success>0?'ok':'err');
+        } catch(e2) {
+          showToast(`개별 푸시도 실패: ${e2.message}`, 'err');
+        }
+      } else {
+        showToast(`커밋 실패: ${e.message}`, 'err');
+      }
     }
   };
-
-
 
 
   window.capturePreviewScreen = async function() {
@@ -5311,9 +5414,9 @@ ${contextConstraint}`;
     const shortName = targetPwaRepo.substring(0, 12);
     const themeColor = presetIconOptions?.color || window.aiIconOptions?.color || '#10b981';
     const centerEmoji = presetIconOptions?.emoji || window.aiIconOptions?.emoji || '✨';
-    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.53');
+    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.55');
     
-    // v9.0.53 FIX: 아이콘 생성 로직 강화 + 디버그 로그
+    // v9.0.55 FIX: 아이콘 생성 로직 강화 + 디버그 로그
     const createIconBase64 = (size) => {
         try {
           const cvs = document.createElement('canvas'); 
@@ -5328,7 +5431,7 @@ ${contextConstraint}`;
           ctx.textBaseline = 'middle';
           const fontSize = Math.floor(size * 0.6);
           // 이모지는 흰색이 아니라 원래 색상이 보이도록 fillStyle은 이모지용으로 투명하게, 대신 흰색 테두리 느낌으로 그림자
-          // v9.0.53: 이모지는 fillStyle 무시되므로 검정 그림자 + 본문
+          // v9.0.55: 이모지는 fillStyle 무시되므로 검정 그림자 + 본문
           ctx.shadowColor = 'rgba(0,0,0,0.15)';
           ctx.shadowBlur = Math.floor(size * 0.05);
           ctx.shadowOffsetY = Math.floor(size * 0.02);
@@ -5468,7 +5571,7 @@ if ('serviceWorker' in navigator) {
           editorCodeToUpdate = code;
           log('📝 에디터에 PWA 태그 자동 주입 완료 - 최종 빌드에 포함됩니다', 'ok');
           if (typeof showLivePreviewCurrent === 'function') showLivePreviewCurrent(code, 'PWA 태그 주입');
-          // v9.0.53 FIX: 기존 프로젝트도 index.html을 fileMap에 포함하여 함께 푸시
+          // v9.0.55 FIX: 기존 프로젝트도 index.html을 fileMap에 포함하여 함께 푸시
           fileMap.set('index.html', { content: code, isBinary: false });
           log('📝 기존 index.html + PWA 태그 함께 푸시 예정', 'info');
         } else {
@@ -5477,7 +5580,7 @@ if ('serviceWorker' in navigator) {
       }
     }
     
-    // v9.0.53: 벌크 푸시 (기존 multi-file 로직과 동일한 git data API 사용 - 안정적)
+    // v9.0.55: 벌크 푸시 (기존 multi-file 로직과 동일한 git data API 사용 - 안정적)
     try {
       log(`🚀 PWA 벌크 푸시 시작: ${fileMap.size}개 파일`, 'info');
       const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
