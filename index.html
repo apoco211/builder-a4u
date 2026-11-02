@@ -44,7 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.52 - - ZIP 버튼 항상 표시 Fix</title>
+  <title>Builder-a4u v9.0.53 - - PWA 아이콘 벌크 푸시 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -92,9 +92,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.52">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.52">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.52">
+  <link rel="manifest" href="./manifest.json?v=9.0.53">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.53">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.53">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
   
   <style>
@@ -273,7 +273,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.52</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.53</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -290,14 +290,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
-    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full active">🚀 앱빌드</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn active w-full">📌 프로젝트선택</button>
+    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
     <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent" style="display: none;">
+<div id="tabProjectContent">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -358,7 +358,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
   
-<div id="tabBuildContent" style="display: block;">
+<div id="tabBuildContent" style="display:none;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -433,7 +433,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div id="pathPreviewBox" class="mt-2 p-2 bg-gray-50 dark:bg-gray-800/50 border rounded-lg text-[10px] hidden"><div class="font-bold mb-1">📁 [원본 → 최종 경로] 미리보기</div>
 <div id="pathPreviewContent" class="space-y-0.5 max-h-[120px] overflow-y-auto"></div></div>
 
-      <!-- v9.0.52 FIX: ZIP 버튼이 hidden 박스 안에 있던 버그 수정 - 항상 보이도록 밖으로 이동 -->
+      <!-- v9.0.53 FIX: ZIP 버튼이 hidden 박스 안에 있던 버그 수정 - 항상 보이도록 밖으로 이동 -->
       <div class="mt-3">
         <div class="flex gap-2 w-full">
           <label for="zipFileInput" class="btn flex-1 py-3 text-[11px] font-bold text-center cursor-pointer" style="background:#fef3c7;color:#92400e;border:1px solid #fde68a">📦 ZIP 압축파일 올리기 (자동 해제)</label>
@@ -482,7 +482,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:41:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:24:51] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:24:51] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div></div>
     </div>
   </div>
 </div>
@@ -804,7 +804,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     }
   };
   window.copyVersionAndChangelog = function() {
-    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.52';
+    const v = document.getElementById('simpleVersionBox')?.value || 'v9.0.53';
     const ch = document.getElementById('simpleChangelogBox')?.value || '';
     const full = `${v}\n\n${ch}`;
     copyToClipboard(full, '버전+내용');
@@ -843,7 +843,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     copyToClipboard(txt, mode==='short'?'짧은 변경사항':'전체 변경사항');
   };
   window.copyVersionAndChangelog = function() {
-    const v = 'v9.0.52';
+    const v = 'v9.0.53';
     const box = document.getElementById('changelogCopyBox');
     const ch = box ? box.value : '';
     const full = `${v}\n\n${ch}`;
@@ -1204,7 +1204,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.52] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.53] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -1266,7 +1266,7 @@ ${currentCode.substring(0, 8000)}
       if (successCount > 0) {
         let newVersion = null;
         try {
-          const currentVer = getTargetAppVersion() || 'v9.0.52';
+          const currentVer = getTargetAppVersion() || 'v9.0.53';
           const m = currentVer.match(/v?(\d+)\.(\d+)\.(\d+)/);
           if (m) {
             const major = parseInt(m[1]), minor = parseInt(m[2]), patch = parseInt(m[3]);
@@ -2995,7 +2995,7 @@ ${contextConstraint}`;
           const files = data.files || [];
           const targetDir = data.targetDir || '';
           const repo = data.repo || currentRepo || 'builder-a4u';
-          const ver = data.ver || 'v9.0.52';
+          const ver = data.ver || 'v9.0.53';
           const editorIncluded = data.editorIncluded;
           const note = data.note || '';
           let html = `<div class="space-y-3">`;
@@ -5296,103 +5296,105 @@ ${contextConstraint}`;
   window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
     const pat = getGitHubPat(); 
     if (!pat || pat.length < 10) return showToast('GitHub PAT 필요 - 설정 탭에서 입력', 'err');
-    const targetPwaRepo = presetRepoName || currentRepo;
+    let targetPwaRepo = presetRepoName || currentRepo;
     if (!targetPwaRepo) return showToast('대상 레포가 없습니다', 'err');
-    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?\n아이콘, manifest.json, sw.js가 생성/업데이트 됩니다.`)) return;
-    showToast(`✨ PWA 세팅 중... ${targetPwaRepo}`, 'info');
+    targetPwaRepo = targetPwaRepo.trim();
+    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?\n아이콘 3종 + manifest.json + sw.js가 생성/업데이트 됩니다.`)) return;
+    
+    showToast(`✨ PWA 세팅 시작... ${targetPwaRepo}`, 'info');
     log(`🔧 PWA 세팅 시작: ${targetPwaRepo}`, 'info');
+    
+    // 유저 확인
+    try { if (typeof detectGithubUser === 'function') await detectGithubUser(); } catch(e){}
+    
     const pwaName = targetPwaRepo;
     const shortName = targetPwaRepo.substring(0, 12);
     const themeColor = presetIconOptions?.color || window.aiIconOptions?.color || '#10b981';
     const centerEmoji = presetIconOptions?.emoji || window.aiIconOptions?.emoji || '✨';
-    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.52');
+    const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.53');
     
-    // v9.0.50 FIX: 이모지 캔버스 렌더링 개선 (이모지 폰트 포함)
+    // v9.0.53 FIX: 아이콘 생성 로직 강화 + 디버그 로그
     const createIconBase64 = (size) => {
         try {
           const cvs = document.createElement('canvas'); 
           cvs.width = size; cvs.height = size;
           const ctx = cvs.getContext('2d'); 
+          if (!ctx) throw new Error('ctx null');
           // 배경
           ctx.fillStyle = themeColor; 
           ctx.fillRect(0, 0, size, size);
-          // 이모지 중앙 - 이모지 폰트 스택 사용
-          ctx.fillStyle = '#ffffff'; 
+          // 이모지 중앙
           ctx.textAlign = 'center'; 
           ctx.textBaseline = 'middle';
-          // 크기에 따라 폰트 크기 조정 (이모지가 꽉 차게)
-          const fontSize = Math.floor(size * 0.55);
-          ctx.font = `bold ${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
-          ctx.fillText(centerEmoji, size/2, size/2 + Math.floor(size*0.02));
-          return cvs.toDataURL('image/png').split(',')[1];
+          const fontSize = Math.floor(size * 0.6);
+          // 이모지는 흰색이 아니라 원래 색상이 보이도록 fillStyle은 이모지용으로 투명하게, 대신 흰색 테두리 느낌으로 그림자
+          // v9.0.53: 이모지는 fillStyle 무시되므로 검정 그림자 + 본문
+          ctx.shadowColor = 'rgba(0,0,0,0.15)';
+          ctx.shadowBlur = Math.floor(size * 0.05);
+          ctx.shadowOffsetY = Math.floor(size * 0.02);
+          ctx.font = `${fontSize}px "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+          // 이모지 렌더링 (이모지 자체 색상 유지)
+          ctx.fillText(centerEmoji, size/2, size/2);
+          ctx.shadowColor = 'transparent';
+          const dataUrl = cvs.toDataURL('image/png');
+          const b64 = dataUrl.split(',')[1];
+          log(`🎨 아이콘 ${size}px 생성: ${b64.length}자 (${centerEmoji} ${themeColor})`, 'info');
+          return b64;
         } catch(e) {
           console.error('아이콘 생성 실패', e);
-          // 폴백: 단색
-          const cvs = document.createElement('canvas'); cvs.width = size; cvs.height = size;
-          const ctx = cvs.getContext('2d'); ctx.fillStyle = themeColor; ctx.fillRect(0,0,size,size);
-          return cvs.toDataURL('image/png').split(',')[1];
-        }
-    };
-    
-    const pushFile = async (path, content, isBase64 = false) => {
-        let encodedContent = isBase64 ? content : (() => {
-          try { return btoa(unescape(encodeURIComponent(content))); }
-          catch(e) {
-            const bytes = new TextEncoder().encode(content); let bin=''; 
-            for(let i=0;i<bytes.length;i+=1024) bin+=String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i+1024, bytes.length))); 
-            return btoa(bin);
+          log(`❌ 아이콘 ${size}px 생성 실패: ${e.message}`, 'err');
+          // 폴백: 단색 + 텍스트 첫 글자
+          try {
+            const cvs = document.createElement('canvas'); cvs.width = size; cvs.height = size;
+            const ctx = cvs.getContext('2d'); 
+            ctx.fillStyle = themeColor; ctx.fillRect(0,0,size,size);
+            ctx.fillStyle = '#ffffff';
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.font = `bold ${Math.floor(size*0.5)}px sans-serif`;
+            ctx.fillText((centerEmoji || 'A').slice(0,2), size/2, size/2);
+            return cvs.toDataURL('image/png').split(',')[1];
+          } catch(e2) {
+            return null;
           }
-        })();
-        const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
-        let sha = null;
-        try { 
-          const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers }); 
-          if (res.ok) { const j = await res.json(); sha = j.sha; }
-        } catch(e) {}
-        const payload = { message: `✨ PWA ${path} ${finalVersion} ${centerEmoji}`, content: encodedContent, branch: 'main' }; 
-        if (sha) payload.sha = sha;
-        const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method: 'PUT', headers, body: JSON.stringify(payload) });
-        if (!putRes.ok) {
-          const errText = await putRes.text();
-          log(`❌ ${path} 푸시 실패: ${errText.slice(0,200)}`, 'err');
-          throw new Error(`${path} 실패: ${errText.slice(0,150)}`);
         }
-        log(`✅ PWA 파일: ${path}`, 'ok');
-        return true;
     };
     
-    try {
-        // 1. 아이콘 3종 생성 (192, 512, 180 apple)
-        log(`🎨 아이콘 생성: ${centerEmoji} ${themeColor}`, 'info');
-        await pushFile('icon-192.png', createIconBase64(192), true); 
-        await new Promise(r=>setTimeout(r, 400));
-        await pushFile('icon-512.png', createIconBase64(512), true);
-        await new Promise(r=>setTimeout(r, 400));
-        await pushFile('apple-touch-icon.png', createIconBase64(180), true);
-        await new Promise(r=>setTimeout(r, 400));
-        
-        // 2. manifest.json - v9.0.50 FIX: 버전 동적화 + 아이콘 전체 포함
-        const manifest = { 
-          name: pwaName, 
-          short_name: shortName, 
-          description: `${pwaName} - ${centerEmoji} ${themeColor} 테마`,
-          start_url: "./index.html", 
-          display: "standalone", 
-          scope: "./", 
-          background_color: "#ffffff", 
-          theme_color: themeColor, 
-          icons: [
-            { src: "./icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
-            { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
-            { src: "./apple-touch-icon.png", sizes: "180x180", type: "image/png" }
-          ] 
-        };
-        await pushFile('manifest.json', JSON.stringify(manifest, null, 2), false);
-        await new Promise(r=>setTimeout(r, 400));
-        
-        // 3. sw.js - v9.0.50 FIX: 실제 캐시 로직 포함
-        const swContent = `const CACHE_NAME = '${pwaName}-${finalVersion}';
-const urlsToCache = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png'];
+    // 아이콘 미리 생성 및 검증
+    const icon192_b64 = createIconBase64(192);
+    const icon512_b64 = createIconBase64(512);
+    const icon180_b64 = createIconBase64(180);
+    
+    if (!icon192_b64 || !icon512_b64) {
+      showToast('아이콘 생성 실패 - 캔버스 지원 확인', 'err');
+      log('❌ 아이콘 base64 생성 실패', 'err');
+      return;
+    }
+    
+    // PWA 파일 맵 구성 (벌크 푸시용 - 기존 multi-file 로직 재사용)
+    const fileMap = new Map();
+    fileMap.set('icon-192.png', { content: icon192_b64, isBinary: true });
+    fileMap.set('icon-512.png', { content: icon512_b64, isBinary: true });
+    fileMap.set('apple-touch-icon.png', { content: icon180_b64, isBinary: true });
+    
+    const manifest = { 
+      name: pwaName, 
+      short_name: shortName, 
+      description: `${pwaName} - ${centerEmoji} ${themeColor} 테마`,
+      start_url: "./index.html", 
+      display: "standalone", 
+      scope: "./", 
+      background_color: "#ffffff", 
+      theme_color: themeColor, 
+      icons: [
+        { src: "./icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
+        { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
+        { src: "./apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+      ] 
+    };
+    fileMap.set('manifest.json', { content: JSON.stringify(manifest, null, 2), isBinary: false });
+    
+    const swContent = `const CACHE_NAME = '${pwaName}-${finalVersion}';
+const urlsToCache = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache)));
@@ -5403,13 +5405,14 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
 });`;
-        await pushFile('sw.js', swContent, false);
-        await new Promise(r=>setTimeout(r, 400));
-        
-        // 4. index.html 처리
-        if (presetRepoName) {
-          // 신규 AI 프로젝트용 클린 PWA 템플릿 (빌더 모달 HTML 제거 - 기존 버그)
-          const cleanIndexHtml = `<!DOCTYPE html>
+    fileMap.set('sw.js', { content: swContent, isBinary: false });
+    
+    // index.html 처리
+    let cleanIndexHtml = null;
+    let editorCodeToUpdate = null;
+    
+    if (presetRepoName) {
+      cleanIndexHtml = `<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -5439,30 +5442,145 @@ if ('serviceWorker' in navigator) {
 <\/script>
 </body>
 </html>`;
-          await pushFile('index.html', cleanIndexHtml, false);
-        } else {
-          // 기존 프로젝트 PWA 세팅: 에디터 코드에 PWA 태그 주입 시도
-          const editor = $('codeEditor');
-          if (editor && editor.value) {
-            let code = editor.value;
-            if (!code.includes('manifest.json')) {
-              code = code.replace('</head>', `<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">\n<meta name="theme-color" content="${themeColor}">\n</head>`);
-              if (!code.includes('serviceWorker')) {
-                code = code.replace('</body>', `<script>if('serviceWorker' in navigator){navigator.serviceWorker.register('./sw.js')}<\/script>\n</body>`);
-              }
-              editor.value = code;
-              log('📝 에디터에 PWA 태그 자동 주입', 'info');
-              if (typeof showLivePreviewCurrent === 'function') showLivePreviewCurrent(code, 'PWA 태그 주입');
-            }
+      fileMap.set('index.html', { content: cleanIndexHtml, isBinary: false });
+      log(`📝 신규 프로젝트용 index.html 포함`, 'info');
+    } else {
+      // 기존 프로젝트: 에디터 코드에 PWA 태그 주입 시도
+      const editor = $('codeEditor');
+      if (editor && editor.value) {
+        let code = editor.value;
+        let injected = false;
+        if (!code.includes('manifest.json')) {
+          if (code.includes('</head>')) {
+            code = code.replace('</head>', `<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">\n<meta name="theme-color" content="${themeColor}">\n<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${finalVersion.replace('v','')}">\n</head>`);
+            injected = true;
+          } else if (code.includes('<head>')) {
+            code = code.replace('<head>', `<head>\n<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n`);
+            injected = true;
           }
         }
-        
-        showToast(`🎉 PWA 세팅 완료! ${centerEmoji} ${pwaName}`, 'ok');
-        log(`🎉 PWA 세팅 완료: ${targetPwaRepo} / ${themeColor} ${centerEmoji}`, 'ok');
-    } catch(e) { 
+        if (!code.includes('serviceWorker') && code.includes('</body>')) {
+          code = code.replace('</body>', `<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'))}<\/script>\n</body>`);
+          injected = true;
+        }
+        if (injected) {
+          editor.value = code;
+          editorCodeToUpdate = code;
+          log('📝 에디터에 PWA 태그 자동 주입 완료 - 최종 빌드에 포함됩니다', 'ok');
+          if (typeof showLivePreviewCurrent === 'function') showLivePreviewCurrent(code, 'PWA 태그 주입');
+          // v9.0.53 FIX: 기존 프로젝트도 index.html을 fileMap에 포함하여 함께 푸시
+          fileMap.set('index.html', { content: code, isBinary: false });
+          log('📝 기존 index.html + PWA 태그 함께 푸시 예정', 'info');
+        } else {
+          log('ℹ️ 에디터에 이미 PWA 태그가 있거나 </head>를 찾을 수 없음 - 아이콘/manifest만 업데이트', 'info');
+        }
+      }
+    }
+    
+    // v9.0.53: 벌크 푸시 (기존 multi-file 로직과 동일한 git data API 사용 - 안정적)
+    try {
+      log(`🚀 PWA 벌크 푸시 시작: ${fileMap.size}개 파일`, 'info');
+      const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+      
+      // ref 조회
+      let refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/ref/heads/main`, { headers });
+      let branch = 'main';
+      if (!refRes.ok) {
+        refRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/ref/heads/master`, { headers });
+        branch = 'master';
+      }
+      if (!refRes.ok) throw new Error('브랜치 조회 실패 - 레포가 존재하나요?');
+      const refData = await refRes.json();
+      const baseSha = refData.object.sha;
+      
+      // base commit 조회
+      const commitRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/commits/${baseSha}`, { headers });
+      if (!commitRes.ok) throw new Error('base commit 조회 실패');
+      const commitData = await commitRes.json();
+      const baseTreeSha = commitData.tree.sha;
+      
+      // blob 생성
+      const treeItems = [];
+      for (let [path, obj] of fileMap.entries()) {
+        let b64 = obj.isBinary ? obj.content : (() => {
+          try { return btoa(unescape(encodeURIComponent(obj.content))); }
+          catch(e) {
+            const bytes = new TextEncoder().encode(obj.content); let bin=''; 
+            for(let i=0;i<bytes.length;i+=1024) bin+=String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i+1024, bytes.length))); 
+            return btoa(bin);
+          }
+        })();
+        const blobRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/blobs`, { method:'POST', headers, body: JSON.stringify({ content: b64, encoding:'base64' }) });
+        if (!blobRes.ok) {
+          const t = await blobRes.text();
+          throw new Error(`blob 생성 실패 ${path}: ${t.slice(0,100)}`);
+        }
+        const blobData = await blobRes.json();
+        treeItems.push({ path: path, mode:'100644', type:'blob', sha: blobData.sha });
+        log(`➡️ blob ${path} ${obj.isBinary ? '(binary)' : ''}`, 'info');
+      }
+      
+      // tree 생성
+      let treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems }) });
+      if (!treeRes.ok) {
+        log('⚠️ tree base_tree 포함 실패, 재시도', 'warn');
+        treeRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/trees`, { method:'POST', headers, body: JSON.stringify({ tree: treeItems }) });
+      }
+      if (!treeRes.ok) {
+        const t = await treeRes.text();
+        throw new Error(`tree 생성 실패: ${t.slice(0,200)}`);
+      }
+      const treeData = await treeRes.json();
+      
+      // commit 생성
+      const commitPayload = { message: `✨ PWA 세팅 ${finalVersion} ${centerEmoji} ${themeColor} - ${fileMap.size} files`, tree: treeData.sha, parents:[baseSha] };
+      const newCommitRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/commits`, { method:'POST', headers, body: JSON.stringify(commitPayload) });
+      if (!newCommitRes.ok) {
+        const t = await newCommitRes.text();
+        throw new Error(`commit 실패: ${t.slice(0,200)}`);
+      }
+      const newCommitData = await newCommitRes.json();
+      
+      // ref 업데이트
+      const refUpdateRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/git/refs/heads/${branch}`, { method:'PATCH', headers, body: JSON.stringify({ sha: newCommitData.sha }) });
+      if (!refUpdateRes.ok) {
+        const t = await refUpdateRes.text();
+        throw new Error(`ref 업데이트 실패: ${t.slice(0,200)}`);
+      }
+      
+      showToast(`🎉 PWA 세팅 완료! ${centerEmoji} ${fileMap.size}개 파일`, 'ok');
+      log(`🎉 PWA 세팅 완료: ${targetPwaRepo} / ${themeColor} ${centerEmoji} / ${fileMap.size} files → ${branch}`, 'ok');
+      log(`🌐 https://${GITHUB_USER}.github.io/${targetPwaRepo}/`, 'info');
+      
+      // 에디터 코드가 업데이트된 경우 로컬에도 반영
+      if (editorCodeToUpdate && $('codeEditor')) {
+        safeSetLocalStorage(getDraftCodeKey(), editorCodeToUpdate);
+      }
+      
+    } catch(e) {
       console.error(e);
-      showToast('PWA 실패: ' + e.message, 'err'); 
+      showToast('PWA 실패: ' + e.message, 'err');
       log(`❌ PWA 세팅 실패: ${e.message}`, 'err');
+      // 폴백: 개별 파일 푸시 시도 (기존 방식)
+      log('🔄 개별 파일 푸시로 폴백 시도', 'warn');
+      try {
+        const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+        const pushFile = async (path, content, isBase64) => {
+          let encodedContent = isBase64 ? content : btoa(unescape(encodeURIComponent(content)));
+          let sha = null;
+          try { const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { headers }); if (res.ok) sha = (await res.json()).sha; } catch(e){}
+          const payload = { message: `✨ PWA ${path} ${finalVersion}`, content: encodedContent, branch: 'main' }; if (sha) payload.sha = sha;
+          const putRes = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${targetPwaRepo}/contents/${path}`, { method:'PUT', headers, body: JSON.stringify(payload) });
+          if (!putRes.ok) throw new Error(await putRes.text());
+        };
+        for (let [p, obj] of fileMap.entries()) {
+          await pushFile(p, obj.content, obj.isBinary);
+          await new Promise(r=>setTimeout(r, 500));
+        }
+        showToast('🎉 PWA 개별 푸시로 완료', 'ok');
+      } catch(e2) {
+        showToast('PWA 완전 실패: ' + e2.message, 'err');
+      }
     }
   };
 
