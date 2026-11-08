@@ -40,11 +40,32 @@
 :where(code, pre, kbd, samp) {
   font-family: "Optimistic Mono", ui-monospace, monospace;
 }
+</style><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
 </style><meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.55 - - PWA 아이콘 벌크 푸시 Fix</title>
+  <title>Builder-a4u v9.0.56 - - - PWA 아이콘 벌크 푸시 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -92,9 +113,9 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.55">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.55">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.55">
+  <link rel="manifest" href="./manifest.json?v=9.0.56">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.56">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.56">
   <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
   
   <style>
@@ -273,7 +294,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.55</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.56</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -290,14 +311,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full active">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent" style="display: none;">
+<div id="tabProjectContent" style="display: block;">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -307,6 +328,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <button onclick="copyLiveSiteUrl()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🔗 주소 복사</button>
         <button onclick="setupPWA()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅</button>
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 다운</button>
+        <button onclick="openArtifactCleanupModal()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">🧹 Artifact 정리</button>
         <button id="refreshRepoBtn" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto col-span-2 sm:col-span-1">🔄 새로고침</button>
       </div>
     </div>
@@ -482,12 +504,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display: block;">
+<div id="tabSettingsContent" style="display: none;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -716,6 +738,45 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     </div>
     <div id="driveFileList" class="drive-modal-body">
       <div style="text-align:center;padding:40px;opacity:0.6;">로딩중...</div>
+    </div>
+  </div>
+</div>
+
+
+<div id="artifactCleanupModal" class="drive-modal" style="display:none;">
+  <div class="drive-modal-content" style="max-width:500px;">
+    <div class="drive-modal-header border-b border-gray-200 dark:border-gray-700">
+      <div class="font-bold">🧹 Artifact 정리</div>
+      <button onclick="closeArtifactCleanupModal()" class="btn text-[12px] py-1">✕</button>
+    </div>
+    <div class="p-3 flex flex-col gap-2">
+      <div class="text-[11px] leading-relaxed opacity-80">대상 레포: <b id="artifactModalRepoName">-</b><br>이 기준은 수정하기 전까지 계속 저장돼 있어. 캐시(별도 10GB/레포)는 여기서 안 지워져.</div>
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[10px] font-bold block mb-1">며칠 이전 것 지우기</label>
+          <input id="artifactModalDays" class="input text-[13px] font-mono" type="number" min="1" max="90" value="30">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold block mb-1">최신 몇 개는 유지</label>
+          <input id="artifactModalKeep" class="input text-[13px] font-mono" type="number" min="0" max="20" value="3">
+        </div>
+      </div>
+      <div class="text-[9.5px] leading-relaxed p-2 rounded bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800">⚠️ PAT에 <b>Actions: Read and Write</b> 권한이 필요해. 없으면 404로 막혀.</div>
+      <div id="artifactModalStep1">
+        <div class="grid grid-cols-2 gap-1.5">
+          <button onclick="checkArtifactCleanup()" class="btn btn-sm text-[11px] w-full" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">🗑️ 삭제하기</button>
+          <button onclick="closeArtifactCleanupModal()" class="btn btn-sm text-[11px] w-full">닫기</button>
+        </div>
+      </div>
+      <div id="artifactModalConfirm" class="hidden p-3 rounded-xl border-2 border-red-300 bg-red-50 dark:bg-red-900/20 dark:border-red-700">
+        <div class="font-bold text-[12px] mb-1">정말 지울까?</div>
+        <div id="artifactModalConfirmText" class="text-[11px] leading-relaxed mb-2"></div>
+        <div class="grid grid-cols-2 gap-1.5">
+          <button onclick="confirmArtifactCleanupDelete()" class="btn btn-sm text-[11px] w-full" style="background:#dc2626;color:#fff;border-color:#dc2626">✅ 확인, 삭제하기</button>
+          <button onclick="cancelArtifactCleanupConfirm()" class="btn btn-sm text-[11px] w-full">취소</button>
+        </div>
+      </div>
+      <div id="artifactModalResult" class="log text-[10.5px] hidden"></div>
     </div>
   </div>
 </div>
@@ -1204,7 +1265,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.55] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.56] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -2188,6 +2249,115 @@ window.downloadCodeAsTextDoc = function(autoMode = false) {
   }
   
   function getGitHubPat() { return localStorage.getItem('github_pat') || $('githubPatInput')?.value || ''; }
+
+  /* v9.0.56 NEW: Artifact 정리 - PWA 세팅 아래 버튼 + 팝업 (기존 코드 100% 유지, 이 블록만 추가) */
+  let _artifactCleanupTargets = [];
+  let _artifactCleanupMeta = null;
+  function loadArtifactCleanupCriteria(){
+    let days = 30, keep = 3;
+    try{ days = Number(localStorage.getItem('artifact_cleanup_days') || 30) || 30; }catch(e){}
+    try{ keep = Number(localStorage.getItem('artifact_cleanup_keep') || 3); if(isNaN(keep)) keep = 3; }catch(e){}
+    days = Math.max(1, Math.min(90, days)); keep = Math.max(0, Math.min(20, keep));
+    return { days, keep };
+  }
+  function saveArtifactCleanupCriteria(){
+    const days = Number($('artifactModalDays')?.value || 30);
+    const keep = Number($('artifactModalKeep')?.value || 3);
+    try{ localStorage.setItem('artifact_cleanup_days', String(days)); localStorage.setItem('artifact_cleanup_keep', String(keep)); }catch(e){}
+  }
+  function openArtifactCleanupModal(){
+    const { days, keep } = loadArtifactCleanupCriteria();
+    if($('artifactModalDays')) $('artifactModalDays').value = days;
+    if($('artifactModalKeep')) $('artifactModalKeep').value = keep;
+    if($('artifactModalRepoName')) $('artifactModalRepoName').textContent = currentRepo || '-';
+    if($('artifactModalConfirm')) $('artifactModalConfirm').classList.add('hidden');
+    if($('artifactModalResult')) { $('artifactModalResult').classList.add('hidden'); $('artifactModalResult').innerHTML=''; }
+    _artifactCleanupTargets = []; _artifactCleanupMeta = null;
+    const m = $('artifactCleanupModal'); if(m) m.style.display = 'flex';
+    try{ document.body.classList.add('modal-open'); }catch(e){}
+  }
+  function closeArtifactCleanupModal(){
+    const m = $('artifactCleanupModal'); if(m) m.style.display = 'none';
+    try{ document.body.classList.remove('modal-open'); }catch(e){}
+    saveArtifactCleanupCriteria();
+  }
+  async function fetchArtifactsForCleanup(owner, repo, pat){
+    const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat };
+    let all = [];
+    for(let page=1; page<=10; page++){
+      const res = await fetch('https://api.github.com/repos/' + owner + '/' + repo + '/actions/artifacts?per_page=100&page=' + page, { headers, cache: 'no-store' });
+      if(res.status===401) throw new Error('PAT 만료/무효 (401) - 설정에서 재발급 필요');
+      if(res.status===404) throw new Error('레포를 찾을 수 없거나 PAT에 Actions 권한이 없음 (404) - PAT에 Actions: Read and Write 체크 필요');
+      if(!res.ok) throw new Error('Artifact 목록 불러오기 실패: ' + res.status);
+      const data = await res.json();
+      const list = data.artifacts || [];
+      all = all.concat(list);
+      if(list.length < 100) break;
+    }
+    return all;
+  }
+  async function checkArtifactCleanup(){
+    const pat = getGitHubPat();
+    if(!pat || pat.length < 10){ showToast('GitHub PAT 필요 - 설정 탭에서 입력', 'err'); return; }
+    saveArtifactCleanupCriteria();
+    const { days, keep } = loadArtifactCleanupCriteria();
+    const owner = GITHUB_USER, repo = currentRepo;
+    const resultBox = $('artifactModalResult');
+    if(resultBox){ resultBox.classList.remove('hidden'); resultBox.innerHTML = '<div>🔍 계산 중... (' + repo + ')</div>'; }
+    try{
+      const all = await fetchArtifactsForCleanup(owner, repo, pat);
+      const sorted = [...all].sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+      const cutoff = Date.now() - days*24*60*60*1000;
+      const keptIds = new Set(sorted.slice(0, keep).map(x=>x.id));
+      const targets = sorted.filter(x=> !keptIds.has(x.id) && new Date(x.created_at).getTime() < cutoff);
+      _artifactCleanupTargets = targets;
+      const totalMB = all.reduce((s,x)=> s + (x.size_in_bytes||0), 0)/1024/1024;
+      const delMB = targets.reduce((s,x)=> s + (x.size_in_bytes||0), 0)/1024/1024;
+      const cutoffDate = new Date(cutoff).toISOString().slice(0,10);
+      _artifactCleanupMeta = { total: all.length, totalMB, delMB, days, keep, cutoffDate, repo };
+      if(targets.length===0){
+        if(resultBox) resultBox.innerHTML = '<div class="font-bold text-emerald-600">✅ 삭제할 게 없어. 이미 깨끗해!</div><div>전체 ' + all.length + '개 (' + totalMB.toFixed(2) + 'MB) / 기준 ' + days + '일 이전 (' + cutoffDate + ' 이전) + 최신 ' + keep + '개 유지</div>';
+        return;
+      }
+      const confirmBox = $('artifactModalConfirm');
+      const confirmText = $('artifactModalConfirmText');
+      if(confirmText) confirmText.innerHTML = '삭제될 거 <b>총 ' + targets.length + '개, 약 ' + delMB.toFixed(2) + 'MB</b> 비워져.<br>전체 ' + all.length + '개 중, ' + cutoffDate + ' 이전 것만 삭제하고 최신 ' + keep + '개는 유지돼.<br>정말 지울까? 이 작업은 되돌릴 수 없어.';
+      if(confirmBox) confirmBox.classList.remove('hidden');
+      if(resultBox) resultBox.innerHTML = '<div>삭제 대상 ' + targets.length + '개 (' + delMB.toFixed(2) + 'MB) 확인됨. 아래에서 한 번 더 확인해줘.</div>';
+      if(confirmBox) confirmBox.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }catch(e){
+      if(resultBox) resultBox.innerHTML = '<div class="text-red-500 font-bold">❌ ' + e.message + '</div>';
+      showToast(e.message, 'err');
+    }
+  }
+  function cancelArtifactCleanupConfirm(){
+    if($('artifactModalConfirm')) $('artifactModalConfirm').classList.add('hidden');
+    _artifactCleanupTargets = [];
+  }
+  async function confirmArtifactCleanupDelete(){
+    const pat = getGitHubPat();
+    if(!pat || pat.length < 10){ showToast('GitHub PAT 필요', 'err'); return; }
+    const targets = _artifactCleanupTargets || [];
+    const meta = _artifactCleanupMeta || {};
+    if(targets.length===0) return;
+    if($('artifactModalConfirm')) $('artifactModalConfirm').classList.add('hidden');
+    const resultBox = $('artifactModalResult');
+    if(resultBox){ resultBox.classList.remove('hidden'); resultBox.innerHTML = '<div>🧹 삭제 중... ' + targets.length + '개</div>'; }
+    let ok=0, fail=0;
+    for(const a of targets){
+      try{
+        const res = await fetch('https://api.github.com/repos/' + GITHUB_USER + '/' + currentRepo + '/actions/artifacts/' + a.id, { method:'DELETE', headers:{ 'Accept':'application/vnd.github.v3+json', 'Authorization':'Bearer '+pat } });
+        if(res.status===204) ok++; else fail++;
+      }catch(e){ fail++; }
+      await new Promise(r=> setTimeout(r, 120));
+    }
+    const delMB = (meta.delMB||0).toFixed(2);
+    if(resultBox) resultBox.innerHTML = '<div class="font-bold text-emerald-600">✅ 삭제 완료: ' + ok + '개 성공 / ' + fail + '개 실패 (' + delMB + 'MB 정리 시도)</div><div class="opacity-70 mt-1">반영까지 6~12시간 걸릴 수 있어. 이미 쌓인 이번 달 요금은 그대로야.</div>';
+    log('✅ Artifact 정리 완료: ' + ok + '개 성공, ' + fail + '개 실패', 'ok');
+    showToast('Artifact ' + ok + '개 삭제 완료', 'ok');
+    _artifactCleanupTargets = [];
+  }
+
   
   function updateGisStatus(msg) {
     const el = $('googleStatus'); if (el && msg) el.textContent = msg;
@@ -6238,4 +6408,4 @@ function startApp() {
   </div>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
