@@ -86,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.57 - - - - 홈아이콘 확인 + 타임머신 별표</title>
+  <title>Builder-a4u v9.1.0 - - - - 홈아이콘 모달 스크롤 Fix + 아이콘 새로 만들기</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -134,10 +134,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.57">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.57">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.57">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.57">
+  <link rel="manifest" href="./manifest.json?v=9.1.0">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.0">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.0">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.0">
   
   <style>
     :root {
@@ -296,6 +296,19 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     body.modal-open { overflow: hidden; height: 100vh; touch-action: none; }
     .dark .drive-modal-content { background: #1e222f; color: #ffffff; }
     .drive-modal-header { padding: 16px; border-bottom: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; }
+    /* v9.1.0 FIX: 홈아이콘 모달이 위로 안 올라가던 버그 - 원인 3가지 동시 수정 */
+    /* 1) .drive-modal-content 두 번째 규칙이 overflow:hidden으로 첫 번째 overflow-y:auto를 덮어버림 */
+    /* 2) 홈아이콘 모달 본문이 .p-3이라서 .p-5 전용 스크롤 규칙이 안 먹힘 */
+    /* 3) touchmove 차단기가 .p-3 터치를 preventDefault로 막음 */
+    .drive-modal { align-items: flex-start; overflow-y: auto; padding: 12px 12px calc(12px + env(safe-area-inset-bottom)); -webkit-overflow-scrolling: touch; }
+    .drive-modal-content { overflow-y: auto; max-height: 92vh; max-height: 92dvh; flex-shrink: 0; }
+    .drive-modal-content > .p-3, #homeIconCheckModal .drive-modal-content > .p-3 { flex: 1; overflow-y: auto; min-height: 0; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+    .drive-modal-header { position: sticky; top: 0; z-index: 5; background: #ffffff; }
+    .dark .drive-modal-header { background: #1e222f; }
+    body.modal-open { touch-action: pan-y; }
+    #homeIconCheckModal, #homeIconCheckModal * { touch-action: pan-y; }
+    #homeIconCheckBody { scroll-behavior: smooth; }
+
     .drive-file { padding: 10px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; cursor: pointer; border: 1px solid transparent; transition: background 0.15s ease; }
     .drive-file:hover { background: #f5f5f5; border-color: #dddddd; }
     .dark .drive-file:hover { background: #2a2f3f; }
@@ -315,7 +328,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.57</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.0</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -332,14 +345,14 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
-    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full active">📌 프로젝트선택</button>
+    <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
     <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
-<div id="tabProjectContent" style="display: block;">
+<div id="tabProjectContent" style="display: none;">
   <div class="card">
     <div class="flex flex-col gap-2 mb-3">
       <h2 class="font-bold text-[12px] whitespace-normal">📌 작업 레포지토리 &amp; 대상 파일 감지</h2>
@@ -527,12 +540,12 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:19] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:19] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:21] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:15:09] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:15:09] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:15:11] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display: none;">
+<div id="tabSettingsContent" style="display: block;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -679,7 +692,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
 
-<div id="tabInboxContent" style="display: none;">
+<div id="tabInboxContent" style="display:none;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -810,7 +823,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
       <div class="font-bold">🏠 홈버튼 아이콘 확인</div>
       <button onclick="closeHomeIconCheckModal()" class="btn text-[12px] py-1">✕</button>
     </div>
-    <div class="p-3 flex flex-col gap-2">
+    <div id="homeIconCheckBody" class="p-3 flex flex-col gap-2 drive-modal-body">
       <div class="text-[11px] leading-relaxed opacity-80">대상 레포: <b id="homeIconRepoName">-</b><br>실제 배포된 GitHub Pages 파일을 직접 불러와서 확인해요. iOS는 이미 홈에 추가된 아이콘을 자동으로 안 바꿔줘요.</div>
       <div class="flex gap-3 items-start p-3 rounded-xl border" style="border-color:var(--line);background:var(--bg)">
         <div class="text-center shrink-0">
@@ -822,6 +835,34 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
       </div>
       <div id="homeIconCheckResult" class="text-[11px] leading-relaxed space-y-2"></div>
       <div id="homeIconManifestInfo" class="text-[10px] opacity-70 break-words"></div>
+      <!-- v9.1.0 NEW: 아이콘 새로 만들기 - 새 레포 만들지 않고 이 앱 아이콘만 교체 -->
+      <div class="p-3 rounded-xl border-2" style="border-color:#f59e0b;background:var(--bg)">
+        <div class="font-bold text-[12px]">🎨 아이콘 새로 만들기</div>
+        <div class="text-[10.5px] opacity-70 leading-relaxed">새 레포 만들지 않고, 이 앱 아이콘만 바꿔요. 바꾸면 GitHub 아이콘이 바로 바뀌어요.</div>
+        <div class="flex gap-2 items-center mt-2">
+          <div id="homeIconNewPreview" class="shrink-0 flex items-center justify-center shadow-sm" style="width:64px;height:64px;border-radius:14px;background:#111111;font-size:30px;">🏠</div>
+          <div class="flex-1 min-w-0 space-y-1.5">
+            <div>
+              <label class="text-[10px] font-bold block">이모지</label>
+              <input id="homeIconNewEmoji" class="input text-[14px] py-1.5" value="🏠" maxlength="4" oninput="updateHomeIconNewPreview()" placeholder="예: 🏠">
+            </div>
+            <div>
+              <label class="text-[10px] font-bold block">색상</label>
+              <div class="flex gap-1.5 items-center">
+                <input id="homeIconNewColor" type="color" value="#111111" oninput="syncHomeIconColorFromPicker()" class="shrink-0" style="width:36px;height:32px;padding:0;border:none;background:none;">
+                <input id="homeIconNewColorHex" class="input text-[12px] font-mono py-1.5 flex-1" value="#111111" oninput="syncHomeIconColorFromHex()" placeholder="#111111">
+              </div>
+            </div>
+          </div>
+        </div>
+        <input id="homeIconNewDesc" class="input text-[12px] py-2 mt-2" placeholder="앱 설명 (AI 추천용, 비워두면 레포명 사용) 예: 택시 콜 알림 앱">
+        <div class="grid grid-cols-2 gap-1.5 mt-2">
+          <button onclick="recommendHomeIcon()" class="btn btn-sm text-[11px] w-full" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🤖 AI 아이콘 추천받기</button>
+          <button onclick="replaceHomeIcon()" class="btn btn-sm text-[11px] w-full btn-yellow">✅ 이 아이콘으로 교체하기</button>
+        </div>
+        <div id="homeIconRemakeStatus" class="text-[10px] opacity-70 mt-1.5 leading-relaxed"></div>
+        <div class="text-[9.5px] opacity-60 mt-1 leading-relaxed">⚠️ GitHub은 바로 바뀌지만, 아이폰 홈버튼은 기존 것 삭제 → Safari에서 다시 추가해야 새 아이콘으로 보여요.</div>
+      </div>
       <div class="grid grid-cols-2 gap-1.5">
         <button onclick="checkHomeIcon()" class="btn btn-sm text-[11px] w-full" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🔄 다시 확인</button>
         <button onclick="closeHomeIconCheckModal(); setupPWA();" class="btn btn-sm text-[11px] w-full" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅 다시 실행</button>
@@ -832,6 +873,10 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <div class="mt-1">1. 홈화면의 기존 아이콘을 길게 눌러 삭제해요.<br>2. Safari에서 해당 앱 주소를 열고, 공유 → 홈 화면에 추가를 다시 해요.<br>3. Pages 반영까지 최대 1분 정도 기다렸다가 확인해요.<br>4. 그래도 예전 아이콘이면 Safari 설정 → 방문 기록/데이터 지우기 후 다시 추가해요.</div>
       </details>
       <button onclick="closeHomeIconCheckModal()" class="btn btn-sm text-[11px] w-full">닫기</button>
+    </div>
+    <div class="p-2 flex gap-1.5 border-t bg-white dark:bg-gray-900" style="position:sticky;bottom:0;z-index:5;">
+      <button onclick="scrollHomeIconToTop()" class="btn btn-sm text-[11px] flex-1">⬆️ 맨 위로</button>
+      <button onclick="closeHomeIconCheckModal()" class="btn btn-sm text-[11px] flex-1">✕ 닫기</button>
     </div>
   </div>
 </div>
@@ -1320,7 +1365,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.57] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.1.0] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -5098,7 +5143,7 @@ ${contextConstraint}`;
       const target = e.target;
       if (target && target.closest && target.closest('.drive-modal')) {
         const content = target.closest('.drive-modal-content');
-        if (!content || !target.closest('.drive-modal-content .p-5, .drive-modal-body')) {
+        if (!content || !target.closest('.drive-modal-content .p-5, .drive-modal-content .p-3, .drive-modal-body')) {
           // 모달 배경에서 스크롤 시도하면 막기
           if (document.body.classList.contains('modal-open')) e.preventDefault();
         }
@@ -5669,8 +5714,11 @@ ${contextConstraint}`;
   window.openHomeIconCheckModal = function(){
     if ($('homeIconRepoName')) $('homeIconRepoName').textContent = currentRepo || '-';
     if ($('homeIconIosName')) $('homeIconIosName').textContent = currentRepo || '-';
+    if ($('homeIconNewDesc') && !$('homeIconNewDesc').value) $('homeIconNewDesc').placeholder = '앱 설명 (AI 추천용) 예: ' + (currentRepo || '앱');
+    try{ updateHomeIconNewPreview(); }catch(e){}
     const m = $('homeIconCheckModal'); if (m) m.style.display = 'flex';
     try{ document.body.classList.add('modal-open'); }catch(e){}
+    try{ scrollHomeIconToTop(); }catch(e){}
     checkHomeIcon();
   };
   window.closeHomeIconCheckModal = function(){
@@ -5757,13 +5805,76 @@ ${contextConstraint}`;
     try{ log('🏠 홈아이콘 확인: ' + repo + ' / apple ' + (apple.ok ? (apple.w + 'x' + apple.h) : '실패') + ' / ' + headInfo, apple.ok ? 'ok' : 'warn'); }catch(e){}
   };
 
-  window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
+  /* v9.1.0 NEW: 홈아이콘 모달 스크롤 + 아이콘 새로 만들기 */
+  window.scrollHomeIconToTop = function(){
+    const body = $('homeIconCheckBody'); if (body) body.scrollTop = 0;
+    const content = document.querySelector('#homeIconCheckModal .drive-modal-content'); if (content) content.scrollTop = 0;
+    const modal = $('homeIconCheckModal'); if (modal) modal.scrollTop = 0;
+  };
+  window.updateHomeIconNewPreview = function(){
+    const emoji = ($('homeIconNewEmoji')?.value || '🏠').trim() || '🏠';
+    const color = ($('homeIconNewColorHex')?.value || '#111111').trim() || '#111111';
+    const prev = $('homeIconNewPreview'); if (prev) { prev.style.background = color; prev.textContent = emoji; }
+  };
+  window.syncHomeIconColorFromPicker = function(){
+    const c = $('homeIconNewColor')?.value; if (c && $('homeIconNewColorHex')) $('homeIconNewColorHex').value = c;
+    updateHomeIconNewPreview();
+  };
+  window.syncHomeIconColorFromHex = function(){
+    const h = ($('homeIconNewColorHex')?.value || '').trim();
+    if (/^#[0-9a-fA-F]{6}$/.test(h) && $('homeIconNewColor')) $('homeIconNewColor').value = h;
+    updateHomeIconNewPreview();
+  };
+  window.recommendHomeIcon = async function(){
+    const btn = (typeof event !== 'undefined' && event && event.target) ? event.target : null;
+    const desc = ($('homeIconNewDesc')?.value || '').trim() || (currentRepo || '앱');
+    const status = $('homeIconRemakeStatus'); if (status) status.textContent = '🤖 AI가 아이콘 추천 중...';
+    try{
+      const prompt = '너는 앱 아이콘 디자이너다. 아래 앱 설명을 보고 JSON만 응답해.\n앱 설명: ' + desc + '\n규칙: emoji는 앱에 가장 어울리는 이모지 1개, color는 어울리는 HEX 컬러 1개 (예: #f59e0b)\n응답 형식 순수 JSON: {"emoji":"🚕","color":"#f59e0b"}';
+      const res = await callGeminiAPI(prompt, 0.3);
+      let data = null;
+      if (res && typeof res === 'object' && res.emoji) data = res;
+      else if (typeof res === 'string') { const m = res.match(/\{[^}]*\}/); if (m) { try{ data = JSON.parse(m[0]); }catch(e){} } }
+      if (!data || !data.emoji) throw new Error('AI 응답 형식이 올바르지 않음');
+      if ($('homeIconNewEmoji')) $('homeIconNewEmoji').value = data.emoji;
+      if (data.color) { if ($('homeIconNewColor')) $('homeIconNewColor').value = data.color; if ($('homeIconNewColorHex')) $('homeIconNewColorHex').value = data.color; }
+      updateHomeIconNewPreview();
+      if (status) status.textContent = '🎨 추천 완료: ' + data.emoji + ' ' + (data.color || '');
+      showToast('🎨 ' + data.emoji + ' 아이콘 추천 완료!', 'ok');
+    }catch(e){
+      if (status) status.textContent = '❌ 추천 실패: ' + e.message + ' (Gemini 키 확인 / 직접 이모지·색상 입력 가능)';
+      showToast('추천 실패: ' + e.message, 'err');
+    }
+  };
+  window.replaceHomeIcon = async function(){
+    const emoji = ($('homeIconNewEmoji')?.value || '').trim();
+    const color = ($('homeIconNewColorHex')?.value || '').trim();
+    if (!emoji) return showToast('이모지를 입력해 주세요.', 'err');
+    if (!/^#[0-9a-fA-F]{6}$/.test(color)) return showToast('색상은 #RRGGBB 형태로 입력해 주세요. (예: #f59e0b)', 'err');
+    if (!confirm('[' + (currentRepo || '') + '] 아이콘을 ' + emoji + ' ' + color + ' (으)로 교체할까요?\nindex.html 내용은 유지되고 아이콘만 바뀝니다.')) return;
+    const status = $('homeIconRemakeStatus'); if (status) status.textContent = '🔄 GitHub에 새 아이콘 푸시 중...';
+    // setupPWA의 두 번째 confirm은 건너뛰기 (위에서 이미 확인함)
+    window._skipPwaConfirmOnce = true;
+    try{
+      // v9.1.0: 기존 앱은 반드시 첫 인자 null - presetRepoName을 넣으면 신규 템플릿 index.html로 덮어씌워짐
+      await setupPWA(null, { color: color, emoji: emoji });
+      if (status) status.textContent = '✅ 교체 완료! 위에서 새 아이콘을 확인해 보세요. 아이폰 홈버튼은 기존 것 삭제 후 다시 추가해야 바뀝니다.';
+      try{ checkHomeIcon(); }catch(e){}
+      scrollHomeIconToTop();
+    }catch(e){
+      if (status) status.textContent = '❌ 교체 실패: ' + e.message;
+      showToast('교체 실패: ' + e.message, 'err');
+    } finally { window._skipPwaConfirmOnce = false; }
+  };
+
+  window.setupPWA = async function(presetRepoName = null, presetIconOptions = null, isNewProject = false) {
     const pat = getGitHubPat(); 
     if (!pat || pat.length < 10) return showToast('GitHub PAT 필요 - 설정 탭에서 입력', 'err');
     let targetPwaRepo = presetRepoName || currentRepo;
     if (!targetPwaRepo) return showToast('대상 레포가 없습니다', 'err');
     targetPwaRepo = targetPwaRepo.trim();
-    if (!presetRepoName && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?\n아이콘 3종 + manifest.json + sw.js가 생성/업데이트 됩니다.`)) return;
+    if (!presetRepoName && !window._skipPwaConfirmOnce && !confirm(`[${targetPwaRepo}] PWA 세팅하시겠습니까?\n아이콘 3종 + manifest.json + sw.js가 생성/업데이트 됩니다.`)) return;
+    window._skipPwaConfirmOnce = false;
     
     showToast(`✨ PWA 세팅 시작... ${targetPwaRepo}`, 'info');
     log(`🔧 PWA 세팅 시작: ${targetPwaRepo}`, 'info');
@@ -5879,7 +5990,8 @@ self.addEventListener('fetch', e => {
     let cleanIndexHtml = null;
     let editorCodeToUpdate = null;
     
-    if (presetRepoName) {
+    // v9.1.0 FIX: 기존 앱에서 presetRepoName만으로 템플릿을 쓰면 index.html이 날아감. 신규 생성일 때만 템플릿 사용
+    if (presetRepoName && isNewProject) {
       cleanIndexHtml = `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6026,7 +6138,7 @@ if ('serviceWorker' in navigator) {
       log(`🎉 PWA 세팅 완료: ${targetPwaRepo} / ${themeColor} ${centerEmoji} / ${fileMap.size} files → ${branch}`, 'ok');
       log(`🌐 https://${GITHUB_USER}.github.io/${targetPwaRepo}/`, 'info');
       // v9.0.57: 세팅 직후 배포된 아이콘을 바로 확인 (Pages 반영까지 약간 걸리면 [다시 확인] 누르기)
-      try{ setTimeout(()=>{ if (typeof openHomeIconCheckModal === 'function') openHomeIconCheckModal(); }, 800); }catch(e){}
+      try{ setTimeout(()=>{ const hm = document.getElementById('homeIconCheckModal'); if (hm && hm.style.display === 'flex') { if (typeof checkHomeIcon === 'function') checkHomeIcon(); } else if (typeof openHomeIconCheckModal === 'function') openHomeIconCheckModal(); }, 800); }catch(e){}
       
       // 에디터 코드가 업데이트된 경우 로컬에도 반영
       if (editorCodeToUpdate && $('codeEditor')) {
@@ -6135,7 +6247,7 @@ if ('serviceWorker' in navigator) {
           }
           log(`✅ 레포 생성 성공: ${repoName}`, 'ok');
           // v9.0.50 FIX: 아이콘 옵션 전달 (기존 버그: 전달 안 함)
-          await setupPWA(repoName, iconOpts);
+          await setupPWA(repoName, iconOpts, true);
           showToast(`🎉 ${repoName} 생성 & PWA 세팅 완료!`, 'ok');
           loadRepos(repoName);
           // 에디터에 아이콘 정보 표시
