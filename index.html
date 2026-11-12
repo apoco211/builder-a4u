@@ -86,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.1.2 - - - - 아이콘 교체 시 앱 이름도 같이 변경</title>
+  <title>Builder-a4u v9.1.4 - - - - 이름만 바꾸기 + 앱 이름 Fix</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -134,10 +134,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.1.2">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.2">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.2">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.2">
+  <link rel="manifest" href="./manifest.json?v=9.1.4">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.4">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.4">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.4">
   
   <style>
     :root {
@@ -328,7 +328,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.2</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.4</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -540,7 +540,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:36:04] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:36:04] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:36:06] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:28] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -857,13 +857,15 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         </div>
         <div class="mt-2">
           <label class="text-[10px] font-bold block">앱 이름 (홈화면에 뜨는 이름)</label>
-          <input id="homeIconNewAppName" class="input text-[12px] py-2" placeholder="예: 아이디어포지 (비워두면 레포명)">
+          <input id="homeIconNewAppName" class="input text-[12px] py-2" placeholder="예: Triage Forge (띄어쓰기·대문자 가능)">
+          <div class="text-[9.5px] opacity-60 mt-1 leading-relaxed">⚠️ 레포명(triage-forge) 그대로 두면 이름도 triage-forge로 돼요. Triage Forge처럼 보이고 싶으면 직접 바꿔서 교체해 주세요. 예전 이름이 React Artifact면, 이 칸을 바꾸지 않아도 이번엔 자동으로 고쳐져요.</div>
         </div>
         <input id="homeIconNewDesc" class="input text-[12px] py-2 mt-2" placeholder="앱 설명 (AI 추천용, 비워두면 레포명 사용) 예: 택시 콜 알림 앱">
         <div class="grid grid-cols-2 gap-1.5 mt-2">
           <button onclick="recommendHomeIcon()" class="btn btn-sm text-[11px] w-full" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🤖 AI 아이콘 추천받기</button>
           <button onclick="replaceHomeIcon()" class="btn btn-sm text-[11px] w-full btn-yellow">✅ 이 아이콘으로 교체하기</button>
         </div>
+        <button onclick="updateAppNameOnly()" class="btn btn-sm text-[11px] w-full mt-1.5" style="background:#e0f2fe;color:#0c4a6e;border-color:#bae6fd">✏️ 이름만 바꾸기 (아이콘은 그대로)</button>
         <div id="homeIconRemakeStatus" class="text-[10px] opacity-70 mt-1.5 leading-relaxed"></div>
         <div class="text-[9.5px] opacity-60 mt-1 leading-relaxed">⚠️ GitHub은 바로 바뀌지만, 아이폰 홈버튼은 기존 것 삭제 → Safari에서 다시 추가해야 새 아이콘으로 보여요.</div>
       </div>
@@ -1369,7 +1371,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.1.2] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.1.4] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -5784,7 +5786,9 @@ ${contextConstraint}`;
       if (ir.ok) {
         const html = await ir.text(); headHasApple = html.indexOf('apple-touch-icon') !== -1;
         const m = html.match(/apple-touch-icon\.png\?v=([^"'\s&]+)/); headVer = m ? m[1] : '(?v= 없음)';
-        headInfo = headHasApple ? ('index.html에 apple-touch-icon 링크 있음 (?v=' + headVer + ')') : 'index.html에 apple-touch-icon 링크 없음';
+        const tm = html.match(/<title[^>]*>(.*?)<\/title>/i); const curTitle = tm ? tm[1].trim() : '(없음)';
+        const am = html.match(/apple-mobile-web-app-title[^>]*content=["']([^"']+)["']/i); const appTitle = am ? am[1] : '(없음)';
+        headInfo = (headHasApple ? ('index.html에 apple-touch-icon 링크 있음 (?v=' + headVer + ')') : 'index.html에 apple-touch-icon 링크 없음') + ' · <title>: ' + curTitle + ' · app-title: ' + appTitle;
       } else headInfo = 'index.html 불러오기 실패 HTTP ' + ir.status;
     }catch(e){ headInfo = 'index.html 오류: ' + e.message; }
     if (apple.ok && $('homeIconIosImg')) { $('homeIconIosImg').src = apple.blobUrl; $('homeIconIosImg').style.display = 'block'; }
@@ -5873,6 +5877,68 @@ ${contextConstraint}`;
       if (status) status.textContent = '❌ 교체 실패: ' + e.message;
       showToast('교체 실패: ' + e.message, 'err');
     } finally { window._skipPwaConfirmOnce = false; if (btnEl) { btnEl.disabled = false; btnEl.textContent = '✅ 이 아이콘으로 교체하기'; } }
+  };
+
+  /* v9.1.4 NEW: 이름만 바꾸기 - 아이콘 파일은 건드리지 않고 <title> + apple-mobile-web-app-title + manifest name만 변경 */
+  window.updateAppNameOnly = async function(){
+    const appName = ($('homeIconNewAppName')?.value || '').trim();
+    if (!appName) return showToast('앱 이름을 입력해 주세요.', 'err');
+    if (!confirm('[' + (currentRepo || '') + '] 이름을 [' + appName + '] (으)로만 바꿀까요?\n아이콘은 그대로 유지됩니다.')) return;
+    const btnEl = document.querySelector('button[onclick="updateAppNameOnly()"]');
+    if (btnEl && btnEl.disabled) return;
+    if (btnEl) { btnEl.disabled = true; btnEl.textContent = '⏳ 이름 변경 중...'; }
+    const status = $('homeIconRemakeStatus'); if (status) status.textContent = '🔄 이름만 변경 중... (아이콘은 건드리지 않아요)';
+    try{
+      const pat = getGitHubPat(); if (!pat || pat.length < 10) throw new Error('GitHub PAT 필요 - 설정 탭에서 입력');
+      const user = (typeof GITHUB_USER !== 'undefined' && GITHUB_USER) ? GITHUB_USER : 'apoco211';
+      const repo = (currentRepo || '').trim(); if (!repo) throw new Error('대상 레포가 없습니다');
+      const headers = { 'Accept': 'application/vnd.github.v3+json', 'Authorization': 'Bearer ' + pat, 'Content-Type': 'application/json' };
+      // 브랜치 감지 (main -> master 순)
+      let branch = 'main';
+      let refRes = await fetch(`https://api.github.com/repos/${user}/${repo}/git/ref/heads/main`, { headers });
+      if (!refRes.ok) { refRes = await fetch(`https://api.github.com/repos/${user}/${repo}/git/ref/heads/master`, { headers }); branch = 'master'; }
+      if (!refRes.ok) throw new Error('브랜치 조회 실패 - 레포가 존재하나요?');
+      const decodeB64 = (b64) => { try { return new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, '')), c => c.charCodeAt(0))); } catch(e){ return atob(b64.replace(/\s/g, '')); } };
+      const encodeB64 = (str) => btoa(unescape(encodeURIComponent(str)));
+      // 1) index.html: <title> + apple-mobile-web-app-title만 교체, 나머지는 그대로
+      const idxRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/index.html?ref=${branch}`, { headers });
+      if (!idxRes.ok) throw new Error('index.html 불러오기 실패 HTTP ' + idxRes.status);
+      const idxJson = await idxRes.json();
+      let html = decodeB64(idxJson.content || '');
+      const curTitleM = html.match(/<title[^>]*>(.*?)<\/title>/i);
+      const curTitle = curTitleM ? curTitleM[1].trim() : '';
+      const isBuilderVersionTitle = /^Builder-a4u\s+v?\d+\.\d+\.\d+/i.test(curTitle);
+      if (!isBuilderVersionTitle) {
+        if (curTitleM) html = html.replace(/<title[^>]*>.*?<\/title>/i, `<title>${appName}</title>`);
+        else if (html.includes('</head>')) html = html.replace('</head>', `<title>${appName}</title>\n</head>`);
+      }
+      // apple-mobile-web-app-title: 기존 값 교체, 없으면 <head> 안에 추가
+      if (/<meta[^>]*apple-mobile-web-app-title[^>]*>/i.test(html)) {
+        html = html.replace(/<meta[^>]*apple-mobile-web-app-title[^>]*>/i, `<meta name="apple-mobile-web-app-title" content="${appName}">`);
+      } else if (html.includes('</head>')) {
+        html = html.replace('</head>', `<meta name="apple-mobile-web-app-title" content="${appName}">\n</head>`);
+      }
+      const putIdx = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/index.html`, { method: 'PUT', headers, body: JSON.stringify({ message: `앱 이름만 변경: ${appName}`, content: encodeB64(html), sha: idxJson.sha, branch: branch }) });
+      if (!putIdx.ok) throw new Error('index.html 저장 실패: ' + (await putIdx.text()).slice(0, 300));
+      // 2) manifest.json: name / short_name만 교체, theme_color·icons 등은 기존 값 유지
+      try{
+        const manRes = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/manifest.json?ref=${branch}`, { headers });
+        if (manRes.ok) {
+          const manJson = await manRes.json();
+          const mj = JSON.parse(decodeB64(manJson.content || '{}'));
+          mj.name = appName; mj.short_name = appName.substring(0, 12);
+          const putMan = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/manifest.json`, { method: 'PUT', headers, body: JSON.stringify({ message: `manifest 이름만 변경: ${appName}`, content: encodeB64(JSON.stringify(mj, null, 2)), sha: manJson.sha, branch: branch }) });
+          if (!putMan.ok) log(`⚠️ manifest 저장 실패: ${(await putMan.text()).slice(0,200)}`, 'warn');
+        }
+      }catch(e){ log(`⚠️ manifest 이름 변경 건너뜀: ${e.message}`, 'warn'); }
+      if (status) status.textContent = '✅ 이름만 변경 완료! [' + appName + '] - 아이폰 홈버튼은 기존 것 삭제 후 다시 추가해야 새 이름으로 보여요.';
+      showToast('✅ 이름만 [' + appName + '] (으)로 변경 완료!', 'ok');
+      try{ checkHomeIcon(); }catch(e){}
+      scrollHomeIconToTop();
+    }catch(e){
+      if (status) status.textContent = '❌ 이름 변경 실패: ' + e.message;
+      showToast('이름 변경 실패: ' + e.message, 'err');
+    } finally { if (btnEl) { btnEl.disabled = false; btnEl.textContent = '✏️ 이름만 바꾸기 (아이콘은 그대로)'; } }
   };
 
   window.setupPWA = async function(presetRepoName = null, presetIconOptions = null, isNewProject = false) {
@@ -6057,11 +6123,19 @@ if ('serviceWorker' in navigator) {
         code = code.replace(/<meta[^>]*apple-mobile-web-app-title[^>]*>\n?/gi, '');
         code = code.replace(/<meta[^>]*apple-mobile-web-app-capable[^>]*>\n?/gi, '');
         code = code.replace(/<meta[^>]*mobile-web-app-capable[^>]*>\n?/gi, '');
-        // v9.1.2: 앱 이름을 레포명과 다르게 입력했을 때만 <title> 교체 (builder-a4u처럼 title에 버전이 있는 경우 버전이 날아가는 것 방지)
-        if (presetIconOptions?.appName && presetIconOptions.appName.trim() && presetIconOptions.appName.trim() !== pwaName) {
-          const newAppTitle = presetIconOptions.appName.trim();
-          if (/<title[^>]*>.*?<\/title>/i.test(code)) code = code.replace(/<title[^>]*>.*?<\/title>/i, `<title>${newAppTitle}</title>`);
-          else if (code.includes('</head>')) code = code.replace('</head>', `<title>${newAppTitle}</title>\n</head>`);
+        // v9.1.3 FIX: v9.1.2 버그 - appName이 레포명과 같으면 <title> 교체를 건너뛰어서 React Artifact 그대로 남음
+        // 올바른 조건: 현재 <title>이 바꿀 이름과 다르면 무조건 교체. 단, Builder-a4u처럼 title에 버전이 있는 경우만 버전 유지
+        {
+          const curTitleM = code.match(/<title[^>]*>(.*?)<\/title>/i);
+          const curTitle = curTitleM ? curTitleM[1].trim() : '';
+          const isBuilderVersionTitle = /^Builder-a4u\s+v?\d+\.\d+\.\d+/i.test(curTitle);
+          if (effectiveAppName && curTitle !== effectiveAppName && !isBuilderVersionTitle) {
+            if (curTitleM) code = code.replace(/<title[^>]*>.*?<\/title>/i, `<title>${effectiveAppName}</title>`);
+            else if (code.includes('</head>')) code = code.replace('</head>', `<title>${effectiveAppName}</title>\n</head>`);
+            log(`📝 <title> 교체: [${curTitle || '(없음)'}] → [${effectiveAppName}]`, 'ok');
+          } else if (isBuilderVersionTitle) {
+            log(`ℹ️ Builder-a4u 버전 <title> 유지: [${curTitle}]`, 'info');
+          }
         }
         const pwaHeadLinks = `<link rel="manifest" href="./manifest.json?v=${iconVerParam}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${iconVerParam}">\n<meta name="theme-color" content="${themeColor}">\n<meta name="apple-mobile-web-app-title" content="${effectiveAppName}">\n<meta name="apple-mobile-web-app-capable" content="yes">\n<meta name="mobile-web-app-capable" content="yes">\n<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${iconVerParam}">\n<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=${iconVerParam}">\n`;
         if (code.includes('</head>')) {
