@@ -1,4 +1,25 @@
-<html lang="ko" class="dark"><head><style>
+<html lang="ko" class=""><head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style><style>
 @font-face {
   font-family: "Optimistic";
   font-style: normal;
@@ -65,7 +86,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.0.56 - - - PWA 아이콘 벌크 푸시 Fix</title>
+  <title>Builder-a4u v9.0.57 - - - - 홈아이콘 확인 + 타임머신 별표</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -113,10 +134,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.0.56">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.56">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.56">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.44">
+  <link rel="manifest" href="./manifest.json?v=9.0.57">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.0.57">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.0.57">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.0.57">
   
   <style>
     :root {
@@ -294,7 +315,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.56</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.0.57</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -302,7 +323,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
       </div>
     </div>
     <div class="flex gap-1 items-stretch shrink-0">
-      <button id="themeToggle" class="btn w-[32px] h-auto !min-h-[32px] p-0 flex items-center justify-center text-[15px] rounded-lg shrink-0" title="주야간 전환">☀️</button>
+      <button id="themeToggle" class="btn w-[32px] h-auto !min-h-[32px] p-0 flex items-center justify-center text-[15px] rounded-lg shrink-0" title="주야간 전환">🌙</button>
       <div id="topGoogleStatusBadge" onclick="handleTopBadgeClick()" class="inline-flex flex-col items-center justify-center px-2 py-0.5 rounded-lg text-[8.5px] font-bold leading-tight cursor-pointer transition-all duration-200 shadow-sm shrink-0 min-w-[64px] min-h-[32px]" style="background:#64748b;color:#fff" title="클릭 시 Google 로그인 실행 / 설정">
         <span class="badge-main">⚪ 로그인 필요</span>
         <span class="badge-sub text-[7.5px] opacity-80 leading-none"></span>
@@ -327,6 +348,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <button id="openLiveSiteBtn" onclick="openLiveSite()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#e0f2fe;color:#0369a1;border-color:#bae6fd">🌐 라이브 오픈</button>
         <button onclick="copyLiveSiteUrl()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff">🔗 주소 복사</button>
         <button onclick="setupPWA()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅</button>
+        <button onclick="openHomeIconCheckModal()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🏠 홈아이콘 확인</button>
         <button onclick="downloadCodeAsTextDoc()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#f0fdf4;color:#166534;border-color:#bbf7d0">💾 코드 다운</button>
         <button onclick="openArtifactCleanupModal()" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto" style="background:#fee2e2;color:#991b1b;border-color:#fecaca">🧹 Artifact 정리</button>
         <button id="refreshRepoBtn" class="btn btn-sm text-[10px] py-1 px-2 w-full sm:w-auto col-span-2 sm:col-span-1">🔄 새로고침</button>
@@ -495,6 +517,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <button id="showDraftHistoryBtn" class="btn btn-sm text-[9px] sm:text-[10px] w-full py-1.5 px-1 min-h-[32px] leading-tight truncate">📦 로컬</button>
         <button onclick="restorePartialPatch()" class="btn btn-sm text-[9px] sm:text-[10px] w-full py-1.5 px-1 min-h-[32px] leading-tight truncate" style="background:#fef3c7;color:#92400e;border-color:#fde68a">♻️ 복구</button>
       </div>
+      <div class="text-[9px] opacity-60 leading-relaxed mb-1">⭐ = 이 기기에서 저장한 잘 작동하는 빌드 표시 (GitHub 서버 별표 아님 · 레포별로 저장됨)</div>
       <div id="versionHistoryBox" class="version-history">
         <div class="text-[10px] text-gray-400 p-3 text-center">버튼을 눌러 과거 기록을 조회하세요</div>
       </div>
@@ -504,7 +527,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:19] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:19] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:01:21] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -656,7 +679,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
 
-<div id="tabInboxContent" style="display:none;">
+<div id="tabInboxContent" style="display: none;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -777,6 +800,38 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         </div>
       </div>
       <div id="artifactModalResult" class="log text-[10.5px] hidden"></div>
+    </div>
+  </div>
+</div>
+
+<div id="homeIconCheckModal" class="drive-modal" style="display:none;">
+  <div class="drive-modal-content" style="max-width:520px;">
+    <div class="drive-modal-header border-b border-gray-200 dark:border-gray-700">
+      <div class="font-bold">🏠 홈버튼 아이콘 확인</div>
+      <button onclick="closeHomeIconCheckModal()" class="btn text-[12px] py-1">✕</button>
+    </div>
+    <div class="p-3 flex flex-col gap-2">
+      <div class="text-[11px] leading-relaxed opacity-80">대상 레포: <b id="homeIconRepoName">-</b><br>실제 배포된 GitHub Pages 파일을 직접 불러와서 확인해요. iOS는 이미 홈에 추가된 아이콘을 자동으로 안 바꿔줘요.</div>
+      <div class="flex gap-3 items-start p-3 rounded-xl border" style="border-color:var(--line);background:var(--bg)">
+        <div class="text-center shrink-0">
+          <div style="width:72px;height:72px;border-radius:16px;overflow:hidden;background:#e2e8f0;display:flex;align-items:center;justify-content:center;"><img id="homeIconIosImg" style="width:100%;height:100%;object-fit:cover;display:none;" alt="home icon"></div>
+          <div id="homeIconIosName" class="text-[10px] font-bold mt-1 truncate max-w-[72px]">-</div>
+          <div class="text-[9px] opacity-60">iOS 홈화면 미리보기</div>
+        </div>
+        <div class="flex-1 text-[10.5px] leading-relaxed" id="homeIconDiag">확인 중...</div>
+      </div>
+      <div id="homeIconCheckResult" class="text-[11px] leading-relaxed space-y-2"></div>
+      <div id="homeIconManifestInfo" class="text-[10px] opacity-70 break-words"></div>
+      <div class="grid grid-cols-2 gap-1.5">
+        <button onclick="checkHomeIcon()" class="btn btn-sm text-[11px] w-full" style="background:#dbeafe;color:#1e40af;border-color:#bfdbfe">🔄 다시 확인</button>
+        <button onclick="closeHomeIconCheckModal(); setupPWA();" class="btn btn-sm text-[11px] w-full" style="background:#fef3c7;color:#92400e;border-color:#fde68a">✨ PWA 세팅 다시 실행</button>
+        <button onclick="copyHomeIconResetGuide()" class="btn btn-sm text-[11px] w-full col-span-2">📋 iOS 재설정 순서 복사</button>
+      </div>
+      <details class="text-[10.5px] leading-relaxed p-2 rounded border" style="border-color:var(--line)">
+        <summary class="font-bold cursor-pointer">📱 iOS 홈 아이콘이 안 바뀔 때 재설정 순서</summary>
+        <div class="mt-1">1. 홈화면의 기존 아이콘을 길게 눌러 삭제해요.<br>2. Safari에서 해당 앱 주소를 열고, 공유 → 홈 화면에 추가를 다시 해요.<br>3. Pages 반영까지 최대 1분 정도 기다렸다가 확인해요.<br>4. 그래도 예전 아이콘이면 Safari 설정 → 방문 기록/데이터 지우기 후 다시 추가해요.</div>
+      </details>
+      <button onclick="closeHomeIconCheckModal()" class="btn btn-sm text-[11px] w-full">닫기</button>
     </div>
   </div>
 </div>
@@ -1265,7 +1320,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.0.56] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.0.57] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -5084,19 +5139,35 @@ ${contextConstraint}`;
       const res = await fetch(`https://api.github.com/repos/${GITHUB_USER}/${currentRepo}/commits?path=${encodeURIComponent(file)}&per_page=15`, { headers });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const commits = await res.json();
-      let html = '';
-      commits.forEach((c) => {
+      const starred = loadStarredCommits();
+      const starredCount = Object.keys(starred).length;
+      const filterOn = !!window._starFilterOnly;
+      let items = commits.map((c) => {
         const sha = c.sha, shortSha = sha.slice(0, 7);
         const msg = c.commit?.message?.split('\n')[0] || '';
-        html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:var(--line);background:var(--card)">
-          <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px] truncate">${msg}</span></div>
-          <div class="flex gap-1 shrink-0"><button onclick="previewGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">👁️ 보기</button><button onclick="rollbackGitHubCommit('${sha}', '${shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button></div>
+        const dateRaw = c.commit?.committer?.date || c.commit?.author?.date || '';
+        const dateStr = dateRaw ? new Date(dateRaw).toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '';
+        return { sha: sha, shortSha: shortSha, msg: msg, dateStr: dateStr, star: starred[sha] || null };
+      });
+      let shown = filterOn ? items.filter((x) => x.star) : items.slice();
+      if (!filterOn) shown = shown.sort((a, b) => ((b.star ? 1 : 0) - (a.star ? 1 : 0)));
+      let html = `<div class="flex items-center justify-between gap-1 mb-2 px-1"><span class="text-[10px] font-bold">⭐ 별표 ${starredCount}개 · 전체 ${commits.length}개</span><button onclick="toggleStarFilter()" class="btn btn-sm text-[9px] py-0.5 px-2" style="${filterOn ? 'background:#facc15;color:#111;border-color:#facc15;' : ''}">${filterOn ? '⭐ 별표만 보는 중 (전체 보기)' : '⭐ 별표만 보기'}</button></div>`;
+      if (shown.length === 0) {
+        html += filterOn ? `<div class="text-[10px] text-gray-400 p-3 text-center">별표한 빌드가 없어요.<br>잘 작동하는 빌드에서 ⭐ 별표를 눌러보세요.</div>` : `<div class="text-[10px] text-gray-400 p-3 text-center">기록 없음</div>`;
+      }
+      shown.forEach((it) => {
+        const encMsg = encodeURIComponent(it.msg);
+        const starBtn = it.star ? `⭐ 별표 해제` : `☆ 별표`;
+        const memoHtml = it.star ? `<div class="text-[10px] text-amber-800 dark:text-amber-300 font-bold">⭐ ${escapeHtmlStar(it.star.memo || '✅ 잘 작동하는 빌드')} <button onclick="editStarMemo('${it.sha}')" class="underline opacity-70 font-normal">메모 수정</button></div>` : ``;
+        html += `<div class="version-item p-2 mb-2 rounded-[8px] border" style="border-color:${it.star ? '#facc15' : 'var(--line)'};background:${it.star ? '#fef9c3' : 'var(--card)'}">
+          <div class="flex flex-col min-w-0 flex-1 pr-1"><span class="font-bold text-[11px] truncate">${it.star ? '⭐ ' : ''}${escapeHtmlStar(it.msg)}</span><span class="text-[8.5px] opacity-60">#${it.shortSha} · ${it.dateStr}</span>${memoHtml}</div>
+          <div class="flex gap-1 shrink-0 flex-wrap"><button onclick="previewGitHubCommit('${it.sha}', '${it.shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">👁️ 보기</button><button onclick="rollbackGitHubCommit('${it.sha}', '${it.shortSha}')" class="btn btn-sm text-[9px] py-0.5 px-2">↺ 롤백</button><button onclick="toggleStarCommit('${it.sha}', '${encMsg}')" class="btn btn-sm text-[9px] py-0.5 px-2" style="${it.star ? 'background:#facc15;color:#111;border-color:#facc15;' : ''}">${starBtn}</button></div>
         </div>`;
       });
       box.innerHTML = html;
     } catch(e) { box.innerHTML = `<div class="text-[10px] text-red-400 p-3 text-center">오류</div>`; }
   }
-  
+
   async function fetchGitHubCommitContent(sha) {
     const pat = getGitHubPat(); const file = $('mainFileInput')?.value?.trim() || mainFile || 'index.html';
     const headers = { 'Accept': 'application/vnd.github.v3+json' };
@@ -5566,6 +5637,126 @@ ${contextConstraint}`;
     if(isGoogleLoggedIn()) saveDataToDrive('[inbox]_idea_backup.json', { text: JSON.stringify(ideaInbox), images: [] });
   };
 
+  /* v9.0.57 NEW: 홈버튼 아이콘 확인 + 타임머신 별표 (기존 코드 유지, 이 블록만 추가) */
+  function escapeHtmlStar(s){ return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function getStarredCommitFile(){ try{ return ($('mainFileInput')?.value?.trim() || (typeof mainFile !== 'undefined' ? mainFile : null) || 'index.html'); }catch(e){ return 'index.html'; } }
+  function getStarredCommitKey(){ return 'builder_starred_commits_' + (currentRepo || '') + '_' + getStarredCommitFile(); }
+  function loadStarredCommits(){ try{ return JSON.parse(localStorage.getItem(getStarredCommitKey()) || '{}') || {}; }catch(e){ return {}; } }
+  function saveStarredCommits(map){ try{ localStorage.setItem(getStarredCommitKey(), JSON.stringify(map)); }catch(e){} }
+  window.toggleStarCommit = function(sha, encMsg){
+    const starred = loadStarredCommits();
+    let msg = ''; try{ msg = decodeURIComponent(encMsg || ''); }catch(e){ msg = ''; }
+    if (starred[sha]) {
+      if (!confirm('⭐ 별표를 해제할까요?\n' + msg)) return;
+      delete starred[sha]; saveStarredCommits(starred);
+      showToast('⭐ 별표 해제됨', 'info');
+    } else {
+      const memo = prompt('⭐ 잘 작동하는 빌드로 표시할 메모를 적어주세요', '✅ 잘 작동하는 빌드');
+      if (memo === null) return;
+      starred[sha] = { msg: msg, memo: (memo || '').trim() || '✅ 잘 작동하는 빌드', starredAt: new Date().toISOString() };
+      saveStarredCommits(starred);
+      showToast('⭐ 별표 저장됨 - 잘 작동하는 빌드', 'ok');
+    }
+    loadGitHubCommitHistory();
+  };
+  window.editStarMemo = function(sha){
+    const starred = loadStarredCommits(); if (!starred[sha]) return;
+    const memo = prompt('⭐ 메모 수정', starred[sha].memo || '');
+    if (memo === null) return;
+    starred[sha].memo = memo.trim(); saveStarredCommits(starred); loadGitHubCommitHistory();
+  };
+  window.toggleStarFilter = function(){ window._starFilterOnly = !window._starFilterOnly; loadGitHubCommitHistory(); };
+  window.openHomeIconCheckModal = function(){
+    if ($('homeIconRepoName')) $('homeIconRepoName').textContent = currentRepo || '-';
+    if ($('homeIconIosName')) $('homeIconIosName').textContent = currentRepo || '-';
+    const m = $('homeIconCheckModal'); if (m) m.style.display = 'flex';
+    try{ document.body.classList.add('modal-open'); }catch(e){}
+    checkHomeIcon();
+  };
+  window.closeHomeIconCheckModal = function(){
+    const m = $('homeIconCheckModal'); if (m) m.style.display = 'none';
+    try{ document.body.classList.remove('modal-open'); }catch(e){}
+  };
+  window.copyHomeIconResetGuide = function(){
+    const repo = currentRepo || '';
+    const txt = '[' + repo + '] iOS 홈 아이콘 재설정 순서\n1. 홈화면의 기존 아이콘을 길게 눌러 삭제\n2. Safari에서 앱 주소 열고 공유 - 홈 화면에 추가 다시 하기\n3. Pages 반영까지 최대 1분 대기 후 확인\n4. 그래도 예전 아이콘이면 Safari 방문 기록/데이터 지우기 후 다시 추가';
+    if (typeof copyToClipboard === 'function') copyToClipboard(txt, '홈 아이콘 재설정 안내');
+    else if (typeof window.copyToClipboard === 'function') window.copyToClipboard(txt, '홈 아이콘 재설정 안내');
+  };
+  window.checkHomeIcon = async function(){
+    const repo = currentRepo; const resultBox = $('homeIconCheckResult'); const diagBox = $('homeIconDiag');
+    if (!repo) { if (resultBox) resultBox.innerHTML = '대상 레포가 없어요.'; return; }
+    const user = (typeof GITHUB_USER !== 'undefined' && GITHUB_USER) ? GITHUB_USER : 'apoco211';
+    const base = 'https://' + user + '.github.io/' + repo + '/';
+    const bust = Date.now();
+    if (resultBox) resultBox.innerHTML = '<div class="text-[10px] text-gray-400 p-2 text-center">확인 중... (Pages 반영까지 10~60초 걸릴 수 있어요)</div>';
+    if (diagBox) diagBox.innerHTML = '배포된 파일을 직접 불러오는 중...';
+    async function loadIcon(name){
+      const url = base + name + '?t=' + bust;
+      try{
+        const res = await fetch(url, { cache: 'no-store' });
+        if (!res.ok) return { name: name, ok: false, status: res.status, url: url };
+        const blob = await res.blob(); const blobUrl = URL.createObjectURL(blob);
+        const dims = await new Promise((resolve)=>{
+          const img = new Image();
+          img.onload = ()=> resolve({ w: img.naturalWidth, h: img.naturalHeight, img: img });
+          img.onerror = ()=> resolve({ w: 0, h: 0, img: null });
+          img.src = blobUrl;
+        });
+        let blank = false;
+        try{
+          if (dims.img) {
+            const cv = document.createElement('canvas'); cv.width = 48; cv.height = 48;
+            const cx = cv.getContext('2d'); cx.drawImage(dims.img, 0, 0, 48, 48);
+            const d = cx.getImageData(0, 0, 48, 48).data; let opaque = 0;
+            for (let i = 3; i < d.length; i += 4) { if (d[i] > 10) opaque++; }
+            blank = (opaque / (48 * 48) < 0.02);
+          }
+        }catch(e){}
+        return { name: name, ok: true, status: res.status, size: blob.size, w: dims.w, h: dims.h, blobUrl: blobUrl, blank: blank, url: url };
+      }catch(e){ return { name: name, ok: false, err: e.message, url: url }; }
+    }
+    const apple = await loadIcon('apple-touch-icon.png');
+    const i192 = await loadIcon('icon-192.png');
+    const i512 = await loadIcon('icon-512.png');
+    let manifestOk = false, manifestInfo = 'manifest.json 확인 안 됨', manifestIcons = [];
+    try{
+      const mr = await fetch(base + 'manifest.json?t=' + bust, { cache: 'no-store' });
+      if (mr.ok) { const mj = await mr.json(); manifestOk = true; manifestIcons = mj.icons || []; manifestInfo = 'name: ' + (mj.name || '-') + ' · theme: ' + (mj.theme_color || '-') + ' · icons: ' + manifestIcons.map(function(x){ return x.sizes; }).join(', '); }
+      else manifestInfo = 'manifest.json 불러오기 실패 HTTP ' + mr.status;
+    }catch(e){ manifestInfo = 'manifest 오류: ' + e.message; }
+    let headHasApple = false, headVer = '(?v= 없음)', headInfo = 'index.html 확인 안 됨';
+    try{
+      const ir = await fetch(base + 'index.html?t=' + bust, { cache: 'no-store' });
+      if (ir.ok) {
+        const html = await ir.text(); headHasApple = html.indexOf('apple-touch-icon') !== -1;
+        const m = html.match(/apple-touch-icon\.png\?v=([^"'\s&]+)/); headVer = m ? m[1] : '(?v= 없음)';
+        headInfo = headHasApple ? ('index.html에 apple-touch-icon 링크 있음 (?v=' + headVer + ')') : 'index.html에 apple-touch-icon 링크 없음';
+      } else headInfo = 'index.html 불러오기 실패 HTTP ' + ir.status;
+    }catch(e){ headInfo = 'index.html 오류: ' + e.message; }
+    if (apple.ok && $('homeIconIosImg')) { $('homeIconIosImg').src = apple.blobUrl; $('homeIconIosImg').style.display = 'block'; }
+    function iconRow(it, expected, role){
+      if (!it.ok) return '<div class="p-2 rounded-lg border" style="border-color:var(--line)"><b>' + it.name + '</b> <span class="text-red-500">❌ 불러오기 실패' + (it.status ? (' HTTP ' + it.status) : '') + '</span><div class="text-[9.5px] opacity-60">' + role + ' · PWA 세팅 다시 실행 필요</div></div>';
+      const sizeKb = (it.size / 1024).toFixed(1);
+      const sizeWarn = (it.w !== expected) ? (' ⚠️ ' + expected + 'x' + expected + '이 정상') : '';
+      const blankWarn = it.blank ? ' ⚠️ 거의 비어 보임(투명)' : '';
+      return '<div class="flex gap-2 items-center p-2 rounded-lg border" style="border-color:var(--line)"><img src="' + it.blobUrl + '" style="width:44px;height:44px;border-radius:10px;object-fit:cover;background:#e2e8f0;flex-shrink:0;"><div class="min-w-0"><b>' + it.name + '</b> <span class="text-emerald-600">✅ ' + it.w + 'x' + it.h + ' · ' + sizeKb + 'KB</span>' + sizeWarn + blankWarn + '<div class="text-[9.5px] opacity-60">' + role + '</div></div></div>';
+    }
+    if (resultBox) resultBox.innerHTML = iconRow(apple, 180, 'iOS 홈버튼이 실제로 보는 파일') + iconRow(i192, 192, 'Android / manifest용') + iconRow(i512, 512, 'Android / manifest용');
+    const diags = [];
+    if (!apple.ok) diags.push('❌ apple-touch-icon.png이 배포 안 됨 - iOS 홈버튼은 이 파일을 봐요. PWA 세팅 다시 실행하세요.');
+    else if (apple.blank) diags.push('⚠️ apple-touch-icon이 거의 비어 보임(투명) - 아이콘 생성 실패 의심. PWA 세팅 다시 실행하세요.');
+    else diags.push('✅ apple-touch-icon 정상 (' + apple.w + 'x' + apple.h + ')');
+    if (!headHasApple) diags.push('❌ index.html head에 apple-touch-icon 링크 없음 - PWA 세팅 주입이 안 된 상태예요.');
+    else diags.push('✅ index.html head에 링크 있음 (?v=' + headVer + ')');
+    if (!manifestOk) diags.push('⚠️ ' + manifestInfo);
+    else diags.push('✅ ' + manifestInfo);
+    diags.push('💡 여기서 새 아이콘이 보이면 배포는 성공. 홈화면이 그대로면 iOS 캐시예요 → 기존 홈 아이콘 삭제 후 Safari에서 다시 추가해야 바껴요.');
+    if (diagBox) diagBox.innerHTML = diags.map(function(d){ return '<div class="mb-1">' + escapeHtmlStar(d) + '</div>'; }).join('');
+    if ($('homeIconManifestInfo')) $('homeIconManifestInfo').textContent = headInfo + ' · ' + manifestInfo;
+    try{ log('🏠 홈아이콘 확인: ' + repo + ' / apple ' + (apple.ok ? (apple.w + 'x' + apple.h) : '실패') + ' / ' + headInfo, apple.ok ? 'ok' : 'warn'); }catch(e){}
+  };
+
   window.setupPWA = async function(presetRepoName = null, presetIconOptions = null) {
     const pat = getGitHubPat(); 
     if (!pat || pat.length < 10) return showToast('GitHub PAT 필요 - 설정 탭에서 입력', 'err');
@@ -5585,6 +5776,9 @@ ${contextConstraint}`;
     const themeColor = presetIconOptions?.color || window.aiIconOptions?.color || '#10b981';
     const centerEmoji = presetIconOptions?.emoji || window.aiIconOptions?.emoji || '✨';
     const finalVersion = (typeof getTargetAppVersion === 'function' ? getTargetAppVersion() : 'v9.0.55');
+    // v9.0.57 FIX: 같은 버전으로 다시 세팅해도 ?v= 가 바뀌어야 브라우저/iOS 캐시가 새 아이콘을 가져옴
+    const iconCacheBust = Date.now();
+    const iconVerParam = finalVersion.replace('v','') + '-' + iconCacheBust;
     
     // v9.0.55 FIX: 아이콘 생성 로직 강화 + 디버그 로그
     const createIconBase64 = (size) => {
@@ -5659,9 +5853,10 @@ ${contextConstraint}`;
       background_color: "#ffffff", 
       theme_color: themeColor, 
       icons: [
-        { src: "./icon-192.png", sizes: "192x192", type: "image/png", purpose: "any maskable" }, 
-        { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "any maskable" },
-        { src: "./apple-touch-icon.png", sizes: "180x180", type: "image/png" }
+        { src: "./icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },
+        { src: "./icon-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
+        { src: "./apple-touch-icon.png", sizes: "180x180", type: "image/png", purpose: "any" }
       ] 
     };
     fileMap.set('manifest.json', { content: JSON.stringify(manifest, null, 2), isBinary: false });
@@ -5692,9 +5887,10 @@ self.addEventListener('fetch', e => {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${pwaName} ${centerEmoji}</title>
 <meta name="theme-color" content="${themeColor}">
-<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">
-<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">
-<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${finalVersion.replace('v','')}">
+<link rel="manifest" href="./manifest.json?v=${iconVerParam}">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${iconVerParam}">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${iconVerParam}">
+<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=${iconVerParam}">
 <style>
   body { margin:0; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:#111; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; text-align:center; }
   .icon { width:120px; height:120px; background:${themeColor}; border-radius:28px; display:flex; align-items:center; justify-content:center; font-size:64px; box-shadow:0 8px 24px rgba(0,0,0,0.15); }
@@ -5723,14 +5919,19 @@ if ('serviceWorker' in navigator) {
       if (editor && editor.value) {
         let code = editor.value;
         let injected = false;
-        if (!code.includes('manifest.json')) {
-          if (code.includes('</head>')) {
-            code = code.replace('</head>', `<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${finalVersion.replace('v','')}">\n<meta name="theme-color" content="${themeColor}">\n<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${finalVersion.replace('v','')}">\n</head>`);
-            injected = true;
-          } else if (code.includes('<head>')) {
-            code = code.replace('<head>', `<head>\n<link rel="manifest" href="./manifest.json?v=${finalVersion.replace('v','')}">\n`);
-            injected = true;
-          }
+        // v9.0.57 FIX: 이미 manifest가 있어도 apple-touch-icon 링크가 오래된 ?v= 그대로면 iOS 홈 아이콘이 안 바뀜. 기존 PWA 링크를 전부 지우고 최신 ?v= 로 다시 주입.
+        code = code.replace(/<link[^>]*manifest[^>]*>\n?/gi, '');
+        code = code.replace(/<link[^>]*apple-touch-icon[^>]*>\n?/gi, '');
+        code = code.replace(/<link[^>]*icon-192\.png[^>]*>\n?/gi, '');
+        code = code.replace(/<link[^>]*icon-512\.png[^>]*>\n?/gi, '');
+        code = code.replace(/<meta[^>]*theme-color[^>]*>\n?/gi, '');
+        const pwaHeadLinks = `<link rel="manifest" href="./manifest.json?v=${iconVerParam}">\n<link rel="apple-touch-icon" href="./apple-touch-icon.png?v=${iconVerParam}">\n<meta name="theme-color" content="${themeColor}">\n<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=${iconVerParam}">\n<link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=${iconVerParam}">\n`;
+        if (code.includes('</head>')) {
+          code = code.replace('</head>', pwaHeadLinks + '</head>');
+          injected = true;
+        } else if (code.includes('<head>')) {
+          code = code.replace('<head>', '<head>\n' + pwaHeadLinks);
+          injected = true;
         }
         if (!code.includes('serviceWorker') && code.includes('</body>')) {
           code = code.replace('</body>', `<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'))}<\/script>\n</body>`);
@@ -5824,6 +6025,8 @@ if ('serviceWorker' in navigator) {
       showToast(`🎉 PWA 세팅 완료! ${centerEmoji} ${fileMap.size}개 파일`, 'ok');
       log(`🎉 PWA 세팅 완료: ${targetPwaRepo} / ${themeColor} ${centerEmoji} / ${fileMap.size} files → ${branch}`, 'ok');
       log(`🌐 https://${GITHUB_USER}.github.io/${targetPwaRepo}/`, 'info');
+      // v9.0.57: 세팅 직후 배포된 아이콘을 바로 확인 (Pages 반영까지 약간 걸리면 [다시 확인] 누르기)
+      try{ setTimeout(()=>{ if (typeof openHomeIconCheckModal === 'function') openHomeIconCheckModal(); }, 800); }catch(e){}
       
       // 에디터 코드가 업데이트된 경우 로컬에도 반영
       if (editorCodeToUpdate && $('codeEditor')) {
@@ -6408,4 +6611,4 @@ function startApp() {
   </div>
 
 <script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script>
-<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script><script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body></html>
