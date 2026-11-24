@@ -170,7 +170,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.1.17</title>
+  <title>Builder-a4u v9.1.19</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -218,10 +218,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.1.17">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.17">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.17">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.17">
+  <link rel="manifest" href="./manifest.json?v=9.1.19">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.19">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.19">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.19">
   
   <style>
     :root {
@@ -606,7 +606,7 @@ window.__perfToggle = function(){
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.17</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.19</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -625,8 +625,8 @@ window.__perfToggle = function(){
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
     <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
     <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
-    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full active">⚙️ 설정 &amp; 맥락 복사</button>
-    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
+    <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
+    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700 active" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
@@ -818,12 +818,12 @@ window.__perfToggle = function(){
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:28] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:22] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:20] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:39:19] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:39:19] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:39:21] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:28] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:22] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:20] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 11:36:09] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 11:36:09] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 11:36:11] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
   
-<div id="tabSettingsContent" style="display: block;">
+<div id="tabSettingsContent" style="display: none;">
   <div class="card mb-4" style="border:2px solid #10b981">
     <div class="flex flex-col gap-3 mb-2">
       <h2 class="font-bold text-[13px] sm:text-[14px] text-emerald-600 dark:text-emerald-400">🚀 스마트 프롬프트 패키지 (AI 논의용)</h2>
@@ -970,7 +970,7 @@ window.__perfToggle = function(){
   </div>
 </div>
 
-<div id="tabInboxContent" style="display: none;">
+<div id="tabInboxContent" style="display: block;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -1652,7 +1652,7 @@ window.__perfToggle = function(){
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.1.17] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.1.19] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
@@ -5622,7 +5622,7 @@ ${contextConstraint}`;
       });
       let shown = filterOn ? items.filter((x) => x.star) : items.slice();
       if (!filterOn) shown = shown.sort((a, b) => ((b.star ? 1 : 0) - (a.star ? 1 : 0)));
-      let html = `<div class="flex items-center justify-between gap-1 mb-2 px-1"><span class="text-[10px] font-bold">⭐ 별표 ${starredCount}개 · 전체 ${commits.length}개</span><button onclick="toggleStarFilter()" class="btn btn-sm text-[9px] py-0.5 px-2" style="${filterOn ? 'background:#facc15;color:#111;border-color:#facc15;' : ''}">${filterOn ? '⭐ 별표만 보는 중 (전체 보기)' : '⭐ 별표만 보기'}</button></div>`;
+      let html = `<div class="flex items-center justify-between gap-1 mb-2 px-1"><span class="text-[10px] font-bold">⭐ 별표 ${starredCount}개 · 전체 ${commits.length}개</span><button onclick="toggleStarFilter()" class="btn btn-sm text-[9px] py-0.5 px-2" style="${filterOn ? 'background:#facc15;color:#111;border-color:#facc15;' : ''}">${filterOn ? '⭐ 별표만 보는 중 (전체 보기)' : '⭐ 별표만 보기'}</button><button onclick="exportAllStarred()" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#e0e7ff;border-color:#c7d2fe;">별표 전체 복사</button><button onclick="importAllStarred()" class="btn btn-sm text-[9px] py-0.5 px-2" style="background:#dcfce7;border-color:#bbf7d0;">별표 전체 가져오기</button></div>`;
       if (shown.length === 0) {
         html += filterOn ? `<div class="text-[10px] text-gray-400 p-3 text-center">별표한 빌드가 없어요.<br>잘 작동하는 빌드에서 ⭐ 별표를 눌러보세요.</div>` : `<div class="text-[10px] text-gray-400 p-3 text-center">기록 없음</div>`;
       }
@@ -6161,7 +6161,15 @@ ${contextConstraint}`;
   function getStarredCommitFile(){ try{ return ($('mainFileInput')?.value?.trim() || (typeof mainFile !== 'undefined' ? mainFile : null) || 'index.html'); }catch(e){ return 'index.html'; } }
   function getStarredCommitKey(){ return 'builder_starred_commits_' + (currentRepo || '') + '_' + getStarredCommitFile(); }
   function loadStarredCommits(){ try{ return JSON.parse(localStorage.getItem(getStarredCommitKey()) || '{}') || {}; }catch(e){ return {}; } }
-  function saveStarredCommits(map){ try{ localStorage.setItem(getStarredCommitKey(), JSON.stringify(map)); }catch(e){} }
+  function saveStarredCommits(map){ try{ localStorage.setItem(getStarredCommitKey(), JSON.stringify(map)); }catch(e){} try{ scheduleStarredDriveSave(); }catch(e){} }
+  function collectAllStarred(){ var out={}; try{ for(var i=0;i<localStorage.length;i++){ var k=localStorage.key(i); if(k&&k.indexOf('builder_starred_commits_')===0){ try{ out[k]=JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){} } } }catch(e){} return out; }
+  function scheduleStarredDriveSave(){ try{ if(window._starDriveTimer) clearTimeout(window._starDriveTimer); window._starDriveTimer=setTimeout(function(){ try{ saveStarredToDrive(); }catch(e){} }, 900); }catch(e){} }
+  async function saveStarredToDrive(){ try{ if(typeof isGoogleLoggedIn!=='function'||!isGoogleLoggedIn()) return false; if(typeof saveDataToDrive!=='function') return false; var all=collectAllStarred(); return await saveDataToDrive('[global]_starred_commits_backup.json', { text: JSON.stringify(all), lastSavedAt: Date.now() }); }catch(e){ return false; } }
+  async function syncStarredFromDrive(){ try{ if(typeof isGoogleLoggedIn!=='function'||!isGoogleLoggedIn()) return false; var q="trashed=false and name='[global]_starred_commits_backup.json'"; var res=await fetch('https://www.googleapis.com/drive/v3/files?q='+encodeURIComponent(q)+'&fields=files(id)&pageSize=5&supportsAllDrives=true&includeItemsFromAllDrives=true&corpora=allDrives', { headers:{ Authorization:'Bearer '+accessToken }, cache:'no-cache' }); if(!res.ok) return false; var data=await res.json(); var fid=data.files&&data.files[0]&&data.files[0].id; if(!fid) return false; var r2=await fetch('https://www.googleapis.com/drive/v3/files/'+fid+'?alt=media&supportsAllDrives=true', { headers:{ Authorization:'Bearer '+accessToken } }); if(!r2.ok) return false; var d2=await r2.json(); var driveAll={}; try{ if(typeof d2.text==='string') driveAll=JSON.parse(d2.text||'{}'); else if(d2&&typeof d2==='object'&&!Array.isArray(d2)) driveAll=d2; }catch(e){ return false; } var changed=false; for(var k in driveAll){ if(k.indexOf('builder_starred_commits_')!==0) continue; var cur={}; try{ cur=JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){ cur={}; } var inc=driveAll[k]||{}; for(var sha in inc){ if(!cur[sha]){ cur[sha]=inc[sha]; changed=true; } else { try{ var a=new Date(cur[sha].starredAt||0).getTime(); var b=new Date(inc[sha].starredAt||0).getTime(); if(b>a){ cur[sha]=inc[sha]; changed=true; } }catch(e){} } } if(changed) { try{ localStorage.setItem(k, JSON.stringify(cur)); }catch(e){} } } if(changed){ try{ if(typeof loadGitHubCommitHistory==='function') loadGitHubCommitHistory(); }catch(e){} } return changed; }catch(e){ return false; } }
+  window.syncStarredFromDrive = syncStarredFromDrive; window.saveStarredToDrive = saveStarredToDrive;
+  /* v9.1.19 자동동기화: 로그인 돼 있으면 시작 3초 뒤 드라이브 별표 1회 가져오기 */
+  setTimeout(function(){ try{ if(typeof isGoogleLoggedIn==='function'&&isGoogleLoggedIn()) syncStarredFromDrive(); }catch(e){} }, 3000);
+
   window.toggleStarCommit = function(sha, encMsg){
     const starred = loadStarredCommits();
     let msg = ''; try{ msg = decodeURIComponent(encMsg || ''); }catch(e){ msg = ''; }
@@ -6185,6 +6193,39 @@ ${contextConstraint}`;
     starred[sha].memo = memo.trim(); saveStarredCommits(starred); loadGitHubCommitHistory();
   };
   window.toggleStarFilter = function(){ window._starFilterOnly = !window._starFilterOnly; loadGitHubCommitHistory(); };
+  window.exportAllStarred = function(){
+    try{
+      var out = {};
+      for (var i=0;i<localStorage.length;i++){ var k = localStorage.key(i); if (k && k.indexOf('builder_starred_commits_')===0){ try{ out[k]=JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){} } }
+      var json = JSON.stringify(out);
+      var cnt = Object.keys(out).length;
+      var total = 0; for (var kk in out) total += Object.keys(out[kk]||{}).length;
+      if (typeof copyToClipboard === 'function') copyToClipboard(json, '별표 전체 복사됨');
+      else if (navigator.clipboard) navigator.clipboard.writeText(json);
+      else { var ta=document.createElement('textarea'); ta.value=json; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+      showToast('별표 전체 복사됨 - 앱 '+cnt+'개, 별표 '+total+'개', 'ok');
+    }catch(e){ showToast('별표 복사 실패: '+(e&&e.message?e.message:e), 'err'); }
+  };
+  window.importAllStarred = function(){
+    try{
+      var json = prompt('아이폰에서 복사한 별표 전체 JSON을 여기에 붙여넣으세요');
+      if (json===null) return;
+      json=(json||'').trim(); if(!json){ showToast('붙여넣은 게 비어 있어요','warn'); return; }
+      var obj = JSON.parse(json);
+      var cnt=0, total=0;
+      for (var k in obj){
+        if (k.indexOf('builder_starred_commits_')!==0) continue;
+        var cur={}; try{ cur=JSON.parse(localStorage.getItem(k)||'{}'); }catch(e){ cur={}; }
+        var incoming = obj[k]||{};
+        for (var sha in incoming) { if(!cur[sha]) cur[sha]=incoming[sha]; }
+        localStorage.setItem(k, JSON.stringify(cur));
+        cnt++; total+=Object.keys(incoming).length;
+      }
+      showToast('별표 전체 가져옴 - 앱 '+cnt+'개, 별표 '+total+'개', 'ok');
+      loadGitHubCommitHistory();
+    }catch(e){ showToast('별표 가져오기 실패 - JSON이 맞는지 확인해줘: '+(e&&e.message?e.message:e), 'err'); }
+  };
+
   window.openHomeIconCheckModal = function(){
     if ($('homeIconRepoName')) $('homeIconRepoName').textContent = currentRepo || '-';
     if ($('homeIconIosName')) $('homeIconIosName').textContent = currentRepo || '-';
