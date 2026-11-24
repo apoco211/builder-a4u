@@ -170,7 +170,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <title>Builder-a4u v9.1.10</title>
+  <title>Builder-a4u v9.1.11</title>
   
   <script src="https://cdn.tailwindcss.com">
   // v9.0.42: 대상 폴더 변경 시 실시간 경로 미리보기
@@ -218,10 +218,10 @@
   <!-- 미리보기 화면 캡처용 html2canvas 라이브러리 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   
-  <link rel="manifest" href="./manifest.json?v=9.1.10">
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.10">
-  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.10">
-  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.10">
+  <link rel="manifest" href="./manifest.json?v=9.1.11">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png?v=9.1.11">
+  <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png?v=9.1.11">
+  <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png?v=9.1.11">
   
   <style>
     :root {
@@ -421,42 +421,42 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
   body { text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 
-  /* ── ① 아이폰 / 모바일 ( ~767px ) : 7~10px짜리 배지/보조만 최소치 보장. 버튼/제목 글자는 건드리지 않음 ── */
+  /* ── ① 아이폰 / 모바일 ( ~767px ) : 원래대로 100% 복원 - 폰트/버튼/패딩 전부 건드리지 않음 ── */
   @media (max-width: 767px) {
     body {
       padding-left: max(14px, env(safe-area-inset-left));
       padding-right: max(14px, env(safe-area-inset-right));
       padding-bottom: max(100px, env(safe-area-inset-bottom));
     }
-    /* v9.1.10 FIX: 이전에는 9px→12.5px, 10px→13.5px, 12px→15px처럼 전부 !important로 키워서 버튼/제목까지 확 커졌음. 이제 10px 이하는 +1~2px만 */
-    .text-\[7px\] { font-size: 9px !important; line-height: 1.4 !important; }
-    .text-\[7\.5px\] { font-size: 10px !important; line-height: 1.4 !important; }
-    .text-\[8px\] { font-size: 10.5px !important; line-height: 1.4 !important; }
-    .text-\[8\.5px\] { font-size: 11px !important; line-height: 1.4 !important; }
-    .text-\[9px\] { font-size: 11px !important; line-height: 1.45 !important; }
-    .text-\[10px\] { font-size: 11.5px !important; }
-    /* 11px 이상은 원래대로 - 여기서 14~16px로 키우던 게 폰트 확 커진 주범 */
-    /* .btn / .btn-sm 글자 크기는 건드리지 않음 - 원래 text-[10px] / 11px 그대로. 터치 높이만 보장 */
-    .btn { min-height: 40px !important; }
-    .btn-sm { min-height: 34px !important; }
-    /* 입력창만 16px - 아이폰 자동확대 방지. 코드 에디터(textarea)는 제외해서 코드가 커지지 않게 */
-    .input, select { font-size: 16px !important; }
-    /* 헤더 겹침 방지: 제목은 한 줄, 로그인 배지는 최대폭 제한, 탭버튼은 줄바꿈 허용 */
-    .sticky-header .flex.justify-between { flex-wrap: nowrap !important; }
-    .sticky-header h1 { font-size: 14px !important; white-space: nowrap !important; }
-    #topGoogleStatusBadge { max-width: 100px !important; }
-    .tab-btn { font-size: 12.5px !important; padding: 9px 8px !important; white-space: normal !important; line-height: 1.3 !important; }
+    /* v9.1.11 FIX: 여기 있던 text-[7px]~[14px] / .btn / .btn-sm / h1 / 탭버튼 강제 확대를 전부 삭제.
+       원래 body padding이 14px 14px 100px이라서 위 safe-area도 사실상 원래값과 같음. 즉 아이폰 화면 = v9.1.7 이전 화면 그대로 */
   }
 
-  /* ── ② 크롬 데스크톱 / 태블릿 가로 ( 768px~ ) : 레이아웃만 넓히고, 글자 크기는 강제하지 않음 ── */
+  /* ── ② PC / 태블릿 가로 ( 768px~ ) : 여기서만 키움. 768px 이상에서만 적용되니 아이폰(390px)에는 절대 안 닿음 ── */
   @media (min-width: 768px) {
-    body { max-width: 1080px; margin: 0 auto; padding: 28px 28px 120px 28px; }
+    body { max-width: 1080px; margin: 0 auto; padding: 28px 28px 120px 28px; font-size: 16.5px; line-height: 1.65; }
     .sticky-header { padding: 18px 24px 14px 24px; }
     .card { padding: 22px; border-radius: 18px; }
-    /* 7~9px 배지만 살짝. .btn / h1 / h2 / text-[10px]~[16px] 강제 확대 삭제 - 그게 PC에서도 버튼을 키웠음 */
-    .text-\[7px\] { font-size: 10px !important; }
-    .text-\[8px\] { font-size: 11px !important; }
-    .text-\[9px\] { font-size: 11.5px !important; }
+    .text-\[7px\] { font-size: 12px !important; }
+    .text-\[7\.5px\] { font-size: 12.5px !important; }
+    .text-\[8px\] { font-size: 13px !important; }
+    .text-\[8\.5px\] { font-size: 13.5px !important; }
+    .text-\[9px\] { font-size: 14px !important; line-height: 1.5 !important; }
+    .text-\[9\.5px\] { font-size: 14.5px !important; }
+    .text-\[10px\] { font-size: 15px !important; }
+    .text-\[10\.5px\] { font-size: 15.5px !important; }
+    .text-\[11px\] { font-size: 16px !important; }
+    .text-\[11\.5px\] { font-size: 16.5px !important; }
+    .text-\[12px\] { font-size: 17px !important; }
+    .text-\[12\.5px\] { font-size: 17.5px !important; }
+    .text-\[13px\] { font-size: 18px !important; }
+    .text-\[14px\] { font-size: 18.5px !important; }
+    .text-\[15px\] { font-size: 19px !important; }
+    .text-\[16px\] { font-size: 20px !important; }
+    .btn { font-size: 15px !important; min-height: 44px !important; padding: 11px 16px !important; }
+    .btn-sm { font-size: 14px !important; min-height: 38px !important; padding: 8px 14px !important; }
+    h1 { font-size: 22px !important; }
+    h2 { font-size: 19px !important; }
   }
 
   /* ── ③ 큰 모니터 ( 1280px~ ) : 여백만 더 넓게 ── */
@@ -554,7 +554,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 <div class="sticky-header">
   <div class="flex justify-between items-center gap-2 px-1 md:px-2">
     <div class="flex flex-col gap-1 min-w-0 flex-1">
-      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.10</h1>
+      <h1 class="text-[13px] sm:text-[14px] md:text-[16px] font-black tracking-tight leading-none whitespace-nowrap">Builder-a4u v9.1.11</h1>
       
       <div class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black border bg-[var(--card)] text-[var(--txt)] shadow-sm w-fit" style="border-color:var(--line)">
         <span class="animate-pulse text-emerald-500">🟢</span> 
@@ -572,9 +572,9 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
     
   <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
     <button id="tabProjectBtn" onclick="switchTab('project')" class="tab-btn w-full">📌 프로젝트선택</button>
-    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full">🚀 앱빌드</button>
+    <button id="tabBuildBtn" onclick="switchTab('build')" class="tab-btn w-full active">🚀 앱빌드</button>
     <button id="tabSettingsBtn" onclick="switchTab('settings')" class="tab-btn w-full">⚙️ 설정 &amp; 맥락 복사</button>
-    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700 active" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
+    <button id="tabInboxBtn" onclick="switchTab('inbox')" class="tab-btn w-full shadow-sm dark:bg-yellow-900/40 dark:text-yellow-400 dark:border-yellow-700" style="background:#fef08a;color:#854d0e;border-color:#fde047">💡 막던지기</button>
   </div>
 </div>
   
@@ -641,7 +641,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
   
-<div id="tabBuildContent" style="display: none;">
+<div id="tabBuildContent" style="display: block;">
   <div class="card mb-3">
     <div class="flex justify-between items-center mb-1.5 card-header-mobile-col">
       <h2 class="font-bold text-[12px] text-blue-600 dark:text-blue-400">📝 업데이트 내용 &amp; 빌드 요약 메모</h2>
@@ -766,7 +766,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
         <h2 class="font-bold text-[11.5px] text-blue-600 dark:text-blue-400 flex items-center gap-1"><span class="animate-pulse">📡</span> 실시간 빌드 로그</h2>
         <button id="clearLogBtn" class="btn text-[9px] py-0.5 px-2 border-gray-300">지우기</button>
       </div>
-      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:28] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:22] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:20] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:29:40] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:29:40] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:29:42] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
+      <div id="logArea" class="log h-[210px] bg-white dark:bg-[#0a0c10] shadow-inner text-[11px]"><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:44] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 2:08:46] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:31] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 4:26:33] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:57] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 8:31:59] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:35] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:58:37] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:26] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:49:28] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:21] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 6:12:22] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:18] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 7:44:20] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오전 11:00:02] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-blue-600 dark:text-blue-400 font-semibold mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:38:00] 📦 PAT 없음 - 캐시된 레포 1개로 표시 (설정 탭에서 PAT 입력 시 전체 로드)</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:38:00] ⚠️ syncLatestSourceFromGithub 오류: Load failed [builder-a4u/index.html]</div><div class="text-gray-700 dark:text-gray-300 mb-0.5 border-b border-gray-100 dark:border-gray-800 pb-0.5 last:border-0">[오후 5:38:02] 🤖 AI 스마트 라우터 활성화 v8.9.64 (한글 별칭 수정)</div></div>
     </div>
   </div>
 </div>
@@ -918,7 +918,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
   </div>
 </div>
 
-<div id="tabInboxContent" style="display: block;">
+<div id="tabInboxContent" style="display: none;">
   <div class="card mb-3 border-2 border-yellow-500 bg-yellow-50 dark:bg-yellow-900/30 dark:border-yellow-700" style="padding:10px 12px;">
     <h2 class="font-bold text-[13px] text-yellow-700 dark:text-yellow-400 mb-2 flex justify-between items-center" style="margin-bottom:8px">💡 운전 중 2초 컷 인박스 <span id="inboxSelectedProjectHint" class="text-[10px] font-normal px-2 py-0.5 rounded-full bg-yellow-100 text-amber-700 dark:bg-yellow-800 dark:text-yellow-200">선택 없으면 AI 자동배정</span></h2>
     <label class="flex items-center gap-1.5 mb-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 cursor-pointer select-none">
@@ -1600,7 +1600,7 @@ body.modal-open { overflow: hidden; position: fixed; width: 100%; height: 100%; 
 규칙:
 - 여러 곳 수정 시 블록 여러 개 출력
 - SEARCH는 원본에 100% 존재하는 코드만
-- 마지막에 [빌드 넘버: v9.1.10] [요약: ...] 형식 한 줄 추가
+- 마지막에 [빌드 넘버: v9.1.11] [요약: ...] 형식 한 줄 추가
 
 [아이디어 목록]
 ${ideaText}
